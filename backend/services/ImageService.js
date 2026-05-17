@@ -1,18 +1,13 @@
-import { S3Client, PutObjectCommand, DeleteObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3';
+import { PutObjectCommand, DeleteObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import sharp from 'sharp';
 import crypto from 'crypto';
+import s3Client, { s3BucketName } from '../config/s3.js';
 
 class ImageService {
   constructor() {
-    this.s3 = new S3Client({
-      region: process.env.AWS_REGION || 'us-east-1',
-      credentials: {
-        accessKeyId: process.env.AWS_ACCESS_KEY_ID || '',
-        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || '',
-      }
-    });
-    this.bucket = process.env.AWS_S3_BUCKET || 'my-app-bucket';
+    this.s3 = s3Client;
+    this.bucket = s3BucketName;
   }
 
   generateFilename() {

@@ -7,12 +7,7 @@ import Dashboard from './pages/Dashboard';
 import History from './pages/History';
 import Login from './pages/Login';
 import Register from './pages/Register';
-
-const SettingsPlaceholder = () => (
-  <div className="flex items-center justify-center h-full text-gray-500 font-medium">
-    Settings page coming soon...
-  </div>
-);
+import Settings from './pages/Settings';
 
 function App() {
   return (
@@ -42,7 +37,7 @@ function App() {
             path="/settings" 
             element={
               <ProtectedRoute>
-                <div className="p-10 text-center text-gray-500">Settings coming soon...</div>
+                <Settings />
               </ProtectedRoute>
             } 
           />

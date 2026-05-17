@@ -20,6 +20,25 @@ const userSchema = new mongoose.Schema(
       required: true,
       minlength: 6,
     },
+    role: {
+      type: String,
+      enum: ['user', 'admin'],
+      default: 'user',
+    },
+    credits: {
+      type: Number,
+      default: 10,
+    },
+    settings: {
+      userApiKey: { type: String, default: '' },
+      userBaseUrl: { type: String, default: '' },
+      preferredModel: { type: String, default: '' },
+      defaultLanguage: { type: String, default: 'French' },
+      defaultTone: { type: String, default: 'Professional' },
+      wpUrl: { type: String, default: '' },
+      wpUsername: { type: String, default: '' },
+      wpApplicationPassword: { type: String, default: '' },
+    }
   },
   {
     timestamps: true,

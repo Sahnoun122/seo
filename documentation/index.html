@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Documentation | AI SEO Article Generator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-base: #090d16;
+      --bg-surface: #111827;
+      --bg-surface-hover: #1f2937;
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+      --primary: #6366f1;
+      --primary-hover: #4f46e5;
+      --accent: #a855f7;
+      --accent-muted: rgba(168, 85, 247, 0.1);
+      --border-color: #374151;
+      --border-focus: #4b5563;
+      --code-bg: #1e293b;
+      --shadow-indigo: 0 0 20px rgba(99, 102, 241, 0.15);
+      --success: #10b981;
+      --warning: #f59e0b;
+      --error: #ef4444;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: var(--bg-base);
+      color: var(--text-main);
+      line-height: 1.6;
+      display: flex;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Sidebar Navigation */
+    aside {
+      width: 300px;
+      background-color: var(--bg-surface);
+      border-right: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 100;
+      padding: 2.5rem 1.5rem;
+      transition: all 0.3s ease;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 3rem;
+    }
+
+    .brand-logo {
+      width: 2.5rem;
+      height: 2.5rem;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      border-radius: 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow-indigo);
+    }
+
+    .brand-logo svg {
+      width: 1.25rem;
+      height: 1.25rem;
+      fill: #fff;
+    }
+
+    .brand-name {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      background: linear-gradient(to right, #ffffff, #d1d5db);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -0.5px;
+    }
+
+    nav {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      flex-grow: 1;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.85rem 1rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      border-radius: 0.75rem;
+      font-weight: 500;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: 1px solid transparent;
+    }
+
+    .nav-item:hover {
+      color: var(--text-main);
+      background-color: var(--bg-surface-hover);
+    }
+
+    .nav-item.active {
+      color: #ffffff;
+      background-color: rgba(99, 102, 241, 0.15);
+      border-color: rgba(99, 102, 241, 0.3);
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.05);
+    }
+
+    .nav-item svg {
+      width: 1.25rem;
+      height: 1.25rem;
+      opacity: 0.7;
+      transition: all 0.2s ease;
+    }
+
+    .nav-item.active svg {
+      opacity: 1;
+      stroke: var(--primary);
+    }
+
+    .sidebar-footer {
+      margin-top: auto;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border-color);
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-align: center;
+    }
+
+    /* Main Content */
+    main {
+      margin-left: 300px;
+      flex-grow: 1;
+      min-width: 0;
+      padding: 4rem 5rem;
+      max-width: 1100px;
+    }
+
+    /* Mobile Toggle */
+    .mobile-menu-btn {
+      display: none;
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      width: 3.5rem;
+      height: 3.5rem;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      border-radius: 50%;
+      border: none;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 20px rgba(99, 102, 241, 0.3);
+      cursor: pointer;
+      z-index: 200;
+    }
+
+    .mobile-menu-btn svg {
+      width: 1.5rem;
+      height: 1.5rem;
+      stroke: white;
+    }
+
+    /* Document Sections */
+    .doc-section {
+      display: none;
+      animation: fadeIn 0.4s ease-out forwards;
+    }
+
+    .doc-section.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Typography & UI Components */
+    h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 2.75rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      letter-spacing: -1px;
+      background: linear-gradient(to right, #ffffff, #9ca3af);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    h2 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.75rem;
+      font-weight: 600;
+      margin-top: 2.5rem;
+      margin-bottom: 1rem;
+      color: #ffffff;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.5rem;
+    }
+
+    h3 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-top: 1.5rem;
+      margin-bottom: 0.75rem;
+      color: #f3f4f6;
+    }
+
+    p {
+      color: var(--text-muted);
+      margin-bottom: 1.25rem;
+      font-size: 1.05rem;
+    }
+
+    ul, ol {
+      margin-bottom: 1.5rem;
+      padding-left: 1.5rem;
+      color: var(--text-muted);
+    }
+
+    li {
+      margin-bottom: 0.5rem;
+      font-size: 1.05rem;
+    }
+
+    li strong {
+      color: var(--text-main);
+    }
+
+    /* Code Blocks */
+    .code-container {
+      background-color: var(--code-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 0.75rem;
+      position: relative;
+      margin: 1.5rem 0;
+      overflow: hidden;
+    }
+
+    .code-header {
+      background-color: rgba(15, 23, 42, 0.4);
+      padding: 0.5rem 1rem;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .copy-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.8rem;
+      font-weight: 500;
+      transition: color 0.2s ease;
+      padding: 0.25rem 0.5rem;
+      border-radius: 0.35rem;
+    }
+
+    .copy-btn:hover {
+      color: var(--text-main);
+      background-color: rgba(255, 255, 255, 0.05);
+    }
+
+    .copy-btn svg {
+      width: 1rem;
+      height: 1rem;
+      stroke: currentColor;
+    }
+
+    pre {
+      padding: 1.25rem;
+      overflow-x: auto;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 0.95rem;
+      color: #e2e8f0;
+    }
+
+    code {
+      font-family: 'Courier New', Courier, monospace;
+      background-color: rgba(255, 255, 255, 0.05);
+      padding: 0.15rem 0.4rem;
+      border-radius: 0.25rem;
+      color: #fb7185;
+      font-size: 0.95rem;
+    }
+
+    pre code {
+      background-color: transparent;
+      padding: 0;
+      color: inherit;
+    }
+
+    /* Alerts */
+    .alert {
+      padding: 1.25rem 1.5rem;
+      border-radius: 0.75rem;
+      margin: 1.5rem 0;
+      display: flex;
+      gap: 1rem;
+      border-left: 4px solid;
+    }
+
+    .alert-icon svg {
+      width: 1.5rem;
+      height: 1.5rem;
+      stroke-width: 2px;
+    }
+
+    .alert-content h4 {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+      font-size: 1.1rem;
+    }
+
+    .alert-content p {
+      margin-bottom: 0;
+      font-size: 0.95rem;
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    .alert-info {
+      background-color: rgba(59, 130, 246, 0.1);
+      border-color: #3b82f6;
+      color: #93c5fd;
+    }
+    .alert-info .alert-icon svg { stroke: #3b82f6; }
+    .alert-info .alert-content h4 { color: #3b82f6; }
+
+    .alert-warning {
+      background-color: rgba(245, 158, 11, 0.1);
+      border-color: #f59e0b;
+      color: #fde047;
+    }
+    .alert-warning .alert-icon svg { stroke: #f59e0b; }
+    .alert-warning .alert-content h4 { color: #f59e0b; }
+
+    .alert-success {
+      background-color: rgba(16, 185, 129, 0.1);
+      border-color: #10b981;
+      color: #6ee7b7;
+    }
+    .alert-success .alert-icon svg { stroke: #10b981; }
+    .alert-success .alert-content h4 { color: #10b981; }
+
+    /* Visual Folder Tree Structure */
+    .tree {
+      font-family: 'Courier New', Courier, monospace;
+      color: var(--text-muted);
+      background-color: rgba(255, 255, 255, 0.02);
+      border: 1px dashed var(--border-color);
+      border-radius: 0.75rem;
+      padding: 1.5rem;
+      font-size: 0.95rem;
+      margin: 1.5rem 0;
+    }
+
+    .tree-folder {
+      color: #60a5fa;
+      font-weight: bold;
+    }
+
+    .tree-comment {
+      color: #6b7280;
+      font-style: italic;
+    }
+
+    /* Grid Layouts */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+
+    .feature-card {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      padding: 1.75rem;
+      border-radius: 0.85rem;
+      transition: all 0.2s ease;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--primary);
+      box-shadow: var(--shadow-indigo);
+    }
+
+    .feature-icon {
+      width: 3rem;
+      height: 3rem;
+      background-color: rgba(99, 102, 241, 0.1);
+      border-radius: 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.25rem;
+    }
+
+    .feature-icon svg {
+      width: 1.5rem;
+      height: 1.5rem;
+      stroke: var(--primary);
+    }
+
+    .feature-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #ffffff;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Tooltip styling */
+    .tooltip {
+      position: relative;
+    }
+
+    .tooltip::after {
+      content: 'Copied!';
+      position: absolute;
+      bottom: 125%;
+      left: 50%;
+      transform: translateX(-50%) scale(0.8);
+      background-color: #10b981;
+      color: white;
+      padding: 0.25rem 0.5rem;
+      border-radius: 0.25rem;
+      font-size: 0.75rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.2s ease;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      white-space: nowrap;
+    }
+
+    .tooltip.show::after {
+      opacity: 1;
+      transform: translateX(-50%) scale(1);
+    }
+
+    /* Steps navigation helper */
+    .step-card {
+      border: 1px solid var(--border-color);
+      border-radius: 0.75rem;
+      padding: 1.5rem;
+      background-color: var(--bg-surface);
+      margin-bottom: 1.5rem;
+    }
+    
+    .step-badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: bold;
+      color: white;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 968px) {
+      aside {
+        transform: translateX(-100%);
+      }
+
+      aside.open {
+        transform: translateX(0);
+      }
+
+      main {
+        margin-left: 0;
+        padding: 3rem 2rem;
+      }
+
+      .mobile-menu-btn {
+        display: flex;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar Navigation -->
+  <aside id="sidebar">
+    <div class="brand">
+      <div class="brand-logo">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2L2 22h20L12 2zm0 3.99L18.8 19H5.2L12 5.99z" fill="#fff"/>
+          <circle cx="12" cy="14" r="2" fill="#fff"/>
+        </svg>
+      </div>
+      <div class="brand-name">AI SEO Generator</div>
+    </div>
+
+    <nav>
+      <div class="nav-item active" onclick="switchTab('overview')">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+        </svg>
+        Overview & Structure
+      </div>
+      <div class="nav-item" onclick="switchTab('install')">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12H5.05m0 0a2 2 0 011.95-1.95H9m-3.95 1.95H5a2 2 0 002-2v-1.1M15 12h3.95m0 0a2 2 0 00-1.95-1.95H15m3.95 1.95H19a2 2 0 01-2-2v-1.1M9 12h6m0 0v6a2 2 0 01-2 2h-2a2 2 0 01-2-2v-6m6 0V6a2 2 0 00-2-2h-2a2 2 0 00-2 2v6"></path>
+        </svg>
+        Automatic Install
+      </div>
+      <div class="nav-item" onclick="switchTab('manual-setup')">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path>
+        </svg>
+        Manual Setup
+      </div>
+      <div class="nav-item" onclick="switchTab('env-variables')">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+        </svg>
+        Environment Template
+      </div>
+      <div class="nav-item" onclick="switchTab('usage')">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+        </svg>
+        User Guide & API
+      </div>
+      <div class="nav-item" onclick="switchTab('recording-demo')">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+        </svg>
+        Recording a Demo
+      </div>
+      <div class="nav-item" onclick="switchTab('troubleshooting')">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+        </svg>
+        Troubleshooting
+      </div>
+    </nav>
+
+    <div class="sidebar-footer">
+      AI SEO Generator v1.0.0<br>
+      Ready for CodeCanyon
+    </div>
+  </aside>
+
+  <!-- Mobile Trigger -->
+  <button class="mobile-menu-btn" onclick="toggleSidebar()">
+    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+    </svg>
+  </button>
+
+  <!-- Main Content -->
+  <main>
+    
+    <!-- 1. OVERVIEW SECTION -->
+    <div id="overview" class="doc-section active">
+      <h1>AI SEO Article Generator</h1>
+      <p>Welcome to the <strong>AI SEO Article Generator</strong> package! This is a complete, production-ready, clean web application that allows users to instantly generate high-quality, SEO-optimized articles based on standard keywords using LLM AI integrations. It features an Express.js API on the backend and a fast React (Vite + TailwindCSS) single-page application on the frontend.</p>
+      
+      <h2>Core Package Features</h2>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 9.172V5L8 4z"></path></svg>
+          </div>
+          <div class="feature-title">AI SEO Article Generator</div>
+          <p>Instantly creates catching titles, optimized meta descriptions, and well-structured Markdown content using advanced OpenAI algorithms.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14"></path></svg>
+          </div>
+          <div class="feature-title">Smart Keyword Suggestion</div>
+          <p>Automatically suggests 5 to 10 highly relevant long-tail and LSI keywords to expand your organic SEO keyword indexing.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+          </div>
+          <div class="feature-title">Premium User UI & UX</div>
+          <p>Built with beautiful Glassmorphism, smooth animations (Framer Motion), interactive code tabs, and responsive layouts.</p>
+        </div>
+      </div>
+
+      <h2>Standard Package Structure</h2>
+      <p>This package is organized following industry-standard multi-package rules for rapid installation, configuration, and launch:</p>
+      
+      <div class="tree">
+        ai-seo-generator-root/<br>
+        ├── <span class="tree-folder">backend/</span> <span class="tree-comment"># API Express.js Engine (Node.js)</span><br>
+        │   ├── <span class="tree-folder">config/</span> <span class="tree-comment"># Centralized DB & S3 configurations</span><br>
+        │   ├── <span class="tree-folder">controllers/</span> <span class="tree-comment"># Business logic controllers</span><br>
+        │   ├── <span class="tree-folder">middleware/</span> <span class="tree-comment"># Auth Protect, Multer, Rate Limiter</span><br>
+        │   ├── <span class="tree-folder">models/</span> <span class="tree-comment"># Mongoose schemas (User, Article, Image, Settings)</span><br>
+        │   ├── <span class="tree-folder">routes/</span> <span class="tree-comment"># Express API Routes registration</span><br>
+        │   ├── <span class="tree-folder">services/</span> <span class="tree-comment"># S3 uploads and LLM integrations</span><br>
+        │   ├── .env.example <span class="tree-comment"># Backend local environment keys model</span><br>
+        │   └── server.js <span class="tree-comment"># App main entry file</span><br>
+        ├── <span class="tree-folder">frontend/</span> <span class="tree-comment"># Single-Page Web App React (Vite)</span><br>
+        │   ├── <span class="tree-folder">src/</span> <span class="tree-comment"># React components, pages, context managers</span><br>
+        │   ├── .env.example <span class="tree-comment"># Frontend environment config URL</span><br>
+        │   └── tailwind.config.js <span class="tree-comment"># Styling tailwind setup parameters</span><br>
+        ├── <span class="tree-folder">documentation/</span> <span class="tree-comment"># HTML Interactive Documentation Portal</span><br>
+        │   └── index.html <span class="tree-comment"># Interactive user documentation (this guide)</span><br>
+        ├── install.sh <span class="tree-comment"># Automatic one-click bash setup script</span><br>
+        ├── package.json <span class="tree-comment"># Root NPM script orchestrator</span><br>
+        └── README.md <span class="tree-comment"># Repository landing introduction guide</span>
+      </div>
+    </div>
+
+    <!-- 2. AUTOMATIC INSTALL SECTION -->
+    <div id="install" class="doc-section">
+      <h1>One-Click Automatic Installation</h1>
+      <p>This package contains an automated bash setup script <code>install.sh</code> that performs system environment diagnostics, prepares environment files, and downloads all dependencies automatically.</p>
+      
+      <div class="alert alert-info">
+        <div class="alert-icon">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        </div>
+        <div class="alert-content">
+          <h4>Prerequisites</h4>
+          <p>Make sure you have Node.js (v18+) and npm installed on your machine before running the script.</p>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <span class="step-badge">Step 1</span>
+        <h3>Execute the automated script</h3>
+        <p>Open your favorite terminal at the root directory of the extracted package, and execute the installation command:</p>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Terminal</span>
+            <button class="copy-btn tooltip" onclick="copyText('bash install.sh')">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg>
+              Copy
+            </button>
+          </div>
+          <pre><code>bash install.sh</code></pre>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <span class="step-badge">Step 2</span>
+        <h3>Configure the server keys</h3>
+        <p>Open the generated file <code>backend/.env</code> in your favorite editor and configure your <strong>OpenAI API Key</strong> and <strong>MongoDB URI</strong>. Refer to the <strong>Environment Template</strong> tab for descriptions of all available variables.</p>
+      </div>
+
+      <div class="step-card">
+        <span class="step-badge">Step 3</span>
+        <h3>Start the servers</h3>
+        <p>Launch the frontend and backend servers together concurrently with a single command:</p>
+        <div class="code-container">
+          <div class="code-header">
+            <span>Terminal</span>
+            <button class="copy-btn tooltip" onclick="copyText('npm run dev')">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg>
+              Copy
+            </button>
+          </div>
+          <pre><code>npm run dev</code></pre>
+        </div>
+        <p>Your React App will open at <a href="http://localhost:5173" target="_blank">http://localhost:5173</a>, connected directly to your server running on port <code>5000</code>!</p>
+      </div>
+    </div>
+
+    <!-- 3. MANUAL SETUP SECTION -->
+    <div id="manual-setup" class="doc-section">
+      <h1>Manual Setup & Configuration Guide</h1>
+      <p>If you prefer to configure, install, and execute backend and frontend components separately, follow this detailed manual procedure.</p>
+      
+      <h2>1. Environment Initialization</h2>
+      <p>Copy environment variable templates in both application scopes to declare settings:</p>
+      <div class="code-container">
+        <div class="code-header">
+          <span>Terminal</span>
+          <button class="copy-btn tooltip" onclick="copyText('cp backend/.env.example backend/.env && cp frontend/.env.example frontend/.env')">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg>
+            Copy
+          </button>
+        </div>
+        <pre><code># Create Backend and Frontend local .env configuration files
+cp backend/.env.example backend/.env
+cp frontend/.env.example frontend/.env</code></pre>
+      </div>
+
+      <h2>2. Backend Server Deployment</h2>
+      <p>Step-by-step to start the Express.js API Server engine:</p>
+      <div class="code-container">
+        <div class="code-header">
+          <span>Terminal (Backend)</span>
+          <button class="copy-btn tooltip" onclick="copyText('cd backend && npm install && npm run dev')">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg>
+            Copy
+          </button>
+        </div>
+        <pre><code># Navigate into backend directory
+cd backend
+
+# Install production and development dependencies
+npm install
+
+# Start local server with automatic nodemon refresh
+npm run dev</code></pre>
+      </div>
+      <p>The console will log: <code>Successfully connected to MongoDB</code> and <code>Server is running on port 5000</code>.</p>
+
+      <h2>3. Frontend Client Deployment</h2>
+      <p>Step-by-step to install and start the React Single-Page Application client:</p>
+      <div class="code-container">
+        <div class="code-header">
+          <span>Terminal (Frontend)</span>
+          <button class="copy-btn tooltip" onclick="copyText('cd frontend && npm install && npm run dev')">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg>
+            Copy
+          </button>
+        </div>
+        <pre><code># Navigate into frontend directory
+cd frontend
+
+# Install package dependencies
+npm install
+
+# Start Vite React server
+npm run dev</code></pre>
+      </div>
+      <p>Vite will spin up the server in milliseconds and present a local link (e.g. <code>http://localhost:5173</code>) for you to view in your browser.</p>
+    </div>
+
+    <!-- 4. ENV VARIABLES SECTION -->
+    <div id="env-variables" class="doc-section">
+      <h1>Server Environment Template Configuration</h1>
+      <p>Here is the detailed key list required inside your <code>backend/.env</code> configuration file to wire the application components together:</p>
+      
+      <div class="code-container">
+        <div class="code-header">
+          <span>backend/.env</span>
+          <button class="copy-btn tooltip" onclick="copyText('PORT=5000\nMONGODB_URI=mongodb://localhost:27017/seo-article-generator\nJWT_SECRET=super_secret_jwt_key_change_me_in_production!\nOPENAI_API_KEY=your_openai_api_key_here\nOPENAI_MODEL=gpt-4o\nAWS_REGION=us-east-1\nAWS_ACCESS_KEY_ID=your_aws_access_key_id_here\nAWS_SECRET_ACCESS_KEY=your_aws_secret_access_key_here\nAWS_S3_BUCKET=your_s3_bucket_name_here')">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg>
+            Copy
+          </button>
+        </div>
+        <pre><code># 🚀 Server Port setup
+PORT=5000
+
+# 💾 Database URI setup
+MONGODB_URI=mongodb://localhost:27017/seo-article-generator
+
+# 🔐 Signed Auth Security Keys
+JWT_SECRET=super_secret_jwt_key_change_me_in_production!
+
+# 🤖 OpenAI Large Language Model Settings
+OPENAI_API_KEY=your_openai_api_key_here
+OPENAI_MODEL=gpt-4o
+
+# ☁️ AWS S3 Cloud Storage Integration (Optional - for Article Images)
+AWS_REGION=us-east-1
+AWS_ACCESS_KEY_ID=your_aws_access_key_id_here
+AWS_SECRET_ACCESS_KEY=your_aws_secret_access_key_here
+AWS_S3_BUCKET=your_s3_bucket_name_here</code></pre>
+      </div>
+
+      <h3>Frontend API Setup</h3>
+      <p>Configure the connection link in <code>frontend/.env</code> to route Axios queries:</p>
+      <div class="code-container">
+        <div class="code-header">
+          <span>frontend/.env</span>
+        </div>
+        <pre><code># API Gateway endpoint from Express.js
+VITE_API_URL=http://localhost:5000/api</code></pre>
+      </div>
+    </div>
+
+    <!-- 5. USAGE GUIDE SECTION -->
+    <div id="usage" class="doc-section">
+      <h1>Application Usage Guide</h1>
+      <p>The AI SEO Article Generator is designed to make organic article indexing fully visual and direct.</p>
+      
+      <h2>Step-by-Step Generation Flow</h2>
+      <ol>
+        <li>Start both frontend and backend servers. Open <code>http://localhost:5173</code> in your browser.</li>
+        <li>On the main generation Dashboard, type your target primary SEO keyword (e.g., <em>"Best web development frameworks 2026"</em>) into the main input form.</li>
+        <li>Click the <strong>Generate SEO Article</strong> command button.</li>
+        <li>A loading screen with an animated status indicator will appear while the backend communicates with the AI engines.</li>
+        <li>Once generated, the system will displays the fully structured Markdown article and key SEO data blocks.</li>
+      </ol>
+
+      <h2>Output Structure</h2>
+      <ul>
+        <li><strong>Catchy Title & Meta Description:</strong> Displays pre-optimized meta headers ready to paste into your HTML head or CMS.</li>
+        <li><strong>Structured Article:</strong> Fully optimized headers (H1, H2, H3), lists, and semantic keywords, styled in premium typography preview.</li>
+        <li><strong>Sidebar Suggested Keywords:</strong> Automatically proposes 5 to 10 highly indexed LSI and long-tail keywords to target additional user search intent.</li>
+      </ul>
+
+      <h2>One-Click Copy & Export</h2>
+      <p>Click the <strong>Copy All</strong> utility button on the top-right of the article card to copy the title, description, keywords, and Markdown content straight to your clipboard, formatted perfectly for your CMS (WordPress, Ghost, Medium, etc.).</p>
+    </div>
+
+    <!-- 6. RECORDING A DEMO SECTION -->
+    <div id="recording-demo" class="doc-section">
+      <h1>Recording a Winning Product Demo</h1>
+      <p>To maximize your sales on marketplaces like <strong>CodeCanyon</strong>, presenting a clean, fast, and visually beautiful video demo is extremely important. Follow these guidelines to record a high-converting presentation.</p>
+      
+      <div class="step-card">
+        <span class="step-badge">1. Preparation</span>
+        <p>Ensure your environment is clean. Close unrelated browser tabs or system notification panels. Clear old database test articles so the application history looks clean and fresh. Use at least <strong>1080p</strong> recording software (OBS Studio, Loom, or ScreenFlow).</p>
+      </div>
+
+      <div class="step-card">
+        <span class="step-badge">2. Video Structure (90 Seconds)</span>
+        <ul>
+          <li><strong>0:00 - 0:10 | Introduction:</strong> Start on the clean application Dashboard. Show the modern glassmorphic header and state the product utility.</li>
+          <li><strong>0:10 - 0:30 | Generating an Article:</strong> Input a hot keyword (e.g. <em>"How to design an electric car dashboard in 2026"</em>) and click Generate. Show the custom loading animation, proving how snappy and smooth the UI behaves.</li>
+          <li><strong>0:30 - 1:00 | Inspecting the Output:</strong> Scroll down slowly. Highlight the formatted headings, optimized paragraph weights, structured list items, and the suggested keyword list.</li>
+          <li><strong>1:00 - 1:15 | Demonstrating Export:</strong> Click the "Copy All" icon button. Show the visual success state. Paste it into an editor (e.g. Notepad, VSCode, or WordPress block editor) to show that the markdown format is perfectly preserved.</li>
+          <li><strong>1:15 - 1:30 | Conclusion:</strong> Wrap up by showing the responsive layout on different screens or mobile view, then encourage the viewer to buy the script.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 7. TROUBLESHOOTING SECTION -->
+    <div id="troubleshooting" class="doc-section">
+      <h1>Troubleshooting Common Issues</h1>
+      <p>Here are immediate solutions for common installation or execution blocks that users might encounter:</p>
+      
+      <h2>MongoDB Connection Failures</h2>
+      <div class="alert alert-warning">
+        <div class="alert-icon">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+        </div>
+        <div class="alert-content">
+          <h4>Mongoose Connection Failures</h4>
+          <p><strong>Cause:</strong> Local MongoDB daemon is not running or the Atlas IP whitelist block is rejecting queries.<br>
+          <strong>Fix:</strong> Ensure your local MongoDB service is started (<code>brew services start mongodb-community</code> or <code>sudo systemctl start mongod</code>). If deploying via Atlas, open security panels and set whitelist IP address to <code>0.0.0.0/0</code> for open staging.</p>
+        </div>
+      </div>
+
+      <h2>Invalid OpenAI API Key Errors</h2>
+      <div class="alert alert-warning">
+        <div class="alert-icon">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+        </div>
+        <div class="alert-content">
+          <h4>OpenAI Quota/Auth Errors</h4>
+          <p><strong>Cause:</strong> Missing billing account card links or invalid key tokens.<br>
+          <strong>Fix:</strong> Log in to your OpenAI Developer Dashboard, verify you have generated a fresh key with appropriate permissions, and check your credit balance. If your account runs out of tokens, OpenAI will return a 429 quota exception.</p>
+        </div>
+      </div>
+
+      <h2>Cross-Origin Resource Sharing (CORS) Blocks</h2>
+      <div class="alert alert-warning">
+        <div class="alert-icon">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+        </div>
+        <div class="alert-content">
+          <h4>CORS Policy Blocks</h4>
+          <p><strong>Cause:</strong> Frontend environment pointing to the wrong URL or port mismatch.<br>
+          <strong>Fix:</strong> Open <code>frontend/.env</code> and make sure <code>VITE_API_URL</code> is set exactly to the server root (e.g. <code>http://localhost:5000/api</code>) without a trailing slash.</p>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    // Tab switching engine
+    function switchTab(tabId) {
+      // Hide all doc sections
+      const sections = document.querySelectorAll('.doc-section');
+      sections.forEach(sec => sec.classList.remove('active'));
+
+      // Deactivate all navigation items
+      const navItems = document.querySelectorAll('.nav-item');
+      navItems.forEach(item => item.classList.remove('active'));
+
+      // Show requested section
+      const activeSection = document.getElementById(tabId);
+      if (activeSection) {
+        activeSection.classList.add('active');
+      }
+
+      // Activate clicked item
+      const clickedItem = Array.from(navItems).find(item => {
+        return item.getAttribute('onclick').includes(tabId);
+      });
+      if (clickedItem) {
+        clickedItem.classList.add('active');
+      }
+
+      // Close mobile sidebar if open
+      const sidebar = document.getElementById('sidebar');
+      sidebar.classList.remove('open');
+
+      // Scroll to top of content
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Toggle sidebar on mobile
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      sidebar.classList.toggle('open');
+    }
+
+    // Copy to clipboard helper
+    function copyText(text) {
+      navigator.clipboard.writeText(text).then(() => {
+        // Show success state on the clicked button
+        const btn = event.currentTarget;
+        btn.classList.add('show');
+        const origContent = btn.innerHTML;
+        btn.innerHTML = `
+          <svg fill="none" stroke="#10b981" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+          </svg>
+          <span style="color:#10b981">Copied!</span>
+        `;
+        
+        setTimeout(() => {
+          btn.classList.remove('show');
+          btn.innerHTML = origContent;
+        }, 2000);
+      }).catch(err => {
+        console.error('Failed to copy command text: ', err);
+      });
+    }
+  </script>
+</body>
+</html>

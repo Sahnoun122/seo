@@ -1,0 +1,26 @@
+{
+  "name": "ai-seo-article-generator",
+  "version": "1.0.0",
+  "description": "Premium AI-powered SEO article generator application with React frontend and Node/Express backend.",
+  "scripts": {
+    "install:all": "npm install --prefix backend && npm install --prefix frontend && npm install",
+    "dev": "concurrently \"npm run dev --prefix backend\" \"npm run dev --prefix frontend\"",
+    "start": "concurrently \"npm run start --prefix backend\" \"npm run preview --prefix frontend\"",
+    "build:frontend": "npm run build --prefix frontend"
+  },
+  "keywords": [
+    "seo",
+    "ai",
+    "article-generator",
+    "openai",
+    "react",
+    "express",
+    "vite",
+    "mongoose"
+  ],
+  "author": "Sahnoun",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

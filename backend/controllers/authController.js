@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
+import { getSystemSettings } from '../services/settingsService.js';
 
 // Generate JWT token
 const generateToken = (id) => {
@@ -25,11 +26,21 @@ export const registerUser = async (req, res) => {
       return res.status(400).json({ error: 'User already exists' });
     }
 
+    // Determine role: first user is admin, others are users
+    const isFirstUser = (await User.countDocuments({})) === 0;
+    const role = isFirstUser ? 'admin' : 'user';
+
+    // Get default credit amount
+    const systemSettings = await getSystemSettings();
+    const credits = systemSettings.defaultUserCredits !== undefined ? systemSettings.defaultUserCredits : 10;
+
     // Create user
     const user = await User.create({
       name,
       email,
       password,
+      role,
+      credits
     });
 
     if (user) {
@@ -37,6 +48,8 @@ export const registerUser = async (req, res) => {
         _id: user.id,
         name: user.name,
         email: user.email,
+        role: user.role,
+        credits: user.credits,
         token: generateToken(user._id),
       });
     } else {
@@ -67,6 +80,8 @@ export const loginUser = async (req, res) => {
         _id: user.id,
         name: user.name,
         email: user.email,
+        role: user.role,
+        credits: user.credits,
         token: generateToken(user._id),
       });
     } else {
@@ -87,10 +102,86 @@ export const getMe = async (req, res) => {
       id: req.user._id,
       name: req.user.name,
       email: req.user.email,
+      role: req.user.role,
+      credits: req.user.credits,
+      settings: req.user.settings || {
+        userApiKey: '',
+        userBaseUrl: '',
+        preferredModel: '',
+        defaultLanguage: 'French',
+        defaultTone: 'Professional',
+        wpUrl: '',
+        wpUsername: '',
+        wpApplicationPassword: '',
+      }
     };
     res.status(200).json(user);
   } catch (error) {
     console.error("GetMe Error:", error);
+    res.status(500).json({ error: 'Server error' });
+  }
+};
+
+// @desc    Get user settings
+// @route   GET /api/auth/settings
+// @access  Private
+export const getSettings = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    const settings = user.settings || {
+      userApiKey: '',
+      userBaseUrl: '',
+      preferredModel: '',
+      defaultLanguage: 'French',
+      defaultTone: 'Professional',
+      wpUrl: '',
+      wpUsername: '',
+      wpApplicationPassword: '',
+    };
+
+    res.status(200).json({ success: true, settings });
+  } catch (error) {
+    console.error("Get Settings Error:", error);
+    res.status(500).json({ error: 'Server error' });
+  }
+};
+
+// @desc    Update user settings
+// @route   PUT /api/auth/settings
+// @access  Private
+export const updateSettings = async (req, res) => {
+  try {
+    const { userApiKey, userBaseUrl, preferredModel, defaultLanguage, defaultTone, wpUrl, wpUsername, wpApplicationPassword } = req.body;
+
+    const user = await User.findById(req.user.id);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    user.settings = {
+      userApiKey: (userApiKey || '').trim(),
+      userBaseUrl: (userBaseUrl || '').trim(),
+      preferredModel: (preferredModel || '').trim(),
+      defaultLanguage: defaultLanguage || 'French',
+      defaultTone: defaultTone || 'Professional',
+      wpUrl: (wpUrl || '').trim(),
+      wpUsername: (wpUsername || '').trim(),
+      wpApplicationPassword: (wpApplicationPassword || '').trim(),
+    };
+
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: 'Settings updated successfully.',
+      settings: user.settings
+    });
+  } catch (error) {
+    console.error("Update Settings Error:", error);
     res.status(500).json({ error: 'Server error' });
   }
 };

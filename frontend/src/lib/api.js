@@ -36,3 +36,18 @@ export const generateInternalLinks = async (content, knownUrls = []) => {
   const response = await api.post('/internal-links', { content, knownUrls });
   return response.data;
 };
+
+export const getInternalLinks = async (content, knownUrls = []) => {
+  const response = await api.post('/internal-links', { content, knownUrls });
+  return response.data;
+};
+
+export const getSettings = async () => {
+  const response = await api.get('/auth/settings');
+  return response.data;
+};
+
+export const updateSettings = async (data) => {
+  const response = await api.put('/auth/settings', data);
+  return response.data;
+};

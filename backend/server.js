@@ -1,20 +1,45 @@
 import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
-import mongoose from 'mongoose';
 import morgan from 'morgan';
+import helmet from 'helmet';
+import connectDB from './config/db.js';
+import { globalLimiter, authLimiter, generationLimiter } from './middleware/rateLimiter.js';
 import articleRoutes from './routes/articleRoutes.js';
 import authRoutes from './routes/authRoutes.js';
+import settingsRoutes from './routes/settingsRoutes.js';
+import imageRoutes from './routes/imageRoutes.js';
 
 const app = express();
+const PORT = process.env.PORT || 5000;
 
-// Middleware
-app.use(cors());
+// Security HTTP headers
+app.use(helmet());
+
+// Dynamic CORS configuration based on CLIENT_URL env
+const corsOptions = {
+  origin: process.env.CLIENT_URL || 'http://localhost:5173',
+  credentials: true,
+  optionsSuccessStatus: 200
+};
+app.use(cors(corsOptions));
+
 app.use(express.json());
 app.use(morgan('dev'));
 
-// Routes
+// Apply global rate limiting to all /api routes
+app.use('/api', globalLimiter);
+
+// Apply strict rate limiting to auth and generation routes specifically
+app.post('/api/auth/login', authLimiter);
+app.post('/api/auth/register', authLimiter);
+app.post('/api/generate-article', generationLimiter);
+app.post('/api/articles', generationLimiter);
+
+// Routes Registration
 app.use('/api/auth', authRoutes);
+app.use('/api/settings', settingsRoutes);
+app.use('/api/images', imageRoutes);
 app.use('/api', articleRoutes);
 
 // Health check endpoint
@@ -22,22 +47,14 @@ app.get('/health', (req, res) => {
   res.status(200).json({ status: 'ok', message: 'API is running' });
 });
 
-// Database connection
-const PORT = process.env.PORT || 5000;
-const MONGODB_URI = process.env.MONGODB_URI;
-
-if (!MONGODB_URI) {
-  console.error('CRITICAL: MONGODB_URI is not defined in environment variables.');
-  process.exit(1);
-}
-
-mongoose.connect(MONGODB_URI)
+// Database connection & Server initialization
+connectDB()
   .then(() => {
-    console.log('Connected to MongoDB');
     app.listen(PORT, () => {
-      console.log(`Server is running on port ${PORT}`);
+      console.log(`Server successfully started and listening on port ${PORT}`);
     });
   })
   .catch((error) => {
-    console.error('Error connecting to MongoDB:', error.message);
+    console.error('Failed to initialize application server:', error.message);
+    process.exit(1);
   });

@@ -1,5 +1,6 @@
 import { generateInternalLinkingSuggestions } from '../services/internalLinkingService.js';
 import InternalLink from '../models/InternalLink.js';
+import { getOpenAIClientAndModel } from '../services/openaiService.js';
 
 export const getInternalLinks = async (req, res) => {
   try {
@@ -9,7 +10,8 @@ export const getInternalLinks = async (req, res) => {
       return res.status(400).json({ error: 'Article content is required' });
     }
 
-    const data = await generateInternalLinkingSuggestions(content, knownUrls);
+    const { openai, model } = await getOpenAIClientAndModel(req.user);
+    const data = await generateInternalLinkingSuggestions(content, knownUrls, { openai, model });
 
     // Save to database
     const newInternalLink = new InternalLink({

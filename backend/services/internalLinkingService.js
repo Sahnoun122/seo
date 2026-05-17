@@ -1,13 +1,4 @@
-import OpenAI from 'openai';
-
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-  baseURL: process.env.OPENAI_BASE_URL || 'https://api.openai.com/v1',
-});
-
-const AI_MODEL = process.env.OPENAI_MODEL || 'openrouter/free';
-
-export const generateInternalLinkingSuggestions = async (content, knownUrls = []) => {
+export const generateInternalLinkingSuggestions = async (content, knownUrls = [], { openai, model } = {}) => {
   const prompt = `
     You are an expert SEO strategist. Analyze the following article content and suggest strategic internal linking opportunities.
     
@@ -27,7 +18,7 @@ export const generateInternalLinkingSuggestions = async (content, knownUrls = []
   `;
 
   const completion = await openai.chat.completions.create({
-    model: AI_MODEL,
+    model: model || 'gpt-4o',
     messages: [
       { role: "system", content: "You are a helpful AI SEO assistant. You must always respond in valid JSON format." },
       { role: "user", content: prompt }
