@@ -8,7 +8,8 @@ import {
   FileCode, 
   Send, 
   Loader2, 
-  Globe 
+  Globe,
+  Share2
 } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import { motion } from 'framer-motion';
@@ -35,13 +36,7 @@ export default function ResultDisplay({ data }) {
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    
-    const safeTitle = (data.title || 'article')
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/(^-|-$)+/g, '');
-    
-    link.setAttribute('download', `${safeTitle || 'article'}.md`);
+    link.setAttribute('download', 'article-seo.md');
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -182,13 +177,7 @@ export default function ResultDisplay({ data }) {
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    
-    const safeTitle = (data.title || 'article')
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/(^-|-$)+/g, '');
-    
-    link.setAttribute('download', `${safeTitle || 'article'}.html`);
+    link.setAttribute('download', 'article-seo.html');
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -197,7 +186,7 @@ export default function ResultDisplay({ data }) {
 
   const handlePublishWordPress = async () => {
     if (!data || !data._id) {
-      toast.error('Article ID not found.');
+      toast.error('Identifiant de l\'article introuvable.');
       return;
     }
     setPublishing(true);
@@ -207,7 +196,7 @@ export default function ResultDisplay({ data }) {
         setPublishedUrl(res.data.url);
         toast.success((t) => (
           <div className="flex flex-col space-y-1">
-            <span className="font-bold text-gray-900">Article publié sur WordPress !</span>
+            <span className="font-bold text-gray-900 text-sm">🎉 Félicitations ! Votre article a été publié sur WordPress en brouillon.</span>
             <a 
               href={res.data.url} 
               target="_blank" 
@@ -216,16 +205,16 @@ export default function ResultDisplay({ data }) {
               onClick={() => toast.dismiss(t.id)}
             >
               <Globe className="w-3.5 h-3.5" />
-              <span>Voir l'article publié ↗</span>
+              <span>Voir le brouillon WordPress ↗</span>
             </a>
           </div>
-        ), { duration: 6000 });
+        ), { duration: 8000 });
       } else {
-        toast.error(res.data.error || 'Failed to publish to WordPress.');
+        toast.error(res.data.error || 'Impossible de publier sur WordPress.');
       }
     } catch (err) {
       console.error(err);
-      toast.error(err.response?.data?.error || err.message || 'WordPress publication failed.');
+      toast.error(err.response?.data?.error || err.message || 'La publication vers WordPress a échoué.');
     } finally {
       setPublishing(false);
     }
@@ -248,42 +237,42 @@ export default function ResultDisplay({ data }) {
             <div className="flex flex-wrap items-center gap-2">
               <button
                 onClick={handleCopy}
-                className="flex items-center space-x-2 text-xs sm:text-sm font-bold text-gray-500 hover:text-primary-600 transition-colors bg-gray-50 hover:bg-primary-50 px-4 py-2.5 rounded-xl border border-gray-100"
+                className="flex items-center space-x-2 text-xs sm:text-sm font-bold text-gray-500 hover:text-primary-600 transition-colors bg-gray-50 hover:bg-primary-50 px-4 py-2.5 rounded-xl border border-gray-100 cursor-pointer"
               >
                 {copied ? <CheckCircle2 className="w-4 h-4 text-primary-500" /> : <Copy className="w-4 h-4" />}
-                <span>{copied ? 'Copied' : 'Copy All'}</span>
+                <span>{copied ? 'Copié !' : 'Copier tout'}</span>
               </button>
 
               <button
                 onClick={handleExportMD}
-                className="flex items-center space-x-2 text-xs sm:text-sm font-bold text-gray-500 hover:text-primary-600 transition-colors bg-gray-50 hover:bg-primary-50 px-4 py-2.5 rounded-xl border border-gray-100"
-                title="Export as Markdown (.md)"
+                className="flex items-center space-x-2 text-xs sm:text-sm font-bold text-gray-500 hover:text-primary-600 transition-colors bg-gray-50 hover:bg-primary-50 px-4 py-2.5 rounded-xl border border-gray-100 cursor-pointer"
+                title="Exporter en Markdown (.md)"
               >
                 <Download className="w-4 h-4" />
-                <span>Markdown</span>
+                <span>Exporter en Markdown (.md)</span>
               </button>
 
               <button
                 onClick={handleExportHTML}
-                className="flex items-center space-x-2 text-xs sm:text-sm font-bold text-gray-500 hover:text-primary-600 transition-colors bg-gray-50 hover:bg-primary-50 px-4 py-2.5 rounded-xl border border-gray-100"
-                title="Export as HTML (.html)"
+                className="flex items-center space-x-2 text-xs sm:text-sm font-bold text-gray-500 hover:text-primary-600 transition-colors bg-gray-50 hover:bg-primary-50 px-4 py-2.5 rounded-xl border border-gray-100 cursor-pointer"
+                title="Exporter en HTML (.html)"
               >
                 <FileCode className="w-4 h-4" />
-                <span>HTML</span>
+                <span>Exporter en HTML (.html)</span>
               </button>
 
               <button
                 onClick={handlePublishWordPress}
                 disabled={publishing}
-                className="flex items-center space-x-2 text-xs sm:text-sm font-bold text-white bg-primary-600 hover:bg-primary-700 disabled:bg-primary-400 transition-colors px-4 py-2.5 rounded-xl shadow-sm shadow-primary-500/10"
-                title="Publier sur WordPress"
+                className="flex items-center space-x-2 text-xs sm:text-sm font-bold text-white bg-primary-600 hover:bg-primary-700 disabled:bg-primary-400 transition-colors px-4 py-2.5 rounded-xl shadow-sm shadow-primary-500/10 cursor-pointer"
+                title="Publier sur mon WordPress"
               >
                 {publishing ? (
                   <Loader2 className="w-4 h-4 animate-spin" />
                 ) : (
-                  <Send className="w-4 h-4" />
+                  <Share2 className="w-4 h-4" />
                 )}
-                <span>{publishing ? 'Publishing...' : 'WordPress'}</span>
+                <span>{publishing ? 'Publication...' : 'Publier sur mon WordPress'}</span>
               </button>
             </div>
           </div>
@@ -315,7 +304,7 @@ export default function ResultDisplay({ data }) {
               <p className="text-gray-700 text-base leading-relaxed">{data.metaDescription}</p>
             </div>
 
-            <div className="prose prose-primary max-w-none prose-headings:text-gray-900 prose-p:text-gray-600 prose-headings:font-bold prose-lg prose-p:leading-[1.8]">
+            <div className="prose prose-slate max-w-full break-words overflow-x-auto">
               <ReactMarkdown>{data.content}</ReactMarkdown>
             </div>
           </div>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -29,7 +30,24 @@ import DashboardLayout from '../components/DashboardLayout';
 import api, { getSettings, updateSettings } from '../lib/api';
 
 export default function Settings() {
-  const [activeTab, setActiveTab] = useState('profile'); // 'profile', 'api', 'admin'
+  const [searchParams, setSearchParams] = useSearchParams();
+  const tabParam = searchParams.get('tab');
+  
+  const [activeTab, setActiveTab] = useState(
+    tabParam && ['profile', 'api', 'admin'].includes(tabParam) ? tabParam : 'profile'
+  );
+
+  // Sync activeTab state if tab query param changes externally
+  useEffect(() => {
+    if (tabParam && ['profile', 'api', 'admin'].includes(tabParam) && tabParam !== activeTab) {
+      setActiveTab(tabParam);
+    }
+  }, [tabParam]);
+
+  const handleTabChange = (tabName) => {
+    setActiveTab(tabName);
+    setSearchParams({ tab: tabName });
+  };
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [userActionLoading, setUserActionLoading] = useState(null); // stores user ID being updated
@@ -332,7 +350,7 @@ export default function Settings() {
         {/* Tab switcher */}
         <div className="flex flex-wrap p-1.5 bg-gray-100/85 backdrop-blur-md rounded-2xl w-fit border border-gray-200/50 gap-2">
           <button
-            onClick={() => setActiveTab('profile')}
+            onClick={() => handleTabChange('profile')}
             className={`flex items-center space-x-2.5 px-6 py-3 rounded-xl text-xs font-black transition-all duration-300 ${
               activeTab === 'profile'
                 ? 'bg-white text-gray-900 shadow-xl shadow-gray-200/50 scale-[1.02]'
@@ -344,7 +362,7 @@ export default function Settings() {
           </button>
           
           <button
-            onClick={() => setActiveTab('api')}
+            onClick={() => handleTabChange('api')}
             className={`flex items-center space-x-2.5 px-6 py-3 rounded-xl text-xs font-black transition-all duration-300 ${
               activeTab === 'api'
                 ? 'bg-white text-gray-900 shadow-xl shadow-gray-200/50 scale-[1.02]'
@@ -357,7 +375,7 @@ export default function Settings() {
 
           {profileData.role === 'admin' && (
             <button
-              onClick={() => setActiveTab('admin')}
+              onClick={() => handleTabChange('admin')}
               className={`flex items-center space-x-2.5 px-6 py-3 rounded-xl text-xs font-black transition-all duration-300 ${
                 activeTab === 'admin'
                   ? 'bg-white text-gray-900 shadow-xl shadow-gray-200/50 scale-[1.02]'

@@ -33,6 +33,8 @@ const articleSchema = new mongoose.Schema(
   }
 );
 
+articleSchema.index({ user: 1, createdAt: -1 });
+
 const Article = mongoose.model('Article', articleSchema);
 
 export default Article;

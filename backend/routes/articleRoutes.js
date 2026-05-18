@@ -1,5 +1,5 @@
 import express from 'express';
-import { generateArticle, getHistory, refineArticle, publishWordPress } from '../controllers/articleController.js';
+import { generateArticle, getHistory, refineArticle, publishToWordPress } from '../controllers/articleController.js';
 import { getInternalLinks } from '../controllers/internalLinkingController.js';
 import { protect } from '../middleware/authMiddleware.js';
 
@@ -9,6 +9,6 @@ router.post('/generate-article', protect, generateArticle);
 router.get('/history', protect, getHistory);
 router.patch('/history/:id/refine', protect, refineArticle);
 router.post('/internal-links', protect, getInternalLinks);
-router.post('/articles/:id/publish-wordpress', protect, publishWordPress);
+router.post('/articles/:id/publish-wordpress', protect, publishToWordPress);
 
 export default router;

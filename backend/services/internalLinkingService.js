@@ -1,3 +1,5 @@
+import { cleanAndParseJSON, handleOpenAIError } from './openaiService.js';
+
 export const generateInternalLinkingSuggestions = async (content, knownUrls = [], { openai, model } = {}) => {
   const prompt = `
     You are an expert SEO strategist. Analyze the following article content and suggest strategic internal linking opportunities.
@@ -17,22 +19,18 @@ export const generateInternalLinkingSuggestions = async (content, knownUrls = []
     "suggestions" (an array of objects with keys: "anchorText", "suggestedUrl", "context", "relevanceScore")
   `;
 
-  const completion = await openai.chat.completions.create({
-    model: model || 'gpt-4o',
-    messages: [
-      { role: "system", content: "You are a helpful AI SEO assistant. You must always respond in valid JSON format." },
-      { role: "user", content: prompt }
-    ],
-  });
+  try {
+    const completion = await openai.chat.completions.create({
+      model: model || 'gpt-4o',
+      messages: [
+        { role: "system", content: "You are a helpful AI SEO assistant. You must always respond in valid JSON format." },
+        { role: "user", content: prompt }
+      ],
+    });
 
-  let rawContent = completion.choices[0].message.content;
-  
-  // Robust JSON extraction
-  const start = rawContent.indexOf('{');
-  const end = rawContent.lastIndexOf('}');
-  if (start !== -1 && end !== -1) {
-    rawContent = rawContent.substring(start, end + 1);
+    let rawContent = completion.choices[0].message.content;
+    return cleanAndParseJSON(rawContent);
+  } catch (error) {
+    handleOpenAIError(error);
   }
-  
-  return JSON.parse(rawContent);
 };

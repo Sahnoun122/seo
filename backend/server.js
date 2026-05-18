@@ -11,6 +11,14 @@ import settingsRoutes from './routes/settingsRoutes.js';
 import imageRoutes from './routes/imageRoutes.js';
 
 const app = express();
+app.set('trust proxy', 1);
+
+// Vérification rigoureuse de la clé API OpenAI au démarrage
+if (!process.env.OPENAI_API_KEY || process.env.OPENAI_API_KEY.trim() === '') {
+  console.warn('\x1b[33m%s\x1b[0m', '⚠️  AVERTISSEMENT CRITIQUE : La variable d\'environnement OPENAI_API_KEY est manquante dans votre fichier .env.');
+  console.warn('\x1b[33m%s\x1b[0m', '   Les fonctionnalités de génération d\'articles IA échoueront si les utilisateurs n\'utilisent pas leur propre clé API.');
+}
+
 const PORT = process.env.PORT || 5000;
 
 // Security HTTP headers

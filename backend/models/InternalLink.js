@@ -28,6 +28,8 @@ const internalLinkSchema = new mongoose.Schema({
   },
 });
 
+internalLinkSchema.index({ user: 1, createdAt: -1 });
+
 const InternalLink = mongoose.model('InternalLink', internalLinkSchema);
 
 export default InternalLink;

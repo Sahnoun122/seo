@@ -1,30 +1,9 @@
 import OpenAI from 'openai';
 import Article from '../models/Article.js';
 import User from '../models/User.js';
+import { cleanAndParseJSON, handleOpenAIError } from '../services/openaiService.js';
 
-/**
- * Reusable helper to safely parse JSON responses from LLM providers.
- * Locates the first '{' and the last '}' to isolate and parse the JSON string,
- * avoiding any potential markdown surrounding formatting.
- * 
- * @param {string} text - The raw message content from LLM completion
- * @returns {Object} Parsed JSON object
- */
-const parseJSONSafely = (text) => {
-  if (!text) {
-    throw new Error('AI returned an empty response.');
-  }
-
-  const start = text.indexOf('{');
-  const end = text.lastIndexOf('}');
-
-  if (start === -1 || end === -1 || end < start) {
-    throw new Error('No valid JSON object structure found in response.');
-  }
-
-  const jsonString = text.substring(start, end + 1);
-  return JSON.parse(jsonString);
-};
+// Les helpers de parsing et d'erreurs IA sont désormais centralisés et importés depuis openaiService.js
 
 /**
  * Generates an SEO article and keyword suggestions based on a target keyword.
@@ -107,20 +86,25 @@ export const generateArticle = async (req, res) => {
       "title", "metaDescription", "content"
     `;
 
-    const articleCompletion = await openai.chat.completions.create({
-      model: model,
-      response_format: { type: "json_object" },
-      messages: [
-        { 
-          role: "system", 
-          content: "You are a helpful AI SEO assistant. You must always respond in valid JSON format. Do not wrap the JSON output in markdown code blocks (e.g., do not use ```json ... ```)." 
-        },
-        { role: "user", content: articlePrompt }
-      ],
-    });
+    let rawArticleText;
+    try {
+      const articleCompletion = await openai.chat.completions.create({
+        model: model,
+        response_format: { type: "json_object" },
+        messages: [
+          { 
+            role: "system", 
+            content: "You are a helpful AI SEO assistant. You must always respond in valid JSON format. Do not wrap the JSON output in markdown code blocks (e.g., do not use ```json ... ```)." 
+          },
+          { role: "user", content: articlePrompt }
+        ],
+      });
+      rawArticleText = articleCompletion.choices[0].message.content;
+    } catch (openaiErr) {
+      handleOpenAIError(openaiErr);
+    }
 
-    const rawArticleText = articleCompletion.choices[0].message.content;
-    const articleData = parseJSONSafely(rawArticleText);
+    const articleData = cleanAndParseJSON(rawArticleText);
 
     // 5. Generate Keyword Suggestions
     const keywordPrompt = `
@@ -130,20 +114,25 @@ export const generateArticle = async (req, res) => {
       "keywords" (an array of strings)
     `;
 
-    const keywordCompletion = await openai.chat.completions.create({
-      model: model,
-      response_format: { type: "json_object" },
-      messages: [
-        { 
-          role: "system", 
-          content: "You are a helpful AI SEO assistant. You must always respond in valid JSON format. Do not wrap the JSON output in markdown code blocks." 
-        },
-        { role: "user", content: keywordPrompt }
-      ],
-    });
+    let rawKeywordText;
+    try {
+      const keywordCompletion = await openai.chat.completions.create({
+        model: model,
+        response_format: { type: "json_object" },
+        messages: [
+          { 
+            role: "system", 
+            content: "You are a helpful AI SEO assistant. You must always respond in valid JSON format. Do not wrap the JSON output in markdown code blocks." 
+          },
+          { role: "user", content: keywordPrompt }
+        ],
+      });
+      rawKeywordText = keywordCompletion.choices[0].message.content;
+    } catch (openaiErr) {
+      handleOpenAIError(openaiErr);
+    }
 
-    const rawKeywordText = keywordCompletion.choices[0].message.content;
-    const keywordData = parseJSONSafely(rawKeywordText);
+    const keywordData = cleanAndParseJSON(rawKeywordText);
 
     // 6. Save new generation to Database
     const newArticle = new Article({
@@ -267,20 +256,25 @@ export const refineArticle = async (req, res) => {
       "title", "metaDescription", "content"
     `;
 
-    const completion = await openai.chat.completions.create({
-      model: model,
-      response_format: { type: "json_object" },
-      messages: [
-        { 
-          role: "system", 
-          content: "You are a helpful AI SEO assistant. You must always respond in valid JSON format. Do not wrap the JSON output in markdown code blocks." 
-        },
-        { role: "user", content: refinementPrompt }
-      ],
-    });
+    let rawRefineText;
+    try {
+      const completion = await openai.chat.completions.create({
+        model: model,
+        response_format: { type: "json_object" },
+        messages: [
+          { 
+            role: "system", 
+            content: "You are a helpful AI SEO assistant. You must always respond in valid JSON format. Do not wrap the JSON output in markdown code blocks." 
+          },
+          { role: "user", content: refinementPrompt }
+        ],
+      });
+      rawRefineText = completion.choices[0].message.content;
+    } catch (openaiErr) {
+      handleOpenAIError(openaiErr);
+    }
 
-    const rawRefineText = completion.choices[0].message.content;
-    const updatedData = parseJSONSafely(rawRefineText);
+    const updatedData = cleanAndParseJSON(rawRefineText);
 
     // 4. Save updates and respond
     article.title = updatedData.title || article.title;
@@ -307,32 +301,32 @@ export const refineArticle = async (req, res) => {
 };
 
 /**
- * Publishes an SEO article directly to the user's WordPress site via REST API.
+ * Publie un article SEO directement sur le site WordPress de l'utilisateur sous forme de brouillon (draft).
  */
-export const publishWordPress = async (req, res) => {
+export const publishToWordPress = async (req, res) => {
   try {
     const { id } = req.params;
     
-    // 1. Fetch user credentials
+    // 1. Récupération des identifiants WordPress de l'utilisateur
     const user = await User.findById(req.user.id);
     if (!user) {
-      return res.status(404).json({ error: 'User not found' });
+      return res.status(404).json({ error: 'Utilisateur non trouvé' });
     }
     
     const { wpUrl, wpUsername, wpApplicationPassword } = user.settings || {};
-    if (!wpUrl || !wpUsername || !wpApplicationPassword) {
+    if (!wpUrl || !wpUrl.trim() || !wpUsername || !wpUsername.trim() || !wpApplicationPassword || !wpApplicationPassword.trim()) {
       return res.status(400).json({ 
-        error: 'WordPress integration is not configured. Please fill in your WordPress credentials in Settings.' 
+        error: 'L\'intégration WordPress n\'est pas entièrement configurée. Veuillez renseigner l\'URL, l\'identifiant et le mot de passe d\'application dans vos Réglages.' 
       });
     }
     
-    // 2. Fetch the article
-    const article = await Article.findById(id);
+    // 2. Récupération de l'article en vérifiant la propriété
+    const article = await Article.findOne({ _id: id, user: req.user.id });
     if (!article) {
-      return res.status(404).json({ error: 'Article not found' });
+      return res.status(404).json({ error: 'Article non trouvé ou accès non autorisé.' });
     }
     
-    // 3. Convert Markdown to simple HTML
+    // 3. Conversion du Markdown en HTML propre et sémantique
     const convertMarkdownToHTML = (markdown) => {
       let html = markdown;
       html = html.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
@@ -383,7 +377,7 @@ export const publishWordPress = async (req, res) => {
 
     const articleHtml = convertMarkdownToHTML(article.content);
     
-    // 4. Construct WordPress request endpoint
+    // 4. Construction de l'URL de l'API REST de WordPress
     let baseUrl = wpUrl.trim();
     if (!baseUrl.startsWith('http://') && !baseUrl.startsWith('https://')) {
       baseUrl = `https://${baseUrl}`;
@@ -391,10 +385,10 @@ export const publishWordPress = async (req, res) => {
     baseUrl = baseUrl.replace(/\/+$/, '');
     const wpEndpoint = `${baseUrl}/wp-json/wp/v2/posts`;
     
-    // 5. Basic Authentication Base64
+    // 5. Encodage Base64 des identifiants (Basic Auth)
     const authString = Buffer.from(`${wpUsername}:${wpApplicationPassword}`).toString('base64');
     
-    // 6. Query WordPress REST API
+    // 6. Requête sécurisée vers l'API REST de WordPress
     const response = await fetch(wpEndpoint, {
       method: 'POST',
       headers: {
@@ -404,7 +398,7 @@ export const publishWordPress = async (req, res) => {
       body: JSON.stringify({
         title: article.title,
         content: articleHtml,
-        status: 'publish',
+        status: 'draft', // Enregistré sous forme de brouillon
         excerpt: article.metaDescription
       })
     });
@@ -412,22 +406,23 @@ export const publishWordPress = async (req, res) => {
     const wpData = await response.json();
     
     if (!response.ok) {
-      console.error('WordPress Error Response:', wpData);
+      console.error('Erreur retournée par WordPress :', wpData);
       return res.status(response.status).json({ 
-        error: wpData.message || 'Failed to publish to WordPress. Please check credentials or permissions.' 
+        error: wpData.message || 'La publication vers WordPress a échoué. Veuillez vérifier vos réglages ou autorisations.' 
       });
     }
     
+    // Retourne le lien de prévisualisation/édition du brouillon
     res.status(200).json({
       success: true,
-      message: 'Article successfully published to WordPress!',
+      message: 'L\'article a été publié avec succès sur WordPress en tant que brouillon !',
       url: wpData.link
     });
     
   } catch (error) {
-    console.error('WP PUBLISH ERROR:', error);
+    console.error('ERREUR DE PUBLICATION WP :', error);
     res.status(500).json({ 
-      error: 'An unexpected technical issue occurred during WordPress publishing.', 
+      error: 'Un problème technique inattendu est survenu lors de la publication vers WordPress.', 
       details: error.message 
     });
   }
