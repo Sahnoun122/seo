@@ -60,11 +60,19 @@ app.get('/health', (req, res) => {
 // Database connection & Server initialization
 connectDB()
   .then(() => {
-    app.listen(PORT, () => {
-      console.log(`Server successfully started and listening on port ${PORT}`);
-    });
+    if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
+      app.listen(PORT, () => {
+        console.log(`Server successfully started and listening on port ${PORT}`);
+      });
+    } else {
+      console.log('Database connected successfully (Serverless mode)');
+    }
   })
   .catch((error) => {
     console.error('Failed to initialize application server:', error.message);
-    process.exit(1);
+    if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
+      process.exit(1);
+    }
   });
+
+export default app;
