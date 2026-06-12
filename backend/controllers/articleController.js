@@ -99,8 +99,19 @@ export const generateArticle = async (req, res) => {
           { role: "user", content: articlePrompt }
         ],
       });
-      rawArticleText = articleCompletion.choices[0].message.content;
+      const message = articleCompletion.choices[0].message;
+      if (message.refusal) {
+        throw new Error("L'IA a refusé la requête : " + message.refusal);
+      }
+      rawArticleText = message.content;
+      if (!rawArticleText) {
+        console.error("OpenAI API returned empty content. Full response:", JSON.stringify(articleCompletion));
+        throw new Error("L'IA a retourné une réponse vide. Veuillez réessayer.");
+      }
     } catch (openaiErr) {
+      if (openaiErr.message && (openaiErr.message.includes("refusé") || openaiErr.message.includes("réponse vide"))) {
+        throw openaiErr;
+      }
       handleOpenAIError(openaiErr);
     }
 
@@ -127,8 +138,19 @@ export const generateArticle = async (req, res) => {
           { role: "user", content: keywordPrompt }
         ],
       });
-      rawKeywordText = keywordCompletion.choices[0].message.content;
+      const message = keywordCompletion.choices[0].message;
+      if (message.refusal) {
+        throw new Error("L'IA a refusé la requête de mots-clés : " + message.refusal);
+      }
+      rawKeywordText = message.content;
+      if (!rawKeywordText) {
+        console.error("OpenAI API returned empty keyword content. Full response:", JSON.stringify(keywordCompletion));
+        throw new Error("L'IA a retourné une réponse vide pour les mots-clés. Veuillez réessayer.");
+      }
     } catch (openaiErr) {
+      if (openaiErr.message && (openaiErr.message.includes("refusé") || openaiErr.message.includes("réponse vide"))) {
+        throw openaiErr;
+      }
       handleOpenAIError(openaiErr);
     }
 
@@ -269,8 +291,19 @@ export const refineArticle = async (req, res) => {
           { role: "user", content: refinementPrompt }
         ],
       });
-      rawRefineText = completion.choices[0].message.content;
+      const message = completion.choices[0].message;
+      if (message.refusal) {
+        throw new Error("L'IA a refusé la requête d'édition : " + message.refusal);
+      }
+      rawRefineText = message.content;
+      if (!rawRefineText) {
+        console.error("OpenAI API returned empty refinement content. Full response:", JSON.stringify(completion));
+        throw new Error("L'IA a retourné une réponse vide pour l'édition. Veuillez réessayer.");
+      }
     } catch (openaiErr) {
+      if (openaiErr.message && (openaiErr.message.includes("refusé") || openaiErr.message.includes("réponse vide"))) {
+        throw openaiErr;
+      }
       handleOpenAIError(openaiErr);
     }
 

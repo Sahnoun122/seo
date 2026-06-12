@@ -8,6 +8,8 @@ import History from './pages/History';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Settings from './pages/Settings';
+import AdminRoute from './components/AdminRoute';
+import UsersManager from './pages/admin/UsersManager';
 
 function App() {
   return (
@@ -39,6 +41,14 @@ function App() {
               <ProtectedRoute>
                 <Settings />
               </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/admin/users" 
+            element={
+              <AdminRoute>
+                <UsersManager />
+              </AdminRoute>
             } 
           />
         </Routes>

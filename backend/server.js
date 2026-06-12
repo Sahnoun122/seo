@@ -9,6 +9,7 @@ import articleRoutes from './routes/articleRoutes.js';
 import authRoutes from './routes/authRoutes.js';
 import settingsRoutes from './routes/settingsRoutes.js';
 import imageRoutes from './routes/imageRoutes.js';
+import adminRoutes from './routes/adminRoutes.js';
 
 const app = express();
 app.set('trust proxy', 1);
@@ -48,6 +49,7 @@ app.post('/api/articles', generationLimiter);
 app.use('/api/auth', authRoutes);
 app.use('/api/settings', settingsRoutes);
 app.use('/api/images', imageRoutes);
+app.use('/api/admin', adminRoutes);
 app.use('/api', articleRoutes);
 
 // Health check endpoint

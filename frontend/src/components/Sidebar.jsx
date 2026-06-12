@@ -7,7 +7,8 @@ import {
   LogOut,
   Sparkles,
   ChevronRight,
-  X
+  X,
+  Users
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
@@ -70,6 +71,29 @@ export default function Sidebar({ isOpen, onClose }) {
               <ChevronRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
             </NavLink>
           ))}
+          {user?.role === 'admin' && (
+            <>
+              <div className="pt-4 mt-4 border-t border-gray-100">
+                <p className="px-4 text-xs font-black text-gray-400 uppercase tracking-widest mb-2">Administration</p>
+                <NavLink
+                  to="/admin/users"
+                  onClick={onClose}
+                  className={({ isActive }) => `
+                    flex items-center justify-between px-4 py-3.5 rounded-xl transition-all duration-200 group
+                    ${isActive
+                      ? 'bg-red-50 text-red-600 shadow-sm shadow-red-500/5'
+                      : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'}
+                  `}
+                >
+                  <div className="flex items-center space-x-3">
+                    <Users className={`w-5 h-5 ${location.pathname === '/admin/users' ? 'text-red-600' : ''}`} />
+                    <span className={`font-medium ${location.pathname === '/admin/users' ? 'text-red-600' : ''}`}>Super Admin</span>
+                  </div>
+                  <ChevronRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+                </NavLink>
+              </div>
+            </>
+          )}
         </nav>
       </div>
 

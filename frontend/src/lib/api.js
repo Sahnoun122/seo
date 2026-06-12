@@ -51,3 +51,20 @@ export const updateSettings = async (data) => {
   const response = await api.put('/auth/settings', data);
   return response.data;
 };
+
+// Admin Endpoints
+export const fetchUsers = async (page = 1, limit = 10) => {
+  const response = await api.get(`/admin/users?page=${page}&limit=${limit}`);
+  return response.data;
+};
+
+export const updateUserCredits = async (id, credits) => {
+  const response = await api.put(`/admin/users/${id}/credits`, { credits });
+  return response.data;
+};
+
+export const deleteUserAccount = async (id) => {
+  const response = await api.delete(`/admin/users/${id}`);
+  return response.data;
+};
+
