@@ -25,9 +25,13 @@ const PORT = process.env.PORT || 5000;
 // Security HTTP headers
 app.use(helmet());
 
-// Dynamic CORS configuration based on CLIENT_URL env
+// Dynamic CORS configuration
 const corsOptions = {
-  origin: process.env.CLIENT_URL || 'http://localhost:5173',
+  origin: [
+    'http://localhost:5173',
+    'https://seo-auu2.vercel.app',
+    process.env.CLIENT_URL
+  ].filter(Boolean),
   credentials: true,
   optionsSuccessStatus: 200
 };
