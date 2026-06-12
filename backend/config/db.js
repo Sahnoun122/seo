@@ -9,7 +9,10 @@ const connectDB = async () => {
 
   if (!MONGODB_URI) {
     console.error('CRITICAL ERROR: MONGODB_URI is not defined in the environment variables.');
-    process.exit(1);
+    if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
+      process.exit(1);
+    }
+    throw new Error('MONGODB_URI is not defined');
   }
 
   try {
@@ -18,7 +21,10 @@ const connectDB = async () => {
     return conn;
   } catch (error) {
     console.error(`MongoDB connection failure: ${error.message}`);
-    process.exit(1);
+    if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
+      process.exit(1);
+    }
+    throw error;
   }
 };
 
