@@ -49,6 +49,17 @@ app.post('/api/auth/register', authLimiter);
 app.post('/api/generate-article', generationLimiter);
 app.post('/api/articles', generationLimiter);
 
+// Database connection Middleware for Serverless
+app.use(async (req, res, next) => {
+  try {
+    await connectDB();
+    next();
+  } catch (error) {
+    console.error('Database connection error in middleware:', error.message);
+    res.status(500).json({ error: 'Database connection failed: ' + error.message });
+  }
+});
+
 // Routes Registration
 app.use('/api/auth', authRoutes);
 app.use('/api/settings', settingsRoutes);
@@ -61,22 +72,11 @@ app.get('/health', (req, res) => {
   res.status(200).json({ status: 'ok', message: 'API is running' });
 });
 
-// Database connection & Server initialization
-connectDB()
-  .then(() => {
-    if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
-      app.listen(PORT, () => {
-        console.log(`Server successfully started and listening on port ${PORT}`);
-      });
-    } else {
-      console.log('Database connected successfully (Serverless mode)');
-    }
-  })
-  .catch((error) => {
-    console.error('Failed to initialize application server:', error.message);
-    if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
-      process.exit(1);
-    }
+// Server initialization for local development
+if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`Server successfully started and listening on port ${PORT}`);
   });
+}
 
 export default app;
