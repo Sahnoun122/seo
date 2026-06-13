@@ -24,14 +24,18 @@ const PORT = process.env.PORT || 5000;
 // Security HTTP headers
 app.use(helmet());
 
-// Dynamic CORS configuration
+// Dynamic CORS — set CLIENT_URL in Vercel env (comma-separated for multiple origins)
 const allowedOrigins = [
-  process.env.CLIENT_URL,
+  ...(process.env.CLIENT_URL ? process.env.CLIENT_URL.split(',').map(u => u.trim()) : []),
   ...(process.env.NODE_ENV !== 'production' ? ['http://localhost:5173'] : [])
 ].filter(Boolean);
 
 const corsOptions = {
-  origin: allowedOrigins,
+  origin: (origin, callback) => {
+    // Allow server-to-server calls (no origin) and listed origins
+    if (!origin || allowedOrigins.includes(origin)) return callback(null, true);
+    callback(new Error(`CORS: origin ${origin} not allowed`));
+  },
   credentials: true,
   optionsSuccessStatus: 200
 };
