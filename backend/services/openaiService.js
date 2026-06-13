@@ -35,7 +35,7 @@ export const getOpenAIClientAndModel = async (user) => {
       apiKey: globalKey,
       baseURL: process.env.OPENAI_BASE_URL || 'https://api.openai.com/v1',
     }),
-    model: systemSettings.defaultModel || 'gpt-4o',
+    model: systemSettings.defaultModel || process.env.OPENAI_MODEL || 'gpt-4o',
     isUserKey: false,
     language: user?.settings?.defaultLanguage || 'French',
     tone: user?.settings?.defaultTone || 'Professional',
