@@ -2,8 +2,15 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { toast } from 'react-hot-toast';
-import { LogIn, Sparkles, ArrowRight, Mail } from 'lucide-react';
+import { LogIn, Sparkles, ArrowRight, Zap, Shield, Globe, Brain } from 'lucide-react';
 import { motion } from 'framer-motion';
+
+const features = [
+  { icon: Brain,  title: 'AI-Powered Generation',   desc: 'Create full SEO articles in seconds with GPT-4o, DeepSeek, or Groq.' },
+  { icon: Globe,  title: 'WordPress Publishing',     desc: 'Publish articles directly to your WordPress site with one click.' },
+  { icon: Zap,    title: 'Multi-Model Engine',       desc: 'Bring your own API key and generate with unlimited credits.' },
+  { icon: Shield, title: 'Secure & Production Ready', desc: 'JWT auth, rate limiting, and AES-256 encrypted credentials.' },
+];
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -20,7 +27,7 @@ export default function Login() {
       toast.success('Welcome back!');
       navigate('/');
     } catch (error) {
-      toast.error(error.response?.data?.error || 'Failed to login');
+      toast.error(error.response?.data?.error || 'Invalid email or password.');
     } finally {
       setIsLoading(false);
     }
@@ -28,113 +35,135 @@ export default function Login() {
 
   return (
     <div className="min-h-screen flex bg-white">
-      {/* Left Side: Marketing */}
-      <div className="hidden lg:flex lg:w-1/2 relative bg-primary-600 items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          <img 
-            src="/images/auth-bg.png" 
-            alt="Marketing" 
-            className="w-full h-full object-cover opacity-60 mix-blend-overlay scale-110"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-primary-900/80 via-primary-600/40 to-transparent" />
-        </div>
-        
-        <div className="relative z-10 p-16 max-w-2xl text-white">
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            <div className="flex items-center space-x-3 mb-8">
-              <Sparkles className="w-10 h-10" />
-              <span className="text-3xl font-bold tracking-tight">SEO Gen AI</span>
+
+      {/* ── Left panel ── */}
+      <div className="hidden lg:flex lg:w-[52%] relative items-center justify-center overflow-hidden"
+           style={{ background: 'linear-gradient(135deg, #1e1b4b 0%, #3730a3 40%, #6d28d9 100%)' }}>
+
+        {/* Decorative orbs */}
+        <div className="absolute top-[-10%] right-[-5%] w-96 h-96 orb orb-pink opacity-30" />
+        <div className="absolute bottom-[-5%] left-[-5%] w-80 h-80 orb orb-blue opacity-25" />
+
+        {/* Dot grid */}
+        <div className="absolute inset-0 bg-dots opacity-[0.06]" />
+
+        <div className="relative z-10 p-16 max-w-xl w-full">
+          <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.7 }}>
+
+            {/* Logo */}
+            <div className="flex items-center gap-3 mb-12">
+              <div className="bg-white/10 backdrop-blur-sm p-2.5 rounded-xl border border-white/20">
+                <Sparkles className="w-7 h-7 text-primary-200" />
+              </div>
+              <span className="text-2xl font-bold text-white tracking-tight">SEO Gen AI</span>
             </div>
-            <h1 className="text-6xl font-extrabold leading-tight mb-6">
-              Create SEO <br />
-              <span className="text-primary-200">Masterpieces.</span>
+
+            {/* Headline */}
+            <h1 className="text-5xl font-extrabold text-white leading-[1.1] mb-4 tracking-tight">
+              Generate SEO content
+              <br />
+              <span className="text-primary-300">at light speed.</span>
             </h1>
-            <p className="text-xl text-primary-50/80 leading-relaxed">
-              Join 10,000+ content creators using our AI-driven engine to dominate search engine results.
+            <p className="text-primary-200/80 text-base font-medium mb-12 leading-relaxed">
+              The all-in-one AI platform for agencies, bloggers, and content teams.
             </p>
+
+            {/* Feature list */}
+            <div className="space-y-4">
+              {features.map((f, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.2 + i * 0.1, duration: 0.5 }}
+                  className="flex items-start gap-4 bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-4"
+                >
+                  <div className="bg-primary-500/20 p-2 rounded-xl shrink-0">
+                    <f.icon className="w-4 h-4 text-primary-300" />
+                  </div>
+                  <div>
+                    <p className="text-white font-bold text-sm">{f.title}</p>
+                    <p className="text-primary-200/70 text-xs mt-0.5 leading-relaxed">{f.desc}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+
           </motion.div>
         </div>
       </div>
 
-      {/* Right Side: Form */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-8 sm:p-16">
-        <motion.div 
+      {/* ── Right panel (form) ── */}
+      <div className="w-full lg:w-[48%] flex items-center justify-center p-8 sm:p-14 bg-white">
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="max-w-md w-full space-y-10"
+          transition={{ duration: 0.5 }}
+          className="max-w-md w-full"
         >
-          <div>
-            <h2 className="text-4xl font-bold text-gray-900 mb-3">Welcome Back</h2>
-            <p className="text-gray-500 font-medium">Please enter your details to sign in.</p>
+          {/* Mobile logo */}
+          <div className="flex lg:hidden items-center gap-2.5 mb-10">
+            <div className="bg-primary-600 p-2 rounded-xl">
+              <Sparkles className="w-5 h-5 text-white" />
+            </div>
+            <span className="text-xl font-bold text-gray-900">SEO Gen AI</span>
           </div>
 
-          <form className="space-y-6" onSubmit={handleSubmit}>
-            <div className="space-y-5">
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2" htmlFor="email">Email Address</label>
-                <input
-                  id="email"
-                  type="email"
-                  required
-                  className="w-full px-5 py-4 rounded-2xl border border-gray-200 bg-gray-50/50 text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all placeholder:text-gray-400"
-                  placeholder="name@company.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
+          <div className="mb-10">
+            <h2 className="text-4xl font-extrabold text-gray-900 mb-2 tracking-tight">Welcome back</h2>
+            <p className="text-gray-500 font-medium">Sign in to your account to continue.</p>
+          </div>
+
+          <form className="space-y-5" onSubmit={handleSubmit}>
+            <div>
+              <label className="label-xs" htmlFor="email">Email Address</label>
+              <input
+                id="email"
+                type="email"
+                required
+                className="input-field"
+                placeholder="name@company.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+
+            <div>
+              <div className="flex justify-between items-center mb-1.5">
+                <label className="label-xs" htmlFor="password">Password</label>
               </div>
-              <div>
-                <div className="flex justify-between items-center mb-2">
-                  <label className="text-sm font-semibold text-gray-700" htmlFor="password">Password</label>
-                  <a href="#" className="text-sm font-medium text-primary-600 hover:text-primary-500">Forgot?</a>
-                </div>
-                <input
-                  id="password"
-                  type="password"
-                  required
-                  className="w-full px-5 py-4 rounded-2xl border border-gray-200 bg-gray-50/50 text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all placeholder:text-gray-400"
-                  placeholder="••••••••"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </div>
+              <input
+                id="password"
+                type="password"
+                required
+                className="input-field"
+                placeholder="••••••••"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
             </div>
 
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full btn-primary flex items-center justify-center space-x-2 py-4"
+              className="btn-primary w-full py-3.5 mt-2 text-sm"
             >
               {isLoading ? (
                 <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
               ) : (
                 <>
-                  <span>Sign in</span>
-                  <ArrowRight className="w-4 h-4" />
+                  <LogIn className="w-4 h-4" />
+                  <span>Sign In</span>
+                  <ArrowRight className="w-4 h-4 ml-auto" />
                 </>
               )}
             </button>
           </form>
 
-          <div className="relative">
-            <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-gray-100"></div></div>
-            <div className="relative flex justify-center text-sm uppercase"><span className="bg-white px-4 text-gray-400 font-semibold tracking-wider">Or continue with</span></div>
-          </div>
-
-          <div className="grid grid-cols-1 gap-4">
-            <button className="flex items-center justify-center space-x-3 w-full py-4 rounded-2xl border border-gray-200 hover:bg-gray-50 transition-colors font-semibold text-gray-700">
-              <Mail className="w-5 h-5" />
-              <span>Continue with Google</span>
-            </button>
-          </div>
-
-          <p className="text-center text-sm font-medium text-gray-500">
+          <p className="text-center text-sm font-medium text-gray-500 mt-8">
             Don't have an account?{' '}
             <Link to="/register" className="text-primary-600 hover:text-primary-700 font-bold underline underline-offset-4 decoration-2">
-              Create for free
+              Create one for free
             </Link>
           </p>
         </motion.div>

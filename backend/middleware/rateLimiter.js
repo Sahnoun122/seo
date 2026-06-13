@@ -2,7 +2,7 @@ import rateLimit from 'express-rate-limit';
 
 // Standard 429 error responder helper
 const customLimiterHandler = (req, res, next, options) => {
-  res.status(429).json({ error: "Trop de requêtes. Veuillez patienter avant de réessayer." });
+  res.status(429).json({ error: "Too many requests. Please wait before trying again." });
 };
 
 /**

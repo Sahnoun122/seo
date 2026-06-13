@@ -197,12 +197,12 @@ export default function InternalLinkingPanel() {
                         {copiedIndex === i ? (
                           <>
                             <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 animate-pulse" />
-                            <span className="text-emerald-600">Copié !</span>
+                            <span className="text-emerald-600">Copied!</span>
                           </>
                         ) : (
                           <>
                             <Copy className="w-3.5 h-3.5" />
-                            <span>Copier l'ancre HTML</span>
+                            <span>Copy HTML Anchor</span>
                           </>
                         )}
                       </button>

@@ -202,6 +202,11 @@ export default function Settings() {
           setSaving(false);
           return;
         }
+        if (passwordData.newPassword !== passwordData.confirmNewPassword) {
+          toast.error('Passwords do not match.');
+          setSaving(false);
+          return;
+        }
         payload.password = passwordData.newPassword;
       }
 
@@ -454,9 +459,18 @@ export default function Settings() {
                           value={passwordData.confirmNewPassword}
                           onChange={(e) => setPasswordData({ ...passwordData, confirmNewPassword: e.target.value })}
                           placeholder="Repeat password"
-                          className="w-full pl-11 pr-4 py-3 bg-gray-50 border border-gray-200/70 rounded-xl text-sm font-semibold text-gray-900 focus:outline-none focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all"
+                          className={`w-full pl-11 pr-4 py-3 bg-gray-50 border rounded-xl text-sm font-semibold text-gray-900 focus:outline-none focus:ring-4 transition-all ${
+                            passwordData.confirmNewPassword && passwordData.newPassword !== passwordData.confirmNewPassword
+                              ? 'border-red-300 focus:ring-red-500/10 focus:border-red-400'
+                              : 'border-gray-200/70 focus:ring-primary-500/10 focus:border-primary-500'
+                          }`}
                         />
                       </div>
+                      {passwordData.confirmNewPassword && passwordData.newPassword !== passwordData.confirmNewPassword && (
+                        <p className="text-[10px] text-red-500 font-bold flex items-center gap-1">
+                          <X className="w-3 h-3" /> Passwords do not match
+                        </p>
+                      )}
                     </div>
                   </div>
 
@@ -665,11 +679,11 @@ export default function Settings() {
                             onChange={(e) => setAiSettings({ ...aiSettings, defaultTone: e.target.value })}
                             className="w-full px-4 py-3 bg-gray-50 border border-gray-200/70 rounded-xl text-sm font-semibold text-gray-900 focus:outline-none focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all"
                           >
-                            <option value="Professional">Professional (Formel & Carré)</option>
-                            <option value="Informative">Informative (Educatif)</option>
-                            <option value="Conversational">Conversational (Amical)</option>
-                            <option value="Persuasive">Persuasive (Marketing)</option>
-                            <option value="Creative">Creative (Original)</option>
+                            <option value="Professional">Professional (Formal & Authoritative)</option>
+                            <option value="Informative">Informative (Educational)</option>
+                            <option value="Conversational">Conversational (Casual & Friendly)</option>
+                            <option value="Persuasive">Persuasive (Marketing & Sales)</option>
+                            <option value="Creative">Creative (Original & Unique)</option>
                           </select>
                         </div>
                       </div>

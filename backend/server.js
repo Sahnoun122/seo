@@ -14,10 +14,9 @@ import adminRoutes from './routes/adminRoutes.js';
 const app = express();
 app.set('trust proxy', 1);
 
-// Vérification rigoureuse de la clé API OpenAI au démarrage
 if (!process.env.OPENAI_API_KEY || process.env.OPENAI_API_KEY.trim() === '') {
-  console.warn('\x1b[33m%s\x1b[0m', '⚠️  AVERTISSEMENT CRITIQUE : La variable d\'environnement OPENAI_API_KEY est manquante dans votre fichier .env.');
-  console.warn('\x1b[33m%s\x1b[0m', '   Les fonctionnalités de génération d\'articles IA échoueront si les utilisateurs n\'utilisent pas leur propre clé API.');
+  console.warn('\x1b[33m%s\x1b[0m', '⚠️  WARNING: OPENAI_API_KEY is missing from your .env file.');
+  console.warn('\x1b[33m%s\x1b[0m', '   AI article generation will fail unless users provide their own API key in Settings.');
 }
 
 const PORT = process.env.PORT || 5000;
@@ -26,12 +25,13 @@ const PORT = process.env.PORT || 5000;
 app.use(helmet());
 
 // Dynamic CORS configuration
+const allowedOrigins = [
+  process.env.CLIENT_URL,
+  ...(process.env.NODE_ENV !== 'production' ? ['http://localhost:5173'] : [])
+].filter(Boolean);
+
 const corsOptions = {
-  origin: [
-    'http://localhost:5173',
-    'https://seo-auu2.vercel.app',
-    process.env.CLIENT_URL
-  ].filter(Boolean),
+  origin: allowedOrigins,
   credentials: true,
   optionsSuccessStatus: 200
 };
@@ -70,6 +70,11 @@ app.use('/api', articleRoutes);
 // Health check endpoint
 app.get('/health', (req, res) => {
   res.status(200).json({ status: 'ok', message: 'API is running' });
+});
+
+// 404 catch-all
+app.use('*', (req, res) => {
+  res.status(404).json({ error: 'Route not found' });
 });
 
 // Server initialization for local development

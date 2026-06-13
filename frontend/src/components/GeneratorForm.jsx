@@ -21,15 +21,18 @@ export default function GeneratorForm({ onSubmit, isLoading }) {
         <input
           type="text"
           value={keyword}
-          onChange={(e) => setKeyword(e.target.value)}
+          onChange={(e) => setKeyword(e.target.value.slice(0, 100))}
           placeholder="What topic should I write about today? (e.g. 'Sustainable Fashion Trends 2024')"
           className="w-full pl-16 pr-48 py-6 bg-gray-50 border border-gray-100 rounded-[2rem] text-lg font-medium text-gray-900 focus:outline-none focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 focus:bg-white transition-all shadow-inner"
           required
         />
+        <div className="absolute bottom-[-22px] right-4 text-[10px] font-bold text-gray-400">
+          {keyword.length}/100
+        </div>
         <div className="absolute inset-y-2 right-2 flex items-center">
           <button
             type="submit"
-            disabled={isLoading}
+            disabled={isLoading || !keyword.trim()}
             className="h-full px-8 bg-gray-900 text-white rounded-[1.5rem] font-black uppercase tracking-widest text-xs hover:bg-primary-600 transition-all active:scale-95 flex items-center space-x-3 disabled:opacity-50 disabled:cursor-not-allowed shadow-xl shadow-gray-900/10 hover:shadow-primary-500/30"
           >
             {isLoading ? (

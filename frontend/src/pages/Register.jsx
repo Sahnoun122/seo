@@ -6,10 +6,10 @@ import { UserPlus, Sparkles, ArrowRight, CheckCircle2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const features = [
-  "SEO Content Generation",
-  "Competitor Analysis",
-  "Meta Data Optimization",
-  "Long-tail Keyword Strategy"
+  'AI-Powered SEO Article Generation',
+  'Multi-Model Engine (OpenAI, DeepSeek, Groq)',
+  'WordPress 1-Click Publishing',
+  'Internal Link Suggestion Engine',
 ];
 
 export default function Register() {
@@ -25,10 +25,10 @@ export default function Register() {
     setIsLoading(true);
     try {
       await register(name, email, password);
-      toast.success('Registration successful!');
+      toast.success('Account created! Welcome aboard.');
       navigate('/');
     } catch (error) {
-      toast.error(error.response?.data?.error || 'Failed to register');
+      toast.error(error.response?.data?.error || 'Registration failed. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -36,113 +36,128 @@ export default function Register() {
 
   return (
     <div className="min-h-screen flex bg-white">
-      {/* Left Side: Marketing */}
-      <div className="hidden lg:flex lg:w-1/2 relative bg-primary-600 items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          <img 
-            src="/images/auth-bg.png" 
-            alt="Marketing" 
-            className="w-full h-full object-cover opacity-60 mix-blend-overlay scale-110 rotate-180"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-primary-900/80 via-primary-600/40 to-transparent" />
-        </div>
-        
-        <div className="relative z-10 p-16 max-w-2xl text-white">
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            <div className="flex items-center space-x-3 mb-8">
-              <Sparkles className="w-10 h-10" />
-              <span className="text-3xl font-bold tracking-tight">SEO Gen AI</span>
+
+      {/* ── Left panel ── */}
+      <div className="hidden lg:flex lg:w-[52%] relative items-center justify-center overflow-hidden"
+           style={{ background: 'linear-gradient(135deg, #1e1b4b 0%, #3730a3 40%, #6d28d9 100%)' }}>
+        <div className="absolute top-[-10%] right-[-5%] w-96 h-96 orb orb-pink opacity-30" />
+        <div className="absolute bottom-[-5%] left-[-5%] w-80 h-80 orb orb-blue opacity-25" />
+        <div className="absolute inset-0 bg-dots opacity-[0.06]" />
+
+        <div className="relative z-10 p-16 max-w-xl w-full">
+          <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.7 }}>
+
+            <div className="flex items-center gap-3 mb-12">
+              <div className="bg-white/10 backdrop-blur-sm p-2.5 rounded-xl border border-white/20">
+                <Sparkles className="w-7 h-7 text-primary-200" />
+              </div>
+              <span className="text-2xl font-bold text-white tracking-tight">SEO Gen AI</span>
             </div>
-            <h1 className="text-6xl font-extrabold leading-tight mb-8">
-              Start your <br />
-              <span className="text-primary-200">journey today.</span>
+
+            <h1 className="text-5xl font-extrabold text-white leading-[1.1] mb-4 tracking-tight">
+              Start generating
+              <br />
+              <span className="text-primary-300">premium content.</span>
             </h1>
-            
+            <p className="text-primary-200/80 text-base font-medium mb-12 leading-relaxed">
+              Your complete AI-powered toolkit for SEO domination.
+            </p>
+
             <div className="space-y-4">
               {features.map((feature, i) => (
-                <div key={i} className="flex items-center space-x-3 text-lg font-medium text-primary-50/90">
-                  <CheckCircle2 className="w-6 h-6 text-primary-300" />
-                  <span>{feature}</span>
-                </div>
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.2 + i * 0.1, duration: 0.5 }}
+                  className="flex items-center gap-3 text-primary-50/90"
+                >
+                  <CheckCircle2 className="w-5 h-5 text-primary-300 shrink-0" />
+                  <span className="text-sm font-medium">{feature}</span>
+                </motion.div>
               ))}
             </div>
+
           </motion.div>
         </div>
       </div>
 
-      {/* Right Side: Form */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-8 sm:p-16">
-        <motion.div 
+      {/* ── Right panel (form) ── */}
+      <div className="w-full lg:w-[48%] flex items-center justify-center p-8 sm:p-14 bg-white">
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="max-w-md w-full space-y-10"
+          transition={{ duration: 0.5 }}
+          className="max-w-md w-full"
         >
-          <div>
-            <h2 className="text-4xl font-bold text-gray-900 mb-3">Create Account</h2>
-            <p className="text-gray-500 font-medium">Join us and start generating high-quality content.</p>
+          <div className="flex lg:hidden items-center gap-2.5 mb-10">
+            <div className="bg-primary-600 p-2 rounded-xl">
+              <Sparkles className="w-5 h-5 text-white" />
+            </div>
+            <span className="text-xl font-bold text-gray-900">SEO Gen AI</span>
           </div>
 
-          <form className="space-y-6" onSubmit={handleSubmit}>
-            <div className="space-y-5">
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2" htmlFor="name">Full Name</label>
-                <input
-                  id="name"
-                  type="text"
-                  required
-                  className="w-full px-5 py-4 rounded-2xl border border-gray-200 bg-gray-50/50 text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all placeholder:text-gray-400"
-                  placeholder="John Doe"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2" htmlFor="email">Email Address</label>
-                <input
-                  id="email"
-                  type="email"
-                  required
-                  className="w-full px-5 py-4 rounded-2xl border border-gray-200 bg-gray-50/50 text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all placeholder:text-gray-400"
-                  placeholder="name@company.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2" htmlFor="password">Password</label>
-                <input
-                  id="password"
-                  type="password"
-                  required
-                  className="w-full px-5 py-4 rounded-2xl border border-gray-200 bg-gray-50/50 text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all placeholder:text-gray-400"
-                  placeholder="••••••••"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </div>
+          <div className="mb-10">
+            <h2 className="text-4xl font-extrabold text-gray-900 mb-2 tracking-tight">Create account</h2>
+            <p className="text-gray-500 font-medium">Get started with your free account today.</p>
+          </div>
+
+          <form className="space-y-5" onSubmit={handleSubmit}>
+            <div>
+              <label className="label-xs" htmlFor="name">Full Name</label>
+              <input
+                id="name"
+                type="text"
+                required
+                className="input-field"
+                placeholder="John Doe"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+            </div>
+            <div>
+              <label className="label-xs" htmlFor="email">Email Address</label>
+              <input
+                id="email"
+                type="email"
+                required
+                className="input-field"
+                placeholder="name@company.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+            <div>
+              <label className="label-xs" htmlFor="password">Password</label>
+              <input
+                id="password"
+                type="password"
+                required
+                className="input-field"
+                placeholder="Min. 6 characters"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
             </div>
 
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full btn-primary flex items-center justify-center space-x-2 py-4"
+              className="btn-primary w-full py-3.5 mt-2 text-sm"
             >
               {isLoading ? (
                 <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
               ) : (
                 <>
+                  <UserPlus className="w-4 h-4" />
                   <span>Create Account</span>
-                  <ArrowRight className="w-4 h-4" />
+                  <ArrowRight className="w-4 h-4 ml-auto" />
                 </>
               )}
             </button>
           </form>
 
-          <p className="text-center text-sm font-medium text-gray-500">
+          <p className="text-center text-sm font-medium text-gray-500 mt-8">
             Already have an account?{' '}
             <Link to="/login" className="text-primary-600 hover:text-primary-700 font-bold underline underline-offset-4 decoration-2">
               Sign in here
