@@ -1,8 +1,17 @@
 import { PutObjectCommand, DeleteObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
-import sharp from 'sharp';
 import crypto from 'crypto';
 import s3Client, { s3BucketName } from '../config/s3.js';
+
+// Lazy-load sharp so a missing native binary doesn't crash the entire server at startup
+let sharpLib;
+const getSharp = async () => {
+  if (!sharpLib) {
+    const mod = await import('sharp');
+    sharpLib = mod.default;
+  }
+  return sharpLib;
+};
 
 class ImageService {
   constructor() {
@@ -15,11 +24,11 @@ class ImageService {
   }
 
   async optimizeAndGenerateThumbnails(buffer) {
+    const sharp = await getSharp();
     const original = await sharp(buffer).webp({ quality: 80 }).toBuffer();
-    const small = await sharp(buffer).resize({ width: 150, height: 150, fit: 'cover' }).webp({ quality: 80 }).toBuffer();
-    const medium = await sharp(buffer).resize({ width: 600, withoutEnlargement: true }).webp({ quality: 80 }).toBuffer();
-    const large = await sharp(buffer).resize({ width: 1200, withoutEnlargement: true }).webp({ quality: 80 }).toBuffer();
-    
+    const small    = await sharp(buffer).resize({ width: 150, height: 150, fit: 'cover' }).webp({ quality: 80 }).toBuffer();
+    const medium   = await sharp(buffer).resize({ width: 600,  withoutEnlargement: true }).webp({ quality: 80 }).toBuffer();
+    const large    = await sharp(buffer).resize({ width: 1200, withoutEnlargement: true }).webp({ quality: 80 }).toBuffer();
     return { original, small, medium, large };
   }
 
