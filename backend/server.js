@@ -30,6 +30,10 @@ const allowedOrigins = [
   ...(process.env.NODE_ENV !== 'production' ? ['http://localhost:5173'] : [])
 ].filter(Boolean);
 
+if (allowedOrigins.length === 0) {
+  console.warn('\x1b[31m%s\x1b[0m', '⛔ CORS WARNING: CLIENT_URL is not set. All browser requests will be blocked by CORS. Set CLIENT_URL in your environment variables.');
+}
+
 const corsOptions = {
   origin: (origin, callback) => {
     // Allow server-to-server calls (no origin) and listed origins
