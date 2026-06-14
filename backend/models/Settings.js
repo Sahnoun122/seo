@@ -9,9 +9,13 @@ const settingsSchema = new mongoose.Schema(
       get: (val) => decrypt(val),
       set: (val) => (val ? encrypt(val) : val),
     },
+    openaiBaseUrl: {
+      type: String,
+      default: '',
+    },
     defaultModel: {
       type: String,
-      default: 'gpt-4o',
+      default: '',
     },
     allowUserKeys: {
       type: Boolean,

@@ -30,12 +30,12 @@ export const getOpenAIClientAndModel = async (user) => {
     throw new Error('OpenAI API Key is not configured by the administrator. Please update settings or provide your own API Key.');
   }
 
+  const baseURL = systemSettings.openaiBaseUrl || process.env.OPENAI_BASE_URL || 'https://api.openai.com/v1';
+  const model   = systemSettings.defaultModel   || process.env.OPENAI_MODEL   || 'gpt-4o';
+
   return {
-    openai: new OpenAI({
-      apiKey: globalKey,
-      baseURL: process.env.OPENAI_BASE_URL || 'https://api.openai.com/v1',
-    }),
-    model: systemSettings.defaultModel || process.env.OPENAI_MODEL || 'gpt-4o',
+    openai: new OpenAI({ apiKey: globalKey, baseURL }),
+    model,
     isUserKey: false,
     language: user?.settings?.defaultLanguage || 'French',
     tone: user?.settings?.defaultTone || 'Professional',
