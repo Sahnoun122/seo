@@ -106,12 +106,12 @@ export default function History() {
             <span>Back to History</span>
           </button>
 
-          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 bg-white p-6 rounded-3xl border border-gray-100 shadow-soft">
+          <div className="flex flex-col gap-4 bg-white p-5 sm:p-6 rounded-2xl sm:rounded-3xl border border-gray-100 shadow-soft">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">Modify with AI</h1>
+              <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Modify with AI</h1>
               <p className="text-gray-500 text-sm">Ask the AI to change, extend, or improve the article.</p>
             </div>
-            <form onSubmit={handleRefine} className="flex-1 max-w-xl flex gap-2">
+            <form onSubmit={handleRefine} className="flex flex-col sm:flex-row gap-2">
               <input
                 type="text"
                 value={refinementPrompt}
@@ -120,7 +120,7 @@ export default function History() {
                 className="flex-1 px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 text-sm"
                 required
               />
-              <button type="submit" disabled={isRefining} className="btn-primary px-6 py-3 flex items-center space-x-2 whitespace-nowrap">
+              <button type="submit" disabled={isRefining} className="btn-primary px-6 py-3 flex items-center justify-center gap-2 whitespace-nowrap">
                 {isRefining ? <Loader2 className="w-4 h-4 animate-spin" /> : <><Wand2 className="w-4 h-4" /><span>Refine</span></>}
               </button>
             </form>
@@ -137,16 +137,16 @@ export default function History() {
       <div className="w-full space-y-10 animate-fade-in">
 
         {/* Header */}
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 pb-8 border-b border-gray-100">
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-5 sm:gap-8 pb-6 sm:pb-8 border-b border-gray-100">
           <div className="space-y-2">
             <div className="inline-flex items-center space-x-2 bg-primary-50 px-3 py-1 rounded-full border border-primary-100">
               <div className="w-1.5 h-1.5 rounded-full bg-primary-600 animate-pulse" />
               <span className="text-[10px] font-black text-primary-700 uppercase tracking-wider">{history.length} Articles Generated</span>
             </div>
-            <h1 className="text-5xl font-black text-gray-900 tracking-tight leading-tight">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-gray-900 tracking-tight leading-tight">
               Content <span className="text-primary-600">Library</span>
             </h1>
-            <p className="text-gray-500 font-medium text-lg max-w-lg">
+            <p className="text-gray-500 font-medium text-sm sm:text-base lg:text-lg max-w-lg">
               Access and manage your complete history of AI-optimized SEO articles.
             </p>
           </div>
@@ -160,7 +160,7 @@ export default function History() {
               value={searchQuery}
               onChange={handleSearch}
               placeholder="Search by keyword or title..."
-              className="w-full pl-12 pr-6 py-4 bg-white border border-gray-100 rounded-2xl shadow-soft focus:outline-none focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all font-medium text-gray-900"
+              className="w-full pl-12 pr-6 py-3 sm:py-4 bg-white border border-gray-100 rounded-2xl shadow-soft focus:outline-none focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all font-medium text-gray-900 text-sm sm:text-base"
             />
           </div>
         </div>

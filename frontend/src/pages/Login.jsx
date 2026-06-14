@@ -94,7 +94,7 @@ export default function Login() {
       </div>
 
       {/* ── Right panel (form) ── */}
-      <div className="w-full lg:w-[48%] flex items-center justify-center p-8 sm:p-14 bg-white">
+      <div className="w-full lg:w-[48%] flex items-center justify-center p-6 sm:p-8 lg:p-14 bg-white min-h-screen lg:min-h-0">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -102,16 +102,16 @@ export default function Login() {
           className="max-w-md w-full"
         >
           {/* Mobile logo */}
-          <div className="flex lg:hidden items-center gap-2.5 mb-10">
+          <div className="flex lg:hidden items-center gap-2.5 mb-8 sm:mb-10">
             <div className="bg-primary-600 p-2 rounded-xl">
               <Sparkles className="w-5 h-5 text-white" />
             </div>
             <span className="text-xl font-bold text-gray-900">SEO Gen AI</span>
           </div>
 
-          <div className="mb-10">
-            <h2 className="text-4xl font-extrabold text-gray-900 mb-2 tracking-tight">Welcome back</h2>
-            <p className="text-gray-500 font-medium">Sign in to your account to continue.</p>
+          <div className="mb-7 sm:mb-10">
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-2 tracking-tight">Welcome back</h2>
+            <p className="text-gray-500 font-medium text-sm sm:text-base">Sign in to your account to continue.</p>
           </div>
 
           <form className="space-y-5" onSubmit={handleSubmit}>

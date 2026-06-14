@@ -9,8 +9,8 @@ import api from '../lib/api';
 import { toast } from 'react-hot-toast';
 
 export default function ResultDisplay({ data }) {
-  const [copied, setCopied]           = useState(false);
-  const [publishing, setPublishing]   = useState(false);
+  const [copied, setCopied]             = useState(false);
+  const [publishing, setPublishing]     = useState(false);
   const [publishedUrl, setPublishedUrl] = useState(null);
 
   if (!data) return null;
@@ -62,8 +62,8 @@ export default function ResultDisplay({ data }) {
 
   const downloadFile = (content, filename, type) => {
     const blob = new Blob([content], { type });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
     a.href = url;
     a.setAttribute('download', filename);
     document.body.appendChild(a);
@@ -81,11 +81,11 @@ export default function ResultDisplay({ data }) {
         setPublishedUrl(res.data.url);
         toast.success((t) => (
           <div className="space-y-1">
-            <p className="font-bold text-gray-900 text-sm">Article published to WordPress as a draft!</p>
+            <p className="font-bold text-gray-900 text-sm">Published to WordPress as draft!</p>
             <a href={res.data.url} target="_blank" rel="noopener noreferrer"
                className="text-xs text-primary-600 hover:underline font-bold flex items-center gap-1"
                onClick={() => toast.dismiss(t.id)}>
-              <Globe className="w-3.5 h-3.5" /> View WordPress draft ↗
+              <Globe className="w-3.5 h-3.5" /> View draft ↗
             </a>
           </div>
         ), { duration: 8000 });
@@ -103,63 +103,64 @@ export default function ResultDisplay({ data }) {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="w-full mt-10 grid grid-cols-1 lg:grid-cols-3 gap-8"
+      className="w-full mt-6 sm:mt-10 grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8"
     >
       {/* ── Main Article ── */}
       <div className="lg:col-span-2 space-y-6">
         <div className="premium-card overflow-hidden">
 
-          {/* Toolbar */}
-          <div className="px-6 py-4 border-b border-gray-100 flex flex-wrap items-center justify-between gap-3">
-            <div className="flex items-center gap-2 text-primary-600">
-              <FileText className="w-4 h-4" />
-              <span className="text-xs font-black uppercase tracking-widest">Generated Article</span>
-            </div>
-            <div className="flex flex-wrap items-center gap-2">
-              <button onClick={handleCopy} className="btn-ghost text-xs py-2 px-3">
-                {copied ? <CheckCircle2 className="w-4 h-4 text-emerald-500" /> : <Copy className="w-4 h-4" />}
-                <span>{copied ? 'Copied!' : 'Copy All'}</span>
-              </button>
-              <button onClick={handleExportMD} className="btn-ghost text-xs py-2 px-3" title="Export as Markdown">
-                <Download className="w-4 h-4" />
-                <span className="hidden sm:inline">Markdown</span>
-              </button>
-              <button onClick={handleExportHTML} className="btn-ghost text-xs py-2 px-3" title="Export as HTML">
-                <FileCode className="w-4 h-4" />
-                <span className="hidden sm:inline">HTML</span>
-              </button>
-              <button
-                onClick={handlePublishWordPress}
-                disabled={publishing}
-                className="btn-primary text-xs py-2 px-4"
-                title="Publish to WordPress"
-              >
-                {publishing ? <Loader2 className="w-4 h-4 animate-spin" /> : <Share2 className="w-4 h-4" />}
-                <span>{publishing ? 'Publishing...' : 'WordPress'}</span>
-              </button>
+          {/* Toolbar — wraps on mobile */}
+          <div className="px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-100">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <div className="flex items-center gap-2 text-primary-600">
+                <FileText className="w-4 h-4" />
+                <span className="text-xs font-black uppercase tracking-widest">Generated Article</span>
+              </div>
+              <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                <button onClick={handleCopy} className="btn-ghost text-xs py-1.5 px-2.5 sm:py-2 sm:px-3">
+                  {copied ? <CheckCircle2 className="w-4 h-4 text-emerald-500" /> : <Copy className="w-4 h-4" />}
+                  <span className="hidden xs:inline">{copied ? 'Copied!' : 'Copy'}</span>
+                </button>
+                <button onClick={handleExportMD} className="btn-ghost text-xs py-1.5 px-2.5 sm:py-2 sm:px-3" title="Export as Markdown">
+                  <Download className="w-4 h-4" />
+                  <span className="hidden sm:inline">Markdown</span>
+                </button>
+                <button onClick={handleExportHTML} className="btn-ghost text-xs py-1.5 px-2.5 sm:py-2 sm:px-3" title="Export as HTML">
+                  <FileCode className="w-4 h-4" />
+                  <span className="hidden sm:inline">HTML</span>
+                </button>
+                <button
+                  onClick={handlePublishWordPress}
+                  disabled={publishing}
+                  className="btn-primary text-xs py-1.5 px-3 sm:py-2 sm:px-4"
+                >
+                  {publishing ? <Loader2 className="w-4 h-4 animate-spin" /> : <Share2 className="w-4 h-4" />}
+                  <span className="hidden xs:inline">{publishing ? 'Publishing...' : 'WordPress'}</span>
+                </button>
+              </div>
             </div>
           </div>
 
           {/* Content */}
-          <div className="p-6 sm:p-10 space-y-8">
-            <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
-              <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900 leading-tight flex-grow">
+          <div className="p-5 sm:p-8 lg:p-10 space-y-6 sm:space-y-8">
+            <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-gray-900 leading-tight flex-grow">
                 {data.title}
               </h1>
               {publishedUrl && (
                 <a href={publishedUrl} target="_blank" rel="noopener noreferrer"
-                   className="badge-success shrink-0 py-1.5 px-3 text-xs font-black uppercase">
-                  <Globe className="w-3.5 h-3.5" /> Live on WordPress
+                   className="badge-success shrink-0 py-1.5 px-3 text-xs font-black uppercase self-start">
+                  <Globe className="w-3.5 h-3.5" /> Live on WP
                 </a>
               )}
             </div>
 
-            <div className="bg-primary-50/60 border border-primary-100 rounded-2xl p-5 relative overflow-hidden">
+            <div className="bg-primary-50/60 border border-primary-100 rounded-xl sm:rounded-2xl p-4 sm:p-5">
               <p className="label-xs text-primary-600">Meta Description</p>
               <p className="text-gray-700 text-sm leading-relaxed">{data.metaDescription}</p>
             </div>
 
-            <div className="prose prose-slate max-w-full break-words overflow-x-auto">
+            <div className="prose prose-slate prose-sm sm:prose-base max-w-full break-words overflow-x-auto">
               <ReactMarkdown>{data.content}</ReactMarkdown>
             </div>
           </div>
@@ -167,30 +168,31 @@ export default function ResultDisplay({ data }) {
       </div>
 
       {/* ── Sidebar panels ── */}
-      <div className="space-y-6">
-        <div className="premium-card p-6 bg-white">
-          <div className="flex items-center gap-2 text-primary-600 mb-4">
+      <div className="space-y-4 sm:space-y-6">
+        <div className="premium-card p-4 sm:p-6 bg-white">
+          <div className="flex items-center gap-2 text-primary-600 mb-3 sm:mb-4">
             <ListFilter className="w-4 h-4" />
             <span className="label-xs text-primary-600 mb-0">Target Keyword</span>
           </div>
-          <div className="bg-gray-50 border border-gray-100 rounded-xl p-4 text-center">
-            <p className="font-bold text-gray-900">{data.keyword}</p>
+          <div className="bg-gray-50 border border-gray-100 rounded-xl p-3 sm:p-4 text-center">
+            <p className="font-bold text-gray-900 text-sm sm:text-base">{data.keyword}</p>
           </div>
         </div>
 
-        <div className="premium-card p-6 bg-white">
-          <div className="flex items-center gap-2 text-primary-600 mb-5">
+        <div className="premium-card p-4 sm:p-6 bg-white">
+          <div className="flex items-center gap-2 text-primary-600 mb-4 sm:mb-5">
             <SparklesIcon className="w-4 h-4" />
             <span className="label-xs text-primary-600 mb-0">Strategy Keywords</span>
           </div>
-          <ul className="space-y-3">
+          {/* Mobile: 2-col grid. Desktop: list */}
+          <ul className="grid grid-cols-2 sm:grid-cols-1 gap-2 sm:gap-3">
             {data.suggestedKeywords?.map((kw, i) => (
               <li key={i}
-                  className="flex items-center gap-3 p-3 rounded-xl bg-gray-50 border border-gray-100 hover:border-primary-200 hover:bg-primary-50/40 transition-all group">
-                <span className="w-7 h-7 rounded-lg bg-white shadow-soft flex items-center justify-center text-xs font-bold text-primary-600 shrink-0 group-hover:scale-110 transition-transform">
+                  className="flex items-center gap-2 sm:gap-3 p-2 sm:p-3 rounded-xl bg-gray-50 border border-gray-100 hover:border-primary-200 hover:bg-primary-50/40 transition-all group">
+                <span className="w-5 h-5 sm:w-7 sm:h-7 rounded-lg bg-white shadow-soft flex items-center justify-center text-[10px] sm:text-xs font-bold text-primary-600 shrink-0">
                   {i + 1}
                 </span>
-                <span className="text-gray-700 text-xs font-semibold">{kw}</span>
+                <span className="text-gray-700 text-[10px] sm:text-xs font-semibold leading-tight line-clamp-2">{kw}</span>
               </li>
             ))}
           </ul>
