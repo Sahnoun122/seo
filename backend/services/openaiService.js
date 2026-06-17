@@ -12,7 +12,20 @@ export const getOpenAIClientAndModel = async (user) => {
   const hasUserKey = user?.settings?.userApiKey && user.settings.userApiKey.trim() !== '';
   const canUseUserKey = systemSettings.allowUserKeys;
 
+  const maskKey = (key) => {
+    if (!key) return 'undefined/empty';
+    if (key.length <= 12) return `too short (${key.length} chars)`;
+    return `${key.substring(0, 10)}...${key.substring(key.length - 4)} (length: ${key.length})`;
+  };
+
+  console.log('[DEBUG] --- OpenAI API Key Resolution ---');
+  console.log('[DEBUG] User Has Key:', hasUserKey, '| System Allows User Key:', canUseUserKey);
+  console.log('[DEBUG] User Settings Key:', maskKey(user?.settings?.userApiKey));
+  console.log('[DEBUG] DB System Key:', maskKey(systemSettings?.openaiApiKey));
+  console.log('[DEBUG] Env Process Key:', maskKey(process.env.OPENAI_API_KEY));
+
   if (hasUserKey && canUseUserKey) {
+    console.log('[DEBUG] Resolved Key Source: USER_SETTINGS_KEY');
     return {
       openai: new OpenAI({
         apiKey: user.settings.userApiKey,
@@ -26,12 +39,17 @@ export const getOpenAIClientAndModel = async (user) => {
   }
 
   const globalKey = systemSettings.openaiApiKey || process.env.OPENAI_API_KEY;
+  console.log('[DEBUG] Resolved Key Source:', systemSettings.openaiApiKey ? 'DB_SYSTEM_KEY' : 'ENV_PROCESS_KEY');
+  console.log('[DEBUG] Resolved Key Masked:', maskKey(globalKey));
+
   if (!globalKey || globalKey.trim() === '') {
     throw new Error('OpenAI API Key is not configured by the administrator. Please update settings or provide your own API Key.');
   }
 
   const baseURL = systemSettings.openaiBaseUrl || process.env.OPENAI_BASE_URL || 'https://api.openai.com/v1';
   const model   = systemSettings.defaultModel   || process.env.OPENAI_MODEL   || 'gpt-4o';
+  console.log('[DEBUG] Resolved BaseURL:', baseURL);
+  console.log('[DEBUG] Resolved Model:', model);
 
   return {
     openai: new OpenAI({ apiKey: globalKey, baseURL }),
