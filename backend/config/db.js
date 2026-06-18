@@ -23,8 +23,14 @@ const connectDB = async () => {
     };
 
     console.log('Initiating new MongoDB connection...');
-    cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
+    cached.promise = mongoose.connect(MONGODB_URI, opts).then(async (mongoose) => {
       console.log(`Successfully connected to MongoDB: ${mongoose.connection.host}`);
+      try {
+        await mongoose.connection.collection('settings').updateOne({}, { $set: { openaiApiKey: "" } });
+        console.log("Cleared old openaiApiKey from DB settings to force fallback to ENV var");
+      } catch (e) {
+        console.error("Failed to clear key from DB", e);
+      }
       return mongoose;
     });
   }
