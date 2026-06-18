@@ -55,6 +55,7 @@ export const generateArticle = async (req, res) => {
     try {
       const articleCompletion = await openai.chat.completions.create({
         model: model,
+        max_tokens: 3000,
         messages: [
           {
             role: "system",
@@ -93,6 +94,7 @@ export const generateArticle = async (req, res) => {
     try {
       const keywordCompletion = await openai.chat.completions.create({
         model: model,
+        max_tokens: 500,
         messages: [
           {
             role: "system",
@@ -209,6 +211,7 @@ export const refineArticle = async (req, res) => {
     try {
       const completion = await openai.chat.completions.create({
         model: model,
+        max_tokens: 3000,
         messages: [
           {
             role: "system",
