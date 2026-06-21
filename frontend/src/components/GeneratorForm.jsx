@@ -93,7 +93,7 @@ function LoadingSteps() {
   );
 }
 
-export default function GeneratorForm({ onSubmit, isLoading }) {
+export default function GeneratorForm({ onSubmit, isLoading, streamStep, stepLabel }) {
   const [keyword, setKeyword] = useState('');
 
   const handleSubmit = (e) => {
@@ -171,7 +171,22 @@ export default function GeneratorForm({ onSubmit, isLoading }) {
       </div>
 
       <AnimatePresence>
-        {isLoading && <LoadingSteps key="steps" />}
+        {isLoading && (
+          streamStep
+            ? (
+              <motion.div
+                key="stream-status"
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0 }}
+                className="mt-6 flex items-center justify-center gap-3"
+              >
+                <Loader2 className="w-4 h-4 animate-spin text-primary-500" />
+                <span className="text-sm font-semibold text-gray-500">{stepLabel || 'Working…'}</span>
+              </motion.div>
+            )
+            : <LoadingSteps key="steps" />
+        )}
       </AnimatePresence>
     </div>
   );

@@ -32,8 +32,10 @@ export const generateArticle = async (keyword) => {
   return response.data;
 };
 
-export const getHistory = async () => {
-  const response = await api.get('/history');
+export const getHistory = async ({ page = 1, limit = 12, search = '' } = {}) => {
+  const params = new URLSearchParams({ page, limit });
+  if (search) params.set('search', search);
+  const response = await api.get(`/history?${params}`);
   return response.data;
 };
 
@@ -42,8 +44,22 @@ export const refineArticle = async (id, prompt) => {
   return response.data;
 };
 
+export const restoreArticleVersion = async (id, versionIndex) => {
+  const response = await api.post(`/history/${id}/restore/${versionIndex}`);
+  return response.data;
+};
+
 export const deleteArticle = async (id) => {
   const response = await api.delete(`/articles/${id}`);
+  return response.data;
+};
+
+export const uploadCoverImage = async (articleId, file) => {
+  const formData = new FormData();
+  formData.append('image', file);
+  const response = await api.post(`/articles/${articleId}/cover`, formData, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  });
   return response.data;
 };
 
@@ -59,6 +75,17 @@ export const getSettings = async () => {
 
 export const updateSettings = async (data) => {
   const response = await api.put('/auth/settings', data);
+  return response.data;
+};
+
+// Stripe
+export const getCreditPackages = async () => {
+  const response = await api.get('/stripe/packages');
+  return response.data;
+};
+
+export const createCheckoutSession = async (packageId) => {
+  const response = await api.post('/stripe/checkout', { packageId });
   return response.data;
 };
 

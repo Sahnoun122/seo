@@ -10,6 +10,7 @@ import authRoutes from './routes/authRoutes.js';
 import settingsRoutes from './routes/settingsRoutes.js';
 import imageRoutes from './routes/imageRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
+import stripeRoutes from './routes/stripeRoutes.js';
 
 const app = express();
 app.set('trust proxy', 1);
@@ -17,6 +18,17 @@ app.set('trust proxy', 1);
 if (!process.env.OPENAI_API_KEY || process.env.OPENAI_API_KEY.trim() === '') {
   console.warn('\x1b[33m%s\x1b[0m', '⚠️  WARNING: OPENAI_API_KEY is missing from your .env file.');
   console.warn('\x1b[33m%s\x1b[0m', '   AI article generation will fail unless users provide their own API key in Settings.');
+}
+
+const encKey = process.env.ENCRYPTION_KEY || '';
+if (encKey.trim().length < 32) {
+  const msg = 'SECURITY ERROR: ENCRYPTION_KEY must be at least 32 characters. API keys stored in the database will NOT be encrypted securely.';
+  if (process.env.NODE_ENV === 'production') {
+    console.error('\x1b[31m%s\x1b[0m', `⛔ FATAL: ${msg}`);
+    process.exit(1);
+  } else {
+    console.warn('\x1b[33m%s\x1b[0m', `⚠️  WARNING: ${msg}`);
+  }
 }
 
 const PORT = process.env.PORT || 5000;
@@ -73,6 +85,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/settings', settingsRoutes);
 app.use('/api/images', imageRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/stripe', stripeRoutes);
 app.use('/api', articleRoutes);
 
 // Health check endpoint

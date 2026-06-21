@@ -12,6 +12,7 @@ import Settings from './pages/Settings';
 import NotFound from './pages/NotFound';
 import AdminRoute from './components/AdminRoute';
 import UsersManager from './pages/admin/UsersManager';
+import BuyCredits from './pages/BuyCredits';
 
 function App() {
   return (
@@ -43,6 +44,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <Settings />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/buy-credits"
+              element={
+                <ProtectedRoute>
+                  <BuyCredits />
                 </ProtectedRoute>
               }
             />

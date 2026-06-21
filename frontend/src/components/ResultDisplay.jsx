@@ -1,17 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   Copy, CheckCircle2, ListFilter, FileText,
-  Download, FileCode, Loader2, Globe, Share2
+  Download, FileCode, Loader2, Globe, Share2, Image as ImageIcon,
 } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
+import { marked } from 'marked';
 import { motion } from 'framer-motion';
-import api from '../lib/api';
+import api, { uploadCoverImage } from '../lib/api';
 import { toast } from 'react-hot-toast';
 
-export default function ResultDisplay({ data }) {
+marked.setOptions({ gfm: true, breaks: true });
+
+export default function ResultDisplay({ data, onCoverUpdate }) {
   const [copied, setCopied]             = useState(false);
   const [publishing, setPublishing]     = useState(false);
   const [publishedUrl, setPublishedUrl] = useState(null);
+  const [uploadingCover, setUploadingCover] = useState(false);
+  const [coverUrl, setCoverUrl]         = useState(data?.coverUrl || null);
+  const fileInputRef = useRef(null);
 
   if (!data) return null;
 
@@ -27,36 +33,38 @@ export default function ResultDisplay({ data }) {
     downloadFile(md, 'article-seo.md', 'text/markdown');
   };
 
-  const convertMarkdownToHTML = (markdown) => {
-    let html = markdown
-      .replace(/\r\n/g, '\n').replace(/\r/g, '\n')
-      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-      .replace(/^### (.*?)$/gm, '<h3>$1</h3>')
-      .replace(/^## (.*?)$/gm, '<h2>$1</h2>')
-      .replace(/^# (.*?)$/gm, '<h1>$1</h1>');
-
-    const lines = html.split('\n');
-    let inList = false;
-    const processed = lines.map(line => {
-      const m = line.match(/^[-*+]\s+(.*?)$/);
-      if (m) { const r = (!inList ? ((inList = true), '<ul>\n') : '') + `  <li>${m[1]}</li>`; return r; }
-      const r = (inList ? ((inList = false), '</ul>\n') : '') + line;
-      return r;
-    });
-    if (inList) processed.push('</ul>');
-    html = processed.join('\n');
-
-    return html.split('\n\n').map(block => {
-      const t = block.trim();
-      if (!t) return '';
-      if (/^<(h[1-3]|ul|li|\/ul)/.test(t)) return t;
-      return `<p>${t.replace(/\n/g, '<br />')}</p>`;
-    }).filter(Boolean).join('\n\n');
-  };
-
   const handleExportHTML = () => {
-    const body = convertMarkdownToHTML(data.content);
-    const html = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><meta name="description" content="${data.metaDescription || ''}"><title>${data.title || 'SEO Article'}</title><style>body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;line-height:1.8;max-width:800px;margin:40px auto;padding:0 20px;color:#334155}h1{font-size:2.5rem;color:#0f172a;line-height:1.2;margin-bottom:20px}h2{font-size:1.8rem;color:#1e293b;margin-top:40px}h3{font-size:1.4rem;color:#334155;margin-top:30px}p{margin-bottom:20px}.meta-box{background:#f1f5f9;border-left:4px solid #7c3aed;padding:20px;border-radius:8px;margin-bottom:40px}</style></head><body><h1>${data.title}</h1><div class="meta-box"><strong>Meta Description</strong><p>${data.metaDescription}</p></div>${body}</body></html>`;
+    const body = marked.parse(data.content);
+    const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="${(data.metaDescription || '').replace(/"/g, '&quot;')}">
+  <title>${(data.title || 'SEO Article').replace(/</g, '&lt;')}</title>
+  <style>
+    body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;line-height:1.8;max-width:800px;margin:40px auto;padding:0 20px;color:#334155}
+    h1{font-size:2.5rem;color:#0f172a;line-height:1.2;margin-bottom:20px}
+    h2{font-size:1.8rem;color:#1e293b;margin-top:40px}
+    h3{font-size:1.4rem;color:#334155;margin-top:30px}
+    p{margin-bottom:20px}
+    ul,ol{margin-bottom:20px;padding-left:1.5rem}
+    li{margin-bottom:6px}
+    blockquote{border-left:4px solid #7c3aed;padding:12px 20px;background:#f5f3ff;margin:20px 0;border-radius:0 8px 8px 0}
+    code{background:#f1f5f9;padding:2px 6px;border-radius:4px;font-size:0.9em}
+    pre code{display:block;padding:16px;overflow-x:auto}
+    table{border-collapse:collapse;width:100%;margin-bottom:20px}
+    th,td{border:1px solid #e2e8f0;padding:10px 14px;text-align:left}
+    th{background:#f8fafc;font-weight:600}
+    .meta-box{background:#f1f5f9;border-left:4px solid #7c3aed;padding:20px;border-radius:8px;margin-bottom:40px}
+  </style>
+</head>
+<body>
+  <h1>${(data.title || '').replace(/</g, '&lt;')}</h1>
+  <div class="meta-box"><strong>Meta Description</strong><p>${(data.metaDescription || '').replace(/</g, '&lt;')}</p></div>
+  ${body}
+</body>
+</html>`;
     downloadFile(html, 'article-seo.html', 'text/html');
   };
 
@@ -99,6 +107,32 @@ export default function ResultDisplay({ data }) {
     }
   };
 
+  const handleCoverUpload = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file || !data?._id) return;
+
+    const allowed = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+    if (!allowed.includes(file.type)) {
+      toast.error('Only JPEG, PNG, WebP, and GIF images are allowed.');
+      return;
+    }
+
+    setUploadingCover(true);
+    try {
+      const res = await uploadCoverImage(data._id, file);
+      if (res.success) {
+        setCoverUrl(res.coverUrl);
+        toast.success('Cover image updated!');
+        onCoverUpdate?.(data._id, res.coverImageId);
+      }
+    } catch (err) {
+      toast.error(err.response?.data?.error || 'Failed to upload cover image.');
+    } finally {
+      setUploadingCover(false);
+      e.target.value = '';
+    }
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -109,7 +143,14 @@ export default function ResultDisplay({ data }) {
       <div className="lg:col-span-2 space-y-6">
         <div className="premium-card overflow-hidden">
 
-          {/* Toolbar — wraps on mobile */}
+          {/* Cover image */}
+          {coverUrl && (
+            <div className="h-52 sm:h-64 overflow-hidden bg-gray-100">
+              <img src={coverUrl} alt="Article cover" className="w-full h-full object-cover" />
+            </div>
+          )}
+
+          {/* Toolbar */}
           <div className="px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-100">
             <div className="flex flex-wrap items-center justify-between gap-2">
               <div className="flex items-center gap-2 text-primary-600">
@@ -129,6 +170,31 @@ export default function ResultDisplay({ data }) {
                   <FileCode className="w-4 h-4" />
                   <span className="hidden sm:inline">HTML</span>
                 </button>
+
+                {/* Cover image upload */}
+                {data?._id && (
+                  <>
+                    <input
+                      ref={fileInputRef}
+                      type="file"
+                      accept="image/jpeg,image/png,image/webp,image/gif"
+                      className="hidden"
+                      onChange={handleCoverUpload}
+                    />
+                    <button
+                      onClick={() => fileInputRef.current?.click()}
+                      disabled={uploadingCover}
+                      className="btn-ghost text-xs py-1.5 px-2.5 sm:py-2 sm:px-3"
+                      title="Upload cover image"
+                    >
+                      {uploadingCover
+                        ? <Loader2 className="w-4 h-4 animate-spin" />
+                        : <ImageIcon className="w-4 h-4" />}
+                      <span className="hidden sm:inline">{coverUrl ? 'Replace Cover' : 'Add Cover'}</span>
+                    </button>
+                  </>
+                )}
+
                 <button
                   onClick={handlePublishWordPress}
                   disabled={publishing}
@@ -184,7 +250,6 @@ export default function ResultDisplay({ data }) {
             <SparklesIcon className="w-4 h-4" />
             <span className="label-xs text-primary-600 mb-0">Strategy Keywords</span>
           </div>
-          {/* Mobile: 2-col grid. Desktop: list */}
           <ul className="grid grid-cols-2 sm:grid-cols-1 gap-2 sm:gap-3">
             {data.suggestedKeywords?.map((kw, i) => (
               <li key={i}

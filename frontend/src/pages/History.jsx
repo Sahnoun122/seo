@@ -1,6 +1,6 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import DashboardLayout from '../components/DashboardLayout';
-import { getHistory, refineArticle, deleteArticle } from '../lib/api';
+import { getHistory, refineArticle, deleteArticle, restoreArticleVersion } from '../lib/api';
 import { toast } from 'react-hot-toast';
 import {
   History as HistoryIcon,
@@ -12,7 +12,8 @@ import {
   ChevronRight,
   ChevronLeft,
   Trash2,
-  X,
+  Clock,
+  RotateCcw,
 } from 'lucide-react';
 import ResultDisplay from '../components/ResultDisplay';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -20,43 +21,45 @@ import { motion, AnimatePresence } from 'framer-motion';
 const PAGE_SIZE = 12;
 
 export default function History() {
-  const [history, setHistory]               = useState([]);
-  const [isLoading, setIsLoading]           = useState(true);
+  const [articles, setArticles]               = useState([]);
+  const [pagination, setPagination]           = useState({ total: 0, page: 1, pages: 1 });
+  const [isLoading, setIsLoading]             = useState(true);
   const [selectedArticle, setSelectedArticle] = useState(null);
   const [refinementPrompt, setRefinementPrompt] = useState('');
-  const [isRefining, setIsRefining]         = useState(false);
-  const [searchQuery, setSearchQuery]       = useState('');
-  const [page, setPage]                     = useState(1);
-  const [deleteTarget, setDeleteTarget]     = useState(null);
-  const [isDeleting, setIsDeleting]         = useState(false);
+  const [isRefining, setIsRefining]           = useState(false);
+  const [searchQuery, setSearchQuery]         = useState('');
+  const [page, setPage]                       = useState(1);
+  const [deleteTarget, setDeleteTarget]       = useState(null);
+  const [isDeleting, setIsDeleting]           = useState(false);
+  const [showVersions, setShowVersions]       = useState(false);
+  const [restoringIdx, setRestoringIdx]       = useState(null);
+  const searchTimer = useRef(null);
 
-  useEffect(() => { fetchHistory(); }, []);
-
-  const fetchHistory = async () => {
+  const fetchHistory = useCallback(async (p = page, q = searchQuery) => {
+    setIsLoading(true);
     try {
-      const data = await getHistory();
-      if (data.success) setHistory(data.data);
+      const data = await getHistory({ page: p, limit: PAGE_SIZE, search: q });
+      if (data.success) {
+        setArticles(data.data);
+        setPagination(data.pagination);
+      }
     } catch {
       toast.error('Failed to load history');
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [page, searchQuery]);
 
-  const filtered = useMemo(() => {
-    if (!searchQuery.trim()) return history;
-    const q = searchQuery.toLowerCase();
-    return history.filter(
-      (a) => a.title?.toLowerCase().includes(q) || a.keyword?.toLowerCase().includes(q)
-    );
-  }, [history, searchQuery]);
-
-  const totalPages = Math.ceil(filtered.length / PAGE_SIZE);
-  const paginated  = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+  useEffect(() => { fetchHistory(page, searchQuery); }, [page]);
 
   const handleSearch = (e) => {
-    setSearchQuery(e.target.value);
-    setPage(1);
+    const q = e.target.value;
+    setSearchQuery(q);
+    clearTimeout(searchTimer.current);
+    searchTimer.current = setTimeout(() => {
+      setPage(1);
+      fetchHistory(1, q);
+    }, 400);
   };
 
   const handleRefine = async (e) => {
@@ -68,8 +71,9 @@ export default function History() {
       if (data.success) {
         setSelectedArticle(data.data);
         setRefinementPrompt('');
+        setShowVersions(false);
         toast.success('Article updated with AI!');
-        fetchHistory();
+        fetchHistory(page, searchQuery);
       }
     } catch {
       toast.error('Failed to refine article');
@@ -78,15 +82,32 @@ export default function History() {
     }
   };
 
+  const handleRestoreVersion = async (idx) => {
+    setRestoringIdx(idx);
+    try {
+      const data = await restoreArticleVersion(selectedArticle._id, idx);
+      if (data.success) {
+        setSelectedArticle(data.data);
+        setShowVersions(false);
+        toast.success('Version restored!');
+        fetchHistory(page, searchQuery);
+      }
+    } catch {
+      toast.error('Failed to restore version');
+    } finally {
+      setRestoringIdx(null);
+    }
+  };
+
   const confirmDelete = async () => {
     if (!deleteTarget) return;
     setIsDeleting(true);
     try {
       await deleteArticle(deleteTarget._id);
-      setHistory((prev) => prev.filter((a) => a._id !== deleteTarget._id));
       toast.success('Article deleted');
       setDeleteTarget(null);
       if (selectedArticle?._id === deleteTarget._id) setSelectedArticle(null);
+      fetchHistory(page, searchQuery);
     } catch {
       toast.error('Failed to delete article');
     } finally {
@@ -95,17 +116,74 @@ export default function History() {
   };
 
   if (selectedArticle) {
+    const hasVersions = selectedArticle.versions?.length > 0;
+
     return (
       <DashboardLayout>
         <div className="w-full space-y-8 animate-fade-in">
-          <button
-            onClick={() => setSelectedArticle(null)}
-            className="flex items-center space-x-2 text-gray-500 hover:text-primary-600 transition-colors font-medium mb-4"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            <span>Back to History</span>
-          </button>
+          <div className="flex items-center justify-between">
+            <button
+              onClick={() => { setSelectedArticle(null); setShowVersions(false); }}
+              className="flex items-center space-x-2 text-gray-500 hover:text-primary-600 transition-colors font-medium"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              <span>Back to History</span>
+            </button>
 
+            {hasVersions && (
+              <button
+                onClick={() => setShowVersions((v) => !v)}
+                className="flex items-center gap-2 px-4 py-2 text-sm font-bold text-gray-600 bg-gray-100 hover:bg-primary-50 hover:text-primary-700 rounded-xl transition-all"
+              >
+                <Clock className="w-4 h-4" />
+                {showVersions ? 'Hide Versions' : `Version History (${selectedArticle.versions.length})`}
+              </button>
+            )}
+          </div>
+
+          {/* Version History Panel */}
+          <AnimatePresence>
+            {showVersions && hasVersions && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                className="overflow-hidden"
+              >
+                <div className="bg-amber-50 border border-amber-200 rounded-2xl p-5 space-y-3">
+                  <p className="text-sm font-black text-amber-800 uppercase tracking-widest">Previous Versions</p>
+                  <p className="text-xs text-amber-600">Restoring a version saves the current state first.</p>
+                  <div className="space-y-2">
+                    {selectedArticle.versions.map((v, i) => (
+                      <div key={i} className="flex items-center justify-between bg-white border border-amber-100 rounded-xl px-4 py-3">
+                        <div className="min-w-0 flex-1">
+                          <p className="text-sm font-semibold text-gray-900 truncate">{v.title}</p>
+                          <p className="text-xs text-gray-400">
+                            {new Date(v.refinedAt).toLocaleString('en-US', {
+                              day: 'numeric', month: 'short', year: 'numeric',
+                              hour: '2-digit', minute: '2-digit',
+                            })}
+                          </p>
+                        </div>
+                        <button
+                          onClick={() => handleRestoreVersion(i)}
+                          disabled={restoringIdx === i}
+                          className="ml-4 flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-amber-700 bg-amber-100 hover:bg-amber-200 rounded-lg transition-colors disabled:opacity-50"
+                        >
+                          {restoringIdx === i
+                            ? <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                            : <RotateCcw className="w-3.5 h-3.5" />}
+                          Restore
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Refine Panel */}
           <div className="flex flex-col gap-4 bg-white p-5 sm:p-6 rounded-2xl sm:rounded-3xl border border-gray-100 shadow-soft">
             <div>
               <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Modify with AI</h1>
@@ -141,7 +219,9 @@ export default function History() {
           <div className="space-y-2">
             <div className="inline-flex items-center space-x-2 bg-primary-50 px-3 py-1 rounded-full border border-primary-100">
               <div className="w-1.5 h-1.5 rounded-full bg-primary-600 animate-pulse" />
-              <span className="text-[10px] font-black text-primary-700 uppercase tracking-wider">{history.length} Articles Generated</span>
+              <span className="text-[10px] font-black text-primary-700 uppercase tracking-wider">
+                {pagination.total} Articles Generated
+              </span>
             </div>
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-gray-900 tracking-tight leading-tight">
               Content <span className="text-primary-600">Library</span>
@@ -171,7 +251,7 @@ export default function History() {
             <Loader2 className="w-10 h-10 text-primary-600 animate-spin" />
             <p className="text-gray-500 font-medium">Loading your history...</p>
           </div>
-        ) : filtered.length === 0 ? (
+        ) : articles.length === 0 ? (
           <div className="premium-card p-12 text-center bg-white">
             <div className="bg-gray-50 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
               <HistoryIcon className="w-8 h-8 text-gray-300" />
@@ -186,7 +266,7 @@ export default function History() {
         ) : (
           <>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {paginated.map((article, i) => (
+              {articles.map((article, i) => (
                 <motion.div
                   key={article._id}
                   initial={{ opacity: 0, scale: 0.9 }}
@@ -194,6 +274,25 @@ export default function History() {
                   transition={{ delay: i * 0.04 }}
                   className="premium-card p-0 overflow-hidden bg-white flex flex-col group border border-gray-100 hover:border-primary-200 relative"
                 >
+                  {/* Cover image */}
+                  {article.coverImageId && (
+                    <div className="h-36 overflow-hidden bg-gray-100">
+                      <img
+                        src={`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/images/${article.coverImageId}/view?size=medium`}
+                        alt="cover"
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        onError={(e) => { e.target.style.display = 'none'; }}
+                      />
+                    </div>
+                  )}
+
+                  {/* Version badge */}
+                  {article.versions?.length > 0 && (
+                    <div className="absolute top-3 left-3 bg-amber-100 text-amber-700 text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full z-10">
+                      {article.versions.length}v
+                    </div>
+                  )}
+
                   {/* Delete button */}
                   <button
                     onClick={(e) => { e.stopPropagation(); setDeleteTarget(article); }}
@@ -252,7 +351,7 @@ export default function History() {
             </div>
 
             {/* Pagination */}
-            {totalPages > 1 && (
+            {pagination.pages > 1 && (
               <div className="flex items-center justify-center gap-4 pt-4">
                 <button
                   onClick={() => setPage((p) => Math.max(1, p - 1))}
@@ -262,11 +361,11 @@ export default function History() {
                   <ChevronLeft className="w-5 h-5" />
                 </button>
                 <span className="text-sm font-bold text-gray-500">
-                  Page {page} of {totalPages}
+                  Page {pagination.page} of {pagination.pages}
                 </span>
                 <button
-                  onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
-                  disabled={page === totalPages}
+                  onClick={() => setPage((p) => Math.min(pagination.pages, p + 1))}
+                  disabled={page === pagination.pages}
                   className="p-2 border border-gray-200 rounded-xl hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
                 >
                   <ChevronRight className="w-5 h-5" />
@@ -303,9 +402,7 @@ export default function History() {
                   </p>
                 </div>
                 <div className="flex gap-3 pt-2">
-                  <button onClick={() => setDeleteTarget(null)} className="flex-1 btn-ghost py-3">
-                    Cancel
-                  </button>
+                  <button onClick={() => setDeleteTarget(null)} className="flex-1 btn-ghost py-3">Cancel</button>
                   <button
                     onClick={confirmDelete}
                     disabled={isDeleting}

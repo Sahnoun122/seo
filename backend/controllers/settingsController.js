@@ -2,6 +2,7 @@ import User from '../models/User.js';
 import Settings from '../models/Settings.js';
 import { getSystemSettings } from '../services/settingsService.js';
 import bcrypt from 'bcryptjs';
+import { getAllUsers, updateUserCredits, deleteUser } from './adminController.js';
 
 // @desc    Get all settings (global system settings, user profile, and user list if admin)
 // @route   GET /api/settings
@@ -182,70 +183,5 @@ export const updateSettings = async (req, res) => {
   }
 };
 
-// @desc    Update a specific user's credits and role (Admin Only)
-// @route   PUT /api/settings/users/:id
-// @access  Private (Admin Only)
-export const updateUserCredits = async (req, res) => {
-  try {
-    if (req.user.role !== 'admin') {
-      return res.status(403).json({ error: 'Not authorized, administrator access required.' });
-    }
-
-    const { credits, role } = req.body;
-    const targetUser = await User.findById(req.params.id);
-
-    if (!targetUser) {
-      return res.status(404).json({ error: 'User not found.' });
-    }
-
-    if (credits !== undefined) {
-      const numCredits = Number(credits);
-      if (isNaN(numCredits) || numCredits < 0) {
-        return res.status(400).json({ error: 'Credits must be a non-negative number.' });
-      }
-      targetUser.credits = numCredits;
-    }
-
-    if (role !== undefined) {
-      if (role !== 'admin' && role !== 'user') {
-        return res.status(400).json({ error: 'Invalid role selection.' });
-      }
-      if (targetUser.id === req.user.id && role === 'user') {
-        return res.status(400).json({ error: 'You cannot demote yourself from administrator status.' });
-      }
-      targetUser.role = role;
-    }
-
-    await targetUser.save();
-    res.status(200).json({ success: true, message: 'User updated successfully.', user: targetUser });
-  } catch (error) {
-    console.error('Update User Credits Error:', error);
-    res.status(500).json({ error: 'Failed to update user parameters.' });
-  }
-};
-
-// @desc    Delete a user account (Admin Only)
-// @route   DELETE /api/settings/users/:id
-// @access  Private (Admin Only)
-export const deleteUser = async (req, res) => {
-  try {
-    if (req.user.role !== 'admin') {
-      return res.status(403).json({ error: 'Not authorized, administrator access required.' });
-    }
-
-    const targetUser = await User.findById(req.params.id);
-    if (!targetUser) {
-      return res.status(404).json({ error: 'User not found.' });
-    }
-
-    if (targetUser._id.toString() === req.user.id.toString()) {
-      return res.status(400).json({ error: 'Safety block: You cannot delete your own administrator account.' });
-    }
-
-    await targetUser.deleteOne();
-    res.status(200).json({ success: true, message: 'User deleted successfully.' });
-  } catch (error) {
-    console.error('Delete User Error:', error);
-    res.status(500).json({ error: 'Failed to delete user.' });
-  }
-};
+// Re-exported from adminController to avoid duplication
+export { getAllUsers, updateUserCredits, deleteUser };

@@ -1,6 +1,11 @@
 import Article from '../models/Article.js';
 import User from '../models/User.js';
+import Image from '../models/Image.js';
+import ImageService from '../services/ImageService.js';
+import { marked } from 'marked';
 import { cleanAndParseJSON, handleOpenAIError, getOpenAIClientAndModel } from '../services/openaiService.js';
+
+marked.setOptions({ gfm: true, breaks: true });
 
 // @desc    Generate an SEO article and keyword suggestions for a given keyword
 // @route   POST /api/articles
@@ -149,14 +154,40 @@ export const generateArticle = async (req, res) => {
 };
 
 // @desc    Fetch article generation history for the authenticated user
-// @route   GET /api/articles
+// @route   GET /api/history?page=1&limit=12&search=keyword
 // @access  Private
 export const getHistory = async (req, res) => {
   try {
-    const articles = await Article.find({ user: req.user.id }).sort({ createdAt: -1 }).limit(20);
+    const page  = Math.max(1, parseInt(req.query.page,  10) || 1);
+    const limit = Math.min(50, Math.max(1, parseInt(req.query.limit, 10) || 12));
+    const search = (req.query.search || '').trim();
+
+    const filter = { user: req.user.id };
+    if (search) {
+      filter.$or = [
+        { title:   { $regex: search, $options: 'i' } },
+        { keyword: { $regex: search, $options: 'i' } },
+      ];
+    }
+
+    const [total, articles] = await Promise.all([
+      Article.countDocuments(filter),
+      Article.find(filter)
+        .sort({ createdAt: -1 })
+        .skip((page - 1) * limit)
+        .limit(limit)
+        .select('-versions'),
+    ]);
+
     res.status(200).json({
       success: true,
-      data: articles
+      data: articles,
+      pagination: {
+        total,
+        page,
+        pages: Math.ceil(total / limit),
+        limit,
+      },
     });
   } catch (error) {
     console.error("Error fetching history:", error);
@@ -238,6 +269,12 @@ export const refineArticle = async (req, res) => {
 
     const updatedData = cleanAndParseJSON(rawRefineText);
 
+    // Save current state as a version before overwriting (max 10 versions)
+    article.versions = [
+      { title: article.title, metaDescription: article.metaDescription, content: article.content, refinedAt: new Date() },
+      ...article.versions,
+    ].slice(0, 10);
+
     article.title = updatedData.title || article.title;
     article.metaDescription = updatedData.metaDescription || article.metaDescription;
     article.content = updatedData.content || article.content;
@@ -279,47 +316,7 @@ export const publishToWordPress = async (req, res) => {
       return res.status(404).json({ error: 'Article not found or access denied.' });
     }
 
-    const convertMarkdownToHTML = (markdown) => {
-      let html = markdown;
-      html = html.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
-      html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-      html = html.replace(/^### (.*?)$/gm, '<h3>$1</h3>');
-      html = html.replace(/^## (.*?)$/gm, '<h2>$1</h2>');
-      html = html.replace(/^# (.*?)$/gm, '<h1>$1</h1>');
-
-      const lines = html.split('\n');
-      let inList = false;
-      const processedLines = lines.map(line => {
-        const listMatch = line.match(/^[-*+]\s+(.*?)$/);
-        if (listMatch) {
-          let result = '';
-          if (!inList) { result += '<ul>\n'; inList = true; }
-          result += `  <li>${listMatch[1]}</li>`;
-          return result;
-        } else {
-          let result = '';
-          if (inList) { result += '</ul>\n'; inList = false; }
-          result += line;
-          return result;
-        }
-      });
-      if (inList) processedLines.push('</ul>');
-      html = processedLines.join('\n');
-
-      const blocks = html.split('\n\n');
-      const formattedBlocks = blocks.map(block => {
-        const trimmed = block.trim();
-        if (!trimmed) return '';
-        if (trimmed.startsWith('<h') || trimmed.startsWith('<ul') || trimmed.startsWith('<li') || trimmed.startsWith('</ul')) {
-          return trimmed;
-        }
-        return `<p>${trimmed.replace(/\n/g, '<br />')}</p>`;
-      });
-
-      return formattedBlocks.filter(b => b.length > 0).join('\n\n');
-    };
-
-    const articleHtml = convertMarkdownToHTML(article.content);
+    const articleHtml = marked.parse(article.content);
 
     let baseUrl = wpUrl.trim();
     if (!baseUrl.startsWith('http://') && !baseUrl.startsWith('https://')) {
@@ -379,5 +376,215 @@ export const deleteArticle = async (req, res) => {
   } catch (error) {
     console.error('DELETE ARTICLE ERROR:', error);
     res.status(500).json({ error: 'Failed to delete article.' });
+  }
+};
+
+// @desc    Restore a previous version of an article
+// @route   POST /api/articles/:id/restore/:versionIndex
+// @access  Private
+export const restoreVersion = async (req, res) => {
+  try {
+    const { id, versionIndex } = req.params;
+    const idx = parseInt(versionIndex, 10);
+
+    const article = await Article.findOne({ _id: id, user: req.user.id });
+    if (!article) {
+      return res.status(404).json({ error: 'Article not found or access denied.' });
+    }
+
+    if (isNaN(idx) || idx < 0 || idx >= article.versions.length) {
+      return res.status(400).json({ error: 'Invalid version index.' });
+    }
+
+    const version = article.versions[idx];
+
+    // Save current state as a new version before restoring
+    article.versions = [
+      { title: article.title, metaDescription: article.metaDescription, content: article.content, refinedAt: new Date() },
+      ...article.versions,
+    ].slice(0, 10);
+
+    article.title           = version.title;
+    article.metaDescription = version.metaDescription;
+    article.content         = version.content;
+
+    await article.save();
+
+    res.status(200).json({ success: true, data: article });
+  } catch (error) {
+    console.error('RESTORE VERSION ERROR:', error);
+    res.status(500).json({ error: 'Failed to restore version.' });
+  }
+};
+
+// @desc    Upload and set cover image for an article
+// @route   POST /api/articles/:id/cover
+// @access  Private
+export const setCoverImage = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!req.file) {
+      return res.status(400).json({ error: 'No image file provided.' });
+    }
+
+    const article = await Article.findOne({ _id: id, user: req.user.id });
+    if (!article) {
+      return res.status(404).json({ error: 'Article not found or access denied.' });
+    }
+
+    // Delete old cover image from S3 if exists
+    if (article.coverImageId) {
+      const oldImage = await Image.findById(article.coverImageId);
+      if (oldImage) {
+        await ImageService.deleteImagePaths([
+          oldImage.path,
+          oldImage.thumbnails?.small,
+          oldImage.thumbnails?.medium,
+          oldImage.thumbnails?.large,
+        ].filter(Boolean));
+        await oldImage.deleteOne();
+      }
+    }
+
+    const uploadResult = await ImageService.uploadImage(req.file, 'articles');
+
+    const imageDoc = await Image.create({
+      url: '',
+      path: uploadResult.path,
+      filename: uploadResult.filename,
+      imageableId: article._id,
+      imageableType: 'Article',
+      isPrimary: true,
+      thumbnails: uploadResult.thumbnails,
+      size: uploadResult.size,
+      mimetype: uploadResult.mimetype,
+    });
+
+    imageDoc.url = `/api/images/${imageDoc._id}/view`;
+    await imageDoc.save();
+
+    article.coverImageId = imageDoc._id;
+    await article.save();
+
+    const coverUrl = await ImageService.getSignedUrl(uploadResult.thumbnails.medium, 3600);
+
+    res.status(200).json({
+      success: true,
+      coverImageId: imageDoc._id,
+      coverUrl,
+    });
+  } catch (error) {
+    console.error('SET COVER IMAGE ERROR:', error);
+    res.status(500).json({ error: 'Failed to upload cover image.' });
+  }
+};
+
+// @desc    Generate a streaming SEO article via Server-Sent Events
+// @route   POST /api/articles/stream
+// @access  Private
+export const streamArticle = async (req, res) => {
+  const { keyword } = req.body;
+
+  if (!keyword || keyword.trim() === '') {
+    return res.status(400).json({ error: 'Keyword is required' });
+  }
+  if (keyword.length > 100) {
+    return res.status(400).json({ error: 'Keyword must be 100 characters or less' });
+  }
+
+  const user = await User.findById(req.user.id);
+  if (!user) return res.status(404).json({ error: 'User not found' });
+
+  let openai, model, isUserKey, language, tone;
+  try {
+    ({ openai, model, isUserKey, language, tone } = await getOpenAIClientAndModel(user));
+  } catch (configError) {
+    return res.status(400).json({ error: configError.message });
+  }
+
+  if (!isUserKey && user.credits <= 0) {
+    return res.status(403).json({ error: 'You have run out of credits. Please configure your own API key in Settings or contact support.' });
+  }
+
+  // Switch to SSE
+  res.setHeader('Content-Type', 'text/event-stream');
+  res.setHeader('Cache-Control', 'no-cache');
+  res.setHeader('Connection', 'keep-alive');
+  res.flushHeaders();
+
+  const send = (obj) => res.write(`data: ${JSON.stringify(obj)}\n\n`);
+
+  try {
+    // Step 1: Get title + meta (fast, non-streaming)
+    send({ type: 'status', step: 'meta' });
+    const metaCompletion = await openai.chat.completions.create({
+      model,
+      max_tokens: 300,
+      messages: [
+        { role: 'system', content: 'You are an SEO expert. Respond only in valid JSON. No markdown fences.' },
+        { role: 'user', content: `Generate a catchy SEO title and a meta description (under 160 chars) for the keyword: "${keyword}". Language: ${language}. Tone: ${tone}. Respond with JSON keys "title" and "metaDescription".` },
+      ],
+    });
+    const metaData = cleanAndParseJSON(metaCompletion.choices[0].message.content);
+    send({ type: 'meta', title: metaData.title, metaDescription: metaData.metaDescription });
+
+    // Step 2: Stream the article content
+    send({ type: 'status', step: 'content' });
+    const contentStream = await openai.chat.completions.create({
+      model,
+      max_tokens: 3000,
+      stream: true,
+      messages: [
+        { role: 'system', content: 'You are an expert SEO copywriter. Write well-structured Markdown articles.' },
+        { role: 'user', content: `Write a comprehensive, SEO-optimized article body for the title: "${metaData.title}" and keyword: "${keyword}". Use H2/H3 headings, bullet lists, and a strong introduction and conclusion. Language: ${language}. Tone: ${tone}. Output only Markdown — no JSON, no code fences.` },
+      ],
+    });
+
+    let fullContent = '';
+    for await (const chunk of contentStream) {
+      const delta = chunk.choices[0]?.delta?.content || '';
+      if (delta) {
+        fullContent += delta;
+        send({ type: 'delta', delta });
+      }
+    }
+
+    // Step 3: Get keyword suggestions (fast, non-streaming)
+    send({ type: 'status', step: 'keywords' });
+    const keywordCompletion = await openai.chat.completions.create({
+      model,
+      max_tokens: 500,
+      messages: [
+        { role: 'system', content: 'You are an SEO strategist. Respond only in valid JSON. No markdown fences.' },
+        { role: 'user', content: `Suggest 5 to 10 highly relevant long-tail and LSI keywords for: "${keyword}". Respond with JSON key "keywords" (array of strings).` },
+      ],
+    });
+    const keywordData = cleanAndParseJSON(keywordCompletion.choices[0].message.content);
+
+    // Step 4: Save to DB
+    send({ type: 'status', step: 'saving' });
+    const article = await Article.create({
+      user: user._id,
+      keyword,
+      title: metaData.title,
+      metaDescription: metaData.metaDescription,
+      content: fullContent,
+      suggestedKeywords: keywordData.keywords || [],
+    });
+
+    if (!isUserKey) {
+      user.credits = Math.max(0, user.credits - 1);
+      await user.save();
+    }
+
+    send({ type: 'done', data: article });
+    res.end();
+  } catch (error) {
+    console.error('STREAM ARTICLE ERROR:', error);
+    try {
+      send({ type: 'error', message: error.message || 'Generation failed.' });
+      res.end();
+    } catch (_) {}
   }
 };

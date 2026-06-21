@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { toast } from 'react-hot-toast';
 import DashboardLayout from '../components/DashboardLayout';
 import GeneratorForm from '../components/GeneratorForm';
 import ResultDisplay from '../components/ResultDisplay';
 import InternalLinkingPanel from '../components/InternalLinkingPanel';
-import { generateArticle } from '../lib/api';
 import { Zap, Search, Link as LinkIcon, FileText, Brain, Globe } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
@@ -65,25 +64,101 @@ function ArticleSkeleton() {
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState('generate');
   const [isLoading, setIsLoading] = useState(false);
+  const [streamStep, setStreamStep] = useState('');
   const [result, setResult]       = useState(null);
   const { user } = useAuth();
+  const abortRef = useRef(null);
 
   const handleGenerate = async (keyword) => {
     setIsLoading(true);
     setResult(null);
+    setStreamStep('meta');
+
+    const token = localStorage.getItem('token');
+    const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+
+    let accumulated = { title: '', metaDescription: '', content: '', suggestedKeywords: [], keyword };
+    let streamingContent = '';
+
     try {
-      const data = await generateArticle(keyword);
-      if (data.success) {
-        setResult(data.data);
-        toast.success('Article generated successfully!');
-      } else {
-        toast.error(data.error || 'Failed to generate article.');
+      const controller = new AbortController();
+      abortRef.current = controller;
+
+      const response = await fetch(`${apiBase}/articles/stream`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({ keyword }),
+        signal: controller.signal,
+      });
+
+      if (!response.ok) {
+        const errData = await response.json().catch(() => ({}));
+        throw new Error(errData.error || `HTTP ${response.status}`);
+      }
+
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = '';
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop();
+
+        for (const line of lines) {
+          if (!line.startsWith('data: ')) continue;
+          try {
+            const event = JSON.parse(line.slice(6));
+
+            if (event.type === 'status') {
+              setStreamStep(event.step);
+            } else if (event.type === 'meta') {
+              accumulated.title           = event.title;
+              accumulated.metaDescription = event.metaDescription;
+              // Show partial result immediately so user sees the title
+              setResult({ ...accumulated, content: '' });
+            } else if (event.type === 'delta') {
+              streamingContent += event.delta;
+              setResult((prev) => ({ ...prev, content: streamingContent }));
+            } else if (event.type === 'keywords') {
+              accumulated.suggestedKeywords = event.keywords || [];
+              setResult((prev) => ({ ...prev, suggestedKeywords: accumulated.suggestedKeywords }));
+            } else if (event.type === 'done') {
+              setResult(event.data);
+              toast.success('Article generated successfully!');
+            } else if (event.type === 'error') {
+              throw new Error(event.message);
+            }
+          } catch (parseErr) {
+            if (parseErr.message !== 'Unexpected end of JSON input') {
+              console.warn('SSE parse error:', parseErr.message);
+            }
+          }
+        }
       }
     } catch (error) {
-      toast.error(error.response?.data?.error || 'An error occurred during generation.');
+      if (error.name === 'AbortError') return;
+      console.error('Stream error:', error);
+      toast.error(error.message || 'An error occurred during generation.');
+      setResult(null);
     } finally {
       setIsLoading(false);
+      setStreamStep('');
+      abortRef.current = null;
     }
+  };
+
+  const stepLabels = {
+    meta:     'Analyzing keyword…',
+    content:  'Writing article…',
+    keywords: 'Finding SEO keywords…',
+    saving:   'Saving article…',
   };
 
   return (
@@ -113,7 +188,6 @@ export default function Dashboard() {
                 Powered by GPT-4o, DeepSeek, Groq and OpenRouter. One keyword → full article, meta description, and keyword strategy.
               </p>
 
-              {/* Stats row */}
               <div className="flex items-center gap-5 sm:gap-6 pt-1">
                 {stats.map((s, i) => (
                   <div key={i} className="text-center">
@@ -124,7 +198,6 @@ export default function Dashboard() {
               </div>
             </div>
 
-            {/* Floating feature cards — desktop only */}
             <div className="hidden lg:flex flex-col gap-3 shrink-0">
               {[
                 { icon: Brain,  label: 'AI Generation',     color: 'text-primary-300' },
@@ -167,7 +240,6 @@ export default function Dashboard() {
             ))}
           </div>
 
-          {/* Credit widget */}
           {user && (
             <div className="flex items-center gap-3 sm:gap-4 px-4 sm:px-5 py-2.5 sm:py-3 bg-white rounded-2xl border border-gray-100 shadow-soft w-full sm:w-auto justify-center sm:justify-start">
               <div className="text-center">
@@ -201,7 +273,7 @@ export default function Dashboard() {
                   </div>
                   <h3 className="text-base font-bold text-gray-900">Start Generating</h3>
                 </div>
-                <GeneratorForm onSubmit={handleGenerate} isLoading={isLoading} />
+                <GeneratorForm onSubmit={handleGenerate} isLoading={isLoading} streamStep={streamStep} stepLabel={stepLabels[streamStep] || ''} />
               </div>
 
               <AnimatePresence mode="wait">

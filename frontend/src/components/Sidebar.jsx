@@ -2,7 +2,7 @@ import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import {
   LayoutDashboard, History, Settings, LogOut,
-  Sparkles, ChevronRight, X, Users, Zap, Coins
+  Sparkles, ChevronRight, X, Users, Zap, Coins, ShoppingCart
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
@@ -108,6 +108,24 @@ export default function Sidebar({ isOpen, onClose }) {
             <ChevronRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-60 transition-opacity" />
           </NavLink>
         ))}
+
+        {/* Buy Credits — only shown when using shared API key */}
+        {!hasPersonalKey && (
+          <NavLink
+            to="/buy-credits"
+            onClick={onClose}
+            className={({ isActive }) => `
+              flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-200 group font-medium text-sm
+              ${isActive ? 'text-primary-700 bg-primary-50' : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50'}
+            `}
+          >
+            <div className="flex items-center gap-3">
+              <ShoppingCart className="w-4.5 h-4.5" />
+              <span>Buy Credits</span>
+            </div>
+            <ChevronRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-60 transition-opacity" />
+          </NavLink>
+        )}
 
         {user?.role === 'admin' && (
           <div className="pt-3 mt-3 border-t border-gray-100">
