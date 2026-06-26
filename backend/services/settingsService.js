@@ -1,4 +1,5 @@
 import Settings from '../models/Settings.js';
+import logger from '../utils/logger.js';
 
 /**
  * Get system settings. If they do not exist, initialize them with default values.
@@ -14,11 +15,11 @@ export const getSystemSettings = async () => {
         allowUserKeys: true,
         defaultUserCredits: 10,
       });
-      console.log('System settings initialized with defaults.');
+      logger.info('System settings initialized with defaults.');
     }
     return settings;
   } catch (error) {
-    console.error('Error fetching system settings:', error);
+    logger.error('Error fetching system settings:', error.message);
     // Return a default in-memory object if database fails during startup
     return {
       openaiApiKey: process.env.OPENAI_API_KEY || '',

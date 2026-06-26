@@ -1,0 +1,299 @@
+{
+  "common": {
+    "loading": "جاري التحميل...",
+    "save": "حفظ التغييرات",
+    "cancel": "إلغاء",
+    "logout": "تسجيل الخروج",
+    "login": "تسجيل الدخول",
+    "startFreeTrial": "ابدأ التجربة المجانية",
+    "darkMode": "الوضع الداكن",
+    "lightMode": "الوضع الفاتح",
+    "admin": "الإدارة",
+    "delete": "حذف",
+    "confirm": "تأكيد",
+    "close": "إغلاق",
+    "back": "رجوع",
+    "next": "التالي",
+    "or": "أو",
+    "error": "حدث خطأ. يرجى المحاولة مرة أخرى.",
+    "success": "تمت العملية بنجاح.",
+    "copied": "تم النسخ!",
+    "copy": "نسخ",
+    "export": "تصدير",
+    "generate": "توليد",
+    "generating": "جاري التوليد...",
+    "upgrade": "ترقية الخطة"
+  },
+  "nav": {
+    "dashboard": "لوحة القيادة",
+    "history": "السجل",
+    "settings": "الإعدادات",
+    "buyCredits": "شراء رصيد",
+    "userManager": "إدارة المستخدمين",
+    "adminDashboard": "لوحة المشرف",
+    "pricing": "الأسعار"
+  },
+  "sidebar": {
+    "unlimitedMode": "الوضع غير المحدود",
+    "personalKeyActive": "مفتاح API الشخصي نشط",
+    "credits": "الرصيد",
+    "creditsRemaining": "رصيد متبقٍ",
+    "noCredits": "لا يوجد رصيد",
+    "upgradeNow": "ترقية الآن"
+  },
+  "landing": {
+    "nav": {
+      "features": "المميزات",
+      "howItWorks": "كيف يعمل",
+      "pricing": "الأسعار",
+      "getStarted": "ابدأ مجاناً"
+    },
+    "hero": {
+      "badge": "منصة SEO مدعومة بالذكاء الاصطناعي",
+      "title": "أنشئ محتوى SEO",
+      "titleHighlight": "في ثوانٍ.",
+      "subtitle": "كلمة مفتاحية واحدة ← مقال كامل، وصف ميتا، واستراتيجية كلمات مفتاحية. انشر مباشرة على WordPress.",
+      "cta": "ابدأ مجاناً",
+      "ctaSecondary": "مشاهدة العرض التوضيحي",
+      "trustedBy": "أكثر من 5,000 منشئ محتوى يثقون بنا"
+    },
+    "stats": {
+      "articles": "أكثر من 5,000 مقال تم توليده",
+      "languages": "6 لغات مدعومة",
+      "models": "أكثر من 4 نماذج ذكاء اصطناعي",
+      "uptime": "وقت تشغيل 99.9%"
+    },
+    "features": {
+      "title": "كل ما تحتاجه للتفوق في SEO",
+      "subtitle": "من البحث عن الكلمات المفتاحية إلى النشر على WordPress — كل شيء في منصة واحدة."
+    },
+    "howItWorks": {
+      "title": "3 خطوات لمحتوى SEO",
+      "subtitle": "من الكلمة المفتاحية إلى المقال المنشور في أقل من 60 ثانية."
+    },
+    "pricing": {
+      "title": "أسعار بسيطة وشفافة",
+      "subtitle": "ابدأ مجاناً. قم بالترقية عند الحاجة.",
+      "monthly": "شهرياً",
+      "getStarted": "ابدأ الآن",
+      "mostPopular": "الأكثر شيوعاً"
+    },
+    "testimonials": {
+      "title": "محبوب من منشئي المحتوى",
+      "subtitle": "انضم إلى آلاف المنشئين الذين ينشرون بشكل أسرع مع SEO Gen AI."
+    },
+    "faq": { "title": "الأسئلة الشائعة" },
+    "cta": {
+      "title": "هل أنت مستعد لإنشاء مقالك الأول؟",
+      "subtitle": "انضم إلى أكثر من 5,000 منشئ ينشرون محتوى SEO في ثوانٍ.",
+      "button": "ابدأ مجاناً — لا حاجة لبطاقة ائتمان"
+    },
+    "footer": {
+      "tagline": "توليد مقالات SEO بالذكاء الاصطناعي لفرق المحتوى الحديثة.",
+      "product": "المنتج",
+      "legal": "قانوني",
+      "privacy": "سياسة الخصوصية",
+      "terms": "شروط الخدمة",
+      "rights": "جميع الحقوق محفوظة."
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "مرحباً بعودتك",
+      "subtitle": "سجل الدخول إلى حسابك للمتابعة.",
+      "email": "عنوان البريد الإلكتروني",
+      "password": "كلمة المرور",
+      "forgot": "هل نسيت كلمة المرور؟",
+      "submit": "تسجيل الدخول",
+      "submitting": "جاري تسجيل الدخول...",
+      "noAccount": "ليس لديك حساب؟",
+      "register": "أنشئ واحداً هنا",
+      "invalidCredentials": "البريد الإلكتروني أو كلمة المرور غير صحيحة."
+    },
+    "register": {
+      "title": "إنشاء حساب",
+      "subtitle": "ابدأ بحسابك المجاني اليوم.",
+      "name": "الاسم الكامل",
+      "email": "عنوان البريد الإلكتروني",
+      "password": "كلمة المرور",
+      "passwordPlaceholder": "8 أحرف على الأقل، حرف كبير ورقم",
+      "submit": "إنشاء الحساب",
+      "submitting": "جاري الإنشاء...",
+      "haveAccount": "لديك حساب بالفعل؟",
+      "signIn": "سجل الدخول هنا",
+      "passwordStrength": {
+        "weak": "ضعيفة", "fair": "مقبولة", "good": "جيدة",
+        "strong": "قوية", "excellent": "ممتازة"
+      },
+      "success": "تم إنشاء الحساب! مرحباً بك."
+    },
+    "loginPage": {
+      "headline": "أنشئ محتوى SEO",
+      "headlineHighlight": "بسرعة البرق.",
+      "tagline": "المنصة الذكية الشاملة للوكالات والمدونين وفرق المحتوى.",
+      "feature1Title": "توليد مدعوم بالذكاء الاصطناعي",
+      "feature1Desc": "أنشئ مقالات SEO كاملة في ثوانٍ باستخدام GPT-4o أو DeepSeek أو Groq.",
+      "feature2Title": "نشر على WordPress",
+      "feature2Desc": "انشر المقالات مباشرةً على موقعك في WordPress بنقرة واحدة.",
+      "feature3Title": "محرك متعدد النماذج",
+      "feature3Desc": "استخدم مفتاح API الخاص بك وولّد بأرصدة غير محدودة.",
+      "feature4Title": "آمن وجاهز للإنتاج",
+      "feature4Desc": "مصادقة JWT، تحديد معدل الطلبات، وبيانات مشفرة بـ AES-256."
+    },
+    "registerPage": {
+      "headline": "ابدأ التوليد",
+      "headlineHighlight": "محتوى احترافي.",
+      "tagline": "مجموعة أدوات الذكاء الاصطناعي الكاملة للهيمنة على SEO.",
+      "feature1": "توليد مقالات SEO بالذكاء الاصطناعي",
+      "feature2": "محرك متعدد النماذج (OpenAI، DeepSeek، Groq)",
+      "feature3": "نشر WordPress بنقرة واحدة",
+      "feature4": "محرك اقتراحات الروابط الداخلية"
+    },
+    "forgotPassword": {
+      "title": "نسيت كلمة المرور؟",
+      "subtitle": "أدخل بريدك الإلكتروني وسنرسل لك رابط إعادة التعيين.",
+      "email": "عنوان البريد الإلكتروني",
+      "submit": "إرسال رابط الإعادة",
+      "submitting": "جاري الإرسال...",
+      "backToLogin": "العودة إلى تسجيل الدخول",
+      "sent": "تحقق من بريدك الإلكتروني",
+      "sentSubtitle": "لقد أرسلنا رابط إعادة تعيين كلمة المرور إلى {{email}}.",
+      "resend": "إعادة إرسال البريد الإلكتروني",
+      "resendCooldown": "إعادة الإرسال خلال {{seconds}} ثانية"
+    },
+    "resetPassword": {
+      "title": "تعيين كلمة مرور جديدة",
+      "password": "كلمة المرور الجديدة",
+      "confirm": "تأكيد كلمة المرور",
+      "submit": "إعادة تعيين كلمة المرور",
+      "success": "تم تحديث كلمة المرور! يمكنك الآن تسجيل الدخول."
+    },
+    "emailVerification": {
+      "banner": "يرجى التحقق من عنوان بريدك الإلكتروني لفتح جميع الميزات.",
+      "resend": "إعادة إرسال الرابط",
+      "sent": "تم الإرسال!",
+      "sending": "جاري الإرسال...",
+      "verifying": "جاري التحقق من بريدك الإلكتروني...",
+      "successTitle": "تم التحقق من البريد الإلكتروني!",
+      "successMessage": "تم تفعيل حسابك بالكامل.",
+      "errorTitle": "فشل التحقق",
+      "goToDashboard": "الذهاب إلى لوحة القيادة"
+    }
+  },
+  "dashboard": {
+    "title": "أنشئ محتوى SEO",
+    "titleHighlight": "في ثوانٍ.",
+    "subtitle": "مدعوم بـ GPT-4o وDeepSeek وGroq وOpenRouter. كلمة مفتاحية واحدة ← مقال كامل، وصف ميتا، واستراتيجية كلمات مفتاحية.",
+    "aiEngineActive": "محرك الذكاء الاصطناعي نشط",
+    "startGenerating": "ابدأ الإنشاء",
+    "tabs": {
+      "generator": "مولّد المقالات",
+      "linking": "مساعد الروابط الداخلية"
+    },
+    "credits": {
+      "label": "الرصيد", "unlimited": "غير محدود",
+      "mode": "الوضع", "personal": "شخصي", "shared": "مشترك"
+    },
+    "stats": { "aiModels": "نماذج الذكاء الاصطناعي", "languages": "اللغات", "export": "الصيغ", "supported": "مدعوم", "available": "متاح", "formats": "تنسيقات" },
+    "badges": { "aiGeneration": "الإنشاء بالذكاء الاصطناعي", "wordpressExport": "تصدير WordPress", "instantResults": "نتائج فورية" }
+  },
+  "generator": {
+    "placeholder": "ما الموضوع الذي تريد الكتابة عنه؟ مثال: 'اتجاهات الموضة المستدامة 2025'",
+    "submit": "توليد",
+    "charCount": "{{count}}/100",
+    "hint": "⌘ Enter للتوليد",
+    "steps": {
+      "meta": "تحليل الكلمة المفتاحية",
+      "content": "كتابة المقال",
+      "keywords": "البحث عن كلمات مفتاحية SEO",
+      "saving": "حفظ المقال"
+    },
+    "badges": { "accuracy": "دقة عالية", "seo": "محسَّن لـ SEO", "plagiarism": "خالٍ من الانتحال" },
+    "generateArticle": "إنشاء مقال",
+    "working": "جارٍ العمل…"
+  },
+  "result": {
+    "title": "المقال المُولَّد",
+    "metaDescription": "الوصف الميتا",
+    "targetKeyword": "الكلمة المفتاحية المستهدفة",
+    "strategyKeywords": "الكلمات المفتاحية الاستراتيجية",
+    "pdfError": "فشل في إنشاء ملف PDF",
+    "keywords": "كلمات مفتاحية SEO",
+    "actions": {
+      "copy": "نسخ", "copied": "تم النسخ!", "markdown": "Markdown", "html": "HTML", "pdf": "PDF",
+      "replaceCover": "تغيير الغلاف", "addCover": "إضافة غلاف", "aiCover": "غلاف ذكاء اصطناعي", "wordpress": "WordPress",
+      "copyMarkdown": "نسخ Markdown",
+      "copyHtml": "نسخ HTML",
+      "downloadPdf": "تحميل PDF",
+      "publishWordpress": "النشر على WordPress",
+      "publishing": "جاري النشر...",
+      "published": "تم النشر!",
+      "addImage": "إضافة صورة غلاف",
+      "generateAiImage": "توليد صورة بالذكاء الاصطناعي"
+    }
+  },
+  "history": {
+    "title": "مكتبة",
+    "titleHighlight": "المحتوى",
+    "subtitle": "اطلع على سجل مقالاتك المُحسَّنة بالذكاء الاصطناعي وأدِرها.",
+    "total": "{{count}} مقال مُوَلَّد",
+    "search": "البحث بالكلمة المفتاحية أو العنوان...",
+    "empty": "لا توجد مقالات بعد",
+    "emptyHint": "عد إلى لوحة القيادة لإنشاء مقالك الأول!",
+    "noResults": "لا توجد نتائج",
+    "noResultsHint": "جرّب كلمة مفتاحية أو عنواناً مختلفاً.",
+    "openArticle": "فتح المقال",
+    "created": "تاريخ الإنشاء",
+    "deleteTitle": "حذف هذا المقال؟",
+    "deleteConfirm": "سيُحذف نهائياً. لا يمكن التراجع عن هذا الإجراء.",
+    "deleteSuccess": "تم حذف المقال",
+    "deleteFailed": "فشل الحذف",
+    "selectAll": "تحديد الكل",
+    "deselectAll": "إلغاء تحديد الكل",
+    "selected": "{{count}} مقال محدد",
+    "deleteSelected": "حذف المحدد",
+    "refine": {
+      "title": "التعديل بالذكاء الاصطناعي",
+      "subtitle": "اطلب من الذكاء الاصطناعي تعديل المقال أو توسيعه أو تحسينه.",
+      "placeholder": "مثال: 'اجعل المقدمة أكثر جذباً'",
+      "submit": "تحسين",
+      "success": "تم تحديث المقال بالذكاء الاصطناعي!",
+      "failed": "فشل التحسين"
+    },
+    "versions": {
+      "title": "النسخ السابقة",
+      "subtitle": "سيتم حفظ الحالة الحالية قبل استعادة أي نسخة.",
+      "restore": "استعادة",
+      "restoreSuccess": "تم استعادة النسخة!",
+      "restoreFailed": "فشل الاستعادة",
+      "hide": "إخفاء النسخ",
+      "show": "سجل النسخ ({{count}})"
+    }
+  },
+  "settings": {
+    "title": "الإعدادات",
+    "subtitle": "أدِر تفضيلات حسابك والتكاملات والاشتراك.",
+    "sections": {
+      "profile": "الملف الشخصي", "ai": "إعداد الذكاء الاصطناعي",
+      "wordpress": "تكامل WordPress", "preferences": "تفضيلات المحتوى",
+      "subscription": "الاشتراك", "danger": "منطقة الخطر"
+    },
+    "profile": {
+      "name": "الاسم الكامل", "email": "عنوان البريد الإلكتروني",
+      "password": "كلمة مرور جديدة", "passwordPlaceholder": "اتركه فارغاً للإبقاء على الحالي",
+      "saved": "تم حفظ الإعدادات!",
+      "passwordMin8": "يجب أن تحتوي كلمة المرور على 8 أحرف على الأقل.",
+      "passwordUppercase": "يجب أن تحتوي كلمة المرور على حرف كبير واحد على الأقل.",
+      "passwordNumber": "يجب أن تحتوي كلمة المرور على رقم واحد على الأقل.",
+      "passwordMismatch": "كلمتا المرور غير متطابقتين."
+    },
+    "preferences": { "language": "اللغة الافتراضية", "tone": "الأسلوب الافتراضي" }
+  },
+  "errors": {
+    "notFound": "الصفحة غير موجودة",
+    "notFoundSubtitle": "الصفحة التي تبحث عنها غير موجودة أو تم نقلها.",
+    "goHome": "الذهاب إلى لوحة القيادة",
+    "networkError": "خطأ في الشبكة. تحقق من اتصالك.",
+    "noCredits": "نفد رصيدك. يرجى شراء المزيد أو إضافة مفتاح API الخاص بك في الإعدادات."
+  }
+}

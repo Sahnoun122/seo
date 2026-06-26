@@ -1,0 +1,74 @@
+SEO Gen AI — Premium AI SEO Article Generator
+Copyright (c) 2026. All Rights Reserved.
+
+===============================================================================
+MARKETPLACE LICENSE TERMS
+===============================================================================
+
+This software ("Item") is licensed, not sold. Your license to this Item is
+subject to your acceptance of the license terms below.
+
+-------------------------------------------------------------------------------
+REGULAR LICENSE
+-------------------------------------------------------------------------------
+
+The Regular License grants you, the purchaser, an ongoing, non-exclusive,
+worldwide license to make use of the Item you have selected.
+
+You are licensed to use the Item to create ONE end product for yourself or
+for ONE client (a "single application"). The end product may be used by you
+or your client in a live environment.
+
+You may NOT:
+  - Redistribute, resell, lease, license, sub-license, or offer this Item
+    to any third party.
+  - Use this Item to create more than one end product without purchasing
+    an additional license for each additional project.
+  - Make the source code available for download as a standalone file.
+
+-------------------------------------------------------------------------------
+EXTENDED LICENSE
+-------------------------------------------------------------------------------
+
+The Extended License grants you all the rights of the Regular License, plus
+the right to incorporate the Item into an end product that is sold to
+end users (Software-as-a-Service).
+
+-------------------------------------------------------------------------------
+COMMON TERMS (BOTH LICENSES)
+-------------------------------------------------------------------------------
+
+1. You may modify or manipulate the Item to create a derivative work.
+   A derivative work is also subject to these license terms.
+
+2. You may not use the Item in a way that infringes upon the intellectual
+   property rights of any third party.
+
+3. You must retain this LICENSE file in all distributed copies of the Item.
+
+4. Third-party components used in this Item are subject to their respective
+   licenses:
+     - React          — MIT License
+     - Express.js     — MIT License
+     - TailwindCSS    — MIT License
+     - Framer Motion  — MIT License
+     - Mongoose       — MIT License
+     - Stripe SDK     — Apache 2.0 License
+     - OpenAI SDK     — Apache 2.0 License
+     - Lucide React   — ISC License
+     - i18next        — MIT License
+
+-------------------------------------------------------------------------------
+DISCLAIMER OF WARRANTIES
+-------------------------------------------------------------------------------
+
+THIS ITEM IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT. IN NO EVENT SHALL
+THE AUTHOR BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY ARISING
+FROM THE USE OF THIS ITEM.
+
+-------------------------------------------------------------------------------
+
+For licensing questions, use the support channel on the marketplace where
+you purchased this Item.

@@ -1,3 +1,4 @@
+import logger from '../utils/logger.js';
 import Image from '../models/Image.js';
 import ImageService from '../services/ImageService.js';
 
@@ -43,7 +44,7 @@ export const uploadImages = async (req, res) => {
 
     res.status(201).json({ success: true, data: uploadedImages });
   } catch (error) {
-    console.error('Upload Error:', error);
+    logger.error('Upload Error:', error);
     res.status(500).json({ error: error.message || 'Image upload failed.' });
   }
 };

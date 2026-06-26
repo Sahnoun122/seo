@@ -3,6 +3,7 @@ import Settings from '../models/Settings.js';
 import { getSystemSettings } from '../services/settingsService.js';
 import bcrypt from 'bcryptjs';
 import { getAllUsers, updateUserCredits, deleteUser } from './adminController.js';
+import logger from '../utils/logger.js';
 
 // @desc    Get all settings (global system settings, user profile, and user list if admin)
 // @route   GET /api/settings
@@ -16,18 +17,21 @@ export const getSettings = async (req, res) => {
       return res.status(404).json({ error: 'User not found' });
     }
 
+    // Use toObject({ getters: true }) so encrypted fields are decrypted for the settings form.
+    // toJSON strips them globally to avoid leaking them in other responses.
+    const userObj = currentUser.toObject({ getters: true });
     const personalSettingsResponse = {
-      name: currentUser.name,
-      email: currentUser.email,
-      role: currentUser.role,
-      credits: currentUser.credits,
-      settings: currentUser.settings || {
+      name: userObj.name,
+      email: userObj.email,
+      role: userObj.role,
+      credits: userObj.credits,
+      settings: userObj.settings || {
         userApiKey: '',
         userBaseUrl: '',
         preferredModel: '',
         defaultLanguage: 'French',
-        defaultTone: 'Professional'
-      }
+        defaultTone: 'Professional',
+      },
     };
 
     if (currentUser.role === 'admin') {
@@ -57,7 +61,7 @@ export const getSettings = async (req, res) => {
       });
     }
   } catch (error) {
-    console.error('Get Settings Error:', error);
+    logger.error('Get Settings Error:', error.message);
     res.status(500).json({ error: 'Failed to retrieve settings' });
   }
 };
@@ -76,6 +80,9 @@ export const updateSettings = async (req, res) => {
       preferredModel, 
       defaultLanguage, 
       defaultTone, 
+      wpUrl,
+      wpUsername,
+      wpApplicationPassword,
       systemSettings: systemInput 
     } = req.body;
     
@@ -99,8 +106,9 @@ export const updateSettings = async (req, res) => {
     }
     
     if (password && password.trim() !== '') {
-      if (password.length < 6) {
-        return res.status(400).json({ error: 'Password must be at least 6 characters.' });
+      const strongPwd = /^(?=.*[A-Z])(?=.*[0-9]).{8,}$/;
+      if (!strongPwd.test(password)) {
+        return res.status(400).json({ error: 'Password must be at least 8 characters and include an uppercase letter and a number.' });
       }
       user.password = password;
     }
@@ -123,10 +131,21 @@ export const updateSettings = async (req, res) => {
       if (preferredModel !== undefined) user.settings.preferredModel = preferredModel;
       if (defaultLanguage !== undefined) user.settings.defaultLanguage = defaultLanguage;
       if (defaultTone !== undefined) user.settings.defaultTone = defaultTone;
+      if (wpUrl !== undefined) user.settings.wpUrl = wpUrl;
+      if (wpUsername !== undefined) user.settings.wpUsername = wpUsername;
+      if (wpApplicationPassword !== undefined && wpApplicationPassword.trim() !== '') {
+        user.settings.wpApplicationPassword = wpApplicationPassword;
+      }
     } else {
-      // Still allow defaultLanguage and defaultTone changes since they are basic preferences
+      // Still allow non-API breaking changes
+      if (preferredModel !== undefined) user.settings.preferredModel = preferredModel;
       if (defaultLanguage !== undefined) user.settings.defaultLanguage = defaultLanguage;
       if (defaultTone !== undefined) user.settings.defaultTone = defaultTone;
+      if (wpUrl !== undefined) user.settings.wpUrl = wpUrl;
+      if (wpUsername !== undefined) user.settings.wpUsername = wpUsername;
+      if (wpApplicationPassword !== undefined && wpApplicationPassword.trim() !== '') {
+        user.settings.wpApplicationPassword = wpApplicationPassword;
+      }
     }
 
     // Make sure Mongoose recognizes the nested changes
@@ -148,19 +167,20 @@ export const updateSettings = async (req, res) => {
     // Refetch clean system settings and user
     const updatedSystemSettings = await getSystemSettings();
     const cleanUser = await User.findById(user._id).select('-password');
+    const cleanUserObj = cleanUser.toObject({ getters: true });
 
     const personalSettingsResponse = {
-      name: cleanUser.name,
-      email: cleanUser.email,
-      role: cleanUser.role,
-      credits: cleanUser.credits,
-      settings: cleanUser.settings || {
+      name: cleanUserObj.name,
+      email: cleanUserObj.email,
+      role: cleanUserObj.role,
+      credits: cleanUserObj.credits,
+      settings: cleanUserObj.settings || {
         userApiKey: '',
         userBaseUrl: '',
         preferredModel: '',
         defaultLanguage: 'French',
-        defaultTone: 'Professional'
-      }
+        defaultTone: 'Professional',
+      },
     };
 
     res.status(200).json({
@@ -178,7 +198,7 @@ export const updateSettings = async (req, res) => {
       }
     });
   } catch (error) {
-    console.error('Update Settings Error:', error);
+    logger.error('Update Settings Error:', error.message);
     res.status(500).json({ error: 'Failed to update settings.' });
   }
 };

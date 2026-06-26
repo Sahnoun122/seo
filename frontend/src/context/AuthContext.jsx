@@ -5,22 +5,34 @@ const AuthContext = createContext();
 
 export const useAuth = () => useContext(AuthContext);
 
+function isTokenExpired(token) {
+  try {
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    return payload.exp < Date.now() / 1000;
+  } catch {
+    return true;
+  }
+}
+
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Check if user is logged in
     const checkUser = async () => {
       const token = localStorage.getItem('token');
       if (token) {
-        try {
-          const res = await api.get('/auth/me');
-          setUser(res.data);
-        } catch (error) {
-          console.error('Auth verification failed', error);
+        if (isTokenExpired(token)) {
           localStorage.removeItem('token');
-          setUser(null);
+        } else {
+          try {
+            const res = await api.get('/auth/me');
+            setUser(res.data);
+          } catch {
+            // 401 auto-handled by axios interceptor which clears token + redirects
+            localStorage.removeItem('token');
+            setUser(null);
+          }
         }
       }
       setLoading(false);
@@ -48,8 +60,20 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
   };
 
+  const refreshUser = async () => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      try {
+        const res = await api.get('/auth/me');
+        setUser(res.data);
+      } catch {
+        // silent — 401 handled by axios interceptor
+      }
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ user, login, register, logout, loading }}>
+    <AuthContext.Provider value={{ user, login, register, logout, loading, refreshUser }}>
       {!loading && children}
     </AuthContext.Provider>
   );

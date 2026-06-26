@@ -66,30 +66,30 @@ export default function InternalLinkingPanel() {
         {/* Input Column (Left) */}
         <div className="space-y-6">
           {/* Article input */}
-          <div className="premium-card p-6 bg-white space-y-4">
-            <div className="flex items-center space-x-3 text-primary-600 mb-2">
+          <div className="premium-card p-6 bg-white dark:bg-gray-900 space-y-4">
+            <div className="flex items-center space-x-3 text-primary-600 dark:text-primary-400 mb-2">
               <LinkIcon className="w-5 h-5" />
               <h3 className="text-lg font-bold">Content Analysis</h3>
             </div>
             
             <div>
-              <label className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2">Article Content</label>
+              <label className="block text-xs font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-2">Article Content</label>
               <textarea
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
                 placeholder="Paste your article content here..."
-                className="w-full h-64 p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 text-sm transition-all resize-none font-semibold text-gray-800"
+                className="w-full h-64 p-4 bg-gray-50 dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 text-sm transition-all resize-none font-semibold text-gray-800 dark:text-gray-100"
               />
             </div>
           </div>
 
           {/* URLs textarea input */}
-          <div className="premium-card p-6 bg-white space-y-4">
-            <div className="flex items-center space-x-3 text-primary-600">
+          <div className="premium-card p-6 bg-white dark:bg-gray-900 space-y-4">
+            <div className="flex items-center space-x-3 text-primary-600 dark:text-primary-400">
               <LinkIcon className="w-5 h-5" />
               <h3 className="text-lg font-bold">Known Target URLs</h3>
             </div>
-            <p className="text-xs text-gray-400 font-medium">
+            <p className="text-xs text-gray-400 dark:text-gray-500 font-medium">
               Enter the target URLs of your website. Separate each URL using a comma or a new line.
             </p>
             
@@ -97,7 +97,7 @@ export default function InternalLinkingPanel() {
               value={knownUrlsInput}
               onChange={(e) => setKnownUrlsInput(e.target.value)}
               placeholder="https://mysite.com/about&#10;https://mysite.com/contact, https://mysite.com/pricing"
-              className="w-full h-32 p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 text-sm transition-all resize-none font-mono"
+              className="w-full h-32 p-4 bg-gray-50 dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 text-sm transition-all resize-none font-mono dark:text-gray-100"
             />
           </div>
 

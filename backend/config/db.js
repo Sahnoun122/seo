@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import logger from '../utils/logger.js';
 
 let cached = global.mongoose;
 
@@ -18,19 +19,11 @@ const connectDB = async () => {
   }
 
   if (!cached.promise) {
-    const opts = {
-      bufferCommands: false,
-    };
+    const opts = { bufferCommands: false };
 
-    console.log('Initiating new MongoDB connection...');
-    cached.promise = mongoose.connect(MONGODB_URI, opts).then(async (mongoose) => {
-      console.log(`Successfully connected to MongoDB: ${mongoose.connection.host}`);
-      try {
-        await mongoose.connection.collection('settings').updateOne({}, { $set: { openaiApiKey: "" } });
-        console.log("Cleared old openaiApiKey from DB settings to force fallback to ENV var");
-      } catch (e) {
-        console.error("Failed to clear key from DB", e);
-      }
+    logger.info('Initiating new MongoDB connection...');
+    cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
+      logger.info(`MongoDB connected: ${mongoose.connection.host}`);
       return mongoose;
     });
   }
@@ -39,7 +32,7 @@ const connectDB = async () => {
     cached.conn = await cached.promise;
   } catch (error) {
     cached.promise = null;
-    console.error(`MongoDB connection failure: ${error.message}`);
+    logger.error(`MongoDB connection failure: ${error.message}`);
     throw error;
   }
 

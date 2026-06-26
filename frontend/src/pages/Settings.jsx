@@ -1,10 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { toast } from 'react-hot-toast';
-import { User, Save, Lock, Loader2, Globe, Smile, Sliders, X } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import { User, Save, Lock, Loader2, Globe, Smile, Sliders, X, Brain, FileText } from 'lucide-react';
 import DashboardLayout from '../components/DashboardLayout';
+import SubscriptionCard from '../components/SubscriptionCard';
 import api, { getSettings, updateSettings } from '../lib/api';
+import Button from '../components/ui/Button';
+import Input from '../components/ui/Input';
+import { Card, CardHeader, CardContent, CardFooter } from '../components/ui/Card';
 
 export default function Settings() {
+  const { t } = useTranslation();
   const [loading, setLoading] = useState(true);
   const [saving,  setSaving]  = useState(false);
 
@@ -13,6 +19,7 @@ export default function Settings() {
   const [contentSettings, setContentSettings] = useState({
     defaultLanguage: 'English',
     defaultTone: 'Professional',
+    preferredModel: 'gpt-4o',
     wpUrl: '',
     wpUsername: '',
     wpApplicationPassword: '',
@@ -32,6 +39,7 @@ export default function Settings() {
         setContentSettings({
           defaultLanguage:      settingsRes.settings.defaultLanguage      || 'English',
           defaultTone:          settingsRes.settings.defaultTone          || 'Professional',
+          preferredModel:       settingsRes.settings.preferredModel       || 'gpt-4o',
           wpUrl:                settingsRes.settings.wpUrl                || '',
           wpUsername:           settingsRes.settings.wpUsername           || '',
           wpApplicationPassword: settingsRes.settings.wpApplicationPassword || '',
@@ -52,12 +60,20 @@ export default function Settings() {
   const handleSaveProfile = async (e) => {
     e.preventDefault();
     if (passwordData.newPassword) {
-      if (passwordData.newPassword.length < 6) {
-        toast.error('Password must be at least 6 characters.');
+      if (passwordData.newPassword.length < 8) {
+        toast.error(t('settings.passwordMin8'));
+        return;
+      }
+      if (!/[A-Z]/.test(passwordData.newPassword)) {
+        toast.error(t('settings.passwordUppercase'));
+        return;
+      }
+      if (!/[0-9]/.test(passwordData.newPassword)) {
+        toast.error(t('settings.passwordNumber'));
         return;
       }
       if (passwordData.newPassword !== passwordData.confirmNewPassword) {
-        toast.error('Passwords do not match.');
+        toast.error(t('settings.passwordMismatch'));
         return;
       }
     }
@@ -111,135 +127,152 @@ export default function Settings() {
         </div>
 
         {/* Profile */}
-        <form onSubmit={handleSaveProfile} className="premium-card bg-white p-8 space-y-6">
-          <h2 className="text-base font-black text-gray-900 flex items-center gap-2 border-b border-gray-100 pb-4">
-            <User className="w-4 h-4 text-primary-500" />
-            Profile Information
-          </h2>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-            <div className="space-y-1.5">
-              <label className="label-xs">Full Name</label>
-              <input type="text" value={profileData.name}
-                onChange={(e) => setProfileData({ ...profileData, name: e.target.value })}
-                className="input-field" required />
-            </div>
-            <div className="space-y-1.5">
-              <label className="label-xs">Email Address</label>
-              <input type="email" value={profileData.email}
-                onChange={(e) => setProfileData({ ...profileData, email: e.target.value })}
-                className="input-field" required />
-            </div>
-          </div>
-
-          <div className="border-t border-gray-100 pt-6 space-y-1.5">
-            <h3 className="text-sm font-bold text-gray-700 mb-4 flex items-center gap-2">
-              <Lock className="w-4 h-4 text-gray-400" />
-              Change Password
-              <span className="text-[10px] font-medium text-gray-400 normal-case">(leave blank to keep current)</span>
-            </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-              <div className="space-y-1.5">
-                <label className="label-xs">New Password</label>
-                <input type="password" value={passwordData.newPassword}
-                  onChange={(e) => setPasswordData({ ...passwordData, newPassword: e.target.value })}
-                  placeholder="Min 6 characters" className="input-field" />
+        <Card>
+          <form onSubmit={handleSaveProfile}>
+            <CardHeader 
+              icon={User} 
+              title="Profile Information" 
+              className="border-b border-gray-100 dark:border-gray-800"
+            />
+            <CardContent className="space-y-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                <Input 
+                  label="Full Name" 
+                  value={profileData.name}
+                  onChange={(e) => setProfileData({ ...profileData, name: e.target.value })}
+                  required 
+                />
+                <Input 
+                  label="Email Address" 
+                  type="email"
+                  value={profileData.email}
+                  onChange={(e) => setProfileData({ ...profileData, email: e.target.value })}
+                  required 
+                />
               </div>
-              <div className="space-y-1.5">
-                <label className="label-xs">Confirm Password</label>
-                <input type="password" value={passwordData.confirmNewPassword}
-                  onChange={(e) => setPasswordData({ ...passwordData, confirmNewPassword: e.target.value })}
-                  placeholder="Repeat password"
-                  className={`input-field ${
-                    passwordData.confirmNewPassword && passwordData.newPassword !== passwordData.confirmNewPassword
-                      ? 'border-red-300 focus:border-red-400' : ''
-                  }`} />
-                {passwordData.confirmNewPassword && passwordData.newPassword !== passwordData.confirmNewPassword && (
-                  <p className="text-[10px] text-red-500 font-bold flex items-center gap-1 mt-1">
-                    <X className="w-3 h-3" /> Passwords do not match
-                  </p>
-                )}
-              </div>
-            </div>
-          </div>
 
-          <div className="flex justify-end pt-2">
-            <button type="submit" disabled={saving} className="btn-primary">
-              {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <><Save className="w-4 h-4" /><span>Save Profile</span></>}
-            </button>
-          </div>
-        </form>
+              <div className="border-t border-gray-100 dark:border-gray-800 pt-6 space-y-1.5">
+                <h3 className="text-sm font-bold text-gray-700 dark:text-gray-300 mb-4 flex items-center gap-2">
+                  <Lock className="w-4 h-4 text-gray-400" />
+                  Change Password
+                  <span className="text-[10px] font-medium text-gray-400 normal-case">(leave blank to keep current)</span>
+                </h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                  <Input 
+                    label="New Password" 
+                    type="password"
+                    value={passwordData.newPassword}
+                    onChange={(e) => setPasswordData({ ...passwordData, newPassword: e.target.value })}
+                    placeholder="Min 8 chars, 1 uppercase, 1 number"
+                  />
+                  <Input 
+                    label="Confirm Password" 
+                    type="password"
+                    value={passwordData.confirmNewPassword}
+                    onChange={(e) => setPasswordData({ ...passwordData, confirmNewPassword: e.target.value })}
+                    placeholder="Repeat password"
+                    error={passwordData.confirmNewPassword && passwordData.newPassword !== passwordData.confirmNewPassword ? 'Passwords do not match' : null}
+                  />
+                </div>
+              </div>
+            </CardContent>
+            <CardFooter className="flex justify-end bg-transparent pt-2">
+              <Button type="submit" isLoading={saving} icon={Save}>
+                Save Profile
+              </Button>
+            </CardFooter>
+          </form>
+        </Card>
 
         {/* Content Preferences */}
-        <form onSubmit={handleSavePreferences} className="premium-card bg-white p-8 space-y-6">
-          <h2 className="text-base font-black text-gray-900 flex items-center gap-2 border-b border-gray-100 pb-4">
-            <Sliders className="w-4 h-4 text-primary-500" />
-            Content Preferences
-          </h2>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-            <div className="space-y-1.5">
-              <label className="label-xs flex items-center gap-1.5"><Globe className="w-3.5 h-3.5" /> Default Language</label>
-              <select value={contentSettings.defaultLanguage}
-                onChange={(e) => setContentSettings({ ...contentSettings, defaultLanguage: e.target.value })}
-                className="input-field">
-                <option value="English">English</option>
-                <option value="French">French (Français)</option>
-                <option value="Spanish">Spanish (Español)</option>
-                <option value="German">German (Deutsch)</option>
-                <option value="Arabic">Arabic (العربية)</option>
-                <option value="Portuguese">Portuguese (Português)</option>
-                <option value="Italian">Italian (Italiano)</option>
-              </select>
-            </div>
-            <div className="space-y-1.5">
-              <label className="label-xs flex items-center gap-1.5"><Smile className="w-3.5 h-3.5" /> Writing Tone</label>
-              <select value={contentSettings.defaultTone}
-                onChange={(e) => setContentSettings({ ...contentSettings, defaultTone: e.target.value })}
-                className="input-field">
-                <option value="Professional">Professional</option>
-                <option value="Informative">Informative</option>
-                <option value="Conversational">Conversational</option>
-                <option value="Persuasive">Persuasive</option>
-                <option value="Creative">Creative</option>
-              </select>
-            </div>
-          </div>
-
-          <div className="border-t border-gray-100 pt-6 space-y-4">
-            <h3 className="text-sm font-bold text-gray-700 flex items-center gap-2">
-              <Globe className="w-4 h-4 text-gray-400" />
-              WordPress Publishing
-              <span className="text-[10px] font-medium text-gray-400 normal-case">(optional)</span>
-            </h3>
-            <div className="space-y-1.5">
-              <label className="label-xs">Site URL</label>
-              <input type="text" value={contentSettings.wpUrl}
-                onChange={(e) => setContentSettings({ ...contentSettings, wpUrl: e.target.value })}
-                placeholder="https://myblog.com" className="input-field" />
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-              <div className="space-y-1.5">
-                <label className="label-xs">Username</label>
-                <input type="text" value={contentSettings.wpUsername}
-                  onChange={(e) => setContentSettings({ ...contentSettings, wpUsername: e.target.value })}
-                  placeholder="admin" className="input-field" />
+        <Card>
+          <form onSubmit={handleSavePreferences}>
+            <CardHeader 
+              icon={Sliders} 
+              title="Content Preferences" 
+            />
+            <CardContent className="space-y-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                <div className="space-y-1.5">
+                  <label className="label-xs flex items-center gap-1.5"><Globe className="w-3.5 h-3.5" /> Default Language</label>
+                  <select value={contentSettings.defaultLanguage}
+                    onChange={(e) => setContentSettings({ ...contentSettings, defaultLanguage: e.target.value })}
+                    className="w-full py-3 px-4 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm font-medium text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 focus:bg-white dark:focus:bg-gray-900 transition-all duration-200">
+                    <option value="English">English</option>
+                    <option value="French">French (Français)</option>
+                    <option value="Spanish">Spanish (Español)</option>
+                    <option value="German">German (Deutsch)</option>
+                    <option value="Arabic">Arabic (العربية)</option>
+                    <option value="Portuguese">Portuguese (Português)</option>
+                    <option value="Italian">Italian (Italiano)</option>
+                  </select>
+                </div>
+                <div className="space-y-1.5">
+                  <label className="label-xs flex items-center gap-1.5"><Smile className="w-3.5 h-3.5" /> Writing Tone</label>
+                  <select value={contentSettings.defaultTone}
+                    onChange={(e) => setContentSettings({ ...contentSettings, defaultTone: e.target.value })}
+                    className="w-full py-3 px-4 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm font-medium text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 focus:bg-white dark:focus:bg-gray-900 transition-all duration-200">
+                    <option value="Professional">Professional</option>
+                    <option value="Informative">Informative</option>
+                    <option value="Conversational">Conversational</option>
+                    <option value="Persuasive">Persuasive</option>
+                    <option value="Creative">Creative</option>
+                  </select>
+                </div>
+                <div className="space-y-1.5 sm:col-span-2">
+                  <label className="label-xs flex items-center gap-1.5"><Brain className="w-3.5 h-3.5" /> AI Model Selection</label>
+                  <select value={contentSettings.preferredModel}
+                    onChange={(e) => setContentSettings({ ...contentSettings, preferredModel: e.target.value })}
+                    className="w-full py-3 px-4 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm font-medium text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 focus:bg-white dark:focus:bg-gray-900 transition-all duration-200">
+                    <option value="gpt-4o">GPT-4o (Most Capable)</option>
+                    <option value="gpt-4o-mini">GPT-4o Mini (Faster & Cheaper)</option>
+                    <option value="gpt-3.5-turbo">GPT-3.5 Turbo (Legacy Fast)</option>
+                  </select>
+                  <p className="text-[10px] text-gray-500 mt-1 pl-1">Note: Availability depends on the administrator's global configuration or your own API key.</p>
+                </div>
               </div>
-              <div className="space-y-1.5">
-                <label className="label-xs">Application Password</label>
-                <input type="password" value={contentSettings.wpApplicationPassword}
-                  onChange={(e) => setContentSettings({ ...contentSettings, wpApplicationPassword: e.target.value })}
-                  placeholder="xxxx xxxx xxxx xxxx" className="input-field font-mono" />
-              </div>
-            </div>
-          </div>
 
-          <div className="flex justify-end pt-2">
-            <button type="submit" disabled={saving} className="btn-primary">
-              {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <><Save className="w-4 h-4" /><span>Save Preferences</span></>}
-            </button>
-          </div>
-        </form>
+              <div className="border-t border-gray-100 dark:border-gray-800 pt-6 space-y-4">
+                <h3 className="text-sm font-bold text-gray-700 dark:text-gray-300 flex items-center gap-2">
+                  <FileText className="w-4 h-4 text-gray-400" />
+                  WordPress Publishing
+                  <span className="text-[10px] font-medium text-gray-400 normal-case">(optional)</span>
+                </h3>
+                <Input 
+                  label="Site URL" 
+                  value={contentSettings.wpUrl}
+                  onChange={(e) => setContentSettings({ ...contentSettings, wpUrl: e.target.value })}
+                  placeholder="https://myblog.com" 
+                />
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                  <Input 
+                    label="Username" 
+                    value={contentSettings.wpUsername}
+                    onChange={(e) => setContentSettings({ ...contentSettings, wpUsername: e.target.value })}
+                    placeholder="admin" 
+                  />
+                  <Input 
+                    label="Application Password" 
+                    type="password"
+                    value={contentSettings.wpApplicationPassword}
+                    onChange={(e) => setContentSettings({ ...contentSettings, wpApplicationPassword: e.target.value })}
+                    placeholder="xxxx xxxx xxxx xxxx" 
+                    className="font-mono" 
+                  />
+                </div>
+              </div>
+            </CardContent>
+
+            <CardFooter className="flex justify-end bg-transparent pt-2">
+              <Button type="submit" isLoading={saving} icon={Save}>
+                Save Preferences
+              </Button>
+            </CardFooter>
+          </form>
+        </Card>
+
+        {/* Subscription management */}
+        <SubscriptionCard />
 
       </div>
     </DashboardLayout>

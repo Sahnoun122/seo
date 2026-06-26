@@ -1,0 +1,327 @@
+{
+  "common": {
+    "loading": "Cargando...",
+    "save": "Guardar cambios",
+    "cancel": "Cancelar",
+    "logout": "Cerrar sesión",
+    "login": "Iniciar sesión",
+    "startFreeTrial": "Prueba gratuita",
+    "darkMode": "Modo Oscuro",
+    "lightMode": "Modo Claro",
+    "admin": "Administración",
+    "delete": "Eliminar",
+    "confirm": "Confirmar",
+    "close": "Cerrar",
+    "back": "Volver",
+    "next": "Siguiente",
+    "or": "o",
+    "error": "Ocurrió un error. Por favor, inténtalo de nuevo.",
+    "success": "Operación exitosa.",
+    "copied": "¡Copiado!",
+    "copy": "Copiar",
+    "export": "Exportar",
+    "generate": "Generar",
+    "generating": "Generando...",
+    "upgrade": "Mejorar plan"
+  },
+  "nav": {
+    "dashboard": "Panel de control",
+    "history": "Historial",
+    "settings": "Ajustes",
+    "buyCredits": "Comprar créditos",
+    "userManager": "Gestión de usuarios",
+    "adminDashboard": "Panel Admin",
+    "pricing": "Precios"
+  },
+  "sidebar": {
+    "unlimitedMode": "Modo Ilimitado",
+    "personalKeyActive": "Clave API personal activa",
+    "credits": "Créditos",
+    "creditsRemaining": "créditos restantes",
+    "noCredits": "Sin créditos",
+    "upgradeNow": "Mejorar ahora"
+  },
+  "landing": {
+    "nav": {
+      "features": "Características",
+      "howItWorks": "Cómo funciona",
+      "pricing": "Precios",
+      "getStarted": "Comenzar gratis"
+    },
+    "hero": {
+      "badge": "Plataforma SEO con IA",
+      "title": "Genera contenido SEO",
+      "titleHighlight": "en segundos.",
+      "subtitle": "Una palabra clave → artículo completo, meta descripción y estrategia de palabras clave. Publica directamente en WordPress.",
+      "cta": "Comenzar gratis",
+      "ctaSecondary": "Ver demo",
+      "trustedBy": "Más de 5.000 creadores de contenido confían en nosotros"
+    },
+    "stats": {
+      "articles": "+5.000 artículos generados",
+      "languages": "6 idiomas admitidos",
+      "models": "+4 modelos IA",
+      "uptime": "99,9% de disponibilidad"
+    },
+    "features": {
+      "title": "Todo lo que necesitas para dominar el SEO",
+      "subtitle": "Desde la investigación de palabras clave hasta la publicación en WordPress — todo en una plataforma."
+    },
+    "howItWorks": {
+      "title": "3 pasos para tu contenido SEO",
+      "subtitle": "De la palabra clave al artículo publicado en menos de 60 segundos."
+    },
+    "pricing": {
+      "title": "Precios simples y transparentes",
+      "subtitle": "Comienza gratis. Mejora cuando lo necesites.",
+      "monthly": "mensual",
+      "getStarted": "Comenzar",
+      "mostPopular": "Más popular"
+    },
+    "testimonials": {
+      "title": "Amado por los creadores de contenido",
+      "subtitle": "Únete a miles de creadores que publican más rápido con SEO Gen AI."
+    },
+    "faq": {
+      "title": "Preguntas frecuentes"
+    },
+    "cta": {
+      "title": "¿Listo para generar tu primer artículo?",
+      "subtitle": "Únete a +5.000 creadores que publican contenido SEO en segundos.",
+      "button": "Comenzar gratis — sin tarjeta de crédito"
+    },
+    "footer": {
+      "tagline": "Generación de artículos SEO con IA para equipos de contenido modernos.",
+      "product": "Producto",
+      "legal": "Legal",
+      "privacy": "Política de privacidad",
+      "terms": "Términos de servicio",
+      "rights": "Todos los derechos reservados."
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Bienvenido de nuevo",
+      "subtitle": "Inicia sesión para continuar.",
+      "email": "Correo electrónico",
+      "password": "Contraseña",
+      "forgot": "¿Olvidaste tu contraseña?",
+      "submit": "Iniciar sesión",
+      "submitting": "Iniciando sesión...",
+      "noAccount": "¿No tienes cuenta?",
+      "register": "Créala aquí",
+      "invalidCredentials": "Correo o contraseña inválidos."
+    },
+    "register": {
+      "title": "Crear cuenta",
+      "subtitle": "Comienza con tu cuenta gratuita hoy.",
+      "name": "Nombre completo",
+      "email": "Correo electrónico",
+      "password": "Contraseña",
+      "passwordPlaceholder": "Mín. 8 caract., 1 mayúsc., 1 número",
+      "submit": "Crear cuenta",
+      "submitting": "Creando...",
+      "haveAccount": "¿Ya tienes cuenta?",
+      "signIn": "Inicia sesión aquí",
+      "passwordStrength": {
+        "weak": "Débil",
+        "fair": "Aceptable",
+        "good": "Buena",
+        "strong": "Fuerte",
+        "excellent": "Excelente"
+      },
+      "success": "¡Cuenta creada! Bienvenido."
+    },
+    "loginPage": {
+      "headline": "Genera contenido SEO",
+      "headlineHighlight": "a la velocidad de la luz.",
+      "tagline": "La plataforma de IA todo en uno para agencias, bloggers y equipos de contenido.",
+      "feature1Title": "Generación con IA",
+      "feature1Desc": "Crea artículos SEO completos en segundos con GPT-4o, DeepSeek o Groq.",
+      "feature2Title": "Publicación en WordPress",
+      "feature2Desc": "Publica artículos directamente en tu sitio WordPress con un clic.",
+      "feature3Title": "Motor multi-modelo",
+      "feature3Desc": "Usa tu propia clave API y genera con créditos ilimitados.",
+      "feature4Title": "Seguro y listo para producción",
+      "feature4Desc": "Auth JWT, rate limiting y credenciales cifrados con AES-256."
+    },
+    "registerPage": {
+      "headline": "Empieza a generar",
+      "headlineHighlight": "contenido premium.",
+      "tagline": "Tu kit de herramientas IA completo para dominar el SEO.",
+      "feature1": "Generación de artículos SEO con IA",
+      "feature2": "Motor multi-modelo (OpenAI, DeepSeek, Groq)",
+      "feature3": "Publicación WordPress con 1 clic",
+      "feature4": "Motor de sugerencias de enlaces internos"
+    },
+    "forgotPassword": {
+      "title": "¿Olvidaste tu contraseña?",
+      "subtitle": "Ingresa tu correo y te enviaremos un enlace de restablecimiento.",
+      "email": "Correo electrónico",
+      "submit": "Enviar enlace",
+      "submitting": "Enviando...",
+      "backToLogin": "Volver al inicio de sesión",
+      "sent": "Revisa tu bandeja de entrada",
+      "sentSubtitle": "Enviamos un enlace a {{email}}.",
+      "resend": "Reenviar correo",
+      "resendCooldown": "Reenviar en {{seconds}}s"
+    },
+    "resetPassword": {
+      "title": "Establecer nueva contraseña",
+      "password": "Nueva contraseña",
+      "confirm": "Confirmar contraseña",
+      "submit": "Restablecer contraseña",
+      "success": "¡Contraseña actualizada! Ahora puedes iniciar sesión."
+    },
+    "emailVerification": {
+      "banner": "Por favor verifica tu dirección de correo para desbloquear todas las funciones.",
+      "resend": "Reenviar enlace",
+      "sent": "¡Enviado!",
+      "sending": "Enviando...",
+      "verifying": "Verificando tu correo...",
+      "successTitle": "¡Correo verificado!",
+      "successMessage": "Tu cuenta está completamente activada.",
+      "errorTitle": "Error de verificación",
+      "goToDashboard": "Ir al panel"
+    }
+  },
+  "dashboard": {
+    "title": "Genera contenido SEO",
+    "titleHighlight": "en segundos.",
+    "subtitle": "Impulsado por GPT-4o, DeepSeek, Groq y OpenRouter. Una palabra clave → artículo completo, meta descripción y estrategia.",
+    "aiEngineActive": "Motor IA Activo",
+    "startGenerating": "Empezar a generar",
+    "tabs": {
+      "generator": "Generador de artículos",
+      "linking": "Asistente de enlaces internos"
+    },
+    "credits": {
+      "label": "Créditos",
+      "unlimited": "Ilimitado",
+      "mode": "Modo",
+      "personal": "Personal",
+      "shared": "Compartido"
+    },
+    "stats": {
+      "aiModels": "Modelos IA",
+      "languages": "Idiomas",
+      "export": "Formatos",
+      "supported": "Disponibles",
+      "available": "Disponibles",
+      "formats": "Formatos"
+    },
+    "badges": {
+      "aiGeneration": "Generación IA",
+      "wordpressExport": "Exportar WordPress",
+      "instantResults": "Resultados instantáneos"
+    }
+  },
+  "generator": {
+    "placeholder": "¿Sobre qué tema escribir? ej. 'Tendencias Moda Sostenible 2025'",
+    "submit": "Generar",
+    "charCount": "{{count}}/100",
+    "hint": "⌘ Enter para generar",
+    "steps": {
+      "meta": "Analizando palabra clave",
+      "content": "Escribiendo artículo",
+      "keywords": "Buscando palabras clave SEO",
+      "saving": "Guardando artículo"
+    },
+    "badges": {
+      "accuracy": "Alta precisión",
+      "seo": "Optimizado SEO",
+      "plagiarism": "Sin plagio"
+    },
+    "generateArticle": "Generar artículo",
+    "working": "Procesando…"
+  },
+  "result": {
+    "title": "Artículo generado",
+    "metaDescription": "Meta descripción",
+    "targetKeyword": "Palabra clave objetivo",
+    "strategyKeywords": "Palabras clave estratégicas",
+    "pdfError": "Error al generar el PDF",
+    "keywords": "Palabras clave SEO",
+    "actions": {
+      "copy": "Copiar",
+      "copied": "¡Copiado!",
+      "markdown": "Markdown",
+      "html": "HTML",
+      "pdf": "PDF",
+      "replaceCover": "Cambiar portada",
+      "addCover": "Añadir portada",
+      "aiCover": "Portada IA",
+      "wordpress": "WordPress",
+      "copyMarkdown": "Copiar Markdown",
+      "copyHtml": "Copiar HTML",
+      "downloadPdf": "Descargar PDF",
+      "publishWordpress": "Publicar en WordPress",
+      "publishing": "Publicando...",
+      "published": "¡Publicado!",
+      "addImage": "Añadir imagen",
+      "generateAiImage": "Generar imagen IA"
+    }
+  },
+  "history": {
+    "title": "Biblioteca de",
+    "titleHighlight": "contenido",
+    "subtitle": "Accede y gestiona tu historial completo de artículos SEO optimizados con IA.",
+    "total": "{{count}} artículos generados",
+    "search": "Buscar por palabra clave o título...",
+    "empty": "Sin artículos aún",
+    "emptyHint": "¡Vuelve al panel para generar tu primer artículo!",
+    "noResults": "Sin resultados",
+    "noResultsHint": "Prueba con otra palabra clave o título.",
+    "openArticle": "Abrir artículo",
+    "created": "Creado",
+    "deleteTitle": "¿Eliminar este artículo?",
+    "deleteConfirm": "será eliminado permanentemente. Esta acción no se puede deshacer.",
+    "deleteSuccess": "Artículo eliminado",
+    "deleteFailed": "Error al eliminar",
+    "selectAll": "Seleccionar todo",
+    "deselectAll": "Deseleccionar todo",
+    "selected": "{{count}} artículo(s) seleccionado(s)",
+    "deleteSelected": "Eliminar selección",
+    "refine": {
+      "title": "Modificar con IA",
+      "placeholder": "ej. 'Haz la introducción más impactante'",
+      "submit": "Refinar",
+      "success": "¡Artículo actualizado con IA!",
+      "failed": "Error al refinar"
+    }
+  },
+  "settings": {
+    "title": "Ajustes",
+    "subtitle": "Gestiona tus preferencias de cuenta, integraciones y suscripción.",
+    "sections": {
+      "profile": "Perfil",
+      "ai": "Configuración IA",
+      "wordpress": "Integración WordPress",
+      "preferences": "Preferencias de contenido",
+      "subscription": "Suscripción",
+      "danger": "Zona de peligro"
+    },
+    "profile": {
+      "name": "Nombre completo",
+      "email": "Correo electrónico",
+      "password": "Nueva contraseña",
+      "passwordPlaceholder": "Dejar en blanco para mantener la actual",
+      "saved": "¡Ajustes guardados!",
+      "passwordMin8": "La contraseña debe tener al menos 8 caracteres.",
+      "passwordUppercase": "La contraseña debe contener al menos una letra mayúscula.",
+      "passwordNumber": "La contraseña debe contener al menos un número.",
+      "passwordMismatch": "Las contraseñas no coinciden."
+    },
+    "preferences": {
+      "language": "Idioma predeterminado",
+      "tone": "Tono predeterminado"
+    }
+  },
+  "errors": {
+    "notFound": "Página no encontrada",
+    "notFoundSubtitle": "La página que buscas no existe o ha sido movida.",
+    "goHome": "Ir al panel",
+    "networkError": "Error de red. Comprueba tu conexión.",
+    "noCredits": "Te has quedado sin créditos. Compra más o añade tu propia clave API en Ajustes."
+  }
+}

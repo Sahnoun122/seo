@@ -1,0 +1,299 @@
+{
+  "common": {
+    "loading": "Caricamento...",
+    "save": "Salva modifiche",
+    "cancel": "Annulla",
+    "logout": "Esci",
+    "login": "Accedi",
+    "startFreeTrial": "Inizia la prova gratuita",
+    "darkMode": "Modalità Scura",
+    "lightMode": "Modalità Chiara",
+    "admin": "Amministrazione",
+    "delete": "Elimina",
+    "confirm": "Conferma",
+    "close": "Chiudi",
+    "back": "Indietro",
+    "next": "Avanti",
+    "or": "o",
+    "error": "Si è verificato un errore. Riprova.",
+    "success": "Operazione riuscita.",
+    "copied": "Copiato!",
+    "copy": "Copia",
+    "export": "Esporta",
+    "generate": "Genera",
+    "generating": "Generazione in corso...",
+    "upgrade": "Aggiorna piano"
+  },
+  "nav": {
+    "dashboard": "Bacheca",
+    "history": "Cronologia",
+    "settings": "Impostazioni",
+    "buyCredits": "Acquista Crediti",
+    "userManager": "Gestione Utenti",
+    "adminDashboard": "Dashboard Admin",
+    "pricing": "Prezzi"
+  },
+  "sidebar": {
+    "unlimitedMode": "Modalità Illimitata",
+    "personalKeyActive": "Chiave API personale attiva",
+    "credits": "Crediti",
+    "creditsRemaining": "crediti rimanenti",
+    "noCredits": "Nessun credito",
+    "upgradeNow": "Aggiorna ora"
+  },
+  "landing": {
+    "nav": {
+      "features": "Funzionalità",
+      "howItWorks": "Come funziona",
+      "pricing": "Prezzi",
+      "getStarted": "Inizia gratis"
+    },
+    "hero": {
+      "badge": "Piattaforma SEO con IA",
+      "title": "Genera contenuti SEO",
+      "titleHighlight": "in pochi secondi.",
+      "subtitle": "Una parola chiave → articolo completo, meta descrizione e strategia. Pubblica direttamente su WordPress.",
+      "cta": "Inizia gratis",
+      "ctaSecondary": "Vedi demo",
+      "trustedBy": "Oltre 5.000 creatori di contenuti si fidano di noi"
+    },
+    "stats": {
+      "articles": "Oltre 5.000 articoli generati",
+      "languages": "6 lingue supportate",
+      "models": "Oltre 4 modelli IA",
+      "uptime": "99,9% di disponibilità"
+    },
+    "features": {
+      "title": "Tutto ciò di cui hai bisogno per dominare la SEO",
+      "subtitle": "Dalla ricerca di parole chiave alla pubblicazione su WordPress — tutto in un'unica piattaforma."
+    },
+    "howItWorks": {
+      "title": "3 passaggi per i tuoi contenuti SEO",
+      "subtitle": "Dalla parola chiave all'articolo pubblicato in meno di 60 secondi."
+    },
+    "pricing": {
+      "title": "Prezzi semplici e trasparenti",
+      "subtitle": "Inizia gratis. Aggiorna quando ne hai bisogno.",
+      "monthly": "mensile",
+      "getStarted": "Inizia",
+      "mostPopular": "Più popolare"
+    },
+    "testimonials": {
+      "title": "Amato dai creatori di contenuti",
+      "subtitle": "Unisciti a migliaia di creatori che pubblicano più velocemente con SEO Gen AI."
+    },
+    "faq": { "title": "Domande frequenti" },
+    "cta": {
+      "title": "Pronto a generare il tuo primo articolo?",
+      "subtitle": "Unisciti a oltre 5.000 creatori che pubblicano contenuti SEO in pochi secondi.",
+      "button": "Inizia gratis — nessuna carta di credito richiesta"
+    },
+    "footer": {
+      "tagline": "Generazione di articoli SEO con IA per i team di contenuto moderni.",
+      "product": "Prodotto",
+      "legal": "Legale",
+      "privacy": "Informativa sulla privacy",
+      "terms": "Termini di servizio",
+      "rights": "Tutti i diritti riservati."
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Bentornato",
+      "subtitle": "Accedi al tuo account per continuare.",
+      "email": "Indirizzo e-mail",
+      "password": "Password",
+      "forgot": "Password dimenticata?",
+      "submit": "Accedi",
+      "submitting": "Accesso in corso...",
+      "noAccount": "Non hai un account?",
+      "register": "Creane uno qui",
+      "invalidCredentials": "E-mail o password non validi."
+    },
+    "register": {
+      "title": "Crea account",
+      "subtitle": "Inizia con il tuo account gratuito oggi.",
+      "name": "Nome completo",
+      "email": "Indirizzo e-mail",
+      "password": "Password",
+      "passwordPlaceholder": "Min. 8 car., 1 maiusc., 1 numero",
+      "submit": "Crea account",
+      "submitting": "Creazione in corso...",
+      "haveAccount": "Hai già un account?",
+      "signIn": "Accedi qui",
+      "passwordStrength": {
+        "weak": "Debole", "fair": "Accettabile", "good": "Buona",
+        "strong": "Forte", "excellent": "Eccellente"
+      },
+      "success": "Account creato! Benvenuto a bordo."
+    },
+    "loginPage": {
+      "headline": "Genera contenuto SEO",
+      "headlineHighlight": "alla velocità della luce.",
+      "tagline": "La piattaforma AI all-in-one per agenzie, blogger e team di contenuti.",
+      "feature1Title": "Generazione con AI",
+      "feature1Desc": "Crea articoli SEO completi in secondi con GPT-4o, DeepSeek o Groq.",
+      "feature2Title": "Pubblicazione WordPress",
+      "feature2Desc": "Pubblica articoli direttamente sul tuo sito WordPress con un clic.",
+      "feature3Title": "Motore multi-modello",
+      "feature3Desc": "Usa la tua chiave API e genera con crediti illimitati.",
+      "feature4Title": "Sicuro e pronto per la produzione",
+      "feature4Desc": "Auth JWT, rate limiting e credenziali cifrati con AES-256."
+    },
+    "registerPage": {
+      "headline": "Inizia a generare",
+      "headlineHighlight": "contenuto premium.",
+      "tagline": "Il tuo toolkit AI completo per dominare il SEO.",
+      "feature1": "Generazione di articoli SEO con AI",
+      "feature2": "Motore multi-modello (OpenAI, DeepSeek, Groq)",
+      "feature3": "Pubblicazione WordPress con 1 clic",
+      "feature4": "Motore di suggerimenti per link interni"
+    },
+    "forgotPassword": {
+      "title": "Password dimenticata?",
+      "subtitle": "Inserisci la tua e-mail e ti invieremo un link di ripristino.",
+      "email": "Indirizzo e-mail",
+      "submit": "Invia link",
+      "submitting": "Invio in corso...",
+      "backToLogin": "Torna al login",
+      "sent": "Controlla la tua casella e-mail",
+      "sentSubtitle": "Abbiamo inviato un link di ripristino a {{email}}.",
+      "resend": "Reinvia e-mail",
+      "resendCooldown": "Reinvia tra {{seconds}}s"
+    },
+    "resetPassword": {
+      "title": "Imposta nuova password",
+      "password": "Nuova password",
+      "confirm": "Conferma password",
+      "submit": "Reimposta password",
+      "success": "Password aggiornata! Ora puoi accedere."
+    },
+    "emailVerification": {
+      "banner": "Verifica il tuo indirizzo e-mail per sbloccare tutte le funzionalità.",
+      "resend": "Invia di nuovo",
+      "sent": "Inviato!",
+      "sending": "Invio in corso...",
+      "verifying": "Verifica della tua e-mail...",
+      "successTitle": "E-mail verificata!",
+      "successMessage": "Il tuo account è ora completamente attivato.",
+      "errorTitle": "Verifica fallita",
+      "goToDashboard": "Vai alla bacheca"
+    }
+  },
+  "dashboard": {
+    "title": "Genera contenuti SEO",
+    "titleHighlight": "in pochi secondi.",
+    "subtitle": "Alimentato da GPT-4o, DeepSeek, Groq e OpenRouter. Una parola chiave → articolo completo, meta descrizione e strategia.",
+    "aiEngineActive": "Motore IA Attivo",
+    "startGenerating": "Inizia a generare",
+    "tabs": {
+      "generator": "Generatore di articoli",
+      "linking": "Assistente link interni"
+    },
+    "credits": {
+      "label": "Crediti", "unlimited": "Illimitato",
+      "mode": "Modalità", "personal": "Personale", "shared": "Condiviso"
+    },
+    "stats": { "aiModels": "Modelli IA", "languages": "Lingue", "export": "Formati", "supported": "Supportati", "available": "Disponibili", "formats": "Formati" },
+    "badges": { "aiGeneration": "Generazione IA", "wordpressExport": "Esporta WordPress", "instantResults": "Risultati istantanei" }
+  },
+  "generator": {
+    "placeholder": "Su quale argomento scrivere? es. 'Tendenze Moda Sostenibile 2025'",
+    "submit": "Genera",
+    "charCount": "{{count}}/100",
+    "hint": "⌘ Invio per generare",
+    "steps": {
+      "meta": "Analisi della parola chiave",
+      "content": "Scrittura dell'articolo",
+      "keywords": "Ricerca parole chiave SEO",
+      "saving": "Salvataggio articolo"
+    },
+    "badges": { "accuracy": "Alta precisione", "seo": "Ottimizzato SEO", "plagiarism": "Senza plagio" },
+    "generateArticle": "Genera articolo",
+    "working": "In corso…"
+  },
+  "result": {
+    "title": "Articolo generato",
+    "metaDescription": "Meta descrizione",
+    "targetKeyword": "Parola chiave target",
+    "strategyKeywords": "Parole chiave strategiche",
+    "pdfError": "Impossibile generare il PDF",
+    "keywords": "Parole chiave SEO",
+    "actions": {
+      "copy": "Copia", "copied": "Copiato!", "markdown": "Markdown", "html": "HTML", "pdf": "PDF",
+      "replaceCover": "Cambia copertina", "addCover": "Aggiungi copertina", "aiCover": "Copertina IA", "wordpress": "WordPress",
+      "copyMarkdown": "Copia Markdown",
+      "copyHtml": "Copia HTML",
+      "downloadPdf": "Scarica PDF",
+      "publishWordpress": "Pubblica su WordPress",
+      "publishing": "Pubblicazione...",
+      "published": "Pubblicato!",
+      "addImage": "Aggiungi immagine",
+      "generateAiImage": "Genera immagine IA"
+    }
+  },
+  "history": {
+    "title": "Libreria di",
+    "titleHighlight": "contenuti",
+    "subtitle": "Accedi e gestisci la tua cronologia completa di articoli SEO ottimizzati con IA.",
+    "total": "{{count}} articoli generati",
+    "search": "Cerca per parola chiave o titolo...",
+    "empty": "Nessun articolo ancora",
+    "emptyHint": "Torna alla bacheca per generare il tuo primo articolo!",
+    "noResults": "Nessun risultato trovato",
+    "noResultsHint": "Prova con un'altra parola chiave o titolo.",
+    "openArticle": "Apri articolo",
+    "created": "Creato",
+    "deleteTitle": "Eliminare questo articolo?",
+    "deleteConfirm": "verrà eliminato definitivamente. Questa azione non può essere annullata.",
+    "deleteSuccess": "Articolo eliminato",
+    "deleteFailed": "Eliminazione fallita",
+    "selectAll": "Seleziona tutto",
+    "deselectAll": "Deseleziona tutto",
+    "selected": "{{count}} articolo/i selezionato/i",
+    "deleteSelected": "Elimina selezionati",
+    "refine": {
+      "title": "Modifica con IA",
+      "subtitle": "Chiedi all'IA di modificare, estendere o migliorare l'articolo.",
+      "placeholder": "es. 'Rendi l'introduzione più incisiva'",
+      "submit": "Raffina",
+      "success": "Articolo aggiornato con IA!",
+      "failed": "Raffinamento fallito"
+    },
+    "versions": {
+      "title": "Versioni precedenti",
+      "subtitle": "Il ripristino di una versione salva prima lo stato attuale.",
+      "restore": "Ripristina",
+      "restoreSuccess": "Versione ripristinata!",
+      "restoreFailed": "Ripristino fallito",
+      "hide": "Nascondi versioni",
+      "show": "Cronologia versioni ({{count}})"
+    }
+  },
+  "settings": {
+    "title": "Impostazioni",
+    "subtitle": "Gestisci le preferenze del tuo account, integrazioni e abbonamento.",
+    "sections": {
+      "profile": "Profilo", "ai": "Configurazione IA",
+      "wordpress": "Integrazione WordPress", "preferences": "Preferenze contenuto",
+      "subscription": "Abbonamento", "danger": "Zona pericolosa"
+    },
+    "profile": {
+      "name": "Nome completo", "email": "Indirizzo e-mail",
+      "password": "Nuova password", "passwordPlaceholder": "Lascia vuoto per mantenere l'attuale",
+      "saved": "Impostazioni salvate!",
+      "passwordMin8": "La password deve contenere almeno 8 caratteri.",
+      "passwordUppercase": "La password deve contenere almeno una lettera maiuscola.",
+      "passwordNumber": "La password deve contenere almeno un numero.",
+      "passwordMismatch": "Le password non corrispondono."
+    },
+    "preferences": { "language": "Lingua predefinita", "tone": "Tono predefinito" }
+  },
+  "errors": {
+    "notFound": "Pagina non trovata",
+    "notFoundSubtitle": "La pagina che stai cercando non esiste o è stata spostata.",
+    "goHome": "Vai alla bacheca",
+    "networkError": "Errore di rete. Controlla la tua connessione.",
+    "noCredits": "Hai esaurito i crediti. Acquistane altri o aggiungi la tua chiave API nelle Impostazioni."
+  }
+}

@@ -1,3 +1,4 @@
+import logger from '../utils/logger.js';
 import User from '../models/User.js';
 
 // @desc    Get all users
@@ -30,7 +31,7 @@ export const getAllUsers = async (req, res) => {
       message: 'Users fetched successfully'
     });
   } catch (error) {
-    console.error('Error fetching users:', error);
+    logger.error('Error fetching users:', error);
     res.status(500).json({ success: false, message: 'Server Error while fetching users' });
   }
 };
@@ -61,7 +62,7 @@ export const updateUserCredits = async (req, res) => {
       message: 'User credits updated successfully'
     });
   } catch (error) {
-    console.error('Error updating user credits:', error);
+    logger.error('Error updating user credits:', error);
     res.status(500).json({ success: false, message: 'Server Error while updating credits' });
   }
 };
@@ -90,7 +91,7 @@ export const deleteUser = async (req, res) => {
       message: 'User deleted successfully'
     });
   } catch (error) {
-    console.error('Error deleting user:', error);
+    logger.error('Error deleting user:', error);
     res.status(500).json({ success: false, message: 'Server Error while deleting user' });
   }
 };

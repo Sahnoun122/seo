@@ -1,36 +1,26 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Search, Loader2, ArrowRight, CheckCircle2, Circle, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 
-const STEPS = [
-  { label: 'Analyzing keyword',       duration: 4000  },
-  { label: 'Writing article content', duration: 18000 },
-  { label: 'Generating SEO keywords', duration: 10000 },
-  { label: 'Saving article',          duration: 4000  },
-];
-
-const TIPS = [
-  'Long-tail keywords convert 3× better than generic ones.',
-  'Aim for 1,500–2,500 words for top Google rankings.',
-  'A compelling meta description boosts your click-through rate.',
-  'Use H2/H3 headings to structure content for featured snippets.',
-  'Internal links keep readers on your site longer.',
-  'Fresh content updated regularly ranks higher.',
-];
+const STEP_DURATIONS = [4000, 18000, 10000, 4000];
+const STEP_KEYS = ['meta', 'content', 'keywords', 'saving'];
+const TIP_COUNT = 6;
 
 function LoadingSteps() {
+  const { t } = useTranslation();
   const [step, setStep]     = useState(0);
   const [tipIdx, setTipIdx] = useState(0);
   const timers = useRef([]);
 
   useEffect(() => {
     let elapsed = 0;
-    STEPS.forEach((s, i) => {
-      const t = setTimeout(() => setStep(i + 1), elapsed + s.duration);
-      timers.current.push(t);
-      elapsed += s.duration;
+    STEP_DURATIONS.forEach((duration, i) => {
+      const timer = setTimeout(() => setStep(i + 1), elapsed + duration);
+      timers.current.push(timer);
+      elapsed += duration;
     });
-    const tipTimer = setInterval(() => setTipIdx(p => (p + 1) % TIPS.length), 5000);
+    const tipTimer = setInterval(() => setTipIdx(p => (p + 1) % TIP_COUNT), 5000);
     timers.current.push(tipTimer);
     return () => timers.current.forEach(clearTimeout);
   }, []);
@@ -47,18 +37,18 @@ function LoadingSteps() {
         <motion.div
           className="h-full bg-gradient-to-r from-primary-500 to-violet-500 rounded-full"
           initial={{ width: '4%' }}
-          animate={{ width: `${Math.min(96, (step / STEPS.length) * 100 + 4)}%` }}
+          animate={{ width: `${Math.min(96, (step / STEP_KEYS.length) * 100 + 4)}%` }}
           transition={{ duration: 1.2, ease: 'easeInOut' }}
         />
       </div>
 
       {/* Steps — 2 cols on mobile, 4 on sm+ */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
-        {STEPS.map((s, i) => {
+        {STEP_KEYS.map((key, i) => {
           const done   = step > i;
           const active = step === i;
           return (
-            <div key={i} className={`flex items-center gap-2 p-2.5 sm:p-3 rounded-xl border text-[11px] sm:text-xs font-bold transition-all duration-300 ${
+            <div key={key} className={`flex items-center gap-2 p-2.5 sm:p-3 rounded-xl border text-[11px] sm:text-xs font-bold transition-all duration-300 ${
               done   ? 'border-emerald-200 bg-emerald-50 text-emerald-700' :
               active ? 'border-primary-200 bg-primary-50 text-primary-700' :
                        'border-gray-100 bg-gray-50 text-gray-400'
@@ -70,7 +60,7 @@ function LoadingSteps() {
               ) : (
                 <Circle className="w-3.5 h-3.5 shrink-0" />
               )}
-              <span className="leading-tight">{s.label}</span>
+              <span className="leading-tight">{t(`generator.steps.${key}`)}</span>
             </div>
           );
         })}
@@ -86,7 +76,7 @@ function LoadingSteps() {
           transition={{ duration: 0.4 }}
           className="text-center text-[11px] font-semibold text-gray-400 italic px-4"
         >
-          💡 {TIPS[tipIdx]}
+          💡 {t(`generator.tips.${tipIdx + 1}`)}
         </motion.p>
       </AnimatePresence>
     </motion.div>
@@ -94,11 +84,19 @@ function LoadingSteps() {
 }
 
 export default function GeneratorForm({ onSubmit, isLoading, streamStep, stepLabel }) {
+  const { t } = useTranslation();
   const [keyword, setKeyword] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (keyword.trim()) onSubmit(keyword.trim());
+  };
+
+  const handleKeyDown = (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter' && keyword.trim() && !isLoading) {
+      e.preventDefault();
+      onSubmit(keyword.trim());
+    }
   };
 
   return (
@@ -113,8 +111,9 @@ export default function GeneratorForm({ onSubmit, isLoading, streamStep, stepLab
             type="text"
             value={keyword}
             onChange={(e) => setKeyword(e.target.value.slice(0, 100))}
-            placeholder="What topic to write about? e.g. 'Sustainable Fashion Trends'"
-            className="w-full pl-12 sm:pl-16 pr-4 sm:pr-48 py-4 sm:py-6 bg-gray-50 border border-gray-100 rounded-2xl sm:rounded-[2rem] text-sm sm:text-lg font-medium text-gray-900 focus:outline-none focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 focus:bg-white transition-all shadow-inner"
+            onKeyDown={handleKeyDown}
+            placeholder={t('generator.placeholder')}
+            className="w-full pl-12 sm:pl-16 pr-4 sm:pr-48 py-4 sm:py-6 bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-2xl sm:rounded-[2rem] text-sm sm:text-lg font-medium text-gray-900 dark:text-white focus:outline-none focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 focus:bg-white dark:focus:bg-gray-800 transition-all shadow-inner"
             disabled={isLoading}
             required
           />
@@ -130,16 +129,21 @@ export default function GeneratorForm({ onSubmit, isLoading, streamStep, stepLab
                 <Loader2 className="w-5 h-5 animate-spin" />
               ) : (
                 <>
-                  <span>Generate</span>
+                  <span>{t('generator.submit')}</span>
                   <ArrowRight className="w-4 h-4" />
                 </>
               )}
             </button>
           </div>
 
-          {/* Character count — below input on mobile */}
-          <div className="absolute bottom-[-20px] right-2 sm:right-4 text-[10px] font-bold text-gray-400">
-            {keyword.length}/100
+          {/* Character count + keyboard hint */}
+          <div className="absolute bottom-[-1.5rem] right-2 sm:right-4 flex items-center gap-3">
+            {keyword.trim() && !isLoading && (
+              <span className="hidden sm:inline text-[10px] font-bold text-gray-300">
+                {t('generator.hint')}
+              </span>
+            )}
+            <span className="text-[10px] font-bold text-gray-400">{keyword.length}/100</span>
           </div>
         </div>
 
@@ -154,7 +158,7 @@ export default function GeneratorForm({ onSubmit, isLoading, streamStep, stepLab
           ) : (
             <>
               <Sparkles className="w-5 h-5" />
-              <span>Generate Article</span>
+              <span>{t('generator.generateArticle')}</span>
             </>
           )}
         </button>
@@ -162,7 +166,7 @@ export default function GeneratorForm({ onSubmit, isLoading, streamStep, stepLab
 
       {/* Badges */}
       <div className="flex items-center justify-center gap-4 sm:gap-6 mt-8">
-        {['High Accuracy', 'SEO Optimized', 'Plagiarism Free'].map((label) => (
+        {[t('generator.badges.accuracy'), t('generator.badges.seo'), t('generator.badges.plagiarism')].map((label) => (
           <p key={label} className="text-[9px] sm:text-[10px] font-black text-gray-300 uppercase tracking-[0.15em] sm:tracking-[0.2em] flex items-center gap-1.5">
             <span className="w-1 h-1 bg-gray-300 rounded-full" />
             {label}
@@ -182,7 +186,7 @@ export default function GeneratorForm({ onSubmit, isLoading, streamStep, stepLab
                 className="mt-6 flex items-center justify-center gap-3"
               >
                 <Loader2 className="w-4 h-4 animate-spin text-primary-500" />
-                <span className="text-sm font-semibold text-gray-500">{stepLabel || 'Working…'}</span>
+                <span className="text-sm font-semibold text-gray-500">{stepLabel || t('generator.working')}</span>
               </motion.div>
             )
             : <LoadingSteps key="steps" />

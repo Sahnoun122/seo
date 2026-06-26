@@ -1,11 +1,20 @@
 import jwt from 'jsonwebtoken';
+import crypto from 'crypto';
 import User from '../models/User.js';
+import Article from '../models/Article.js';
+import Image from '../models/Image.js';
+import ImageService from '../services/ImageService.js';
 import { getSystemSettings } from '../services/settingsService.js';
+import { sendEmailVerificationEmail } from '../services/emailService.js';
+import logger from '../utils/logger.js';
 
 // Generate JWT token
 const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET || 'fallback_secret_key', {
-    expiresIn: '30d',
+  if (!process.env.JWT_SECRET) {
+    throw new Error('FATAL: JWT_SECRET environment variable is not set. Cannot sign tokens.');
+  }
+  return jwt.sign({ id }, process.env.JWT_SECRET, {
+    expiresIn: '7d',
   });
 };
 
@@ -44,19 +53,41 @@ export const registerUser = async (req, res) => {
     });
 
     if (user) {
+      // Generate verification token and send email (non-blocking — register still succeeds)
+      let devVerifyUrl;
+      try {
+        const rawToken = user.createEmailVerificationToken();
+        await user.save({ validateBeforeSave: false });
+        const appUrl = process.env.APP_URL || 'http://localhost:5173';
+        const verifyUrl = `${appUrl}/verify-email/${rawToken}`;
+        const emailResult = await sendEmailVerificationEmail({
+          to: user.email,
+          verifyUrl,
+        });
+        // Dev mode: no Resend key → return the URL so the frontend can redirect directly
+        if (emailResult?.fallback) {
+          devVerifyUrl = verifyUrl;
+        }
+      } catch (emailErr) {
+        logger.error('Verification email error:', emailErr.message);
+      }
+
       res.status(201).json({
         _id: user.id,
         name: user.name,
         email: user.email,
         role: user.role,
         credits: user.credits,
+        plan: user.plan || 'free',
+        isEmailVerified: user.isEmailVerified,
         token: generateToken(user._id),
+        ...(devVerifyUrl && { devVerifyUrl }),
       });
     } else {
       res.status(400).json({ error: 'Invalid user data' });
     }
   } catch (error) {
-    console.error("Register Error:", error);
+    logger.error('Register Error:', error.message);
     res.status(500).json({ error: 'Server error during registration' });
   }
 };
@@ -82,13 +113,15 @@ export const loginUser = async (req, res) => {
         email: user.email,
         role: user.role,
         credits: user.credits,
+        plan: user.plan || 'free',
+        isEmailVerified: user.isEmailVerified,
         token: generateToken(user._id),
       });
     } else {
       res.status(401).json({ error: 'Invalid credentials' });
     }
   } catch (error) {
-    console.error("Login Error:", error);
+    logger.error('Login Error:', error.message);
     res.status(500).json({ error: 'Server error during login' });
   }
 };
@@ -104,6 +137,8 @@ export const getMe = async (req, res) => {
       email: req.user.email,
       role: req.user.role,
       credits: req.user.credits,
+      plan: req.user.plan || 'free',
+      isEmailVerified: req.user.isEmailVerified,
       settings: req.user.settings || {
         userApiKey: '',
         userBaseUrl: '',
@@ -117,7 +152,7 @@ export const getMe = async (req, res) => {
     };
     res.status(200).json(user);
   } catch (error) {
-    console.error("GetMe Error:", error);
+    logger.error('GetMe Error:', error.message);
     res.status(500).json({ error: 'Server error' });
   }
 };
@@ -145,7 +180,7 @@ export const getSettings = async (req, res) => {
 
     res.status(200).json({ success: true, settings });
   } catch (error) {
-    console.error("Get Settings Error:", error);
+    logger.error('Get Settings Error:', error.message);
     res.status(500).json({ error: 'Server error' });
   }
 };
@@ -181,7 +216,99 @@ export const updateSettings = async (req, res) => {
       settings: user.settings
     });
   } catch (error) {
-    console.error("Update Settings Error:", error);
+    logger.error('Update Settings Error:', error.message);
     res.status(500).json({ error: 'Server error' });
+  }
+};
+
+// @desc    Verify email address via token
+// @route   GET /api/auth/verify-email/:token
+// @access  Public
+export const verifyEmail = async (req, res) => {
+  try {
+    const hashedToken = crypto.createHash('sha256').update(req.params.token).digest('hex');
+
+    const user = await User.findOne({
+      emailVerificationToken: hashedToken,
+      emailVerificationExpires: { $gt: new Date() },
+    }).select('+emailVerificationToken +emailVerificationExpires');
+
+    if (!user) {
+      return res.status(400).json({ error: 'Verification link is invalid or has expired.' });
+    }
+
+    user.isEmailVerified = true;
+    user.emailVerificationToken = undefined;
+    user.emailVerificationExpires = undefined;
+    await user.save({ validateBeforeSave: false });
+
+    res.status(200).json({ success: true, message: 'Email verified successfully.' });
+  } catch (error) {
+    logger.error('Verify Email Error:', error.message);
+    res.status(500).json({ error: 'Server error during email verification.' });
+  }
+};
+
+// @desc    Resend email verification link
+// @route   POST /api/auth/resend-verification
+// @access  Private
+export const resendVerificationEmail = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select('+emailVerificationToken +emailVerificationExpires');
+
+    if (!user) return res.status(404).json({ error: 'User not found.' });
+    if (user.isEmailVerified) return res.status(400).json({ error: 'Email is already verified.' });
+
+    const rawToken = user.createEmailVerificationToken();
+    await user.save({ validateBeforeSave: false });
+
+    const appUrl = process.env.APP_URL || 'http://localhost:5173';
+    await sendEmailVerificationEmail({
+      to: user.email,
+      verifyUrl: `${appUrl}/verify-email/${rawToken}`,
+    });
+
+    res.status(200).json({ success: true, message: 'Verification email sent.' });
+  } catch (error) {
+    logger.error('Resend Verification Error:', error.message);
+    res.status(500).json({ error: 'Failed to send verification email.' });
+  }
+};
+
+// @desc    Permanently delete account and all associated data (GDPR right to erasure)
+// @route   DELETE /api/auth/account
+// @access  Private
+export const deleteAccount = async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    // Delete all cover images from S3
+    const articles = await Article.find({ user: userId });
+    const imageIds = articles.map((a) => a.coverImageId).filter(Boolean);
+
+    if (imageIds.length > 0) {
+      const images = await Image.find({ _id: { $in: imageIds } });
+      const s3Paths = images.flatMap((img) =>
+        [img.path, img.thumbnails?.small, img.thumbnails?.medium, img.thumbnails?.large].filter(Boolean)
+      );
+      if (s3Paths.length > 0) {
+        await ImageService.deleteImagePaths(s3Paths);
+      }
+      await Image.deleteMany({ _id: { $in: imageIds } });
+    }
+
+    // Delete all articles
+    await Article.deleteMany({ user: userId });
+
+    // Delete the user account
+    await User.findByIdAndDelete(userId);
+
+    res.status(200).json({
+      success: true,
+      message: 'Your account and all associated data have been permanently deleted.',
+    });
+  } catch (error) {
+    logger.error('Delete Account Error:', error.message);
+    res.status(500).json({ error: 'Failed to delete account. Please try again or contact support.' });
   }
 };

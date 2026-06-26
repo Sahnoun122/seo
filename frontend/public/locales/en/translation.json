@@ -1,0 +1,441 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "save": "Save changes",
+    "cancel": "Cancel",
+    "logout": "Sign Out",
+    "login": "Log in",
+    "startFreeTrial": "Start Free Trial",
+    "darkMode": "Dark Mode",
+    "lightMode": "Light Mode",
+    "admin": "Administration",
+    "delete": "Delete",
+    "confirm": "Confirm",
+    "close": "Close",
+    "back": "Back",
+    "next": "Next",
+    "or": "or",
+    "error": "An error occurred. Please try again.",
+    "success": "Operation successful.",
+    "copied": "Copied!",
+    "copy": "Copy",
+    "export": "Export",
+    "generate": "Generate",
+    "generating": "Generating...",
+    "upgrade": "Upgrade Plan"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "history": "History",
+    "settings": "Settings",
+    "buyCredits": "Buy Credits",
+    "userManager": "User Manager",
+    "adminDashboard": "Admin Dashboard",
+    "pricing": "Pricing"
+  },
+  "sidebar": {
+    "unlimitedMode": "Unlimited Mode",
+    "personalKeyActive": "Personal API key active",
+    "credits": "Credits",
+    "creditsRemaining": "credits remaining",
+    "noCredits": "No credits remaining",
+    "upgradeNow": "Upgrade now"
+  },
+  "landing": {
+    "nav": {
+      "features": "Features",
+      "howItWorks": "How It Works",
+      "pricing": "Pricing",
+      "getStarted": "Get Started Free"
+    },
+    "hero": {
+      "badge": "AI-Powered SEO Platform",
+      "title": "Generate SEO content",
+      "titleHighlight": "in seconds.",
+      "subtitle": "One keyword → full article, meta description, and keyword strategy. Publish directly to WordPress.",
+      "cta": "Start generating for free",
+      "ctaSecondary": "View demo",
+      "trustedBy": "Trusted by 5,000+ content creators"
+    },
+    "stats": {
+      "articles": "5,000+ articles generated",
+      "languages": "6 languages supported",
+      "models": "4+ AI models",
+      "uptime": "99.9% uptime"
+    },
+    "features": {
+      "title": "Everything you need to dominate SEO",
+      "subtitle": "From keyword research to WordPress publishing — all in one platform."
+    },
+    "howItWorks": {
+      "title": "3 steps to SEO content",
+      "subtitle": "From keyword to published article in under 60 seconds."
+    },
+    "pricing": {
+      "title": "Simple, transparent pricing",
+      "subtitle": "Start free. Upgrade when you need more.",
+      "monthly": "monthly",
+      "getStarted": "Get started",
+      "mostPopular": "Most Popular"
+    },
+    "testimonials": {
+      "title": "Loved by content creators",
+      "subtitle": "Join thousands of creators who publish faster with SEO Gen AI."
+    },
+    "faq": {
+      "title": "Frequently Asked Questions"
+    },
+    "cta": {
+      "title": "Ready to generate your first article?",
+      "subtitle": "Join 5,000+ content creators who ship SEO content in seconds.",
+      "button": "Start for free — no credit card required"
+    },
+    "footer": {
+      "tagline": "AI-powered SEO article generation for modern content teams.",
+      "product": "Product",
+      "legal": "Legal",
+      "privacy": "Privacy Policy",
+      "terms": "Terms of Service",
+      "rights": "All rights reserved."
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Welcome back",
+      "subtitle": "Sign in to your account to continue.",
+      "email": "Email Address",
+      "password": "Password",
+      "forgot": "Forgot password?",
+      "submit": "Sign In",
+      "submitting": "Signing in...",
+      "noAccount": "Don't have an account?",
+      "register": "Create one here",
+      "invalidCredentials": "Invalid email or password."
+    },
+    "register": {
+      "title": "Create account",
+      "subtitle": "Get started with your free account today.",
+      "name": "Full Name",
+      "email": "Email Address",
+      "password": "Password",
+      "passwordPlaceholder": "Min. 8 chars, 1 uppercase, 1 number",
+      "submit": "Create Account",
+      "submitting": "Creating...",
+      "haveAccount": "Already have an account?",
+      "signIn": "Sign in here",
+      "passwordStrength": {
+        "weak": "Weak",
+        "fair": "Fair",
+        "good": "Good",
+        "strong": "Strong",
+        "excellent": "Excellent"
+      },
+      "success": "Account created! Welcome aboard."
+    },
+    "loginPage": {
+      "headline": "Generate SEO content",
+      "headlineHighlight": "at light speed.",
+      "tagline": "The all-in-one AI platform for agencies, bloggers, and content teams.",
+      "feature1Title": "AI-Powered Generation",
+      "feature1Desc": "Create full SEO articles in seconds with GPT-4o, DeepSeek, or Groq.",
+      "feature2Title": "WordPress Publishing",
+      "feature2Desc": "Publish articles directly to your WordPress site with one click.",
+      "feature3Title": "Multi-Model Engine",
+      "feature3Desc": "Bring your own API key and generate with unlimited credits.",
+      "feature4Title": "Secure & Production Ready",
+      "feature4Desc": "JWT auth, rate limiting, and AES-256 encrypted credentials."
+    },
+    "registerPage": {
+      "headline": "Start generating",
+      "headlineHighlight": "premium content.",
+      "tagline": "Your complete AI-powered toolkit for SEO domination.",
+      "feature1": "AI-Powered SEO Article Generation",
+      "feature2": "Multi-Model Engine (OpenAI, DeepSeek, Groq)",
+      "feature3": "WordPress 1-Click Publishing",
+      "feature4": "Internal Link Suggestion Engine"
+    },
+    "forgotPassword": {
+      "title": "Forgot your password?",
+      "subtitle": "Enter your email and we'll send you a reset link.",
+      "email": "Email Address",
+      "submit": "Send Reset Link",
+      "submitting": "Sending...",
+      "backToLogin": "Back to login",
+      "sent": "Check your inbox",
+      "sentSubtitle": "We sent a password reset link to {{email}}.",
+      "resend": "Resend email",
+      "resendCooldown": "Resend in {{seconds}}s"
+    },
+    "resetPassword": {
+      "title": "Set a new password",
+      "password": "New Password",
+      "confirm": "Confirm Password",
+      "submit": "Reset Password",
+      "success": "Password updated! You can now sign in."
+    },
+    "emailVerification": {
+      "banner": "Please verify your email address to unlock all features.",
+      "resend": "Resend link",
+      "sent": "Sent!",
+      "sending": "Sending...",
+      "verifying": "Verifying your email...",
+      "successTitle": "Email verified!",
+      "successMessage": "Your account is now fully activated.",
+      "errorTitle": "Verification failed",
+      "goToDashboard": "Go to Dashboard"
+    }
+  },
+  "dashboard": {
+    "title": "Generate SEO content",
+    "titleHighlight": "in seconds.",
+    "subtitle": "Powered by GPT-4o, DeepSeek, Groq and OpenRouter. One keyword → full article, meta description, and keyword strategy.",
+    "aiEngineActive": "AI Engine Active",
+    "startGenerating": "Start Generating",
+    "tabs": {
+      "generator": "Article Generator",
+      "linking": "Linking Assistant"
+    },
+    "credits": {
+      "label": "Credits",
+      "unlimited": "Unlimited",
+      "mode": "Mode",
+      "personal": "Personal",
+      "shared": "Shared"
+    },
+    "stats": {
+      "aiModels": "AI Models",
+      "languages": "Languages",
+      "export": "Export",
+      "supported": "Supported",
+      "available": "Available",
+      "formats": "Formats"
+    },
+    "badges": {
+      "aiGeneration": "AI Generation",
+      "wordpressExport": "WordPress Export",
+      "instantResults": "Instant Results"
+    }
+  },
+  "generator": {
+    "placeholder": "What topic to write about? e.g. 'Sustainable Fashion Trends'",
+    "submit": "Generate",
+    "charCount": "{{count}}/100",
+    "hint": "⌘ Enter to generate",
+    "steps": {
+      "meta": "Analyzing keyword",
+      "content": "Writing article",
+      "keywords": "Finding SEO keywords",
+      "saving": "Saving article"
+    },
+    "tips": {
+      "1": "Long-tail keywords convert 3× better than generic ones.",
+      "2": "Aim for 1,500–2,500 words for top Google rankings.",
+      "3": "A compelling meta description boosts your click-through rate.",
+      "4": "Use H2/H3 headings to structure content for featured snippets.",
+      "5": "Internal links keep readers on your site longer.",
+      "6": "Fresh content updated regularly ranks higher."
+    },
+    "badges": {
+      "accuracy": "High Accuracy",
+      "seo": "SEO Optimized",
+      "plagiarism": "Plagiarism Free"
+    },
+    "generateArticle": "Generate Article",
+    "working": "Working…"
+  },
+  "result": {
+    "title": "Generated Article",
+    "metaDescription": "Meta Description",
+    "targetKeyword": "Target Keyword",
+    "strategyKeywords": "Strategy Keywords",
+    "pdfError": "Failed to generate PDF",
+    "keywords": "SEO Keywords",
+    "actions": {
+      "copy": "Copy",
+      "copied": "Copied!",
+      "markdown": "Markdown",
+      "html": "HTML",
+      "pdf": "PDF",
+      "replaceCover": "Replace Cover",
+      "addCover": "Add Cover",
+      "aiCover": "AI Cover",
+      "wordpress": "WordPress",
+      "copyMarkdown": "Copy Markdown",
+      "copyHtml": "Copy HTML",
+      "downloadPdf": "Download PDF",
+      "publishWordpress": "Publish to WordPress",
+      "publishing": "Publishing...",
+      "published": "Published!",
+      "addImage": "Add Cover Image",
+      "generateAiImage": "Generate AI Image"
+    },
+    "wordpress": {
+      "success": "Article published to WordPress as a draft!",
+      "notConfigured": "Configure WordPress in Settings first."
+    }
+  },
+  "history": {
+    "title": "Content",
+    "titleHighlight": "Library",
+    "subtitle": "Access and manage your complete history of AI-optimized SEO articles.",
+    "total": "{{count}} Articles Generated",
+    "search": "Search by keyword or title...",
+    "empty": "No articles yet",
+    "emptyHint": "Head back to the dashboard to generate your first article!",
+    "noResults": "No results found",
+    "noResultsHint": "Try a different keyword or title.",
+    "openArticle": "Open Article",
+    "created": "Created",
+    "deleteTitle": "Delete this article?",
+    "deleteConfirm": "will be permanently removed. This action cannot be undone.",
+    "deleteSuccess": "Article deleted",
+    "deleteFailed": "Failed to delete article",
+    "selectAll": "Select all",
+    "deselectAll": "Deselect all",
+    "selected": "{{count}} article(s) selected",
+    "deleteSelected": "Delete selected",
+    "refine": {
+      "title": "Modify with AI",
+      "subtitle": "Ask the AI to change, extend, or improve the article.",
+      "placeholder": "e.g. 'Make the introduction more aggressive'",
+      "submit": "Refine",
+      "success": "Article updated with AI!",
+      "failed": "Failed to refine article"
+    },
+    "versions": {
+      "title": "Previous Versions",
+      "subtitle": "Restoring a version saves the current state first.",
+      "restore": "Restore",
+      "restoreSuccess": "Version restored!",
+      "restoreFailed": "Failed to restore version",
+      "hide": "Hide Versions",
+      "show": "Version History ({{count}})"
+    },
+    "pagination": {
+      "page": "Page {{current}} of {{total}}"
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "subtitle": "Manage your account preferences, integrations, and subscription.",
+    "sections": {
+      "profile": "Profile",
+      "ai": "AI Configuration",
+      "wordpress": "WordPress Integration",
+      "preferences": "Content Preferences",
+      "subscription": "Subscription",
+      "danger": "Danger Zone"
+    },
+    "profile": {
+      "name": "Full Name",
+      "email": "Email Address",
+      "password": "New Password",
+      "passwordPlaceholder": "Leave blank to keep current",
+      "saved": "Settings saved!",
+      "passwordMin8": "Password must be at least 8 characters.",
+      "passwordUppercase": "Password must contain at least one uppercase letter.",
+      "passwordNumber": "Password must contain at least one number.",
+      "passwordMismatch": "Passwords do not match."
+    },
+    "ai": {
+      "apiKey": "Personal API Key",
+      "apiKeyPlaceholder": "sk-... (optional)",
+      "apiKeyHint": "Use your own key for unlimited generations.",
+      "baseUrl": "Custom Base URL",
+      "baseUrlPlaceholder": "https://api.openai.com/v1",
+      "model": "Preferred Model",
+      "modelPlaceholder": "e.g. gpt-4o, deepseek-chat"
+    },
+    "wordpress": {
+      "url": "WordPress Site URL",
+      "urlPlaceholder": "https://yourblog.com",
+      "username": "WordPress Username",
+      "usernamePlaceholder": "admin",
+      "password": "Application Password",
+      "passwordPlaceholder": "xxxx xxxx xxxx xxxx",
+      "passwordHint": "Generate from WordPress → Users → Application Passwords",
+      "testConnection": "Test Connection",
+      "connectionSuccess": "WordPress connection successful!",
+      "connectionFailed": "Connection failed. Check your credentials."
+    },
+    "preferences": {
+      "language": "Default Language",
+      "tone": "Default Tone"
+    },
+    "subscription": {
+      "currentPlan": "Current Plan",
+      "renewsOn": "Renews on {{date}}",
+      "cancelAt": "Cancels at {{date}}",
+      "cancelPlan": "Cancel Plan",
+      "reactivate": "Reactivate Plan",
+      "cancelled": "Plan cancelled.",
+      "reactivated": "Plan reactivated!",
+      "managePlan": "Manage Plan"
+    },
+    "danger": {
+      "deleteAccount": "Delete Account",
+      "deleteWarning": "This action is permanent and cannot be undone. All your articles, images, and data will be deleted.",
+      "deleteConfirm": "Yes, delete my account",
+      "deleted": "Account deleted."
+    }
+  },
+  "buyCredits": {
+    "title": "Choose your",
+    "titleHighlight": "plan",
+    "subtitle": "Each credit = one complete AI article (title + meta + full content + keywords).",
+    "oneTime": "one-time",
+    "generations": "AI article generations",
+    "features": {
+      "seo": "Full SEO content + keywords",
+      "wordpress": "WordPress direct publish",
+      "priority": "Priority queue"
+    },
+    "buy": "Buy {{name}}",
+    "secured": "Payments are processed securely via Stripe. Credits are added instantly after payment confirmation.",
+    "modal": {
+      "title": "Secure payment",
+      "orderSummary": "{{name}} Plan",
+      "orderSubtitle": "{{credits}} AI article generations",
+      "pay": "Pay {{amount}}",
+      "processing": "Processing...",
+      "success": "Payment confirmed!",
+      "successSubtitle": "{{credits}} credits are being added to your account...",
+      "cancel": "Cancel",
+      "secured": "Secured by Stripe · Card data never touches our servers"
+    },
+    "success": "Credits added to your account!"
+  },
+  "admin": {
+    "dashboard": {
+      "title": "Admin Dashboard",
+      "users": "Total Users",
+      "articles": "Total Articles",
+      "revenue": "Revenue",
+      "activeSubscriptions": "Active Subscriptions"
+    },
+    "users": {
+      "title": "User Management",
+      "search": "Search users...",
+      "name": "Name",
+      "email": "Email",
+      "role": "Role",
+      "credits": "Credits",
+      "plan": "Plan",
+      "joined": "Joined",
+      "actions": "Actions",
+      "editCredits": "Edit credits",
+      "deleteUser": "Delete user",
+      "creditsUpdated": "Credits updated!",
+      "userDeleted": "User deleted."
+    }
+  },
+  "errors": {
+    "notFound": "Page Not Found",
+    "notFoundSubtitle": "The page you're looking for doesn't exist or has been moved.",
+    "goHome": "Go to Dashboard",
+    "serverError": "Something went wrong",
+    "networkError": "Network error. Please check your connection.",
+    "noCredits": "You have run out of credits. Please buy more or add your own API key in Settings.",
+    "stripeNotConfigured": "Stripe is not configured by the administrator yet."
+  }
+}

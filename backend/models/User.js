@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
+import crypto from 'crypto';
 import { encrypt, decrypt } from '../utils/encryption.js';
 
 const userSchema = new mongoose.Schema(
@@ -19,7 +20,7 @@ const userSchema = new mongoose.Schema(
     password: {
       type: String,
       required: true,
-      minlength: 6,
+      minlength: 8,
     },
     role: {
       type: String,
@@ -29,6 +30,23 @@ const userSchema = new mongoose.Schema(
     credits: {
       type: Number,
       default: 10,
+    },
+    plan: {
+      type: String,
+      enum: ['free', 'starter', 'growth', 'pro'],
+      default: 'free',
+    },
+    isEmailVerified: {
+      type: Boolean,
+      default: false,
+    },
+    emailVerificationToken: {
+      type: String,
+      select: false,
+    },
+    emailVerificationExpires: {
+      type: Date,
+      select: false,
     },
     settings: {
       userApiKey: {
@@ -53,8 +71,23 @@ const userSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-    toJSON: { getters: true },
+    // getters: true only on toObject so internal code can decrypt — NOT on toJSON (HTTP responses)
     toObject: { getters: true },
+    toJSON: {
+      getters: false,
+      transform: (_doc, ret) => {
+        delete ret.password;
+        delete ret.emailVerificationToken;
+        delete ret.emailVerificationExpires;
+        // Strip encrypted sensitive fields from all generic responses.
+        // The settings controller explicitly calls toObject({ getters: true }) when it needs them.
+        if (ret.settings) {
+          delete ret.settings.userApiKey;
+          delete ret.settings.wpApplicationPassword;
+        }
+        return ret;
+      },
+    },
   }
 );
 
@@ -68,6 +101,13 @@ userSchema.pre('save', async function () {
 
 userSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
+};
+
+userSchema.methods.createEmailVerificationToken = function () {
+  const rawToken = crypto.randomBytes(32).toString('hex');
+  this.emailVerificationToken = crypto.createHash('sha256').update(rawToken).digest('hex');
+  this.emailVerificationExpires = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
+  return rawToken;
 };
 
 const User = mongoose.model('User', userSchema);

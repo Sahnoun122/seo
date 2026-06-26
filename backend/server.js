@@ -1,10 +1,25 @@
 import 'dotenv/config';
+import * as Sentry from '@sentry/node';
 import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
 import helmet from 'helmet';
+import mongoSanitize from 'express-mongo-sanitize';
+import swaggerUi from 'swagger-ui-express';
+import openApiSpec from './docs/openapi.js';
+
+// Sentry must be initialized before any other code runs (optional — only when DSN is set)
+if (process.env.SENTRY_DSN) {
+  Sentry.init({
+    dsn: process.env.SENTRY_DSN,
+    environment: process.env.NODE_ENV || 'development',
+    tracesSampleRate: process.env.NODE_ENV === 'production' ? 0.2 : 1.0,
+  });
+}
 import connectDB from './config/db.js';
+import logger from './utils/logger.js';
 import { globalLimiter, authLimiter, generationLimiter } from './middleware/rateLimiter.js';
+import errorHandler from './middleware/errorHandler.js';
 import articleRoutes from './routes/articleRoutes.js';
 import authRoutes from './routes/authRoutes.js';
 import settingsRoutes from './routes/settingsRoutes.js';
@@ -16,22 +31,31 @@ const app = express();
 app.set('trust proxy', 1);
 
 if (!process.env.OPENAI_API_KEY || process.env.OPENAI_API_KEY.trim() === '') {
-  console.warn('\x1b[33m%s\x1b[0m', '⚠️  WARNING: OPENAI_API_KEY is missing from your .env file.');
-  console.warn('\x1b[33m%s\x1b[0m', '   AI article generation will fail unless users provide their own API key in Settings.');
+  logger.warn('OPENAI_API_KEY is missing. AI generation will fail unless users provide their own API key in Settings.');
 }
 
 const encKey = process.env.ENCRYPTION_KEY || '';
 if (encKey.trim().length < 32) {
   const msg = 'SECURITY ERROR: ENCRYPTION_KEY must be at least 32 characters. API keys stored in the database will NOT be encrypted securely.';
   if (process.env.NODE_ENV === 'production') {
-    console.error('\x1b[31m%s\x1b[0m', `⛔ FATAL: ${msg}`);
+    logger.error(`FATAL: ${msg}`);
     process.exit(1);
   } else {
-    console.warn('\x1b[33m%s\x1b[0m', `⚠️  WARNING: ${msg}`);
+    logger.warn(msg);
   }
 }
 
 const PORT = process.env.PORT || 5000;
+
+// Force HTTPS in production (handles reverse proxies like Vercel/Heroku)
+if (process.env.NODE_ENV === 'production') {
+  app.use((req, res, next) => {
+    if (req.headers['x-forwarded-proto'] !== 'https') {
+      return res.redirect(301, `https://${req.get('host')}${req.url}`);
+    }
+    next();
+  });
+}
 
 // Security HTTP headers
 app.use(helmet());
@@ -43,7 +67,12 @@ const allowedOrigins = [
 ].filter(Boolean);
 
 if (allowedOrigins.length === 0) {
-  console.warn('\x1b[31m%s\x1b[0m', '⛔ CORS WARNING: CLIENT_URL is not set. All browser requests will be blocked by CORS. Set CLIENT_URL in your environment variables.');
+  if (process.env.NODE_ENV === 'production') {
+    logger.error('FATAL: CLIENT_URL is not set. Browser requests will be blocked. Exiting.');
+    process.exit(1);
+  } else {
+    logger.warn('CLIENT_URL is not set. All browser requests will be blocked by CORS.');
+  }
 }
 
 const corsOptions = {
@@ -58,7 +87,14 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 app.use(express.json());
-app.use(morgan('dev'));
+
+// Strip $ and . from user input to prevent MongoDB operator injection
+app.use(mongoSanitize({ replaceWith: '_' }));
+
+// HTTP request logging — only in development
+if (process.env.NODE_ENV !== 'production') {
+  app.use(morgan('dev'));
+}
 
 // Apply global rate limiting to all /api routes
 app.use('/api', globalLimiter);
@@ -75,10 +111,23 @@ app.use(async (req, res, next) => {
     await connectDB();
     next();
   } catch (error) {
-    console.error('Database connection error in middleware:', error.message);
-    res.status(500).json({ error: 'Database connection failed: ' + error.message });
+    logger.error('Database connection error in middleware:', error.message);
+    res.status(500).json({ error: 'Database connection failed.' });
   }
 });
+
+// API Documentation — Swagger UI
+// Disable CSP for this route so the Swagger UI scripts can load
+app.use('/api/docs', (req, res, next) => {
+  res.setHeader('Content-Security-Policy', "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:;");
+  next();
+}, swaggerUi.serve, swaggerUi.setup(openApiSpec, {
+  customSiteTitle: 'SEO Gen AI — API Docs',
+  customCss: '.topbar { display: none }',
+  swaggerOptions: { persistAuthorization: true },
+}));
+
+app.get('/api/docs.json', (req, res) => res.json(openApiSpec));
 
 // Routes Registration
 app.use('/api/auth', authRoutes);
@@ -98,10 +147,18 @@ app.use((req, res) => {
   res.status(404).json({ error: 'Route not found' });
 });
 
+// Sentry error capture — must come before custom error handler
+if (process.env.SENTRY_DSN) {
+  Sentry.setupExpressErrorHandler(app);
+}
+
+// Global error handler — must be LAST middleware
+app.use(errorHandler);
+
 // Server initialization for local development
 if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
   app.listen(PORT, () => {
-    console.log(`Server successfully started and listening on port ${PORT}`);
+    logger.info(`Server listening on port ${PORT}`);
   });
 }
 

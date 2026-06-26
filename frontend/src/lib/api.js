@@ -19,7 +19,7 @@ api.interceptors.response.use(
   (error) => {
     if (error.response?.status === 401) {
       localStorage.removeItem('token');
-      window.location.href = '/login';
+      window.location.href = '/welcome';
     }
     return Promise.reject(error);
   }
@@ -69,12 +69,12 @@ export const getInternalLinks = async (content, knownUrls = []) => {
 };
 
 export const getSettings = async () => {
-  const response = await api.get('/auth/settings');
+  const response = await api.get('/settings');
   return response.data;
 };
 
 export const updateSettings = async (data) => {
-  const response = await api.put('/auth/settings', data);
+  const response = await api.put('/settings', data);
   return response.data;
 };
 
@@ -86,6 +86,16 @@ export const getCreditPackages = async () => {
 
 export const createCheckoutSession = async (packageId) => {
   const response = await api.post('/stripe/checkout', { packageId });
+  return response.data;
+};
+
+export const getStripeConfig = async () => {
+  const response = await api.get('/stripe/config');
+  return response.data;
+};
+
+export const createPaymentIntent = async (packageId) => {
+  const response = await api.post('/stripe/payment-intent', { packageId });
   return response.data;
 };
 
@@ -102,5 +112,54 @@ export const updateUserCredits = async (id, credits) => {
 
 export const deleteUserAccount = async (id) => {
   const response = await api.delete(`/admin/users/${id}`);
+  return response.data;
+};
+
+export const generateAICoverImage = async (articleId, customPrompt = '') => {
+  const response = await api.post(`/articles/${articleId}/generate-cover-ai`, { customPrompt });
+  return response.data;
+};
+
+export const deleteMyAccount = async () => {
+  const response = await api.delete('/auth/account');
+  return response.data;
+};
+
+export const resendVerificationEmail = async () => {
+  const response = await api.post('/auth/resend-verification');
+  return response.data;
+};
+
+// Unsplash
+export const searchUnsplashPhotos = async (query, page = 1) => {
+  const response = await api.get('/images/unsplash/search', { params: { query, page } });
+  return response.data;
+};
+
+export const setUnsplashCover = async (articleId, { photoUrl, downloadLocation, photographerName, photographerUrl }) => {
+  const response = await api.post(`/articles/${articleId}/cover-unsplash`, {
+    photoUrl, downloadLocation, photographerName, photographerUrl,
+  });
+  return response.data;
+};
+
+// Subscription management
+export const getSubscription = async () => {
+  const response = await api.get('/stripe/subscription');
+  return response.data;
+};
+
+export const cancelSubscription = async () => {
+  const response = await api.delete('/stripe/subscription');
+  return response.data;
+};
+
+export const reactivateSubscription = async () => {
+  const response = await api.post('/stripe/subscription/reactivate');
+  return response.data;
+};
+
+export const changeSubscriptionPlan = async (newPriceId) => {
+  const response = await api.put('/stripe/subscription/plan', { newPriceId });
   return response.data;
 };

@@ -4,15 +4,17 @@ import { useAuth } from '../context/AuthContext';
 import { toast } from 'react-hot-toast';
 import { LogIn, Sparkles, ArrowRight, Zap, Shield, Globe, Brain } from 'lucide-react';
 import { motion } from 'framer-motion';
-
-const features = [
-  { icon: Brain,  title: 'AI-Powered Generation',   desc: 'Create full SEO articles in seconds with GPT-4o, DeepSeek, or Groq.' },
-  { icon: Globe,  title: 'WordPress Publishing',     desc: 'Publish articles directly to your WordPress site with one click.' },
-  { icon: Zap,    title: 'Multi-Model Engine',       desc: 'Bring your own API key and generate with unlimited credits.' },
-  { icon: Shield, title: 'Secure & Production Ready', desc: 'JWT auth, rate limiting, and AES-256 encrypted credentials.' },
-];
+import { useTranslation } from 'react-i18next';
 
 export default function Login() {
+  const { t } = useTranslation();
+
+  const features = [
+    { icon: Brain,  title: t('auth.loginPage.feature1Title'), desc: t('auth.loginPage.feature1Desc') },
+    { icon: Globe,  title: t('auth.loginPage.feature2Title'), desc: t('auth.loginPage.feature2Desc') },
+    { icon: Zap,    title: t('auth.loginPage.feature3Title'), desc: t('auth.loginPage.feature3Desc') },
+    { icon: Shield, title: t('auth.loginPage.feature4Title'), desc: t('auth.loginPage.feature4Desc') },
+  ];
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -24,10 +26,10 @@ export default function Login() {
     setIsLoading(true);
     try {
       await login(email, password);
-      toast.success('Welcome back!');
+      toast.success(t('auth.login.title'));
       navigate('/');
     } catch (error) {
-      toast.error(error.response?.data?.error || 'Invalid email or password.');
+      toast.error(error.response?.data?.error || t('auth.login.invalidCredentials'));
     } finally {
       setIsLoading(false);
     }
@@ -60,12 +62,12 @@ export default function Login() {
 
             {/* Headline */}
             <h1 className="text-5xl font-extrabold text-white leading-[1.1] mb-4 tracking-tight">
-              Generate SEO content
+              {t('auth.loginPage.headline')}
               <br />
-              <span className="text-primary-300">at light speed.</span>
+              <span className="text-primary-300">{t('auth.loginPage.headlineHighlight')}</span>
             </h1>
             <p className="text-primary-200/80 text-base font-medium mb-12 leading-relaxed">
-              The all-in-one AI platform for agencies, bloggers, and content teams.
+              {t('auth.loginPage.tagline')}
             </p>
 
             {/* Feature list */}
@@ -110,13 +112,13 @@ export default function Login() {
           </div>
 
           <div className="mb-7 sm:mb-10">
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-2 tracking-tight">Welcome back</h2>
-            <p className="text-gray-500 font-medium text-sm sm:text-base">Sign in to your account to continue.</p>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-2 tracking-tight">{t('auth.login.title')}</h2>
+            <p className="text-gray-500 font-medium text-sm sm:text-base">{t('auth.login.subtitle')}</p>
           </div>
 
           <form className="space-y-5" onSubmit={handleSubmit}>
             <div>
-              <label className="label-xs" htmlFor="email">Email Address</label>
+              <label className="label-xs" htmlFor="email">{t('auth.login.email')}</label>
               <input
                 id="email"
                 type="email"
@@ -130,7 +132,10 @@ export default function Login() {
 
             <div>
               <div className="flex justify-between items-center mb-1.5">
-                <label className="label-xs" htmlFor="password">Password</label>
+                <label className="label-xs" htmlFor="password">{t('auth.login.password')}</label>
+                <Link to="/forgot-password" className="text-[10px] font-bold text-primary-600 hover:text-primary-700 uppercase tracking-wider">
+                  {t('auth.login.forgot')}
+                </Link>
               </div>
               <input
                 id="password"
@@ -153,7 +158,7 @@ export default function Login() {
               ) : (
                 <>
                   <LogIn className="w-4 h-4" />
-                  <span>Sign In</span>
+                  <span>{t('auth.login.submit')}</span>
                   <ArrowRight className="w-4 h-4 ml-auto" />
                 </>
               )}
@@ -161,9 +166,9 @@ export default function Login() {
           </form>
 
           <p className="text-center text-sm font-medium text-gray-500 mt-8">
-            Don't have an account?{' '}
+            {t('auth.login.noAccount')}{' '}
             <Link to="/register" className="text-primary-600 hover:text-primary-700 font-bold underline underline-offset-4 decoration-2">
-              Create one for free
+              {t('auth.login.register')}
             </Link>
           </p>
         </motion.div>

@@ -4,6 +4,7 @@ import Image from '../models/Image.js';
 import ImageService from '../services/ImageService.js';
 import { marked } from 'marked';
 import { cleanAndParseJSON, handleOpenAIError, getOpenAIClientAndModel } from '../services/openaiService.js';
+import logger from '../utils/logger.js';
 
 marked.setOptions({ gfm: true, breaks: true });
 
@@ -75,7 +76,6 @@ export const generateArticle = async (req, res) => {
       }
       rawArticleText = message.content;
       if (!rawArticleText) {
-        console.error("OpenAI API returned empty content. Full response:", JSON.stringify(articleCompletion));
         throw new Error("The AI returned an empty response. Please try again.");
       }
     } catch (openaiErr) {
@@ -114,7 +114,6 @@ export const generateArticle = async (req, res) => {
       }
       rawKeywordText = message.content;
       if (!rawKeywordText) {
-        console.error("OpenAI API returned empty keyword content. Full response:", JSON.stringify(keywordCompletion));
         throw new Error("The AI returned an empty response for keywords. Please try again.");
       }
     } catch (openaiErr) {
@@ -148,7 +147,7 @@ export const generateArticle = async (req, res) => {
     });
 
   } catch (error) {
-    console.error("GENERATION ERROR:", { message: error.message, stack: error.stack });
+    logger.error('Generation Error:', error.message);
     res.status(500).json({ error: 'Failed to generate article.' });
   }
 };
@@ -190,7 +189,7 @@ export const getHistory = async (req, res) => {
       },
     });
   } catch (error) {
-    console.error("Error fetching history:", error);
+    logger.error('Error fetching history:', error.message);
     res.status(500).json({ error: 'Failed to fetch history.' });
   }
 };
@@ -257,7 +256,6 @@ export const refineArticle = async (req, res) => {
       }
       rawRefineText = message.content;
       if (!rawRefineText) {
-        console.error("OpenAI API returned empty refinement content. Full response:", JSON.stringify(completion));
         throw new Error("The AI returned an empty response for the edit. Please try again.");
       }
     } catch (openaiErr) {
@@ -287,7 +285,7 @@ export const refineArticle = async (req, res) => {
     });
 
   } catch (error) {
-    console.error("REFINEMENT ERROR:", { message: error.message, stack: error.stack });
+    logger.error('Refinement Error:', error.message);
     res.status(500).json({ error: 'Failed to refine article.' });
   }
 };
@@ -344,7 +342,7 @@ export const publishToWordPress = async (req, res) => {
     const wpData = await response.json();
 
     if (!response.ok) {
-      console.error('WordPress API error:', wpData);
+      logger.error('WordPress API error:', JSON.stringify(wpData?.message || wpData));
       return res.status(response.status).json({
         error: wpData.message || 'Publishing to WordPress failed. Please check your settings and permissions.'
       });
@@ -357,7 +355,7 @@ export const publishToWordPress = async (req, res) => {
     });
 
   } catch (error) {
-    console.error('WORDPRESS PUBLISH ERROR:', error);
+    logger.error('WordPress Publish Error:', error.message);
     res.status(500).json({ error: 'An unexpected error occurred while publishing to WordPress.' });
   }
 };
@@ -371,10 +369,21 @@ export const deleteArticle = async (req, res) => {
     if (!article) {
       return res.status(404).json({ error: 'Article not found or access denied.' });
     }
+
+    if (article.coverImageId) {
+      const image = await Image.findById(article.coverImageId);
+      if (image) {
+        await ImageService.deleteImagePaths(
+          [image.path, image.thumbnails?.small, image.thumbnails?.medium, image.thumbnails?.large].filter(Boolean)
+        );
+        await image.deleteOne();
+      }
+    }
+
     await article.deleteOne();
     res.status(200).json({ success: true, message: 'Article deleted.' });
   } catch (error) {
-    console.error('DELETE ARTICLE ERROR:', error);
+    logger.error('Delete Article Error:', error.message);
     res.status(500).json({ error: 'Failed to delete article.' });
   }
 };
@@ -412,7 +421,7 @@ export const restoreVersion = async (req, res) => {
 
     res.status(200).json({ success: true, data: article });
   } catch (error) {
-    console.error('RESTORE VERSION ERROR:', error);
+    logger.error('Restore Version Error:', error.message);
     res.status(500).json({ error: 'Failed to restore version.' });
   }
 };
@@ -475,7 +484,7 @@ export const setCoverImage = async (req, res) => {
       coverUrl,
     });
   } catch (error) {
-    console.error('SET COVER IMAGE ERROR:', error);
+    logger.error('Set Cover Image Error:', error.message);
     res.status(500).json({ error: 'Failed to upload cover image.' });
   }
 };
@@ -581,7 +590,7 @@ export const streamArticle = async (req, res) => {
     send({ type: 'done', data: article });
     res.end();
   } catch (error) {
-    console.error('STREAM ARTICLE ERROR:', error);
+    logger.error('Stream Article Error:', error.message);
     try {
       send({ type: 'error', message: error.message || 'Generation failed.' });
       res.end();

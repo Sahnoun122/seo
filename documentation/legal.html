@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Legal Documents | SEO Gen AI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #6366f1;
+      --text: #1e293b;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --bg: #f8fafc;
+      --surface: #ffffff;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      font-size: 0.95rem;
+    }
+
+    /* ── Header ── */
+    header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      print-color-adjust: exact;
+    }
+
+    .header-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      text-decoration: none;
+    }
+
+    .brand-mark {
+      width: 2rem;
+      height: 2rem;
+      background: linear-gradient(135deg, #6366f1, #a855f7);
+      border-radius: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .brand-mark svg { width: 1rem; height: 1rem; }
+
+    .brand-name {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .header-tabs {
+      display: flex;
+      gap: 0.25rem;
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: 1px solid transparent;
+      border-radius: 0.5rem;
+      padding: 0.4rem 0.85rem;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      color: var(--muted);
+      transition: all 0.15s ease;
+    }
+
+    .tab-btn:hover { color: var(--text); background: var(--bg); }
+
+    .tab-btn.active {
+      color: var(--primary);
+      background: #eef2ff;
+      border-color: #c7d2fe;
+    }
+
+    /* ── Layout ── */
+    main {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 3rem 2rem 5rem;
+    }
+
+    .doc { display: none; }
+    .doc.active { display: block; }
+
+    /* ── Document Header ── */
+    .doc-header {
+      margin-bottom: 2.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 2px solid var(--border);
+    }
+
+    .doc-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: #eef2ff;
+      color: var(--primary);
+      border: 1px solid #c7d2fe;
+      border-radius: 9999px;
+      padding: 0.25rem 0.75rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 1rem;
+    }
+
+    .doc-header h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.25;
+      margin-bottom: 0.5rem;
+    }
+
+    .doc-meta {
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    /* ── TOC ── */
+    .toc {
+      background: #f1f5f9;
+      border: 1px solid var(--border);
+      border-radius: 0.75rem;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .toc-title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 0.75rem;
+    }
+
+    .toc ol {
+      padding-left: 1.25rem;
+      columns: 2;
+      column-gap: 2rem;
+    }
+
+    .toc li { margin-bottom: 0.3rem; }
+    .toc a { color: var(--primary); text-decoration: none; font-size: 0.88rem; font-weight: 500; }
+    .toc a:hover { text-decoration: underline; }
+
+    /* ── Sections ── */
+    section { margin-bottom: 2.5rem; scroll-margin-top: 5rem; }
+
+    section h2 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text);
+      padding: 0.6rem 1rem;
+      background: #f1f5f9;
+      border-left: 3px solid var(--primary);
+      border-radius: 0 0.5rem 0.5rem 0;
+      margin-bottom: 1rem;
+    }
+
+    section p { color: var(--muted); margin-bottom: 0.9rem; }
+    section ul, section ol { padding-left: 1.5rem; margin-bottom: 0.9rem; color: var(--muted); }
+    section li { margin-bottom: 0.3rem; }
+    section strong { color: var(--text); }
+    section a { color: var(--primary); }
+
+    /* ── Table ── */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0 1.25rem;
+      font-size: 0.88rem;
+    }
+
+    .data-table th {
+      background: #f1f5f9;
+      color: var(--muted);
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 0.6rem 0.9rem;
+      text-align: left;
+      border-bottom: 2px solid var(--border);
+    }
+
+    .data-table td {
+      padding: 0.6rem 0.9rem;
+      border-bottom: 1px solid var(--border);
+      color: var(--muted);
+      vertical-align: top;
+    }
+
+    .data-table tr:last-child td { border-bottom: none; }
+    .data-table td strong { color: var(--text); }
+
+    /* ── Rights grid ── */
+    .rights-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+      margin: 1rem 0;
+    }
+
+    .right-card {
+      border: 1px solid var(--border);
+      border-radius: 0.65rem;
+      padding: 1rem;
+      background: var(--surface);
+    }
+
+    .right-card h4 {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.35rem;
+    }
+
+    .right-card p { font-size: 0.82rem; margin-bottom: 0; }
+
+    /* ── Notice ── */
+    .notice {
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-radius: 0.65rem;
+      padding: 1rem 1.25rem;
+      margin: 1.5rem 0;
+      font-size: 0.88rem;
+      color: #92400e;
+    }
+
+    .notice strong { color: #78350f; }
+
+    /* ── Footer ── */
+    footer {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 1.5rem 2rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    /* ── Print ── */
+    @media print {
+      header { position: static; }
+      .header-tabs { display: none; }
+      .doc { display: block !important; page-break-before: always; }
+      .doc:first-of-type { page-break-before: auto; }
+      .toc { display: none; }
+      footer { display: none; }
+    }
+
+    @media (max-width: 640px) {
+      .header-inner { flex-direction: column; align-items: flex-start; }
+      .toc ol { columns: 1; }
+      .doc-header h1 { font-size: 1.6rem; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="brand">
+      <div class="brand-mark">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z" fill="white"/></svg>
+      </div>
+      <span class="brand-name">SEO Gen AI</span>
+    </div>
+    <div class="header-tabs">
+      <button class="tab-btn active" onclick="showDoc('terms', this)">Terms of Service</button>
+      <button class="tab-btn" onclick="showDoc('privacy', this)">Privacy Policy</button>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- ═══════════════════════════════════════════
+       TERMS OF SERVICE
+  ════════════════════════════════════════════ -->
+  <div id="terms" class="doc active">
+    <div class="doc-header">
+      <div class="doc-badge">
+        <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+        Legal Document
+      </div>
+      <h1>Terms of Service</h1>
+      <div class="doc-meta">Last updated: June 25, 2026 &nbsp;&middot;&nbsp; Version 1.0</div>
+    </div>
+
+    <div class="toc">
+      <div class="toc-title">Table of Contents</div>
+      <ol>
+        <li><a href="#tos-1">Acceptance of Terms</a></li>
+        <li><a href="#tos-2">Description of Service</a></li>
+        <li><a href="#tos-3">Account Registration</a></li>
+        <li><a href="#tos-4">Credits and Payment</a></li>
+        <li><a href="#tos-5">Acceptable Use</a></li>
+        <li><a href="#tos-6">AI-Generated Content</a></li>
+        <li><a href="#tos-7">Your API Keys</a></li>
+        <li><a href="#tos-8">Intellectual Property</a></li>
+        <li><a href="#tos-9">Disclaimer of Warranties</a></li>
+        <li><a href="#tos-10">Limitation of Liability</a></li>
+        <li><a href="#tos-11">Termination</a></li>
+        <li><a href="#tos-12">Governing Law</a></li>
+        <li><a href="#tos-13">Contact</a></li>
+      </ol>
+    </div>
+
+    <section id="tos-1">
+      <h2>1. Acceptance of Terms</h2>
+      <p>By accessing or using the SEO Gen AI platform and associated services ("the Service"), you agree to be bound by these Terms of Service ("Terms"). If you do not agree to all of these Terms, you must not access or use the Service.</p>
+      <p>We reserve the right to modify these Terms at any time. Changes will be effective upon posting to the Service. Continued use of the Service after changes are posted constitutes your acceptance of the revised Terms. We will notify registered users of material changes by email at least 15 days before they take effect.</p>
+    </section>
+
+    <section id="tos-2">
+      <h2>2. Description of Service</h2>
+      <p>SEO Gen AI is a software-as-a-service (SaaS) platform providing AI-powered article generation, SEO content optimisation, keyword research, AI cover image generation, and WordPress publishing tools.</p>
+      <p>The Service connects to third-party AI providers (OpenAI, OpenRouter, DeepSeek, Groq, and others). Service availability, output quality, and generation speed may be affected by the availability and performance of these external providers. We are not liable for third-party service outages.</p>
+    </section>
+
+    <section id="tos-3">
+      <h2>3. Account Registration</h2>
+      <p>You must provide accurate, complete, and current information when creating an account. You are solely responsible for maintaining the confidentiality of your credentials and for all activities that occur under your account.</p>
+      <p>You must be at least <strong>16 years of age</strong> to use the Service. By registering, you represent that you meet this requirement.</p>
+      <p>One person or legal entity may not maintain more than one free account. Bulk account creation, credential sharing, or account reselling is strictly prohibited and will result in immediate termination.</p>
+      <p>You must promptly notify us at <a href="mailto:legal@seogenai.com">legal@seogenai.com</a> of any unauthorised use of your account.</p>
+    </section>
+
+    <section id="tos-4">
+      <h2>4. Credits and Payment</h2>
+      <p>The Service operates on a credit-based system. Each AI article generation consumes one (1) credit. Users who configure their own AI API key in Settings may generate articles without consuming platform credits.</p>
+      <p>Credits purchased as one-time packs do not expire. Credits allocated through a monthly subscription are renewed at the start of each billing cycle. Unused subscription credits do not roll over to the next cycle.</p>
+      <p>Payments are processed exclusively by <strong>Stripe, Inc.</strong> By making a purchase, you agree to Stripe's terms of service and privacy policy. We do not store your payment card information on our servers.</p>
+      <p>Subscription plans renew automatically on a monthly basis. You may cancel at any time from your account settings. Cancellation takes effect at the end of the current billing period. No partial refunds are issued for unused subscription time, except as required by applicable consumer protection law.</p>
+      <p>We reserve the right to modify pricing with <strong>30 days' advance notice</strong> to existing subscribers.</p>
+    </section>
+
+    <section id="tos-5">
+      <h2>5. Acceptable Use</h2>
+      <p>You agree that you will NOT use the Service to:</p>
+      <ul>
+        <li>Generate content that is illegal, harmful, threatening, abusive, harassing, defamatory, or that violates third-party rights</li>
+        <li>Create spam, deceptive content, fake news, misleading product reviews, or engage in black-hat SEO practices (cloaking, doorway pages, link schemes)</li>
+        <li>Reproduce, redistribute, or resell generated content as your own product or service without adding substantial original value</li>
+        <li>Attempt to reverse-engineer, decompile, scrape, or abuse the Service API beyond its intended use</li>
+        <li>Share account credentials with third parties, or sell access to the Service</li>
+        <li>Use automated scripts, bots, or crawlers to interact with the Service other than through our documented API</li>
+        <li>Circumvent, disable, or interfere with security features of the Service</li>
+        <li>Infringe upon intellectual property rights, privacy rights, or publicity rights of any third party</li>
+      </ul>
+      <p>We reserve the right to suspend or permanently terminate accounts found to be in violation of these rules, without prior notice and without refund.</p>
+    </section>
+
+    <section id="tos-6">
+      <h2>6. AI-Generated Content</h2>
+      <p>Content generated by the Service is produced by large language models (LLMs) and may contain inaccuracies, errors, outdated information, or content that requires editorial review. <strong>You are solely responsible</strong> for reviewing, editing, and verifying any AI-generated content before publishing it, using it commercially, or relying upon it.</p>
+      <p>You retain full ownership of the articles and other content you generate using the Service. By using the Service, you grant us a limited, non-exclusive, royalty-free licence to process, store, and display your content solely for the purpose of providing the Service to you.</p>
+      <p>We make no representations or warranties regarding the originality, accuracy, completeness, SEO effectiveness, or fitness for any purpose of generated content.</p>
+      <p>We do not use your generated content to train AI models, and we do not share it with third parties except as necessary to deliver the Service (e.g., sending prompts to the configured AI provider).</p>
+    </section>
+
+    <section id="tos-7">
+      <h2>7. Your AI API Keys</h2>
+      <p>You may optionally provide your own API key from OpenAI, OpenRouter, DeepSeek, or Groq in the Settings section. By doing so:</p>
+      <ul>
+        <li>You are responsible for all usage charges incurred on that key.</li>
+        <li>Your API key is encrypted at rest in our database using <strong>AES-256 encryption</strong> and is never transmitted in plaintext.</li>
+        <li>We will only use your API key to process your own content generation requests within the Service.</li>
+        <li>We will never use your API key for our own purposes or share it with any third party.</li>
+      </ul>
+    </section>
+
+    <section id="tos-8">
+      <h2>8. Intellectual Property</h2>
+      <p>The SEO Gen AI platform, its design, user interface, source code, branding, and documentation are the exclusive intellectual property of SEO Gen AI and are protected by applicable copyright, trademark, and other intellectual property laws.</p>
+      <p>This licence grants you a limited, non-exclusive, non-transferable right to use the Service for your own personal or business purposes. You may not:</p>
+      <ul>
+        <li>Copy, redistribute, or resell the platform source code or compiled software</li>
+        <li>Create derivative works based on the platform without explicit written permission</li>
+        <li>Remove any copyright, trademark, or proprietary notices from the Service</li>
+      </ul>
+    </section>
+
+    <section id="tos-9">
+      <h2>9. Disclaimer of Warranties</h2>
+      <p>The Service is provided on an <strong>"AS IS"</strong> and <strong>"AS AVAILABLE"</strong> basis, without warranties of any kind, either express or implied, including but not limited to implied warranties of merchantability, fitness for a particular purpose, or non-infringement.</p>
+      <p>We do not warrant that: (a) the Service will be uninterrupted, error-free, or secure; (b) results from use of the Service will be accurate or reliable; (c) generated content will meet your specific requirements or expectations.</p>
+    </section>
+
+    <section id="tos-10">
+      <h2>10. Limitation of Liability</h2>
+      <p>To the maximum extent permitted by applicable law, SEO Gen AI, its officers, directors, employees, and agents shall not be liable for any indirect, incidental, special, consequential, or punitive damages, including but not limited to:</p>
+      <ul>
+        <li>Loss of profits, revenue, data, or business opportunities</li>
+        <li>Cost of substitute services</li>
+        <li>Any damages arising from AI-generated content published by you</li>
+        <li>Interruption of the Service or AI provider outages</li>
+      </ul>
+      <p>Our total liability to you for all claims arising from or related to your use of the Service shall not exceed the total amount you paid us in the <strong>three (3) months</strong> immediately preceding the claim.</p>
+    </section>
+
+    <section id="tos-11">
+      <h2>11. Termination</h2>
+      <p>You may terminate your account at any time via Settings → Delete Account, or by contacting support. Upon termination, your account, all generated articles, cover images, and personal data are permanently and irreversibly deleted from our systems (GDPR right to erasure).</p>
+      <p>We may suspend or terminate your account immediately, without prior notice or liability, for any violation of these Terms, or for any other reason at our sole discretion. Upon termination by us for cause, no refund will be issued.</p>
+    </section>
+
+    <section id="tos-12">
+      <h2>12. Governing Law</h2>
+      <p>These Terms shall be governed by and construed in accordance with the laws of the jurisdiction where the service operator is established, without regard to its conflict of law provisions. Any disputes not resolved amicably shall be subject to the exclusive jurisdiction of the competent courts of that jurisdiction.</p>
+      <p>If any provision of these Terms is found to be unenforceable, the remaining provisions will remain in full force and effect.</p>
+    </section>
+
+    <section id="tos-13">
+      <h2>13. Contact</h2>
+      <p>For questions, concerns, or notices relating to these Terms:</p>
+      <p>Email: <a href="mailto:legal@seogenai.com">legal@seogenai.com</a></p>
+      <p>We aim to respond to legal enquiries within 5 business days.</p>
+    </section>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════
+       PRIVACY POLICY
+  ════════════════════════════════════════════ -->
+  <div id="privacy" class="doc">
+    <div class="doc-header">
+      <div class="doc-badge">
+        <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+        GDPR Compliant
+      </div>
+      <h1>Privacy Policy</h1>
+      <div class="doc-meta">Last updated: June 25, 2026 &nbsp;&middot;&nbsp; Version 1.0 &nbsp;&middot;&nbsp; GDPR (EU) 2016/679 compliant</div>
+    </div>
+
+    <div class="toc">
+      <div class="toc-title">Table of Contents</div>
+      <ol>
+        <li><a href="#pp-1">Who We Are</a></li>
+        <li><a href="#pp-2">Data We Collect</a></li>
+        <li><a href="#pp-3">Legal Basis (GDPR)</a></li>
+        <li><a href="#pp-4">How We Use Your Data</a></li>
+        <li><a href="#pp-5">Third-Party Processors</a></li>
+        <li><a href="#pp-6">Data Security</a></li>
+        <li><a href="#pp-7">Your GDPR Rights</a></li>
+        <li><a href="#pp-8">Cookies</a></li>
+        <li><a href="#pp-9">Data Transfers</a></li>
+        <li><a href="#pp-10">Data Retention</a></li>
+        <li><a href="#pp-11">Children's Privacy</a></li>
+        <li><a href="#pp-12">Changes to This Policy</a></li>
+        <li><a href="#pp-13">Contact &amp; Complaints</a></li>
+      </ol>
+    </div>
+
+    <section id="pp-1">
+      <h2>1. Who We Are</h2>
+      <p>SEO Gen AI ("we", "us", "our") operates the SEO Gen AI SaaS platform. This Privacy Policy explains how we collect, use, store, and protect your personal data in compliance with the General Data Protection Regulation (GDPR) (EU) 2016/679 and other applicable privacy laws.</p>
+      <p><strong>Data Controller:</strong> SEO Gen AI<br>
+      <strong>Contact:</strong> <a href="mailto:privacy@seogenai.com">privacy@seogenai.com</a></p>
+    </section>
+
+    <section id="pp-2">
+      <h2>2. Data We Collect</h2>
+      <p>We apply data minimisation principles and collect only what is necessary to provide the Service:</p>
+      <table class="data-table">
+        <thead>
+          <tr><th>Category</th><th>Specific Data</th><th>Purpose</th><th>Retention</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Account data</strong></td><td>Name, email address</td><td>Authentication, account management, transactional emails</td><td>Until account deletion</td></tr>
+          <tr><td><strong>Password</strong></td><td>bcrypt hash (cost 10)</td><td>Authentication</td><td>Until account deletion</td></tr>
+          <tr><td><strong>Generated articles</strong></td><td>Title, content, meta description, keywords, version history</td><td>Service delivery, history feature</td><td>Until deleted by user or account deletion</td></tr>
+          <tr><td><strong>AI API keys</strong></td><td>Encrypted with AES-256</td><td>User-configured AI model access</td><td>Until user removes or account deletion</td></tr>
+          <tr><td><strong>WordPress credentials</strong></td><td>URL, username, app password (AES-256 encrypted)</td><td>WordPress publishing integration</td><td>Until user removes or account deletion</td></tr>
+          <tr><td><strong>Cover images</strong></td><td>WebP files + 4 thumbnail sizes on AWS S3</td><td>Article enrichment</td><td>Until article/account deletion</td></tr>
+          <tr><td><strong>Payment records</strong></td><td>Stripe customer ID, subscription ID, amount, date (no card data)</td><td>Billing, idempotency, compliance</td><td>7 years (tax obligation)</td></tr>
+          <tr><td><strong>Server logs</strong></td><td>IP address, request path, timestamp, HTTP status</td><td>Security, fraud prevention, debugging</td><td>90 days</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="pp-3">
+      <h2>3. Legal Basis for Processing (GDPR)</h2>
+      <p>We process your personal data on the following legal bases under GDPR Article 6:</p>
+      <ul>
+        <li><strong>Contract performance (Art. 6(1)(b)):</strong> Account data, generated content, and payment processing — necessary to provide the Service you subscribed to.</li>
+        <li><strong>Legitimate interests (Art. 6(1)(f)):</strong> Server logs for security monitoring, fraud prevention, and service improvement. Our interests are balanced against your rights and do not override them.</li>
+        <li><strong>Legal obligation (Art. 6(1)(c)):</strong> Retaining transaction records for tax and accounting compliance.</li>
+        <li><strong>Consent (Art. 6(1)(a)):</strong> Optional analytics cookies, where applicable. You may withdraw consent at any time via the cookie banner or by clearing browser storage.</li>
+      </ul>
+    </section>
+
+    <section id="pp-4">
+      <h2>4. How We Use Your Data</h2>
+      <p>We use your data exclusively to:</p>
+      <ul>
+        <li>Provide, operate, and improve the Service</li>
+        <li>Authenticate you and secure your account</li>
+        <li>Process payments and manage subscriptions</li>
+        <li>Send transactional emails (password resets, billing notifications)</li>
+        <li>Detect and prevent abuse, fraud, and security incidents</li>
+        <li>Comply with legal obligations</li>
+      </ul>
+      <p>We <strong>do not</strong>: sell your data to third parties; use your data or generated content to train AI models; send marketing emails without explicit consent; create automated profiles for advertising purposes.</p>
+    </section>
+
+    <section id="pp-5">
+      <h2>5. Third-Party Processors</h2>
+      <p>We share limited personal data with the following sub-processors to operate the Service. Each is contractually bound to process data only on our instructions and to maintain appropriate security measures:</p>
+      <table class="data-table">
+        <thead>
+          <tr><th>Processor</th><th>Purpose</th><th>Data Shared</th><th>Location</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>OpenAI / OpenRouter</strong></td><td>AI article and image generation</td><td>Article keywords and prompts (no personal identifiers)</td><td>USA</td></tr>
+          <tr><td><strong>Stripe, Inc.</strong></td><td>Payment processing</td><td>Email, payment amount, subscription details</td><td>USA</td></tr>
+          <tr><td><strong>Amazon Web Services (S3)</strong></td><td>Cover image storage</td><td>Image files only</td><td>Configurable (default: USA)</td></tr>
+          <tr><td><strong>Resend</strong></td><td>Transactional email delivery</td><td>Email address, reset link</td><td>USA</td></tr>
+          <tr><td><strong>MongoDB Atlas</strong></td><td>Database hosting (if used)</td><td>All account and article data</td><td>Configurable</td></tr>
+          <tr><td><strong>Vercel</strong></td><td>Application hosting</td><td>Server logs (IP, request data)</td><td>USA / Global CDN</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="pp-6">
+      <h2>6. Data Security</h2>
+      <p>We implement the following technical and organisational measures to protect your data:</p>
+      <ul>
+        <li>Passwords hashed with <strong>bcrypt</strong> (cost factor 10) — never stored in plaintext</li>
+        <li>API keys and WordPress credentials encrypted at rest with <strong>AES-256</strong></li>
+        <li>All data in transit encrypted via <strong>HTTPS / TLS 1.2+</strong></li>
+        <li>JWT tokens with 30-day expiry; revoked on account deletion</li>
+        <li>Rate limiting on all authentication and generation endpoints</li>
+        <li>HTTP security headers enforced via <strong>Helmet.js</strong> (CSP, HSTS, X-Frame-Options, etc.)</li>
+        <li>S3 images served via <strong>signed URLs</strong> with 1-hour expiry — not publicly accessible by default</li>
+        <li>Input validation on all API endpoints via <strong>Zod</strong> schemas</li>
+        <li>Weekly automated vulnerability audit via <strong>npm audit</strong> in CI/CD</li>
+      </ul>
+    </section>
+
+    <section id="pp-7">
+      <h2>7. Your GDPR Rights</h2>
+      <p>Under GDPR, you have the following rights. To exercise any of them, contact <a href="mailto:privacy@seogenai.com">privacy@seogenai.com</a>. We will respond within <strong>30 days</strong> as required by GDPR Article 12.</p>
+      <div class="rights-grid">
+        <div class="right-card">
+          <h4>Right of Access (Art. 15)</h4>
+          <p>Request a copy of your personal data we hold. We will provide it in a structured, machine-readable format.</p>
+        </div>
+        <div class="right-card">
+          <h4>Right to Rectification (Art. 16)</h4>
+          <p>Correct inaccurate data at any time via your account Settings (name, email).</p>
+        </div>
+        <div class="right-card">
+          <h4>Right to Erasure (Art. 17)</h4>
+          <p>Delete your account and all associated data via <strong>Settings → Delete Account</strong>. This is immediate and permanent: S3 images, articles, and user record are all removed.</p>
+        </div>
+        <div class="right-card">
+          <h4>Right to Portability (Art. 20)</h4>
+          <p>Export your articles as HTML or Markdown files from the article history view.</p>
+        </div>
+        <div class="right-card">
+          <h4>Right to Object (Art. 21)</h4>
+          <p>Object to processing based on legitimate interests (e.g., server logs). We will cease unless we have compelling legitimate grounds.</p>
+        </div>
+        <div class="right-card">
+          <h4>Right to Restrict (Art. 18)</h4>
+          <p>Request that we limit processing of your data (e.g., while a dispute is resolved).</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="pp-8">
+      <h2>8. Cookies</h2>
+      <p>We use the following storage mechanisms:</p>
+      <table class="data-table">
+        <thead><tr><th>Name</th><th>Type</th><th>Purpose</th><th>Expiry</th></tr></thead>
+        <tbody>
+          <tr><td><code>token</code></td><td>localStorage</td><td>JWT authentication token — essential</td><td>30 days</td></tr>
+          <tr><td><code>seo_gen_ai_cookie_consent</code></td><td>localStorage</td><td>Stores cookie consent choice (accepted / declined)</td><td>Persistent until cleared</td></tr>
+          <tr><td><code>i18nextLng</code></td><td>localStorage</td><td>Preferred interface language</td><td>Persistent</td></tr>
+          <tr><td><code>theme</code></td><td>localStorage</td><td>Dark/light mode preference</td><td>Persistent</td></tr>
+        </tbody>
+      </table>
+      <p>We do <strong>not</strong> use advertising cookies, cross-site tracking cookies, or third-party analytics cookies by default.</p>
+    </section>
+
+    <section id="pp-9">
+      <h2>9. International Data Transfers</h2>
+      <p>Your data may be processed on servers located in the <strong>United States</strong> and other countries outside the European Economic Area (EEA). Such transfers are covered by one or more of the following safeguards:</p>
+      <ul>
+        <li><strong>Standard Contractual Clauses (SCCs)</strong> approved by the European Commission (Art. 46(2)(c) GDPR)</li>
+        <li><strong>Adequacy decisions</strong> where applicable</li>
+        <li><strong>Binding Corporate Rules</strong> (where applicable for specific processors)</li>
+      </ul>
+      <p>You may request a copy of the applicable transfer mechanisms by contacting <a href="mailto:privacy@seogenai.com">privacy@seogenai.com</a>.</p>
+    </section>
+
+    <section id="pp-10">
+      <h2>10. Data Retention</h2>
+      <p>We retain personal data only as long as necessary for the purposes described in this Policy:</p>
+      <ul>
+        <li><strong>Account and article data:</strong> retained until you delete your account or the specific item.</li>
+        <li><strong>Payment records:</strong> retained for 7 years to meet tax and accounting legal obligations.</li>
+        <li><strong>Server logs:</strong> retained for 90 days for security and debugging purposes, then automatically deleted.</li>
+        <li><strong>Password reset tokens:</strong> expire after 1 hour and are deleted upon use.</li>
+      </ul>
+    </section>
+
+    <section id="pp-11">
+      <h2>11. Children's Privacy</h2>
+      <p>The Service is not directed to individuals under the age of <strong>16</strong>. We do not knowingly collect personal data from children under 16. If you believe we have inadvertently collected such data, please contact us immediately at <a href="mailto:privacy@seogenai.com">privacy@seogenai.com</a> and we will delete it promptly.</p>
+    </section>
+
+    <section id="pp-12">
+      <h2>12. Changes to This Policy</h2>
+      <p>We may update this Privacy Policy from time to time. For material changes, we will notify you by email at least <strong>15 days</strong> before the changes take effect, and we will update the "Last updated" date at the top of this page. Your continued use of the Service after changes take effect constitutes your acceptance of the revised Policy.</p>
+    </section>
+
+    <section id="pp-13">
+      <h2>13. Contact &amp; Complaints</h2>
+      <p>For privacy-related questions, requests to exercise your rights, or to report a data breach:</p>
+      <p><strong>Email:</strong> <a href="mailto:privacy@seogenai.com">privacy@seogenai.com</a></p>
+      <p>We will acknowledge your request within <strong>72 hours</strong> and provide a full response within <strong>30 days</strong>.</p>
+      <p>If you are not satisfied with our response, you have the right to lodge a complaint with your local data protection supervisory authority:</p>
+      <ul>
+        <li><strong>France:</strong> CNIL — <a href="https://www.cnil.fr" target="_blank">cnil.fr</a></li>
+        <li><strong>United Kingdom:</strong> ICO — <a href="https://ico.org.uk" target="_blank">ico.org.uk</a></li>
+        <li><strong>Germany:</strong> BfDI — <a href="https://www.bfdi.bund.de" target="_blank">bfdi.bund.de</a></li>
+        <li><strong>Other EU states:</strong> see <a href="https://edpb.europa.eu/about-edpb/about-edpb/members_en" target="_blank">edpb.europa.eu</a></li>
+      </ul>
+
+      <div class="notice">
+        <strong>Customisation note for developers:</strong> Before publishing to production, replace the contact email addresses (<code>privacy@seogenai.com</code>, <code>legal@seogenai.com</code>), the company name, and the applicable jurisdiction in this document and in the React pages at <code>frontend/src/pages/PrivacyPolicy.jsx</code> and <code>TermsOfService.jsx</code>.
+      </div>
+    </section>
+  </div>
+
+</main>
+
+<footer>
+  <span>© 2026 SEO Gen AI. All rights reserved.</span>
+  <span>These documents are part of the platform package. Customise before going live.</span>
+</footer>
+
+<script>
+  function showDoc(id, btn) {
+    document.querySelectorAll('.doc').forEach(d => d.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    btn.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+</body>
+</html>

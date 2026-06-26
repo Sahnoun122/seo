@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Documentation | AI SEO Article Generator</title>
+  <title>Documentation | SEO Gen AI</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -27,11 +27,7 @@
       --error: #ef4444;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       font-family: 'Plus Jakarta Sans', sans-serif;
@@ -43,166 +39,142 @@
       overflow-x: hidden;
     }
 
-    /* Sidebar Navigation */
+    /* ── Sidebar ── */
     aside {
-      width: 300px;
+      width: 280px;
       background-color: var(--bg-surface);
       border-right: 1px solid var(--border-color);
       display: flex;
       flex-direction: column;
       position: fixed;
-      top: 0;
-      bottom: 0;
-      left: 0;
+      top: 0; bottom: 0; left: 0;
       z-index: 100;
-      padding: 2.5rem 1.5rem;
+      padding: 2rem 1.25rem;
       transition: all 0.3s ease;
+      overflow-y: auto;
     }
 
     .brand {
       display: flex;
       align-items: center;
       gap: 0.75rem;
-      margin-bottom: 3rem;
+      margin-bottom: 2rem;
+      flex-shrink: 0;
     }
 
     .brand-logo {
-      width: 2.5rem;
-      height: 2.5rem;
+      width: 2.25rem;
+      height: 2.25rem;
       background: linear-gradient(135deg, var(--primary), var(--accent));
-      border-radius: 0.75rem;
+      border-radius: 0.65rem;
       display: flex;
       align-items: center;
       justify-content: center;
       box-shadow: var(--shadow-indigo);
+      flex-shrink: 0;
     }
 
-    .brand-logo svg {
-      width: 1.25rem;
-      height: 1.25rem;
-      fill: #fff;
-    }
+    .brand-logo svg { width: 1.1rem; height: 1.1rem; fill: #fff; }
 
     .brand-name {
       font-family: 'Outfit', sans-serif;
-      font-size: 1.25rem;
+      font-size: 1.15rem;
       font-weight: 700;
       background: linear-gradient(to right, #ffffff, #d1d5db);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      letter-spacing: -0.5px;
+      letter-spacing: -0.3px;
     }
 
-    nav {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-      flex-grow: 1;
+    .nav-section-label {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #4b5563;
+      padding: 0.5rem 0.75rem 0.25rem;
+      margin-top: 0.5rem;
     }
+
+    nav { display: flex; flex-direction: column; gap: 0.25rem; flex-grow: 1; }
 
     .nav-item {
       display: flex;
       align-items: center;
-      gap: 0.75rem;
-      padding: 0.85rem 1rem;
+      gap: 0.65rem;
+      padding: 0.7rem 0.85rem;
       color: var(--text-muted);
       text-decoration: none;
-      border-radius: 0.75rem;
+      border-radius: 0.65rem;
       font-weight: 500;
-      font-size: 0.95rem;
+      font-size: 0.88rem;
       cursor: pointer;
       transition: all 0.2s ease;
       border: 1px solid transparent;
     }
 
-    .nav-item:hover {
-      color: var(--text-main);
-      background-color: var(--bg-surface-hover);
-    }
+    .nav-item:hover { color: var(--text-main); background-color: var(--bg-surface-hover); }
 
     .nav-item.active {
       color: #ffffff;
       background-color: rgba(99, 102, 241, 0.15);
       border-color: rgba(99, 102, 241, 0.3);
-      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.05);
     }
 
-    .nav-item svg {
-      width: 1.25rem;
-      height: 1.25rem;
-      opacity: 0.7;
-      transition: all 0.2s ease;
-    }
-
-    .nav-item.active svg {
-      opacity: 1;
-      stroke: var(--primary);
-    }
+    .nav-item svg { width: 1rem; height: 1rem; opacity: 0.7; flex-shrink: 0; }
+    .nav-item.active svg { opacity: 1; stroke: var(--primary); }
 
     .sidebar-footer {
       margin-top: auto;
-      padding-top: 2rem;
+      padding-top: 1.5rem;
       border-top: 1px solid var(--border-color);
-      font-size: 0.8rem;
-      color: var(--text-muted);
+      font-size: 0.75rem;
+      color: #4b5563;
       text-align: center;
+      flex-shrink: 0;
     }
 
-    /* Main Content */
+    /* ── Main ── */
     main {
-      margin-left: 300px;
+      margin-left: 280px;
       flex-grow: 1;
       min-width: 0;
-      padding: 4rem 5rem;
-      max-width: 1100px;
+      padding: 3.5rem 4.5rem;
+      max-width: 1050px;
     }
 
-    /* Mobile Toggle */
+    /* ── Mobile ── */
     .mobile-menu-btn {
       display: none;
       position: fixed;
-      bottom: 1.5rem;
-      right: 1.5rem;
-      width: 3.5rem;
-      height: 3.5rem;
+      bottom: 1.5rem; right: 1.5rem;
+      width: 3.25rem; height: 3.25rem;
       background: linear-gradient(135deg, var(--primary), var(--accent));
       border-radius: 50%;
       border: none;
-      align-items: center;
-      justify-content: center;
+      align-items: center; justify-content: center;
       box-shadow: 0 4px 20px rgba(99, 102, 241, 0.3);
-      cursor: pointer;
-      z-index: 200;
+      cursor: pointer; z-index: 200;
     }
 
-    .mobile-menu-btn svg {
-      width: 1.5rem;
-      height: 1.5rem;
-      stroke: white;
-    }
+    .mobile-menu-btn svg { width: 1.4rem; height: 1.4rem; stroke: white; }
 
-    /* Document Sections */
-    .doc-section {
-      display: none;
-      animation: fadeIn 0.4s ease-out forwards;
-    }
-
-    .doc-section.active {
-      display: block;
-    }
+    /* ── Sections ── */
+    .doc-section { display: none; animation: fadeIn 0.35s ease-out forwards; }
+    .doc-section.active { display: block; }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
 
-    /* Typography & UI Components */
+    /* ── Typography ── */
     h1 {
       font-family: 'Outfit', sans-serif;
-      font-size: 2.75rem;
+      font-size: 2.5rem;
       font-weight: 700;
-      margin-bottom: 1.5rem;
-      letter-spacing: -1px;
+      margin-bottom: 1.25rem;
+      letter-spacing: -0.8px;
       background: linear-gradient(to right, #ffffff, #9ca3af);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -210,7 +182,7 @@
 
     h2 {
       font-family: 'Outfit', sans-serif;
-      font-size: 1.75rem;
+      font-size: 1.6rem;
       font-weight: 600;
       margin-top: 2.5rem;
       margin-bottom: 1rem;
@@ -221,53 +193,41 @@
 
     h3 {
       font-family: 'Outfit', sans-serif;
-      font-size: 1.25rem;
+      font-size: 1.15rem;
       font-weight: 600;
       margin-top: 1.5rem;
-      margin-bottom: 0.75rem;
+      margin-bottom: 0.65rem;
       color: #f3f4f6;
     }
 
-    p {
-      color: var(--text-muted);
-      margin-bottom: 1.25rem;
-      font-size: 1.05rem;
-    }
+    p { color: var(--text-muted); margin-bottom: 1.1rem; font-size: 1rem; }
 
-    ul, ol {
-      margin-bottom: 1.5rem;
-      padding-left: 1.5rem;
-      color: var(--text-muted);
-    }
+    ul, ol { margin-bottom: 1.25rem; padding-left: 1.4rem; color: var(--text-muted); }
+    li { margin-bottom: 0.4rem; font-size: 1rem; }
+    li strong { color: var(--text-main); }
 
-    li {
-      margin-bottom: 0.5rem;
-      font-size: 1.05rem;
-    }
+    a { color: #818cf8; text-decoration: none; }
+    a:hover { text-decoration: underline; }
 
-    li strong {
-      color: var(--text-main);
-    }
-
-    /* Code Blocks */
+    /* ── Code ── */
     .code-container {
       background-color: var(--code-bg);
       border: 1px solid var(--border-color);
       border-radius: 0.75rem;
       position: relative;
-      margin: 1.5rem 0;
+      margin: 1.25rem 0;
       overflow: hidden;
     }
 
     .code-header {
-      background-color: rgba(15, 23, 42, 0.4);
-      padding: 0.5rem 1rem;
+      background-color: rgba(15, 23, 42, 0.6);
+      padding: 0.45rem 1rem;
       border-bottom: 1px solid var(--border-color);
       display: flex;
       justify-content: space-between;
       align-items: center;
       font-family: 'Outfit', sans-serif;
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       color: var(--text-muted);
     }
 
@@ -278,686 +238,1158 @@
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 0.35rem;
-      font-size: 0.8rem;
+      gap: 0.3rem;
+      font-size: 0.78rem;
       font-weight: 500;
       transition: color 0.2s ease;
-      padding: 0.25rem 0.5rem;
-      border-radius: 0.35rem;
+      padding: 0.2rem 0.45rem;
+      border-radius: 0.3rem;
     }
 
-    .copy-btn:hover {
-      color: var(--text-main);
-      background-color: rgba(255, 255, 255, 0.05);
-    }
-
-    .copy-btn svg {
-      width: 1rem;
-      height: 1rem;
-      stroke: currentColor;
-    }
+    .copy-btn:hover { color: var(--text-main); background-color: rgba(255,255,255,0.05); }
+    .copy-btn svg { width: 0.9rem; height: 0.9rem; stroke: currentColor; }
 
     pre {
-      padding: 1.25rem;
+      padding: 1.1rem 1.25rem;
       overflow-x: auto;
       font-family: 'Courier New', Courier, monospace;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       color: #e2e8f0;
+      line-height: 1.65;
     }
 
     code {
       font-family: 'Courier New', Courier, monospace;
-      background-color: rgba(255, 255, 255, 0.05);
-      padding: 0.15rem 0.4rem;
+      background-color: rgba(255,255,255,0.06);
+      padding: 0.12rem 0.38rem;
       border-radius: 0.25rem;
       color: #fb7185;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
     }
 
-    pre code {
-      background-color: transparent;
-      padding: 0;
-      color: inherit;
-    }
+    pre code { background: transparent; padding: 0; color: inherit; }
 
-    /* Alerts */
+    /* ── Alerts ── */
     .alert {
-      padding: 1.25rem 1.5rem;
+      padding: 1.1rem 1.4rem;
       border-radius: 0.75rem;
-      margin: 1.5rem 0;
+      margin: 1.25rem 0;
       display: flex;
-      gap: 1rem;
+      gap: 0.9rem;
       border-left: 4px solid;
     }
 
-    .alert-icon svg {
-      width: 1.5rem;
-      height: 1.5rem;
-      stroke-width: 2px;
-    }
+    .alert-icon svg { width: 1.35rem; height: 1.35rem; stroke-width: 2px; flex-shrink: 0; }
+    .alert-content h4 { font-family: 'Outfit', sans-serif; font-weight: 600; margin-bottom: 0.2rem; font-size: 1rem; }
+    .alert-content p { margin-bottom: 0; font-size: 0.9rem; }
 
-    .alert-content h4 {
-      font-family: 'Outfit', sans-serif;
-      font-weight: 600;
-      margin-bottom: 0.25rem;
-      font-size: 1.1rem;
-    }
+    .alert-info    { background-color: rgba(59,130,246,0.1);  border-color: #3b82f6; }
+    .alert-info    .alert-icon svg { stroke: #3b82f6; }
+    .alert-info    .alert-content h4 { color: #3b82f6; }
+    .alert-info    .alert-content p  { color: #93c5fd; }
 
-    .alert-content p {
-      margin-bottom: 0;
-      font-size: 0.95rem;
-      color: rgba(255, 255, 255, 0.8);
-    }
-
-    .alert-info {
-      background-color: rgba(59, 130, 246, 0.1);
-      border-color: #3b82f6;
-      color: #93c5fd;
-    }
-    .alert-info .alert-icon svg { stroke: #3b82f6; }
-    .alert-info .alert-content h4 { color: #3b82f6; }
-
-    .alert-warning {
-      background-color: rgba(245, 158, 11, 0.1);
-      border-color: #f59e0b;
-      color: #fde047;
-    }
+    .alert-warning { background-color: rgba(245,158,11,0.1); border-color: #f59e0b; }
     .alert-warning .alert-icon svg { stroke: #f59e0b; }
     .alert-warning .alert-content h4 { color: #f59e0b; }
+    .alert-warning .alert-content p  { color: #fde68a; }
 
-    .alert-success {
-      background-color: rgba(16, 185, 129, 0.1);
-      border-color: #10b981;
-      color: #6ee7b7;
-    }
+    .alert-success { background-color: rgba(16,185,129,0.1); border-color: #10b981; }
     .alert-success .alert-icon svg { stroke: #10b981; }
     .alert-success .alert-content h4 { color: #10b981; }
+    .alert-success .alert-content p  { color: #6ee7b7; }
 
-    /* Visual Folder Tree Structure */
+    .alert-purple  { background-color: rgba(168,85,247,0.1);  border-color: #a855f7; }
+    .alert-purple  .alert-icon svg { stroke: #a855f7; }
+    .alert-purple  .alert-content h4 { color: #c084fc; }
+    .alert-purple  .alert-content p  { color: #d8b4fe; }
+
+    /* ── Tree ── */
     .tree {
       font-family: 'Courier New', Courier, monospace;
       color: var(--text-muted);
-      background-color: rgba(255, 255, 255, 0.02);
+      background-color: rgba(255,255,255,0.02);
       border: 1px dashed var(--border-color);
       border-radius: 0.75rem;
-      padding: 1.5rem;
-      font-size: 0.95rem;
-      margin: 1.5rem 0;
+      padding: 1.25rem 1.5rem;
+      font-size: 0.88rem;
+      margin: 1.25rem 0;
+      line-height: 1.8;
     }
 
-    .tree-folder {
-      color: #60a5fa;
-      font-weight: bold;
-    }
+    .tree-folder  { color: #60a5fa; font-weight: bold; }
+    .tree-comment { color: #4b5563; font-style: italic; }
+    .tree-new     { color: #34d399; }
 
-    .tree-comment {
-      color: #6b7280;
-      font-style: italic;
-    }
-
-    /* Grid Layouts */
+    /* ── Feature grid ── */
     .features-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.5rem;
-      margin: 2rem 0;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.25rem;
+      margin: 1.5rem 0;
     }
 
     .feature-card {
       background-color: var(--bg-surface);
       border: 1px solid var(--border-color);
-      padding: 1.75rem;
+      padding: 1.5rem;
       border-radius: 0.85rem;
       transition: all 0.2s ease;
     }
 
-    .feature-card:hover {
-      transform: translateY(-4px);
-      border-color: var(--primary);
-      box-shadow: var(--shadow-indigo);
-    }
+    .feature-card:hover { transform: translateY(-3px); border-color: var(--primary); box-shadow: var(--shadow-indigo); }
 
     .feature-icon {
-      width: 3rem;
-      height: 3rem;
-      background-color: rgba(99, 102, 241, 0.1);
-      border-radius: 0.75rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 1.25rem;
-    }
-
-    .feature-icon svg {
-      width: 1.5rem;
-      height: 1.5rem;
-      stroke: var(--primary);
-    }
-
-    .feature-title {
-      font-family: 'Outfit', sans-serif;
-      font-size: 1.2rem;
-      font-weight: 600;
-      color: #ffffff;
-      margin-bottom: 0.5rem;
-    }
-
-    /* Tooltip styling */
-    .tooltip {
-      position: relative;
-    }
-
-    .tooltip::after {
-      content: 'Copied!';
-      position: absolute;
-      bottom: 125%;
-      left: 50%;
-      transform: translateX(-50%) scale(0.8);
-      background-color: #10b981;
-      color: white;
-      padding: 0.25rem 0.5rem;
-      border-radius: 0.25rem;
-      font-size: 0.75rem;
-      opacity: 0;
-      pointer-events: none;
-      transition: all 0.2s ease;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      white-space: nowrap;
-    }
-
-    .tooltip.show::after {
-      opacity: 1;
-      transform: translateX(-50%) scale(1);
-    }
-
-    /* Steps navigation helper */
-    .step-card {
-      border: 1px solid var(--border-color);
-      border-radius: 0.75rem;
-      padding: 1.5rem;
-      background-color: var(--bg-surface);
-      margin-bottom: 1.5rem;
-    }
-    
-    .step-badge {
-      display: inline-block;
-      padding: 0.25rem 0.75rem;
-      background: linear-gradient(135deg, var(--primary), var(--accent));
-      border-radius: 9999px;
-      font-size: 0.75rem;
-      font-weight: bold;
-      color: white;
-      text-transform: uppercase;
+      width: 2.75rem; height: 2.75rem;
+      background-color: rgba(99,102,241,0.1);
+      border-radius: 0.65rem;
+      display: flex; align-items: center; justify-content: center;
       margin-bottom: 1rem;
     }
 
-    /* Responsive */
+    .feature-icon svg { width: 1.35rem; height: 1.35rem; stroke: var(--primary); }
+    .feature-title { font-family: 'Outfit', sans-serif; font-size: 1.05rem; font-weight: 600; color: #fff; margin-bottom: 0.4rem; }
+
+    /* ── Steps ── */
+    .step-card {
+      border: 1px solid var(--border-color);
+      border-radius: 0.75rem;
+      padding: 1.35rem;
+      background-color: var(--bg-surface);
+      margin-bottom: 1.25rem;
+    }
+
+    .step-badge {
+      display: inline-block;
+      padding: 0.2rem 0.7rem;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      border-radius: 9999px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: white;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.9rem;
+    }
+
+    /* ── Table ── */
+    .data-table { width: 100%; border-collapse: collapse; margin: 1.25rem 0; }
+    .data-table th { background: rgba(99,102,241,0.15); color: #c7d2fe; font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; padding: 0.65rem 1rem; text-align: left; }
+    .data-table td { padding: 0.65rem 1rem; border-bottom: 1px solid #1f2937; color: var(--text-muted); font-size: 0.9rem; vertical-align: top; }
+    .data-table tr:last-child td { border-bottom: none; }
+    .data-table td strong { color: var(--text-main); }
+    .data-table td code { font-size: 0.82rem; }
+
+    /* ── Badge ── */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.15rem 0.6rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .badge-green  { background: rgba(16,185,129,0.15); color: #34d399; border: 1px solid rgba(16,185,129,0.3); }
+    .badge-blue   { background: rgba(59,130,246,0.15);  color: #60a5fa; border: 1px solid rgba(59,130,246,0.3); }
+    .badge-yellow { background: rgba(245,158,11,0.15);  color: #fbbf24; border: 1px solid rgba(245,158,11,0.3); }
+    .badge-purple { background: rgba(168,85,247,0.15);  color: #c084fc; border: 1px solid rgba(168,85,247,0.3); }
+
+    /* ── Responsive ── */
     @media (max-width: 968px) {
-      aside {
-        transform: translateX(-100%);
-      }
-
-      aside.open {
-        transform: translateX(0);
-      }
-
-      main {
-        margin-left: 0;
-        padding: 3rem 2rem;
-      }
-
-      .mobile-menu-btn {
-        display: flex;
-      }
+      aside { transform: translateX(-100%); }
+      aside.open { transform: translateX(0); }
+      main { margin-left: 0; padding: 2.5rem 1.5rem; }
+      .mobile-menu-btn { display: flex; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Sidebar Navigation -->
-  <aside id="sidebar">
-    <div class="brand">
-      <div class="brand-logo">
-        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path d="M12 2L2 22h20L12 2zm0 3.99L18.8 19H5.2L12 5.99z" fill="#fff"/>
-          <circle cx="12" cy="14" r="2" fill="#fff"/>
-        </svg>
-      </div>
-      <div class="brand-name">AI SEO Generator</div>
+<!-- ══ Sidebar ══════════════════════════════════════════════════════════════ -->
+<aside id="sidebar">
+  <div class="brand">
+    <div class="brand-logo">
+      <svg viewBox="0 0 24 24"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z" fill="#fff"/></svg>
+    </div>
+    <div class="brand-name">SEO Gen AI</div>
+  </div>
+
+  <nav>
+    <div class="nav-section-label">Getting Started</div>
+    <div class="nav-item active" onclick="switchTab('overview')">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+      Overview
+    </div>
+    <div class="nav-item" onclick="switchTab('install')">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+      Auto Install
+    </div>
+    <div class="nav-item" onclick="switchTab('manual-setup')">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>
+      Manual Setup
+    </div>
+    <div class="nav-item" onclick="switchTab('env-variables')">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+      Environment Variables
     </div>
 
-    <nav>
-      <div class="nav-item active" onclick="switchTab('overview')">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
-        </svg>
-        Overview & Structure
-      </div>
-      <div class="nav-item" onclick="switchTab('install')">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12H5.05m0 0a2 2 0 011.95-1.95H9m-3.95 1.95H5a2 2 0 002-2v-1.1M15 12h3.95m0 0a2 2 0 00-1.95-1.95H15m3.95 1.95H19a2 2 0 01-2-2v-1.1M9 12h6m0 0v6a2 2 0 01-2 2h-2a2 2 0 01-2-2v-6m6 0V6a2 2 0 00-2-2h-2a2 2 0 00-2 2v6"></path>
-        </svg>
-        Automatic Install
-      </div>
-      <div class="nav-item" onclick="switchTab('manual-setup')">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path>
-        </svg>
-        Manual Setup
-      </div>
-      <div class="nav-item" onclick="switchTab('env-variables')">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-        </svg>
-        Environment Template
-      </div>
-      <div class="nav-item" onclick="switchTab('usage')">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
-        </svg>
-        User Guide & API
-      </div>
-      <div class="nav-item" onclick="switchTab('recording-demo')">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
-        </svg>
-        Recording a Demo
-      </div>
-      <div class="nav-item" onclick="switchTab('troubleshooting')">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
-        </svg>
-        Troubleshooting
-      </div>
-    </nav>
-
-    <div class="sidebar-footer">
-      AI SEO Generator v1.0.0<br>
-      Ready for CodeCanyon
+    <div class="nav-section-label">Platform Guide</div>
+    <div class="nav-item" onclick="switchTab('features')">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+      Features Guide
     </div>
-  </aside>
-
-  <!-- Mobile Trigger -->
-  <button class="mobile-menu-btn" onclick="toggleSidebar()">
-    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-    </svg>
-  </button>
-
-  <!-- Main Content -->
-  <main>
-    
-    <!-- 1. OVERVIEW SECTION -->
-    <div id="overview" class="doc-section active">
-      <h1>AI SEO Article Generator</h1>
-      <p>Welcome to the <strong>AI SEO Article Generator</strong> package! This is a complete, production-ready, clean web application that allows users to instantly generate high-quality, SEO-optimized articles based on standard keywords using LLM AI integrations. It features an Express.js API on the backend and a fast React (Vite + TailwindCSS) single-page application on the frontend.</p>
-      
-      <h2>Core Package Features</h2>
-      <div class="features-grid">
-        <div class="feature-card">
-          <div class="feature-icon">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 9.172V5L8 4z"></path></svg>
-          </div>
-          <div class="feature-title">AI SEO Article Generator</div>
-          <p>Instantly creates catching titles, optimized meta descriptions, and well-structured Markdown content using advanced OpenAI algorithms.</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14"></path></svg>
-          </div>
-          <div class="feature-title">Smart Keyword Suggestion</div>
-          <p>Automatically suggests 5 to 10 highly relevant long-tail and LSI keywords to expand your organic SEO keyword indexing.</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-          </div>
-          <div class="feature-title">Premium User UI & UX</div>
-          <p>Built with beautiful Glassmorphism, smooth animations (Framer Motion), interactive code tabs, and responsive layouts.</p>
-        </div>
-      </div>
-
-      <h2>Standard Package Structure</h2>
-      <p>This package is organized following industry-standard multi-package rules for rapid installation, configuration, and launch:</p>
-      
-      <div class="tree">
-        ai-seo-generator-root/<br>
-        ├── <span class="tree-folder">backend/</span> <span class="tree-comment"># API Express.js Engine (Node.js)</span><br>
-        │   ├── <span class="tree-folder">config/</span> <span class="tree-comment"># Centralized DB & S3 configurations</span><br>
-        │   ├── <span class="tree-folder">controllers/</span> <span class="tree-comment"># Business logic controllers</span><br>
-        │   ├── <span class="tree-folder">middleware/</span> <span class="tree-comment"># Auth Protect, Multer, Rate Limiter</span><br>
-        │   ├── <span class="tree-folder">models/</span> <span class="tree-comment"># Mongoose schemas (User, Article, Image, Settings)</span><br>
-        │   ├── <span class="tree-folder">routes/</span> <span class="tree-comment"># Express API Routes registration</span><br>
-        │   ├── <span class="tree-folder">services/</span> <span class="tree-comment"># S3 uploads and LLM integrations</span><br>
-        │   ├── .env.example <span class="tree-comment"># Backend local environment keys model</span><br>
-        │   └── server.js <span class="tree-comment"># App main entry file</span><br>
-        ├── <span class="tree-folder">frontend/</span> <span class="tree-comment"># Single-Page Web App React (Vite)</span><br>
-        │   ├── <span class="tree-folder">src/</span> <span class="tree-comment"># React components, pages, context managers</span><br>
-        │   ├── .env.example <span class="tree-comment"># Frontend environment config URL</span><br>
-        │   └── tailwind.config.js <span class="tree-comment"># Styling tailwind setup parameters</span><br>
-        ├── <span class="tree-folder">documentation/</span> <span class="tree-comment"># HTML Interactive Documentation Portal</span><br>
-        │   └── index.html <span class="tree-comment"># Interactive user documentation (this guide)</span><br>
-        ├── install.sh <span class="tree-comment"># Automatic one-click bash setup script</span><br>
-        ├── package.json <span class="tree-comment"># Root NPM script orchestrator</span><br>
-        └── README.md <span class="tree-comment"># Repository landing introduction guide</span>
-      </div>
+    <div class="nav-item" onclick="switchTab('admin')">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+      Admin Dashboard
+    </div>
+    <div class="nav-item" onclick="switchTab('api-reference')">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+      API Reference
     </div>
 
-    <!-- 2. AUTOMATIC INSTALL SECTION -->
-    <div id="install" class="doc-section">
-      <h1>One-Click Automatic Installation</h1>
-      <p>This package contains an automated bash setup script <code>install.sh</code> that performs system environment diagnostics, prepares environment files, and downloads all dependencies automatically.</p>
-      
-      <div class="alert alert-info">
-        <div class="alert-icon">
-          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-        </div>
-        <div class="alert-content">
-          <h4>Prerequisites</h4>
-          <p>Make sure you have Node.js (v18+) and npm installed on your machine before running the script.</p>
-        </div>
-      </div>
-
-      <div class="step-card">
-        <span class="step-badge">Step 1</span>
-        <h3>Execute the automated script</h3>
-        <p>Open your favorite terminal at the root directory of the extracted package, and execute the installation command:</p>
-        <div class="code-container">
-          <div class="code-header">
-            <span>Terminal</span>
-            <button class="copy-btn tooltip" onclick="copyText('bash install.sh')">
-              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg>
-              Copy
-            </button>
-          </div>
-          <pre><code>bash install.sh</code></pre>
-        </div>
-      </div>
-
-      <div class="step-card">
-        <span class="step-badge">Step 2</span>
-        <h3>Configure the server keys</h3>
-        <p>Open the generated file <code>backend/.env</code> in your favorite editor and configure your <strong>OpenAI API Key</strong> and <strong>MongoDB URI</strong>. Refer to the <strong>Environment Template</strong> tab for descriptions of all available variables.</p>
-      </div>
-
-      <div class="step-card">
-        <span class="step-badge">Step 3</span>
-        <h3>Start the servers</h3>
-        <p>Launch the frontend and backend servers together concurrently with a single command:</p>
-        <div class="code-container">
-          <div class="code-header">
-            <span>Terminal</span>
-            <button class="copy-btn tooltip" onclick="copyText('npm run dev')">
-              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg>
-              Copy
-            </button>
-          </div>
-          <pre><code>npm run dev</code></pre>
-        </div>
-        <p>Your React App will open at <a href="http://localhost:5173" target="_blank">http://localhost:5173</a>, connected directly to your server running on port <code>5000</code>!</p>
-      </div>
+    <div class="nav-section-label">Integrations</div>
+    <div class="nav-item" onclick="switchTab('stripe-setup')">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
+      Stripe Payments
+    </div>
+    <div class="nav-item" onclick="switchTab('wordpress-setup')">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg>
+      WordPress Integration
     </div>
 
-    <!-- 3. MANUAL SETUP SECTION -->
-    <div id="manual-setup" class="doc-section">
-      <h1>Manual Setup & Configuration Guide</h1>
-      <p>If you prefer to configure, install, and execute backend and frontend components separately, follow this detailed manual procedure.</p>
-      
-      <h2>1. Environment Initialization</h2>
-      <p>Copy environment variable templates in both application scopes to declare settings:</p>
-      <div class="code-container">
-        <div class="code-header">
-          <span>Terminal</span>
-          <button class="copy-btn tooltip" onclick="copyText('cp backend/.env.example backend/.env && cp frontend/.env.example frontend/.env')">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg>
-            Copy
-          </button>
-        </div>
-        <pre><code># Create Backend and Frontend local .env configuration files
-cp backend/.env.example backend/.env
+    <div class="nav-section-label">Production</div>
+    <div class="nav-item" onclick="switchTab('deploy')">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7"/></svg>
+      Deploy to Vercel
+    </div>
+    <div class="nav-item" onclick="switchTab('testing')">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      Testing &amp; CI/CD
+    </div>
+    <div class="nav-item" onclick="switchTab('gdpr')">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+      GDPR &amp; Legal
+    </div>
+    <div class="nav-item" onclick="switchTab('troubleshooting')">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+      Troubleshooting
+    </div>
+  </nav>
+
+  <div class="sidebar-footer">
+    SEO Gen AI v2.0.0<br>
+    CodeCanyon &amp; CodeSter Ready
+  </div>
+</aside>
+
+<button class="mobile-menu-btn" onclick="toggleSidebar()">
+  <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+</button>
+
+<!-- ══ Main Content ══════════════════════════════════════════════════════════ -->
+<main>
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     1. OVERVIEW
+══════════════════════════════════════════════════════════════════════════════ -->
+<div id="overview" class="doc-section active">
+  <h1>SEO Gen AI</h1>
+  <p>Welcome to the official documentation for <strong>SEO Gen AI</strong> — a complete, production-ready SaaS web application that turns a single keyword into a fully structured, SEO-optimised article in seconds using AI. Built with React 19 + Vite on the frontend and Node.js / Express 5 on the backend.</p>
+
+  <div class="alert alert-success">
+    <div class="alert-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+    <div class="alert-content">
+      <h4>Ready to sell on CodeCanyon &amp; CodeSter</h4>
+      <p>Full backend + frontend, tests, CI/CD, Swagger API docs, GDPR legal pages, i18n (6 languages), Stripe payments, and AWS S3 image storage — all included.</p>
+    </div>
+  </div>
+
+  <h2>Core Features</h2>
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></div>
+      <div class="feature-title">SSE Streaming Generation</div>
+      <p>Content streams word-by-word via Server-Sent Events. Live progress steps displayed while the AI writes.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg></div>
+      <div class="feature-title">DALL-E 3 AI Covers</div>
+      <p>One click generates a professional cover image via DALL-E 3, uploaded directly to AWS S3.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9"/></svg></div>
+      <div class="feature-title">WordPress Publishing</div>
+      <p>Publish any article to WordPress as a draft with featured image in one click.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg></div>
+      <div class="feature-title">Stripe Monetisation</div>
+      <p>Monthly subscriptions (Starter / Growth / Pro) + one-time credit packs with full webhook idempotency.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg></div>
+      <div class="feature-title">Security &amp; GDPR</div>
+      <p>AES-256 encryption, bcrypt passwords, JWT auth, rate limiting, Helmet headers, GDPR right-to-erasure.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg></div>
+      <div class="feature-title">Swagger API Docs</div>
+      <p>Interactive OpenAPI 3.0.3 documentation for all endpoints, auto-served at <code>/api/docs</code>.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/></svg></div>
+      <div class="feature-title">6 Languages (i18n)</div>
+      <p>English, French, Spanish, Italian, Arabic (RTL), Chinese — full interface translation via i18next.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg></div>
+      <div class="feature-title">Tests &amp; CI/CD</div>
+      <p>125+ tests (Jest + Vitest), GitHub Actions CI pipeline, weekly security audit workflow.</p>
+    </div>
+  </div>
+
+  <h2>Technology Stack</h2>
+  <table class="data-table">
+    <thead><tr><th>Layer</th><th>Technology</th><th>Version</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Frontend</strong></td><td>React, Vite, TailwindCSS, Framer Motion, i18next</td><td>React 19 / Vite 8 / Tailwind 4</td></tr>
+      <tr><td><strong>Backend</strong></td><td>Node.js, Express, Mongoose</td><td>Node 20 / Express 5 / Mongoose 9</td></tr>
+      <tr><td><strong>Database</strong></td><td>MongoDB (local or Atlas)</td><td>MongoDB 6+</td></tr>
+      <tr><td><strong>AI</strong></td><td>OpenAI SDK — GPT-4o, DALL-E 3, OpenRouter, DeepSeek, Groq</td><td>openai 6.35</td></tr>
+      <tr><td><strong>Payments</strong></td><td>Stripe — subscriptions + one-time packs + webhooks</td><td>stripe 17+</td></tr>
+      <tr><td><strong>Storage</strong></td><td>AWS S3 + Sharp (WebP conversion, 4 thumbnail sizes)</td><td>aws-sdk v3</td></tr>
+      <tr><td><strong>Auth</strong></td><td>JWT (30-day), bcryptjs, AES-256 key encryption</td><td>jsonwebtoken 9</td></tr>
+      <tr><td><strong>Testing</strong></td><td>Jest + Supertest + mongodb-memory-server (backend), Vitest + RTL (frontend)</td><td>Jest 30 / Vitest 4</td></tr>
+      <tr><td><strong>Deploy</strong></td><td>Vercel (frontend + serverless backend)</td><td>vercel.json included</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Project Structure</h2>
+  <div class="tree">
+    seo-gen-ai/<br>
+    ├── <span class="tree-folder">backend/</span><br>
+    │   ├── <span class="tree-folder">__tests__/</span>       <span class="tree-comment"># Jest integration &amp; unit tests (125+ tests)</span><br>
+    │   ├── <span class="tree-folder">config/</span>           <span class="tree-comment"># DB + S3 configuration</span><br>
+    │   ├── <span class="tree-folder">controllers/</span>      <span class="tree-comment"># Business logic per feature</span><br>
+    │   ├── <span class="tree-folder">docs/</span>             <span class="tree-new"># OpenAPI 3.0.3 specification (openapi.js)</span><br>
+    │   ├── <span class="tree-folder">middleware/</span>       <span class="tree-comment"># auth, rate-limiter, upload, errorHandler</span><br>
+    │   ├── <span class="tree-folder">models/</span>           <span class="tree-comment"># Mongoose schemas</span><br>
+    │   ├── <span class="tree-folder">routes/</span>           <span class="tree-comment"># Express route definitions</span><br>
+    │   ├── <span class="tree-folder">services/</span>         <span class="tree-comment"># openai, S3, email, internal-linking</span><br>
+    │   ├── <span class="tree-folder">validators/</span>       <span class="tree-new"># Zod schemas for all inputs</span><br>
+    │   ├── .env.example      <span class="tree-comment"># ← copy to .env, fill in secrets</span><br>
+    │   └── server.js         <span class="tree-comment"># Entry point</span><br>
+    ├── <span class="tree-folder">frontend/</span><br>
+    │   ├── <span class="tree-folder">public/locales/</span>   <span class="tree-new"># i18n JSON files (en, fr, es, it, ar, zh)</span><br>
+    │   ├── <span class="tree-folder">src/</span><br>
+    │   │   ├── <span class="tree-folder">__tests__/</span>    <span class="tree-new"># Vitest + RTL tests</span><br>
+    │   │   ├── <span class="tree-folder">components/</span>   <span class="tree-comment"># Reusable UI components</span><br>
+    │   │   ├── <span class="tree-folder">context/</span>      <span class="tree-comment"># AuthContext, ThemeContext</span><br>
+    │   │   ├── <span class="tree-folder">pages/</span>        <span class="tree-comment"># Route pages + legal pages</span><br>
+    │   │   └── <span class="tree-folder">lib/</span>          <span class="tree-comment"># Axios API client (api.js)</span><br>
+    │   └── .env.example<br>
+    ├── <span class="tree-folder">.github/workflows/</span>  <span class="tree-new"># ci.yml + security.yml (GitHub Actions)</span><br>
+    ├── <span class="tree-folder">documentation/</span><br>
+    │   ├── index.html        <span class="tree-comment"># This documentation portal</span><br>
+    │   └── legal.html        <span class="tree-new"># Standalone CGU + Privacy Policy</span><br>
+    ├── .nvmrc                <span class="tree-new"># Node 20 version pin</span><br>
+    ├── CHANGELOG.md<br>
+    ├── install.sh            <span class="tree-comment"># One-click setup script</span><br>
+    └── README.md
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     2. AUTO INSTALL
+══════════════════════════════════════════════════════════════════════════════ -->
+<div id="install" class="doc-section">
+  <h1>One-Click Auto Install</h1>
+  <p>The included <code>install.sh</code> bash script checks prerequisites, copies <code>.env</code> templates, and installs all dependencies automatically.</p>
+
+  <div class="alert alert-info">
+    <div class="alert-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+    <div class="alert-content"><h4>Prerequisites</h4><p>Node.js v20+ and npm v9+ must be installed. MongoDB must be running locally or accessible via Atlas URI.</p></div>
+  </div>
+
+  <div class="step-card">
+    <span class="step-badge">Step 1</span>
+    <h3>Run the installer</h3>
+    <div class="code-container">
+      <div class="code-header"><span>Terminal — project root</span><button class="copy-btn" onclick="copyCode(this, 'bash install.sh')"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>Copy</button></div>
+      <pre><code>bash install.sh</code></pre>
+    </div>
+    <p>The script copies <code>.env.example</code> → <code>.env</code> for both frontend and backend, then runs <code>npm install</code> in all three directories.</p>
+  </div>
+
+  <div class="step-card">
+    <span class="step-badge">Step 2</span>
+    <h3>Configure secrets</h3>
+    <p>Open <code>backend/.env</code> and fill in at minimum:</p>
+    <ul>
+      <li><code>MONGODB_URI</code> — your MongoDB connection string</li>
+      <li><code>JWT_SECRET</code> — generate a 64-char random string</li>
+      <li><code>ENCRYPTION_KEY</code> — must be exactly 32 characters</li>
+      <li><code>OPENAI_API_KEY</code> — or leave blank and add it later in Settings</li>
+    </ul>
+    <p>See the <strong>Environment Variables</strong> tab for full descriptions of every variable.</p>
+  </div>
+
+  <div class="step-card">
+    <span class="step-badge">Step 3</span>
+    <h3>Start both servers</h3>
+    <div class="code-container">
+      <div class="code-header"><span>Terminal</span><button class="copy-btn" onclick="copyCode(this, 'npm run dev')"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>Copy</button></div>
+      <pre><code>npm run dev</code></pre>
+    </div>
+    <p>Frontend → <code>http://localhost:5173</code> &nbsp;|&nbsp; Backend API → <code>http://localhost:5000/api</code> &nbsp;|&nbsp; API Docs → <code>http://localhost:5000/api/docs</code></p>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     3. MANUAL SETUP
+══════════════════════════════════════════════════════════════════════════════ -->
+<div id="manual-setup" class="doc-section">
+  <h1>Manual Setup Guide</h1>
+  <p>Step-by-step instructions for configuring and starting each component independently.</p>
+
+  <h2>1. Copy environment templates</h2>
+  <div class="code-container">
+    <div class="code-header"><span>Terminal</span><button class="copy-btn" onclick="copyCode(this, 'cp backend/.env.example backend/.env\ncp frontend/.env.example frontend/.env')"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>Copy</button></div>
+    <pre><code>cp backend/.env.example backend/.env
 cp frontend/.env.example frontend/.env</code></pre>
-      </div>
+  </div>
 
-      <h2>2. Backend Server Deployment</h2>
-      <p>Step-by-step to start the Express.js API Server engine:</p>
-      <div class="code-container">
-        <div class="code-header">
-          <span>Terminal (Backend)</span>
-          <button class="copy-btn tooltip" onclick="copyText('cd backend && npm install && npm run dev')">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg>
-            Copy
-          </button>
-        </div>
-        <pre><code># Navigate into backend directory
-cd backend
-
-# Install production and development dependencies
+  <h2>2. Install &amp; start the backend</h2>
+  <div class="code-container">
+    <div class="code-header"><span>Terminal</span></div>
+    <pre><code>cd backend
 npm install
+npm run dev     # starts nodemon on port 5000</code></pre>
+  </div>
+  <p>You should see: <code>Successfully connected to MongoDB</code> and <code>Server successfully started and listening on port 5000</code>.</p>
 
-# Start local server with automatic nodemon refresh
-npm run dev</code></pre>
-      </div>
-      <p>The console will log: <code>Successfully connected to MongoDB</code> and <code>Server is running on port 5000</code>.</p>
-
-      <h2>3. Frontend Client Deployment</h2>
-      <p>Step-by-step to install and start the React Single-Page Application client:</p>
-      <div class="code-container">
-        <div class="code-header">
-          <span>Terminal (Frontend)</span>
-          <button class="copy-btn tooltip" onclick="copyText('cd frontend && npm install && npm run dev')">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg>
-            Copy
-          </button>
-        </div>
-        <pre><code># Navigate into frontend directory
-cd frontend
-
-# Install package dependencies
+  <h2>3. Install &amp; start the frontend</h2>
+  <div class="code-container">
+    <div class="code-header"><span>Terminal (new tab)</span></div>
+    <pre><code>cd frontend
 npm install
+npm run dev     # Vite starts on port 5173</code></pre>
+  </div>
 
-# Start Vite React server
-npm run dev</code></pre>
-      </div>
-      <p>Vite will spin up the server in milliseconds and present a local link (e.g. <code>http://localhost:5173</code>) for you to view in your browser.</p>
-    </div>
+  <h2>4. Verify the API docs</h2>
+  <p>Open <a href="http://localhost:5000/api/docs" target="_blank">http://localhost:5000/api/docs</a> in your browser. You should see the interactive Swagger UI with all endpoints documented.</p>
 
-    <!-- 4. ENV VARIABLES SECTION -->
-    <div id="env-variables" class="doc-section">
-      <h1>Server Environment Template Configuration</h1>
-      <p>Here is the detailed key list required inside your <code>backend/.env</code> configuration file to wire the application components together:</p>
-      
-      <div class="code-container">
-        <div class="code-header">
-          <span>backend/.env</span>
-          <button class="copy-btn tooltip" onclick="copyText('PORT=5000\nMONGODB_URI=mongodb://localhost:27017/seo-article-generator\nJWT_SECRET=super_secret_jwt_key_change_me_in_production!\nOPENAI_API_KEY=your_openai_api_key_here\nOPENAI_MODEL=gpt-4o\nAWS_REGION=us-east-1\nAWS_ACCESS_KEY_ID=your_aws_access_key_id_here\nAWS_SECRET_ACCESS_KEY=your_aws_secret_access_key_here\nAWS_S3_BUCKET=your_s3_bucket_name_here')">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg>
-            Copy
-          </button>
-        </div>
-        <pre><code># 🚀 Server Port setup
-PORT=5000
+  <h2>5. Create your admin account</h2>
+  <ol>
+    <li>Register at <code>http://localhost:5173/register</code>. The <strong>first user to register</strong> is automatically granted <code>admin</code> role.</li>
+    <li>If you need to promote an existing user to admin manually, run this in your MongoDB shell or Compass:</li>
+  </ol>
+  <div class="code-container">
+    <div class="code-header"><span>MongoDB Shell</span></div>
+    <pre><code>db.users.updateOne(
+  { email: "your@email.com" },
+  { $set: { role: "admin" } }
+)</code></pre>
+  </div>
+</div>
 
-# 💾 Database URI setup
-MONGODB_URI=mongodb://localhost:27017/seo-article-generator
 
-# 🔐 Signed Auth Security Keys
-JWT_SECRET=super_secret_jwt_key_change_me_in_production!
+<!-- ══════════════════════════════════════════════════════════════════════════
+     4. ENVIRONMENT VARIABLES
+══════════════════════════════════════════════════════════════════════════════ -->
+<div id="env-variables" class="doc-section">
+  <h1>Environment Variables</h1>
+  <p>Both <code>backend/.env</code> and <code>frontend/.env</code> are generated from their respective <code>.env.example</code> templates. Below is the complete reference for every variable.</p>
 
-# 🤖 OpenAI Large Language Model Settings
-OPENAI_API_KEY=your_openai_api_key_here
-OPENAI_MODEL=gpt-4o
+  <h2>backend/.env</h2>
 
-# ☁️ AWS S3 Cloud Storage Integration (Optional - for Article Images)
-AWS_REGION=us-east-1
-AWS_ACCESS_KEY_ID=your_aws_access_key_id_here
-AWS_SECRET_ACCESS_KEY=your_aws_secret_access_key_here
-AWS_S3_BUCKET=your_s3_bucket_name_here</code></pre>
-      </div>
+  <h3>Server</h3>
+  <table class="data-table">
+    <thead><tr><th>Variable</th><th>Required</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>PORT</code></td><td><span class="badge badge-yellow">Optional</span></td><td>HTTP port (default: <code>5000</code>)</td></tr>
+      <tr><td><code>NODE_ENV</code></td><td><span class="badge badge-yellow">Optional</span></td><td><code>development</code> | <code>test</code> | <code>production</code>. Controls logging &amp; security checks.</td></tr>
+    </tbody>
+  </table>
 
-      <h3>Frontend API Setup</h3>
-      <p>Configure the connection link in <code>frontend/.env</code> to route Axios queries:</p>
-      <div class="code-container">
-        <div class="code-header">
-          <span>frontend/.env</span>
-        </div>
-        <pre><code># API Gateway endpoint from Express.js
-VITE_API_URL=http://localhost:5000/api</code></pre>
-      </div>
-    </div>
+  <h3>Database</h3>
+  <table class="data-table">
+    <thead><tr><th>Variable</th><th>Required</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>MONGODB_URI</code></td><td><span class="badge badge-blue">Required</span></td><td>Full MongoDB connection string. Local or MongoDB Atlas.</td></tr>
+    </tbody>
+  </table>
 
-    <!-- 5. USAGE GUIDE SECTION -->
-    <div id="usage" class="doc-section">
-      <h1>Application Usage Guide</h1>
-      <p>The AI SEO Article Generator is designed to make organic article indexing fully visual and direct.</p>
-      
-      <h2>Step-by-Step Generation Flow</h2>
-      <ol>
-        <li>Start both frontend and backend servers. Open <code>http://localhost:5173</code> in your browser.</li>
-        <li>On the main generation Dashboard, type your target primary SEO keyword (e.g., <em>"Best web development frameworks 2026"</em>) into the main input form.</li>
-        <li>Click the <strong>Generate SEO Article</strong> command button.</li>
-        <li>A loading screen with an animated status indicator will appear while the backend communicates with the AI engines.</li>
-        <li>Once generated, the system will displays the fully structured Markdown article and key SEO data blocks.</li>
-      </ol>
+  <h3>Security</h3>
+  <table class="data-table">
+    <thead><tr><th>Variable</th><th>Required</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>JWT_SECRET</code></td><td><span class="badge badge-blue">Required</span></td><td>Signs JWT tokens. Min 64 chars. Generate: <code>node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"</code></td></tr>
+      <tr><td><code>ENCRYPTION_KEY</code></td><td><span class="badge badge-blue">Required</span></td><td>AES-256 key for encrypting API keys &amp; WP passwords in DB. <strong>Must be exactly 32 characters.</strong></td></tr>
+      <tr><td><code>CLIENT_URL</code></td><td><span class="badge badge-blue">Required</span></td><td>Frontend origin(s) for CORS. Comma-separated for multiple.</td></tr>
+    </tbody>
+  </table>
 
-      <h2>Output Structure</h2>
-      <ul>
-        <li><strong>Catchy Title & Meta Description:</strong> Displays pre-optimized meta headers ready to paste into your HTML head or CMS.</li>
-        <li><strong>Structured Article:</strong> Fully optimized headers (H1, H2, H3), lists, and semantic keywords, styled in premium typography preview.</li>
-        <li><strong>Sidebar Suggested Keywords:</strong> Automatically proposes 5 to 10 highly indexed LSI and long-tail keywords to target additional user search intent.</li>
-      </ul>
+  <h3>AI / OpenAI</h3>
+  <table class="data-table">
+    <thead><tr><th>Variable</th><th>Required</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>OPENAI_API_KEY</code></td><td><span class="badge badge-yellow">Optional</span></td><td>Platform-level key. Users without their own key use this. Leave blank to require all users to bring their own.</td></tr>
+      <tr><td><code>OPENAI_MODEL</code></td><td><span class="badge badge-yellow">Optional</span></td><td>Default model: <code>gpt-4o</code>. Supports <code>gpt-4o-mini</code>, OpenRouter free models, DeepSeek, Groq.</td></tr>
+      <tr><td><code>OPENAI_BASE_URL</code></td><td><span class="badge badge-yellow">Optional</span></td><td>Override API base URL for OpenRouter (<code>https://openrouter.ai/api/v1</code>), DeepSeek, or Groq.</td></tr>
+    </tbody>
+  </table>
 
-      <h2>One-Click Copy & Export</h2>
-      <p>Click the <strong>Copy All</strong> utility button on the top-right of the article card to copy the title, description, keywords, and Markdown content straight to your clipboard, formatted perfectly for your CMS (WordPress, Ghost, Medium, etc.).</p>
-    </div>
+  <h3>Email — Password Reset</h3>
+  <table class="data-table">
+    <thead><tr><th>Variable</th><th>Required</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>RESEND_API_KEY</code></td><td><span class="badge badge-yellow">Optional</span></td><td>Resend API key for password-reset emails. If omitted in dev, reset URLs are logged to the console.</td></tr>
+      <tr><td><code>EMAIL_FROM</code></td><td><span class="badge badge-yellow">Optional</span></td><td>Sender address verified in Resend. Use <code>onboarding@resend.dev</code> for sandbox testing.</td></tr>
+    </tbody>
+  </table>
 
-    <!-- 6. RECORDING A DEMO SECTION -->
-    <div id="recording-demo" class="doc-section">
-      <h1>Recording a Winning Product Demo</h1>
-      <p>To maximize your sales on marketplaces like <strong>CodeCanyon</strong>, presenting a clean, fast, and visually beautiful video demo is extremely important. Follow these guidelines to record a high-converting presentation.</p>
-      
-      <div class="step-card">
-        <span class="step-badge">1. Preparation</span>
-        <p>Ensure your environment is clean. Close unrelated browser tabs or system notification panels. Clear old database test articles so the application history looks clean and fresh. Use at least <strong>1080p</strong> recording software (OBS Studio, Loom, or ScreenFlow).</p>
-      </div>
+  <h3>Stripe — Payments</h3>
+  <table class="data-table">
+    <thead><tr><th>Variable</th><th>Required</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>STRIPE_SECRET_KEY</code></td><td><span class="badge badge-yellow">Optional</span></td><td>Stripe secret key (<code>sk_test_…</code> or <code>sk_live_…</code>). Omit to disable all payment features.</td></tr>
+      <tr><td><code>STRIPE_WEBHOOK_SECRET</code></td><td><span class="badge badge-yellow">Optional</span></td><td>Webhook signing secret (<code>whsec_…</code>). Required to validate incoming Stripe events.</td></tr>
+    </tbody>
+  </table>
 
-      <div class="step-card">
-        <span class="step-badge">2. Video Structure (90 Seconds)</span>
+  <h3>AWS S3 — Image Storage</h3>
+  <table class="data-table">
+    <thead><tr><th>Variable</th><th>Required</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>AWS_REGION</code></td><td><span class="badge badge-yellow">Optional</span></td><td>Bucket region (e.g. <code>us-east-1</code>). Omit entire block to disable image features.</td></tr>
+      <tr><td><code>AWS_ACCESS_KEY_ID</code></td><td><span class="badge badge-yellow">Optional</span></td><td>IAM user access key with S3 read/write permissions.</td></tr>
+      <tr><td><code>AWS_SECRET_ACCESS_KEY</code></td><td><span class="badge badge-yellow">Optional</span></td><td>IAM user secret key paired with the access key above.</td></tr>
+      <tr><td><code>AWS_S3_BUCKET</code></td><td><span class="badge badge-yellow">Optional</span></td><td>Name of your S3 bucket. Must already exist.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>frontend/.env</h2>
+  <table class="data-table">
+    <thead><tr><th>Variable</th><th>Required</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>VITE_API_URL</code></td><td><span class="badge badge-blue">Required</span></td><td>Full backend API URL including <code>/api</code>. E.g. <code>http://localhost:5000/api</code> or <code>https://api.yourdomain.com/api</code>.</td></tr>
+      <tr><td><code>VITE_STRIPE_PRICE_STARTER</code></td><td><span class="badge badge-yellow">Optional</span></td><td>Stripe Price ID for the Starter plan (<code>price_…</code>). Omit to hide /pricing page.</td></tr>
+      <tr><td><code>VITE_STRIPE_PRICE_GROWTH</code></td><td><span class="badge badge-yellow">Optional</span></td><td>Stripe Price ID for the Growth plan.</td></tr>
+      <tr><td><code>VITE_STRIPE_PRICE_PRO</code></td><td><span class="badge badge-yellow">Optional</span></td><td>Stripe Price ID for the Pro plan.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="alert alert-warning">
+    <div class="alert-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg></div>
+    <div class="alert-content"><h4>Never commit .env files</h4><p>Both <code>backend/.env</code> and <code>frontend/.env</code> are in <code>.gitignore</code>. Only the <code>.env.example</code> templates (with no real secrets) should ever be committed.</p></div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     5. FEATURES GUIDE
+══════════════════════════════════════════════════════════════════════════════ -->
+<div id="features" class="doc-section">
+  <h1>Features Guide</h1>
+  <p>A walkthrough of every user-facing feature in the platform.</p>
+
+  <h2>Article Generation</h2>
+  <div class="step-card">
+    <span class="step-badge">Dashboard</span>
+    <ol>
+      <li>Type your target keyword (up to 100 characters) into the generation input on the Dashboard.</li>
+      <li>Click <strong>Generate Article</strong>. The button switches to a live progress indicator.</li>
+      <li>Content streams word-by-word via Server-Sent Events (SSE) — you see each step label in real time: <em>Writing article…, Generating keywords…, Finalising…</em></li>
+      <li>The finished article appears as a card showing: Title, Meta Description, full Markdown content, and 5–10 suggested keywords in the sidebar panel.</li>
+    </ol>
+    <p>Each generation consumes <strong>1 credit</strong>. Users who add their own API key in Settings get unlimited generations.</p>
+  </div>
+
+  <h2>Export Options</h2>
+  <table class="data-table">
+    <thead><tr><th>Format</th><th>Button</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Copy</strong></td><td>Copy icon</td><td>Copies title + meta + content + keywords to clipboard as Markdown.</td></tr>
+      <tr><td><strong>Markdown (.md)</strong></td><td>Download icon</td><td>Downloads a clean <code>.md</code> file ready for Ghost, Hugo, Notion.</td></tr>
+      <tr><td><strong>HTML</strong></td><td>FileCode icon</td><td>Self-contained HTML with embedded CSS — paste into any CMS.</td></tr>
+      <tr><td><strong>PDF</strong></td><td>FileText icon</td><td>Generated client-side via jsPDF with automatic pagination.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Cover Images</h2>
+  <p>Two ways to add a cover image to an article:</p>
+  <ul>
+    <li><strong>Manual upload</strong> — click the <em>Add Cover</em> button, pick a JPEG/PNG/WebP/GIF. The backend converts to WebP, generates 4 thumbnail sizes via Sharp, and stores on S3. A signed URL (1-hour expiry) is returned.</li>
+    <li><strong>AI Cover (DALL-E 3)</strong> — click the <em>AI Cover</em> button (Sparkles icon). The backend sends the article title and keywords to DALL-E 3 (1792×1024, standard quality), downloads the generated image, and uploads it to S3. Result appears instantly in the article card.</li>
+  </ul>
+
+  <div class="alert alert-info">
+    <div class="alert-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+    <div class="alert-content"><h4>AI Cover requires AWS S3</h4><p>DALL-E returns a temporary URL (1-hour expiry). The app downloads the image and re-uploads it to your S3 bucket for permanent storage. Requires <code>AWS_*</code> variables to be configured.</p></div>
+  </div>
+
+  <h2>Article History &amp; Management</h2>
+  <ul>
+    <li><strong>Search</strong> — filter your history by keyword or title using the search input.</li>
+    <li><strong>Version History</strong> — every refinement creates a new version. Click the version clock icon to restore any previous version.</li>
+    <li><strong>Refine</strong> — send a natural-language instruction to the AI to rewrite or improve sections of the article.</li>
+    <li><strong>Delete</strong> — removes the article and its associated S3 images permanently.</li>
+  </ul>
+
+  <h2>Internal Linking Assistant</h2>
+  <p>On any article, click the <strong>Internal Links</strong> panel in the sidebar. The assistant analyses your article content alongside your other published articles, and suggests contextually relevant internal links to insert. You can also provide a list of known URLs manually.</p>
+
+  <h2>Settings</h2>
+  <table class="data-table">
+    <thead><tr><th>Setting</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Personal AI API Key</strong></td><td>Add your own OpenAI, OpenRouter, DeepSeek, or Groq key. Unlocks unlimited generation and bypasses credit consumption.</td></tr>
+      <tr><td><strong>Preferred Language</strong></td><td>Articles are generated in the selected language (English, French, Spanish, Italian, Arabic, Chinese).</td></tr>
+      <tr><td><strong>Tone</strong></td><td>Writing tone for articles: Professional, Casual, Technical, Persuasive.</td></tr>
+      <tr><td><strong>WordPress Integration</strong></td><td>URL, username, and Application Password for one-click WP publishing.</td></tr>
+      <tr><td><strong>Delete Account</strong></td><td>GDPR right to erasure — permanently deletes your account, all articles, and all S3 images.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Dark / Light Mode &amp; Languages</h2>
+  <p>The theme toggle is in the top-right of the dashboard sidebar. It persists across sessions in <code>localStorage</code>. The language switcher is available on the landing page and the dashboard header (6 languages, Arabic displayed RTL).</p>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     6. ADMIN DASHBOARD
+══════════════════════════════════════════════════════════════════════════════ -->
+<div id="admin" class="doc-section">
+  <h1>Admin Dashboard</h1>
+  <p>Admin users have access to a private section of the platform for platform management.</p>
+
+  <h2>Getting Admin Access</h2>
+  <p>The <strong>first user to register</strong> on a fresh install is automatically granted the <code>admin</code> role. To promote a later user:</p>
+  <div class="code-container">
+    <div class="code-header"><span>MongoDB Shell / Compass</span></div>
+    <pre><code>db.users.updateOne(
+  { email: "admin@yourdomain.com" },
+  { $set: { role: "admin" } }
+)</code></pre>
+  </div>
+  <p>After the next login, the admin navigation items appear automatically in the sidebar.</p>
+
+  <h2>Admin Routes</h2>
+  <table class="data-table">
+    <thead><tr><th>Route</th><th>Feature</th></tr></thead>
+    <tbody>
+      <tr><td><code>/admin/dashboard</code></td><td>Platform-wide stats: total users, articles, credits distributed, 30-day generation chart.</td></tr>
+      <tr><td><code>/admin/users</code></td><td>User manager: search, paginate, view credits, promote to admin, adjust credit balance, delete user.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>System Settings</h2>
+  <p>Admin users can configure platform-level AI settings from <strong>Settings</strong>. These override the default environment variable values and are stored encrypted in the database:</p>
+  <ul>
+    <li><strong>Platform OpenAI API Key</strong> — the key used for users without their own.</li>
+    <li><strong>Default Model</strong> — the AI model used platform-wide.</li>
+    <li><strong>Base URL</strong> — switch the entire platform to OpenRouter or another provider.</li>
+  </ul>
+
+  <h2>User Management API</h2>
+  <p>All admin endpoints require a valid JWT from an admin account (role: <code>admin</code>). Unauthorized requests return <code>403 Forbidden</code>.</p>
+  <table class="data-table">
+    <thead><tr><th>Method</th><th>Endpoint</th><th>Action</th></tr></thead>
+    <tbody>
+      <tr><td><span class="badge badge-blue">GET</span></td><td><code>/api/admin/users</code></td><td>List users (paginated, 10/page)</td></tr>
+      <tr><td><span class="badge badge-yellow">PUT</span></td><td><code>/api/admin/users/:id/credits</code></td><td>Set a user's credit balance</td></tr>
+      <tr><td><span class="badge badge-purple">DELETE</span></td><td><code>/api/admin/users/:id</code></td><td>Delete user + all their data (cannot delete yourself)</td></tr>
+    </tbody>
+  </table>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     7. API REFERENCE
+══════════════════════════════════════════════════════════════════════════════ -->
+<div id="api-reference" class="doc-section">
+  <h1>API Reference</h1>
+  <p>The backend exposes a fully documented REST API. All endpoints are described in an OpenAPI 3.0.3 specification.</p>
+
+  <div class="alert alert-success">
+    <div class="alert-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+    <div class="alert-content"><h4>Interactive Swagger UI</h4><p>Start the backend and open <strong>http://localhost:5000/api/docs</strong> to explore all endpoints, try requests live, and download the raw spec at <code>/api/docs.json</code>.</p></div>
+  </div>
+
+  <h2>Authentication</h2>
+  <p>All protected endpoints require a <code>Bearer</code> token in the <code>Authorization</code> header:</p>
+  <div class="code-container">
+    <div class="code-header"><span>HTTP Header</span></div>
+    <pre><code>Authorization: Bearer &lt;your_jwt_token&gt;</code></pre>
+  </div>
+  <p>Tokens are returned by <code>POST /api/auth/register</code> and <code>POST /api/auth/login</code>. They expire after <strong>30 days</strong>.</p>
+
+  <h2>Endpoint Overview</h2>
+  <table class="data-table">
+    <thead><tr><th>Method</th><th>Endpoint</th><th>Auth</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><span class="badge badge-green">POST</span></td><td><code>/api/auth/register</code></td><td>—</td><td>Register user, returns JWT</td></tr>
+      <tr><td><span class="badge badge-green">POST</span></td><td><code>/api/auth/login</code></td><td>—</td><td>Login, returns JWT</td></tr>
+      <tr><td><span class="badge badge-blue">GET</span></td><td><code>/api/auth/me</code></td><td>✓</td><td>Get current user profile</td></tr>
+      <tr><td><span class="badge badge-purple">DELETE</span></td><td><code>/api/auth/account</code></td><td>✓</td><td>GDPR: delete account + all data</td></tr>
+      <tr><td><span class="badge badge-green">POST</span></td><td><code>/api/auth/forgot-password</code></td><td>—</td><td>Send password-reset email</td></tr>
+      <tr><td><span class="badge badge-green">POST</span></td><td><code>/api/auth/reset-password/:token</code></td><td>—</td><td>Reset password with token</td></tr>
+      <tr><td><span class="badge badge-green">POST</span></td><td><code>/api/generate-article</code></td><td>✓</td><td>Generate article (polling)</td></tr>
+      <tr><td><span class="badge badge-green">POST</span></td><td><code>/api/articles/stream</code></td><td>✓</td><td>Generate article (SSE streaming)</td></tr>
+      <tr><td><span class="badge badge-blue">GET</span></td><td><code>/api/history</code></td><td>✓</td><td>List articles (paginated, searchable)</td></tr>
+      <tr><td><span class="badge badge-yellow">PATCH</span></td><td><code>/api/history/:id/refine</code></td><td>✓</td><td>Refine article with AI prompt</td></tr>
+      <tr><td><span class="badge badge-green">POST</span></td><td><code>/api/history/:id/restore/:versionIndex</code></td><td>✓</td><td>Restore a previous version</td></tr>
+      <tr><td><span class="badge badge-purple">DELETE</span></td><td><code>/api/articles/:id</code></td><td>✓</td><td>Delete article + S3 images</td></tr>
+      <tr><td><span class="badge badge-green">POST</span></td><td><code>/api/articles/:id/cover</code></td><td>✓</td><td>Upload cover image (multipart)</td></tr>
+      <tr><td><span class="badge badge-green">POST</span></td><td><code>/api/articles/:id/generate-cover-ai</code></td><td>✓</td><td>Generate DALL-E 3 cover</td></tr>
+      <tr><td><span class="badge badge-green">POST</span></td><td><code>/api/articles/:id/publish-wordpress</code></td><td>✓</td><td>Publish to WordPress as draft</td></tr>
+      <tr><td><span class="badge badge-blue">GET</span></td><td><code>/api/auth/settings</code></td><td>✓</td><td>Get user + system settings</td></tr>
+      <tr><td><span class="badge badge-yellow">PUT</span></td><td><code>/api/auth/settings</code></td><td>✓</td><td>Update settings</td></tr>
+      <tr><td><span class="badge badge-green">POST</span></td><td><code>/api/internal-links</code></td><td>✓</td><td>Get internal link suggestions</td></tr>
+      <tr><td><span class="badge badge-blue">GET</span></td><td><code>/api/admin/users</code></td><td>✓ Admin</td><td>List all users</td></tr>
+      <tr><td><span class="badge badge-blue">GET</span></td><td><code>/api/docs</code></td><td>—</td><td>Swagger UI documentation</td></tr>
+      <tr><td><span class="badge badge-blue">GET</span></td><td><code>/api/docs.json</code></td><td>—</td><td>Raw OpenAPI 3.0.3 JSON spec</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Rate Limits</h2>
+  <table class="data-table">
+    <thead><tr><th>Route Group</th><th>Limit</th><th>Window</th></tr></thead>
+    <tbody>
+      <tr><td>All <code>/api/*</code> routes</td><td>100 requests</td><td>15 minutes</td></tr>
+      <tr><td><code>/api/auth/login</code>, <code>/register</code></td><td>5 requests</td><td>15 minutes</td></tr>
+      <tr><td><code>/api/generate-article</code>, <code>/articles/stream</code></td><td>5 requests</td><td>15 minutes</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Error Format</h2>
+  <p>All error responses follow a consistent JSON structure:</p>
+  <div class="code-container">
+    <div class="code-header"><span>JSON</span></div>
+    <pre><code>{
+  "error": "Descriptive error message",
+  "details": [...]   // optional — Zod validation errors
+}</code></pre>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     8. STRIPE PAYMENTS
+══════════════════════════════════════════════════════════════════════════════ -->
+<div id="stripe-setup" class="doc-section">
+  <h1>Stripe Payments</h1>
+  <p>The platform supports two payment flows: <strong>monthly subscriptions</strong> (Starter, Growth, Pro) and <strong>one-time credit packs</strong>. Both are optional — omit the Stripe keys from <code>backend/.env</code> to disable payments entirely.</p>
+
+  <div class="alert alert-info">
+    <div class="alert-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+    <div class="alert-content"><h4>Use Test Mode first</h4><p>Create a free account at <a href="https://stripe.com" target="_blank">stripe.com</a> and work in <strong>Test mode</strong> before switching to live keys.</p></div>
+  </div>
+
+  <h2>Step 1 — Create Products</h2>
+  <div class="step-card">
+    <span class="step-badge">Subscriptions</span>
+    <p>Go to <strong>Stripe Dashboard → Products → Add Product</strong> and create three subscription products:</p>
+    <ul>
+      <li><strong>Starter</strong> — $9/month — 20 credits/month</li>
+      <li><strong>Growth</strong> — $29/month — 100 credits/month</li>
+      <li><strong>Pro</strong> — $99/month — 500 credits/month</li>
+    </ul>
+    <p>Each must use <strong>Recurring</strong> billing (monthly). Copy each <strong>Price ID</strong> (<code>price_1ABC…</code>).</p>
+  </div>
+
+  <div class="step-card">
+    <span class="step-badge">Credit Packs</span>
+    <p>Create additional <strong>One-time</strong> products for credit purchases. Copy their Price IDs into <code>frontend/src/pages/BuyCredits.jsx</code> in the <code>packages</code> array and into <code>backend/controllers/stripeController.js</code> in <code>CREDIT_PACKAGES</code>.</p>
+  </div>
+
+  <h2>Step 2 — Set Price IDs in frontend/.env</h2>
+  <div class="code-container">
+    <div class="code-header"><span>frontend/.env</span></div>
+    <pre><code>VITE_STRIPE_PRICE_STARTER=price_1XXXXXXXXXXXXXXXXXXXXXXXXXX
+VITE_STRIPE_PRICE_GROWTH=price_1YYYYYYYYYYYYYYYYYYYYYYYYYYYY
+VITE_STRIPE_PRICE_PRO=price_1ZZZZZZZZZZZZZZZZZZZZZZZZZZZZ</code></pre>
+  </div>
+
+  <h2>Step 3 — Add Stripe keys to backend/.env</h2>
+  <div class="code-container">
+    <div class="code-header"><span>backend/.env</span></div>
+    <pre><code>STRIPE_SECRET_KEY=sk_test_...
+STRIPE_WEBHOOK_SECRET=whsec_...</code></pre>
+  </div>
+
+  <h2>Step 4 — Configure Webhook (local dev)</h2>
+  <p>Install the <a href="https://stripe.com/docs/stripe-cli" target="_blank">Stripe CLI</a> and run:</p>
+  <div class="code-container">
+    <div class="code-header"><span>Terminal</span><button class="copy-btn" onclick="copyCode(this, 'stripe listen --forward-to localhost:5000/api/stripe/webhook')"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>Copy</button></div>
+    <pre><code>stripe listen --forward-to localhost:5000/api/stripe/webhook</code></pre>
+  </div>
+  <p>Copy the printed <code>whsec_…</code> secret into <code>STRIPE_WEBHOOK_SECRET</code> in <code>backend/.env</code>.</p>
+
+  <h2>Step 5 — Go Live</h2>
+  <p>Switch Stripe to <strong>Live mode</strong>. Create matching live products with live Price IDs. Update <code>STRIPE_SECRET_KEY</code> to <code>sk_live_…</code> in your production environment. In Stripe Dashboard → Developers → Webhooks, add an endpoint pointing to <code>https://your-api.yourdomain.com/api/stripe/webhook</code> and paste the signing secret into production <code>STRIPE_WEBHOOK_SECRET</code>.</p>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     9. WORDPRESS INTEGRATION
+══════════════════════════════════════════════════════════════════════════════ -->
+<div id="wordpress-setup" class="doc-section">
+  <h1>WordPress Integration</h1>
+  <p>Users connect their WordPress site from <strong>Settings → Content Preferences</strong>. Generated articles can then be published as drafts with one click, including the cover image as the WordPress featured image.</p>
+
+  <h2>Requirements</h2>
+  <ul>
+    <li>WordPress <strong>5.6 or higher</strong> (Application Passwords are built-in)</li>
+    <li>The WordPress REST API must be reachable from the server (not blocked by a WAF or security plugin)</li>
+  </ul>
+
+  <h2>Step 1 — Generate an Application Password</h2>
+  <div class="step-card">
+    <span class="step-badge">WordPress Admin</span>
+    <ol>
+      <li>Log into <strong>WordPress Admin → Users → Profile</strong>.</li>
+      <li>Scroll to the <strong>Application Passwords</strong> section.</li>
+      <li>Enter a name (e.g. "SEO Gen AI") and click <strong>Add New Application Password</strong>.</li>
+      <li>Copy the password — it is shown only once.</li>
+    </ol>
+  </div>
+
+  <div class="alert alert-warning">
+    <div class="alert-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg></div>
+    <div class="alert-content"><h4>Application Passwords not visible?</h4><p>Some security plugins (Wordfence, iThemes) or managed hosts disable Application Passwords. Check plugin settings or contact your host to enable the REST API.</p></div>
+  </div>
+
+  <h2>Step 2 — Connect in Settings</h2>
+  <div class="step-card">
+    <span class="step-badge">SEO Gen AI Settings</span>
+    <p>Fill in three fields under <strong>WordPress Integration</strong>:</p>
+    <ul>
+      <li><strong>WordPress URL</strong> — site root, no trailing slash: <code>https://myblog.com</code></li>
+      <li><strong>Username</strong> — your WordPress login username (not email)</li>
+      <li><strong>Application Password</strong> — from Step 1</li>
+    </ul>
+    <p>The password is encrypted with AES-256 before being stored in MongoDB.</p>
+  </div>
+
+  <h2>Step 3 — Publish an Article</h2>
+  <p>From any article card, click the <strong>WordPress</strong> button. The app:</p>
+  <ul>
+    <li>Converts Markdown to HTML blocks</li>
+    <li>Uploads the cover image to WordPress Media</li>
+    <li>Creates the post as a <strong>Draft</strong> with the cover as featured image</li>
+    <li>Stores the meta description in a <code>_yoast_wpseo_metadesc</code> custom field (Yoast-compatible)</li>
+  </ul>
+
+  <h2>Troubleshooting WordPress Errors</h2>
+  <div class="alert alert-warning">
+    <div class="alert-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg></div>
+    <div class="alert-content"><h4>401 Unauthorized</h4><p>Verify you entered the WordPress <em>username</em> (not email). Regenerate the Application Password. Ensure the user has at least <strong>Editor</strong> role.</p></div>
+  </div>
+  <div class="alert alert-warning">
+    <div class="alert-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg></div>
+    <div class="alert-content"><h4>REST API returns 404</h4><p>Go to <strong>Settings → Permalinks</strong> in WordPress Admin and click <strong>Save Changes</strong>. This flushes rewrite rules and re-registers REST routes.</p></div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     10. DEPLOY TO VERCEL
+══════════════════════════════════════════════════════════════════════════════ -->
+<div id="deploy" class="doc-section">
+  <h1>Deploy to Vercel</h1>
+  <p>The project ships with a <code>vercel.json</code> in the <code>backend/</code> folder that configures the Express server as a Vercel Serverless Function. The frontend is a standard Vite SPA.</p>
+
+  <h2>Step 1 — MongoDB Atlas</h2>
+  <div class="step-card">
+    <span class="step-badge">Database</span>
+    <ol>
+      <li>Create a free cluster at <a href="https://cloud.mongodb.com" target="_blank">cloud.mongodb.com</a>.</li>
+      <li>Create a database user (username + strong password).</li>
+      <li>Under <strong>Network Access</strong>, add <code>0.0.0.0/0</code> to allow connections from Vercel's dynamic IPs.</li>
+      <li>Click <strong>Connect → Connect your application</strong> and copy the connection string.</li>
+      <li>Replace <code>&lt;password&gt;</code> in the string with your database user password.</li>
+    </ol>
+  </div>
+
+  <h2>Step 2 — Deploy the Backend</h2>
+  <div class="step-card">
+    <span class="step-badge">Vercel</span>
+    <ol>
+      <li>Create a new project in the Vercel dashboard. Set the <strong>Root Directory</strong> to <code>backend</code>.</li>
+      <li>Under <strong>Environment Variables</strong>, add all variables from your <code>backend/.env</code>.</li>
+      <li>Set <code>NODE_ENV</code> = <code>production</code>.</li>
+      <li>Deploy. Note the deployment URL (e.g. <code>https://seo-gen-ai-api.vercel.app</code>).</li>
+    </ol>
+  </div>
+
+  <h2>Step 3 — Deploy the Frontend</h2>
+  <div class="step-card">
+    <span class="step-badge">Vercel</span>
+    <ol>
+      <li>Create another Vercel project. Set the <strong>Root Directory</strong> to <code>frontend</code>.</li>
+      <li>Add environment variables:
         <ul>
-          <li><strong>0:00 - 0:10 | Introduction:</strong> Start on the clean application Dashboard. Show the modern glassmorphic header and state the product utility.</li>
-          <li><strong>0:10 - 0:30 | Generating an Article:</strong> Input a hot keyword (e.g. <em>"How to design an electric car dashboard in 2026"</em>) and click Generate. Show the custom loading animation, proving how snappy and smooth the UI behaves.</li>
-          <li><strong>0:30 - 1:00 | Inspecting the Output:</strong> Scroll down slowly. Highlight the formatted headings, optimized paragraph weights, structured list items, and the suggested keyword list.</li>
-          <li><strong>1:00 - 1:15 | Demonstrating Export:</strong> Click the "Copy All" icon button. Show the visual success state. Paste it into an editor (e.g. Notepad, VSCode, or WordPress block editor) to show that the markdown format is perfectly preserved.</li>
-          <li><strong>1:15 - 1:30 | Conclusion:</strong> Wrap up by showing the responsive layout on different screens or mobile view, then encourage the viewer to buy the script.</li>
+          <li><code>VITE_API_URL</code> = <code>https://seo-gen-ai-api.vercel.app/api</code></li>
+          <li><code>VITE_STRIPE_PRICE_*</code> = your live Stripe Price IDs</li>
         </ul>
-      </div>
+      </li>
+      <li>Deploy. Note the frontend URL.</li>
+    </ol>
+  </div>
+
+  <h2>Step 4 — Wire CORS</h2>
+  <p>In the backend Vercel project, update the <code>CLIENT_URL</code> environment variable to your frontend Vercel URL (e.g. <code>https://seo-gen-ai.vercel.app</code>). Redeploy the backend.</p>
+
+  <h2>Step 5 — Production Stripe Webhook</h2>
+  <p>In the Stripe Dashboard → Developers → Webhooks, add a new endpoint:</p>
+  <ul>
+    <li><strong>URL:</strong> <code>https://seo-gen-ai-api.vercel.app/api/stripe/webhook</code></li>
+    <li><strong>Events to listen for:</strong> <code>checkout.session.completed</code>, <code>invoice.payment_succeeded</code>, <code>customer.subscription.deleted</code></li>
+  </ul>
+  <p>Reveal the <strong>Signing secret</strong> and update <code>STRIPE_WEBHOOK_SECRET</code> in the backend Vercel project environment variables.</p>
+
+  <div class="alert alert-info">
+    <div class="alert-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+    <div class="alert-content"><h4>Vercel Serverless Function Limits</h4><p>Vercel's Hobby plan has a 10-second function timeout. SSE streaming requires the Pro plan (no timeout limit). Consider Render, Railway, or Fly.io for full server deployments.</p></div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     11. TESTING & CI/CD
+══════════════════════════════════════════════════════════════════════════════ -->
+<div id="testing" class="doc-section">
+  <h1>Testing &amp; CI/CD</h1>
+  <p>The project ships with a comprehensive test suite: 125+ tests covering backend integration and frontend unit tests, plus GitHub Actions workflows for CI and weekly security audits.</p>
+
+  <h2>Backend Tests — Jest</h2>
+  <p>Tests run against an in-memory MongoDB instance (no real database required). ESM modules are used throughout.</p>
+  <div class="code-container">
+    <div class="code-header"><span>Terminal</span><button class="copy-btn" onclick="copyCode(this, 'cd backend && npm test')"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>Copy</button></div>
+    <pre><code>cd backend
+npm test</code></pre>
+  </div>
+
+  <table class="data-table">
+    <thead><tr><th>Test File</th><th>Tests</th><th>Covers</th></tr></thead>
+    <tbody>
+      <tr><td><code>auth.test.js</code></td><td>35</td><td>Register, Login, /me, JWT, bcrypt, first-user=admin</td></tr>
+      <tr><td><code>articles.test.js</code></td><td>40</td><td>Generate, history, delete, refine, restore, publish-to-WP</td></tr>
+      <tr><td><code>admin.test.js</code></td><td>24</td><td>RBAC, user list, credit update, user delete</td></tr>
+      <tr><td><code>passwordReset.test.js</code></td><td>26</td><td>Forgot password, reset, expiry, email enumeration prevention</td></tr>
+      <tr><td><code>settings.test.js</code></td><td>20</td><td>GET/PUT settings, admin vs user permission separation</td></tr>
+      <tr><td><code>validators.test.js</code></td><td>~20</td><td>All Zod schemas — pure unit tests, no DB</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Frontend Tests — Vitest + RTL</h2>
+  <div class="code-container">
+    <div class="code-header"><span>Terminal</span><button class="copy-btn" onclick="copyCode(this, 'cd frontend && npm test')"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>Copy</button></div>
+    <pre><code>cd frontend
+npm test          # watch mode
+npm test -- --run # single run with coverage</code></pre>
+  </div>
+
+  <table class="data-table">
+    <thead><tr><th>Test File</th><th>Tests</th><th>Covers</th></tr></thead>
+    <tbody>
+      <tr><td><code>AuthContext.test.jsx</code></td><td>14</td><td>login, logout, token persistence, /me failure</td></tr>
+      <tr><td><code>Login.test.jsx</code></td><td>13</td><td>form render, submission, navigate, toasts, errors</td></tr>
+      <tr><td><code>GeneratorForm.test.jsx</code></td><td>15</td><td>char counter, submit, empty guard, loading state</td></tr>
+      <tr><td><code>api.test.js</code></td><td>14</td><td>interceptors, Bearer token, 401 redirect, all helpers</td></tr>
+    </tbody>
+  </table>
+
+  <h2>CI/CD — GitHub Actions</h2>
+  <p>Push or open a PR to <code>main</code> and two workflows fire automatically:</p>
+
+  <div class="step-card">
+    <span class="step-badge">.github/workflows/ci.yml</span>
+    <ul>
+      <li>Runs <strong>backend Jest tests</strong> with coverage report (uploaded as artifact)</li>
+      <li>Runs <strong>frontend Vitest tests</strong> with coverage report</li>
+      <li>Runs <strong>frontend Vite build</strong> to catch any TypeScript/import errors</li>
+    </ul>
+  </div>
+
+  <div class="step-card">
+    <span class="step-badge">.github/workflows/security.yml</span>
+    <p>Runs every <strong>Monday at 08:00 UTC</strong>. Executes <code>npm audit --audit-level=high</code> for both backend and frontend packages. Fails the workflow if high-severity vulnerabilities are found, prompting action.</p>
+  </div>
+
+  <p>Required environment secrets for CI (in your GitHub repository → Settings → Secrets → Actions):</p>
+  <table class="data-table">
+    <thead><tr><th>Secret</th><th>Value</th></tr></thead>
+    <tbody>
+      <tr><td><code>JWT_SECRET</code></td><td>Any 64-char test string (not a real production key)</td></tr>
+      <tr><td><code>ENCRYPTION_KEY</code></td><td>Any 32-char test string</td></tr>
+    </tbody>
+  </table>
+  <p>The CI workflow sets these as <code>env:</code> variables inline (as placeholders), so you only need real secrets if you run database-dependent tests against a live MongoDB in CI.</p>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     12. GDPR & LEGAL
+══════════════════════════════════════════════════════════════════════════════ -->
+<div id="gdpr" class="doc-section">
+  <h1>GDPR &amp; Legal Pages</h1>
+  <p>The platform ships with legally compliant pages and GDPR-ready backend features out of the box.</p>
+
+  <h2>Included Legal Pages</h2>
+  <table class="data-table">
+    <thead><tr><th>Route</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>/terms</code></td><td>Terms of Service — 13 sections covering account, credits, AI content, IP, liability, governing law.</td></tr>
+      <tr><td><code>/privacy</code></td><td>Privacy Policy — 12 sections including GDPR rights table, data processing table, cookie policy, data transfer safeguards (SCCs).</td></tr>
+    </tbody>
+  </table>
+  <p>A standalone HTML version is available at <code>documentation/legal.html</code> — suitable for printing, marketplace listings, or legal review.</p>
+
+  <h2>Cookie Consent Banner</h2>
+  <p>A <code>CookieBanner</code> component (bottom-right corner) appears on first visit. The user can choose:</p>
+  <ul>
+    <li><strong>Essential only</strong> — only authentication (localStorage token) is stored.</li>
+    <li><strong>Accept all</strong> — also accepts optional analytics cookies.</li>
+  </ul>
+  <p>The choice is persisted in <code>localStorage</code> under the key <code>seo_gen_ai_cookie_consent</code>. The banner does not reappear once a choice is made.</p>
+
+  <h2>GDPR Rights — Technical Implementation</h2>
+  <table class="data-table">
+    <thead><tr><th>Right</th><th>How It's Implemented</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Right of access</strong></td><td><code>GET /api/auth/me</code> returns all personal data fields.</td></tr>
+      <tr><td><strong>Right to rectification</strong></td><td><code>PUT /api/auth/settings</code> — update name, email, preferences.</td></tr>
+      <tr><td><strong>Right to erasure</strong></td><td><code>DELETE /api/auth/account</code> — cascading deletion: S3 images → Image documents → Articles → User document. Immediate &amp; irreversible.</td></tr>
+      <tr><td><strong>Right to portability</strong></td><td>Articles can be exported as HTML or Markdown from the article card.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Data Security Measures</h2>
+  <ul>
+    <li>Passwords hashed with <strong>bcrypt</strong> (cost factor 10) — never stored in plaintext.</li>
+    <li>API keys and WordPress credentials encrypted with <strong>AES-256</strong> before DB storage.</li>
+    <li>All traffic encrypted in transit via <strong>HTTPS/TLS</strong>.</li>
+    <li>JWTs expire after <strong>30 days</strong>; revoked on account deletion.</li>
+    <li>Rate limiting prevents brute-force attacks on auth endpoints.</li>
+    <li>HTTP security headers enforced via <strong>Helmet.js</strong>.</li>
+    <li>S3 images served via <strong>signed URLs</strong> (1-hour expiry) — not publicly accessible.</li>
+    <li>Zod input validation on all API endpoints — rejects malformed or malicious payloads.</li>
+  </ul>
+
+  <div class="alert alert-purple">
+    <div class="alert-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+    <div class="alert-content"><h4>Customise the legal pages before going live</h4><p>Update the contact emails (<code>privacy@seogenai.com</code>, <code>legal@seogenai.com</code>), company name, and jurisdiction in <code>frontend/src/pages/PrivacyPolicy.jsx</code>, <code>TermsOfService.jsx</code>, and <code>documentation/legal.html</code> before publishing to production.</p></div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     13. TROUBLESHOOTING
+══════════════════════════════════════════════════════════════════════════════ -->
+<div id="troubleshooting" class="doc-section">
+  <h1>Troubleshooting</h1>
+
+  <h2>MongoDB Connection Failure</h2>
+  <div class="alert alert-warning">
+    <div class="alert-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg></div>
+    <div class="alert-content">
+      <h4>MongooseServerSelectionError</h4>
+      <p><strong>Local:</strong> Start MongoDB — <code>brew services start mongodb-community</code> (macOS) or <code>sudo systemctl start mongod</code> (Linux).<br>
+      <strong>Atlas:</strong> Go to <strong>Network Access</strong> and add <code>0.0.0.0/0</code> to the IP whitelist. Check you replaced <code>&lt;password&gt;</code> in the Atlas URI.</p>
     </div>
+  </div>
 
-    <!-- 7. TROUBLESHOOTING SECTION -->
-    <div id="troubleshooting" class="doc-section">
-      <h1>Troubleshooting Common Issues</h1>
-      <p>Here are immediate solutions for common installation or execution blocks that users might encounter:</p>
-      
-      <h2>MongoDB Connection Failures</h2>
-      <div class="alert alert-warning">
-        <div class="alert-icon">
-          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
-        </div>
-        <div class="alert-content">
-          <h4>Mongoose Connection Failures</h4>
-          <p><strong>Cause:</strong> Local MongoDB daemon is not running or the Atlas IP whitelist block is rejecting queries.<br>
-          <strong>Fix:</strong> Ensure your local MongoDB service is started (<code>brew services start mongodb-community</code> or <code>sudo systemctl start mongod</code>). If deploying via Atlas, open security panels and set whitelist IP address to <code>0.0.0.0/0</code> for open staging.</p>
-        </div>
-      </div>
-
-      <h2>Invalid OpenAI API Key Errors</h2>
-      <div class="alert alert-warning">
-        <div class="alert-icon">
-          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
-        </div>
-        <div class="alert-content">
-          <h4>OpenAI Quota/Auth Errors</h4>
-          <p><strong>Cause:</strong> Missing billing account card links or invalid key tokens.<br>
-          <strong>Fix:</strong> Log in to your OpenAI Developer Dashboard, verify you have generated a fresh key with appropriate permissions, and check your credit balance. If your account runs out of tokens, OpenAI will return a 429 quota exception.</p>
-        </div>
-      </div>
-
-      <h2>Cross-Origin Resource Sharing (CORS) Blocks</h2>
-      <div class="alert alert-warning">
-        <div class="alert-icon">
-          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
-        </div>
-        <div class="alert-content">
-          <h4>CORS Policy Blocks</h4>
-          <p><strong>Cause:</strong> Frontend environment pointing to the wrong URL or port mismatch.<br>
-          <strong>Fix:</strong> Open <code>frontend/.env</code> and make sure <code>VITE_API_URL</code> is set exactly to the server root (e.g. <code>http://localhost:5000/api</code>) without a trailing slash.</p>
-        </div>
-      </div>
+  <h2>ENCRYPTION_KEY Error on Startup</h2>
+  <div class="alert alert-warning">
+    <div class="alert-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg></div>
+    <div class="alert-content">
+      <h4>SECURITY ERROR: ENCRYPTION_KEY must be at least 32 characters</h4>
+      <p>The server will refuse to start in production if <code>ENCRYPTION_KEY</code> is shorter than 32 characters. Generate a valid key: <code>node -e "console.log(require('crypto').randomBytes(16).toString('hex'))"</code> — this outputs exactly 32 hex characters.</p>
     </div>
+  </div>
 
-  </main>
+  <h2>OpenAI / AI Generation Errors</h2>
+  <div class="alert alert-warning">
+    <div class="alert-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg></div>
+    <div class="alert-content">
+      <h4>402 / 429 — Quota exceeded</h4>
+      <p>Your OpenAI account has no billing method or has hit its rate limit. Add a payment method at <a href="https://platform.openai.com/billing" target="_blank">platform.openai.com/billing</a>. Alternatively, switch to OpenRouter free models by setting <code>OPENAI_BASE_URL=https://openrouter.ai/api/v1</code> and <code>OPENAI_MODEL=meta-llama/llama-3.1-8b-instruct:free</code>.</p>
+    </div>
+  </div>
 
-  <script>
-    // Tab switching engine
-    function switchTab(tabId) {
-      // Hide all doc sections
-      const sections = document.querySelectorAll('.doc-section');
-      sections.forEach(sec => sec.classList.remove('active'));
+  <h2>CORS Policy Blocked</h2>
+  <div class="alert alert-warning">
+    <div class="alert-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg></div>
+    <div class="alert-content">
+      <h4>Access blocked by CORS policy</h4>
+      <p>Ensure <code>CLIENT_URL</code> in <code>backend/.env</code> matches your frontend origin exactly (protocol + hostname + port). In production, set it to your Vercel frontend URL. No trailing slash.</p>
+    </div>
+  </div>
 
-      // Deactivate all navigation items
-      const navItems = document.querySelectorAll('.nav-item');
-      navItems.forEach(item => item.classList.remove('active'));
+  <h2>Swagger UI Blocked by CSP</h2>
+  <div class="alert alert-warning">
+    <div class="alert-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg></div>
+    <div class="alert-content">
+      <h4>Swagger UI blank / scripts blocked</h4>
+      <p>Helmet enforces strict CSP by default. The <code>server.js</code> applies a relaxed CSP (<code>'unsafe-inline'</code>) specifically for the <code>/api/docs</code> route before Swagger UI middleware. If you add custom middleware that overrides this, ensure the route-specific header is preserved.</p>
+    </div>
+  </div>
 
-      // Show requested section
-      const activeSection = document.getElementById(tabId);
-      if (activeSection) {
-        activeSection.classList.add('active');
-      }
+  <h2>Vercel Deployment: Function Timeout</h2>
+  <div class="alert alert-warning">
+    <div class="alert-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg></div>
+    <div class="alert-content">
+      <h4>Streaming times out on Vercel Hobby plan</h4>
+      <p>Vercel Hobby limits serverless functions to 10 seconds. SSE streaming for long articles can exceed this. Upgrade to Vercel Pro (no timeout) or host the backend on Render / Railway / Fly.io with a persistent server.</p>
+    </div>
+  </div>
 
-      // Activate clicked item
-      const clickedItem = Array.from(navItems).find(item => {
-        return item.getAttribute('onclick').includes(tabId);
-      });
-      if (clickedItem) {
-        clickedItem.classList.add('active');
-      }
+  <h2>Tests Failing: Cannot find module</h2>
+  <div class="alert alert-warning">
+    <div class="alert-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg></div>
+    <div class="alert-content">
+      <h4>Jest ESM resolution error</h4>
+      <p>Ensure you run <code>npm test</code> from inside the <code>backend/</code> directory. The test runner requires <code>NODE_OPTIONS=--experimental-vm-modules</code> (already set in <code>package.json</code> scripts). Node.js 20+ is required — check with <code>node -v</code>.</p>
+    </div>
+  </div>
+</div>
 
-      // Close mobile sidebar if open
-      const sidebar = document.getElementById('sidebar');
-      sidebar.classList.remove('open');
+</main>
 
-      // Scroll to top of content
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
+<script>
+  function switchTab(tabId) {
+    document.querySelectorAll('.doc-section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    const sec = document.getElementById(tabId);
+    if (sec) sec.classList.add('active');
+    const item = Array.from(document.querySelectorAll('.nav-item')).find(n => {
+      const oc = n.getAttribute('onclick') || '';
+      return oc.includes(tabId);
+    });
+    if (item) item.classList.add('active');
+    document.getElementById('sidebar').classList.remove('open');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
 
-    // Toggle sidebar on mobile
-    function toggleSidebar() {
-      const sidebar = document.getElementById('sidebar');
-      sidebar.classList.toggle('open');
-    }
+  function toggleSidebar() {
+    document.getElementById('sidebar').classList.toggle('open');
+  }
 
-    // Copy to clipboard helper
-    function copyText(text) {
-      navigator.clipboard.writeText(text).then(() => {
-        // Show success state on the clicked button
-        const btn = event.currentTarget;
-        btn.classList.add('show');
-        const origContent = btn.innerHTML;
-        btn.innerHTML = `
-          <svg fill="none" stroke="#10b981" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-          </svg>
-          <span style="color:#10b981">Copied!</span>
-        `;
-        
-        setTimeout(() => {
-          btn.classList.remove('show');
-          btn.innerHTML = origContent;
-        }, 2000);
-      }).catch(err => {
-        console.error('Failed to copy command text: ', err);
-      });
-    }
-  </script>
+  function copyCode(btn, text) {
+    navigator.clipboard.writeText(text).then(() => {
+      const orig = btn.innerHTML;
+      btn.innerHTML = '<svg fill="none" stroke="#10b981" viewBox="0 0 24 24" style="width:.9rem;height:.9rem"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg><span style="color:#10b981">Copied!</span>';
+      setTimeout(() => { btn.innerHTML = orig; }, 2000);
+    });
+  }
+</script>
 </body>
 </html>

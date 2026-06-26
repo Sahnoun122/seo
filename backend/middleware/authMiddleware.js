@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
+import logger from '../utils/logger.js';
 
 export const protect = async (req, res, next) => {
   let token;
@@ -28,7 +29,7 @@ export const protect = async (req, res, next) => {
 
       next();
     } catch (error) {
-      console.error('Auth Middleware Error:', error);
+      logger.error('Auth token verification failed:', error.message);
       return res.status(401).json({ error: 'Not authorized, token failed' });
     }
   } else {

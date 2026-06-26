@@ -4,9 +4,6 @@ const ALGORITHM = 'aes-256-cbc';
 
 const getKey = () => {
   const raw = process.env.ENCRYPTION_KEY || '';
-  if (raw.length < 32) {
-    console.warn('[encryption] WARNING: ENCRYPTION_KEY is shorter than 32 characters. Keys will be padded — set a proper 32-char key in production.');
-  }
   return Buffer.from(raw.padEnd(32, '0').slice(0, 32));
 };
 

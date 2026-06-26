@@ -1,0 +1,441 @@
+{
+  "common": {
+    "loading": "Chargement...",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "logout": "Déconnexion",
+    "login": "Connexion",
+    "startFreeTrial": "Démarrer l'essai gratuit",
+    "darkMode": "Mode Sombre",
+    "lightMode": "Mode Clair",
+    "admin": "Administration",
+    "delete": "Supprimer",
+    "confirm": "Confirmer",
+    "close": "Fermer",
+    "back": "Retour",
+    "next": "Suivant",
+    "or": "ou",
+    "error": "Une erreur est survenue. Veuillez réessayer.",
+    "success": "Opération réussie.",
+    "copied": "Copié !",
+    "copy": "Copier",
+    "export": "Exporter",
+    "generate": "Générer",
+    "generating": "Génération en cours...",
+    "upgrade": "Améliorer le plan"
+  },
+  "nav": {
+    "dashboard": "Tableau de bord",
+    "history": "Historique",
+    "settings": "Paramètres",
+    "buyCredits": "Acheter des crédits",
+    "userManager": "Gestion des utilisateurs",
+    "adminDashboard": "Tableau de bord Admin",
+    "pricing": "Tarifs"
+  },
+  "sidebar": {
+    "unlimitedMode": "Mode Illimité",
+    "personalKeyActive": "Clé API personnelle active",
+    "credits": "Crédits",
+    "creditsRemaining": "crédits restants",
+    "noCredits": "Plus de crédits",
+    "upgradeNow": "Améliorer maintenant"
+  },
+  "landing": {
+    "nav": {
+      "features": "Fonctionnalités",
+      "howItWorks": "Comment ça marche",
+      "pricing": "Tarifs",
+      "getStarted": "Commencer gratuitement"
+    },
+    "hero": {
+      "badge": "Plateforme SEO propulsée par l'IA",
+      "title": "Générez du contenu SEO",
+      "titleHighlight": "en quelques secondes.",
+      "subtitle": "Un mot-clé → article complet, méta description et stratégie de mots-clés. Publiez directement sur WordPress.",
+      "cta": "Commencer gratuitement",
+      "ctaSecondary": "Voir la démo",
+      "trustedBy": "Plus de 5 000 créateurs de contenu nous font confiance"
+    },
+    "stats": {
+      "articles": "+ de 5 000 articles générés",
+      "languages": "6 langues supportées",
+      "models": "+ de 4 modèles IA",
+      "uptime": "99,9 % de disponibilité"
+    },
+    "features": {
+      "title": "Tout ce qu'il vous faut pour dominer le SEO",
+      "subtitle": "De la recherche de mots-clés à la publication WordPress — tout en une seule plateforme."
+    },
+    "howItWorks": {
+      "title": "3 étapes pour votre contenu SEO",
+      "subtitle": "Du mot-clé à l'article publié en moins de 60 secondes."
+    },
+    "pricing": {
+      "title": "Tarification simple et transparente",
+      "subtitle": "Commencez gratuitement. Passez à un plan supérieur si besoin.",
+      "monthly": "par mois",
+      "getStarted": "Commencer",
+      "mostPopular": "Le plus populaire"
+    },
+    "testimonials": {
+      "title": "Adoré par les créateurs de contenu",
+      "subtitle": "Rejoignez des milliers de créateurs qui publient plus vite avec SEO Gen AI."
+    },
+    "faq": {
+      "title": "Questions fréquemment posées"
+    },
+    "cta": {
+      "title": "Prêt à générer votre premier article ?",
+      "subtitle": "Rejoignez + de 5 000 créateurs qui publient du contenu SEO en quelques secondes.",
+      "button": "Commencer gratuitement — sans carte bancaire"
+    },
+    "footer": {
+      "tagline": "Génération d'articles SEO propulsée par l'IA pour les équipes de contenu modernes.",
+      "product": "Produit",
+      "legal": "Légal",
+      "privacy": "Politique de confidentialité",
+      "terms": "Conditions d'utilisation",
+      "rights": "Tous droits réservés."
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Bon retour",
+      "subtitle": "Connectez-vous à votre compte pour continuer.",
+      "email": "Adresse e-mail",
+      "password": "Mot de passe",
+      "forgot": "Mot de passe oublié ?",
+      "submit": "Se connecter",
+      "submitting": "Connexion en cours...",
+      "noAccount": "Pas de compte ?",
+      "register": "Créez-en un ici",
+      "invalidCredentials": "E-mail ou mot de passe invalide."
+    },
+    "register": {
+      "title": "Créer un compte",
+      "subtitle": "Commencez avec votre compte gratuit dès aujourd'hui.",
+      "name": "Nom complet",
+      "email": "Adresse e-mail",
+      "password": "Mot de passe",
+      "passwordPlaceholder": "Min. 8 caract., 1 majuscule, 1 chiffre",
+      "submit": "Créer le compte",
+      "submitting": "Création en cours...",
+      "haveAccount": "Déjà un compte ?",
+      "signIn": "Connectez-vous ici",
+      "passwordStrength": {
+        "weak": "Faible",
+        "fair": "Acceptable",
+        "good": "Bon",
+        "strong": "Fort",
+        "excellent": "Excellent"
+      },
+      "success": "Compte créé ! Bienvenue à bord."
+    },
+    "loginPage": {
+      "headline": "Générez du contenu SEO",
+      "headlineHighlight": "à la vitesse de la lumière.",
+      "tagline": "La plateforme IA tout-en-un pour les agences, blogueurs et équipes de contenu.",
+      "feature1Title": "Génération IA de pointe",
+      "feature1Desc": "Créez des articles SEO complets en secondes avec GPT-4o, DeepSeek ou Groq.",
+      "feature2Title": "Publication WordPress",
+      "feature2Desc": "Publiez vos articles directement sur WordPress en un clic.",
+      "feature3Title": "Moteur multi-modèles",
+      "feature3Desc": "Apportez votre propre clé API et générez sans limite de crédits.",
+      "feature4Title": "Sécurisé et prêt pour la production",
+      "feature4Desc": "Auth JWT, rate limiting, et credentials chiffrés AES-256."
+    },
+    "registerPage": {
+      "headline": "Commencez à générer",
+      "headlineHighlight": "du contenu premium.",
+      "tagline": "Votre boîte à outils IA complète pour dominer le SEO.",
+      "feature1": "Génération d'articles SEO par IA",
+      "feature2": "Moteur multi-modèles (OpenAI, DeepSeek, Groq)",
+      "feature3": "Publication WordPress 1-clic",
+      "feature4": "Moteur de suggestions de liens internes"
+    },
+    "forgotPassword": {
+      "title": "Mot de passe oublié ?",
+      "subtitle": "Entrez votre e-mail et nous vous enverrons un lien de réinitialisation.",
+      "email": "Adresse e-mail",
+      "submit": "Envoyer le lien",
+      "submitting": "Envoi en cours...",
+      "backToLogin": "Retour à la connexion",
+      "sent": "Vérifiez votre boîte e-mail",
+      "sentSubtitle": "Nous avons envoyé un lien de réinitialisation à {{email}}.",
+      "resend": "Renvoyer l'e-mail",
+      "resendCooldown": "Renvoyer dans {{seconds}}s"
+    },
+    "resetPassword": {
+      "title": "Définir un nouveau mot de passe",
+      "password": "Nouveau mot de passe",
+      "confirm": "Confirmer le mot de passe",
+      "submit": "Réinitialiser le mot de passe",
+      "success": "Mot de passe mis à jour ! Vous pouvez maintenant vous connecter."
+    },
+    "emailVerification": {
+      "banner": "Veuillez vérifier votre adresse e-mail pour accéder à toutes les fonctionnalités.",
+      "resend": "Renvoyer le lien",
+      "sent": "Envoyé !",
+      "sending": "Envoi en cours...",
+      "verifying": "Vérification de votre e-mail...",
+      "successTitle": "E-mail vérifié !",
+      "successMessage": "Votre compte est maintenant entièrement activé.",
+      "errorTitle": "Échec de la vérification",
+      "goToDashboard": "Aller au tableau de bord"
+    }
+  },
+  "dashboard": {
+    "title": "Générez du contenu SEO",
+    "titleHighlight": "en secondes.",
+    "subtitle": "Propulsé par GPT-4o, DeepSeek, Groq et OpenRouter. Un mot-clé → article complet, méta description et stratégie de mots-clés.",
+    "aiEngineActive": "Moteur IA Actif",
+    "startGenerating": "Commencer à générer",
+    "tabs": {
+      "generator": "Générateur d'articles",
+      "linking": "Assistant de liens internes"
+    },
+    "credits": {
+      "label": "Crédits",
+      "unlimited": "Illimité",
+      "mode": "Mode",
+      "personal": "Personnel",
+      "shared": "Partagé"
+    },
+    "stats": {
+      "aiModels": "Modèles IA",
+      "languages": "Langues",
+      "export": "Formats",
+      "supported": "Supportés",
+      "available": "Disponibles",
+      "formats": "Formats"
+    },
+    "badges": {
+      "aiGeneration": "Génération IA",
+      "wordpressExport": "Export WordPress",
+      "instantResults": "Résultats instantanés"
+    }
+  },
+  "generator": {
+    "placeholder": "Sur quel sujet écrire ? ex. 'Tendances Mode Durable 2025'",
+    "submit": "Générer",
+    "charCount": "{{count}}/100",
+    "hint": "⌘ Entrée pour générer",
+    "steps": {
+      "meta": "Analyse du mot-clé",
+      "content": "Rédaction de l'article",
+      "keywords": "Recherche des mots-clés SEO",
+      "saving": "Sauvegarde de l'article"
+    },
+    "tips": {
+      "1": "Les mots-clés de longue traîne convertissent 3× mieux que les génériques.",
+      "2": "Visez 1 500 à 2 500 mots pour les meilleures positions Google.",
+      "3": "Une méta description convaincante améliore votre taux de clic.",
+      "4": "Utilisez des titres H2/H3 pour structurer le contenu pour les featured snippets.",
+      "5": "Les liens internes gardent les lecteurs plus longtemps sur votre site.",
+      "6": "Le contenu mis à jour régulièrement est mieux classé."
+    },
+    "badges": {
+      "accuracy": "Haute précision",
+      "seo": "Optimisé SEO",
+      "plagiarism": "Sans plagiat"
+    },
+    "generateArticle": "Générer l'article",
+    "working": "En cours…"
+  },
+  "result": {
+    "title": "Article généré",
+    "metaDescription": "Méta description",
+    "targetKeyword": "Mot-clé cible",
+    "strategyKeywords": "Mots-clés stratégiques",
+    "pdfError": "Échec de la génération du PDF",
+    "keywords": "Mots-clés SEO",
+    "actions": {
+      "copy": "Copier",
+      "copied": "Copié !",
+      "markdown": "Markdown",
+      "html": "HTML",
+      "pdf": "PDF",
+      "replaceCover": "Changer la couverture",
+      "addCover": "Ajouter une couverture",
+      "aiCover": "Couverture IA",
+      "wordpress": "WordPress",
+      "copyMarkdown": "Copier Markdown",
+      "copyHtml": "Copier HTML",
+      "downloadPdf": "Télécharger PDF",
+      "publishWordpress": "Publier sur WordPress",
+      "publishing": "Publication...",
+      "published": "Publié !",
+      "addImage": "Ajouter une image",
+      "generateAiImage": "Générer une image IA"
+    },
+    "wordpress": {
+      "success": "Article publié sur WordPress en brouillon !",
+      "notConfigured": "Configurez WordPress dans les Paramètres d'abord."
+    }
+  },
+  "history": {
+    "title": "Bibliothèque",
+    "titleHighlight": "de contenu",
+    "subtitle": "Accédez et gérez l'ensemble de votre historique d'articles SEO optimisés par IA.",
+    "total": "{{count}} articles générés",
+    "search": "Rechercher par mot-clé ou titre...",
+    "empty": "Aucun article pour l'instant",
+    "emptyHint": "Retournez au tableau de bord pour générer votre premier article !",
+    "noResults": "Aucun résultat trouvé",
+    "noResultsHint": "Essayez un autre mot-clé ou titre.",
+    "openArticle": "Ouvrir l'article",
+    "created": "Créé le",
+    "deleteTitle": "Supprimer cet article ?",
+    "deleteConfirm": "sera définitivement supprimé. Cette action est irréversible.",
+    "deleteSuccess": "Article supprimé",
+    "deleteFailed": "Échec de la suppression",
+    "selectAll": "Tout sélectionner",
+    "deselectAll": "Tout désélectionner",
+    "selected": "{{count}} article(s) sélectionné(s)",
+    "deleteSelected": "Supprimer la sélection",
+    "refine": {
+      "title": "Modifier avec l'IA",
+      "subtitle": "Demandez à l'IA de modifier, étendre ou améliorer l'article.",
+      "placeholder": "ex. 'Rends l'introduction plus percutante'",
+      "submit": "Affiner",
+      "success": "Article mis à jour par l'IA !",
+      "failed": "Échec de l'affinage"
+    },
+    "versions": {
+      "title": "Versions précédentes",
+      "subtitle": "La restauration d'une version sauvegarde l'état actuel.",
+      "restore": "Restaurer",
+      "restoreSuccess": "Version restaurée !",
+      "restoreFailed": "Échec de la restauration",
+      "hide": "Masquer les versions",
+      "show": "Historique des versions ({{count}})"
+    },
+    "pagination": {
+      "page": "Page {{current}} sur {{total}}"
+    }
+  },
+  "settings": {
+    "title": "Paramètres",
+    "subtitle": "Gérez vos préférences de compte, intégrations et abonnement.",
+    "sections": {
+      "profile": "Profil",
+      "ai": "Configuration IA",
+      "wordpress": "Intégration WordPress",
+      "preferences": "Préférences de contenu",
+      "subscription": "Abonnement",
+      "danger": "Zone dangereuse"
+    },
+    "profile": {
+      "name": "Nom complet",
+      "email": "Adresse e-mail",
+      "password": "Nouveau mot de passe",
+      "passwordPlaceholder": "Laisser vide pour garder l'actuel",
+      "saved": "Paramètres sauvegardés !",
+      "passwordMin8": "Le mot de passe doit contenir au moins 8 caractères.",
+      "passwordUppercase": "Le mot de passe doit contenir au moins une majuscule.",
+      "passwordNumber": "Le mot de passe doit contenir au moins un chiffre.",
+      "passwordMismatch": "Les mots de passe ne correspondent pas."
+    },
+    "ai": {
+      "apiKey": "Clé API personnelle",
+      "apiKeyPlaceholder": "sk-... (optionnel)",
+      "apiKeyHint": "Utilisez votre propre clé pour des générations illimitées.",
+      "baseUrl": "URL de base personnalisée",
+      "baseUrlPlaceholder": "https://api.openai.com/v1",
+      "model": "Modèle préféré",
+      "modelPlaceholder": "ex. gpt-4o, deepseek-chat"
+    },
+    "wordpress": {
+      "url": "URL du site WordPress",
+      "urlPlaceholder": "https://votreblog.com",
+      "username": "Nom d'utilisateur WordPress",
+      "usernamePlaceholder": "admin",
+      "password": "Mot de passe d'application",
+      "passwordPlaceholder": "xxxx xxxx xxxx xxxx",
+      "passwordHint": "Générer depuis WordPress → Utilisateurs → Mots de passe d'application",
+      "testConnection": "Tester la connexion",
+      "connectionSuccess": "Connexion WordPress réussie !",
+      "connectionFailed": "Connexion échouée. Vérifiez vos identifiants."
+    },
+    "preferences": {
+      "language": "Langue par défaut",
+      "tone": "Ton par défaut"
+    },
+    "subscription": {
+      "currentPlan": "Plan actuel",
+      "renewsOn": "Renouvellement le {{date}}",
+      "cancelAt": "Annulation le {{date}}",
+      "cancelPlan": "Annuler le plan",
+      "reactivate": "Réactiver le plan",
+      "cancelled": "Plan annulé.",
+      "reactivated": "Plan réactivé !",
+      "managePlan": "Gérer le plan"
+    },
+    "danger": {
+      "deleteAccount": "Supprimer le compte",
+      "deleteWarning": "Cette action est permanente et irréversible. Tous vos articles, images et données seront supprimés.",
+      "deleteConfirm": "Oui, supprimer mon compte",
+      "deleted": "Compte supprimé."
+    }
+  },
+  "buyCredits": {
+    "title": "Choisissez votre",
+    "titleHighlight": "plan",
+    "subtitle": "Chaque crédit = un article IA complet (titre + méta + contenu + mots-clés).",
+    "oneTime": "unique",
+    "generations": "générations d'articles IA",
+    "features": {
+      "seo": "Contenu SEO complet + mots-clés",
+      "wordpress": "Publication directe WordPress",
+      "priority": "File d'attente prioritaire"
+    },
+    "buy": "Acheter {{name}}",
+    "secured": "Paiements traités de manière sécurisée via Stripe. Les crédits sont ajoutés immédiatement après confirmation.",
+    "modal": {
+      "title": "Paiement sécurisé",
+      "orderSummary": "Plan {{name}}",
+      "orderSubtitle": "{{credits}} générations d'articles IA",
+      "pay": "Payer {{amount}}",
+      "processing": "Traitement en cours...",
+      "success": "Paiement confirmé !",
+      "successSubtitle": "{{credits}} crédits sont ajoutés à votre compte...",
+      "cancel": "Annuler",
+      "secured": "Sécurisé par Stripe · Vos données bancaires ne nous parviennent jamais"
+    },
+    "success": "Crédits ajoutés à votre compte !"
+  },
+  "admin": {
+    "dashboard": {
+      "title": "Tableau de bord Admin",
+      "users": "Utilisateurs totaux",
+      "articles": "Articles totaux",
+      "revenue": "Revenus",
+      "activeSubscriptions": "Abonnements actifs"
+    },
+    "users": {
+      "title": "Gestion des utilisateurs",
+      "search": "Rechercher des utilisateurs...",
+      "name": "Nom",
+      "email": "E-mail",
+      "role": "Rôle",
+      "credits": "Crédits",
+      "plan": "Plan",
+      "joined": "Inscrit le",
+      "actions": "Actions",
+      "editCredits": "Modifier les crédits",
+      "deleteUser": "Supprimer l'utilisateur",
+      "creditsUpdated": "Crédits mis à jour !",
+      "userDeleted": "Utilisateur supprimé."
+    }
+  },
+  "errors": {
+    "notFound": "Page introuvable",
+    "notFoundSubtitle": "La page que vous cherchez n'existe pas ou a été déplacée.",
+    "goHome": "Aller au tableau de bord",
+    "serverError": "Quelque chose s'est mal passé",
+    "networkError": "Erreur réseau. Vérifiez votre connexion.",
+    "noCredits": "Vous n'avez plus de crédits. Veuillez en acheter ou ajouter votre propre clé API dans les Paramètres.",
+    "stripeNotConfigured": "Stripe n'est pas encore configuré par l'administrateur."
+  }
+}

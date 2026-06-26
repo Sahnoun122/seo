@@ -7,6 +7,7 @@ import {
   viewSecureImage,
   setPrimaryImage
 } from '../controllers/imageController.js';
+import { searchUnsplash } from '../controllers/unsplashController.js';
 import { uploadSingle, uploadMultiple } from '../middleware/uploadMiddleware.js';
 import { protect } from '../middleware/authMiddleware.js';
 
@@ -30,5 +31,8 @@ router.patch('/:id/primary', protect, setPrimaryImage);
 
 // Secure access view endpoint (redirects to signed URL)
 router.get('/:id/view', viewSecureImage);
+
+// Unsplash photo search (proxied — keeps API key server-side)
+router.get('/unsplash/search', protect, searchUnsplash);
 
 export default router;

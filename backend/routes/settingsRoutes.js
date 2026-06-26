@@ -1,6 +1,7 @@
 import express from 'express';
 import { getSettings, updateSettings, updateUserCredits, deleteUser } from '../controllers/settingsController.js';
 import { protect } from '../middleware/authMiddleware.js';
+import { validate, updateSettingsSchema } from '../validators/schemas.js';
 
 const router = express.Router();
 
@@ -8,7 +9,7 @@ const router = express.Router();
 router.get('/', protect, getSettings);
 
 // Update general profile/global settings
-router.put('/', protect, updateSettings);
+router.put('/', protect, validate(updateSettingsSchema), updateSettings);
 
 // Update a specific user's credits and roles (Admin only inside controller)
 router.put('/users/:id', protect, updateUserCredits);

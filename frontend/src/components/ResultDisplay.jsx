@@ -1,13 +1,17 @@
 import React, { useState, useRef } from 'react';
 import {
   Copy, CheckCircle2, ListFilter, FileText,
-  Download, FileCode, Loader2, Globe, Share2, Image as ImageIcon,
+  Download, FileCode, Loader2, Globe, Share2, Image as ImageIcon, Sparkles, Camera,
 } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
+import rehypeSanitize, { defaultSchema } from 'rehype-sanitize';
 import { marked } from 'marked';
 import { motion } from 'framer-motion';
-import api, { uploadCoverImage } from '../lib/api';
+import { jsPDF } from 'jspdf';
+import api, { uploadCoverImage, generateAICoverImage } from '../lib/api';
 import { toast } from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
+import UnsplashPickerModal from './UnsplashPickerModal';
 
 marked.setOptions({ gfm: true, breaks: true });
 
@@ -15,11 +19,15 @@ export default function ResultDisplay({ data, onCoverUpdate }) {
   const [copied, setCopied]             = useState(false);
   const [publishing, setPublishing]     = useState(false);
   const [publishedUrl, setPublishedUrl] = useState(null);
-  const [uploadingCover, setUploadingCover] = useState(false);
-  const [coverUrl, setCoverUrl]         = useState(data?.coverUrl || null);
+  const [uploadingCover, setUploadingCover]         = useState(false);
+  const [generatingAICover, setGeneratingAICover]   = useState(false);
+  const [coverUrl, setCoverUrl]                     = useState(data?.coverUrl || null);
+  const [showUnsplash, setShowUnsplash]             = useState(false);
   const fileInputRef = useRef(null);
 
   if (!data) return null;
+
+  const { t } = useTranslation();
 
   const handleCopy = () => {
     const text = `Title: ${data.title}\n\nMeta Description: ${data.metaDescription}\n\nContent:\n${data.content}\n\nKeywords: ${data.suggestedKeywords?.join(', ')}`;
@@ -68,6 +76,60 @@ export default function ResultDisplay({ data, onCoverUpdate }) {
     downloadFile(html, 'article-seo.html', 'text/html');
   };
 
+  const handleExportPDF = () => {
+    try {
+      const doc = new jsPDF();
+      
+      // Clean up markdown for PDF text
+      // We will do a basic text layout for the PDF
+      let plainText = data.content
+        .replace(/#/g, '')
+        .replace(/\*\*/g, '')
+        .replace(/\*/g, '')
+        .replace(/`/g, '');
+        
+      const margin = 15;
+      const pageWidth = doc.internal.pageSize.getWidth();
+      const textWidth = pageWidth - margin * 2;
+
+      // Title
+      doc.setFontSize(18);
+      doc.setTextColor(15, 23, 42); // slate-900
+      const titleLines = doc.splitTextToSize(data.title || 'SEO Article', textWidth);
+      doc.text(titleLines, margin, 20);
+      let cursorY = 20 + (titleLines.length * 8) + 10;
+
+      // Meta Description
+      if (data.metaDescription) {
+        doc.setFontSize(10);
+        doc.setTextColor(100, 116, 139); // slate-500
+        const metaLines = doc.splitTextToSize(`Meta Description: ${data.metaDescription}`, textWidth);
+        doc.text(metaLines, margin, cursorY);
+        cursorY += (metaLines.length * 5) + 10;
+      }
+
+      // Content
+      doc.setFontSize(11);
+      doc.setTextColor(51, 65, 85); // slate-700
+      const contentLines = doc.splitTextToSize(plainText, textWidth);
+      
+      // Handle pagination
+      for (let i = 0; i < contentLines.length; i++) {
+        if (cursorY > doc.internal.pageSize.getHeight() - margin) {
+          doc.addPage();
+          cursorY = margin + 10;
+        }
+        doc.text(contentLines[i], margin, cursorY);
+        cursorY += 6;
+      }
+
+      doc.save('article-seo.pdf');
+    } catch (err) {
+      toast.error(t('result.pdfError'));
+      console.error(err);
+    }
+  };
+
   const downloadFile = (content, filename, type) => {
     const blob = new Blob([content], { type });
     const url  = URL.createObjectURL(blob);
@@ -107,6 +169,24 @@ export default function ResultDisplay({ data, onCoverUpdate }) {
     }
   };
 
+  const handleGenerateAICover = async () => {
+    if (!data?._id) return;
+    setGeneratingAICover(true);
+    try {
+      const res = await generateAICoverImage(data._id);
+      if (res.coverUrl) {
+        setCoverUrl(res.coverUrl);
+        toast.success('AI cover generated!');
+        onCoverUpdate?.(data._id, res.coverImageId);
+      }
+    } catch (err) {
+      const msg = err.response?.data?.error || 'AI cover generation failed.';
+      toast.error(msg);
+    } finally {
+      setGeneratingAICover(false);
+    }
+  };
+
   const handleCoverUpload = async (e) => {
     const file = e.target.files?.[0];
     if (!file || !data?._id) return;
@@ -134,6 +214,7 @@ export default function ResultDisplay({ data, onCoverUpdate }) {
   };
 
   return (
+    <>
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
@@ -155,23 +236,27 @@ export default function ResultDisplay({ data, onCoverUpdate }) {
             <div className="flex flex-wrap items-center justify-between gap-2">
               <div className="flex items-center gap-2 text-primary-600">
                 <FileText className="w-4 h-4" />
-                <span className="text-xs font-black uppercase tracking-widest">Generated Article</span>
+                <span className="text-xs font-black uppercase tracking-widest">{t('result.title')}</span>
               </div>
               <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
                 <button onClick={handleCopy} className="btn-ghost text-xs py-1.5 px-2.5 sm:py-2 sm:px-3">
                   {copied ? <CheckCircle2 className="w-4 h-4 text-emerald-500" /> : <Copy className="w-4 h-4" />}
-                  <span className="hidden xs:inline">{copied ? 'Copied!' : 'Copy'}</span>
+                  <span className="hidden xs:inline">{copied ? t('result.actions.copied') : t('result.actions.copy')}</span>
                 </button>
                 <button onClick={handleExportMD} className="btn-ghost text-xs py-1.5 px-2.5 sm:py-2 sm:px-3" title="Export as Markdown">
                   <Download className="w-4 h-4" />
-                  <span className="hidden sm:inline">Markdown</span>
+                  <span className="hidden sm:inline">{t('result.actions.markdown')}</span>
                 </button>
                 <button onClick={handleExportHTML} className="btn-ghost text-xs py-1.5 px-2.5 sm:py-2 sm:px-3" title="Export as HTML">
                   <FileCode className="w-4 h-4" />
-                  <span className="hidden sm:inline">HTML</span>
+                  <span className="hidden sm:inline">{t('result.actions.html')}</span>
+                </button>
+                <button onClick={handleExportPDF} className="btn-ghost text-xs py-1.5 px-2.5 sm:py-2 sm:px-3" title="Export as PDF">
+                  <FileText className="w-4 h-4" />
+                  <span className="hidden sm:inline">{t('result.actions.pdf')}</span>
                 </button>
 
-                {/* Cover image upload */}
+                {/* Cover image — upload or AI generate */}
                 {data?._id && (
                   <>
                     <input
@@ -183,14 +268,34 @@ export default function ResultDisplay({ data, onCoverUpdate }) {
                     />
                     <button
                       onClick={() => fileInputRef.current?.click()}
-                      disabled={uploadingCover}
+                      disabled={uploadingCover || generatingAICover}
                       className="btn-ghost text-xs py-1.5 px-2.5 sm:py-2 sm:px-3"
                       title="Upload cover image"
                     >
                       {uploadingCover
                         ? <Loader2 className="w-4 h-4 animate-spin" />
                         : <ImageIcon className="w-4 h-4" />}
-                      <span className="hidden sm:inline">{coverUrl ? 'Replace Cover' : 'Add Cover'}</span>
+                      <span className="hidden sm:inline">{coverUrl ? t('result.actions.replaceCover') : t('result.actions.addCover')}</span>
+                    </button>
+                    <button
+                      onClick={handleGenerateAICover}
+                      disabled={generatingAICover || uploadingCover}
+                      className="btn-ghost text-xs py-1.5 px-2.5 sm:py-2 sm:px-3"
+                      title="Generate cover with DALL-E 3"
+                    >
+                      {generatingAICover
+                        ? <Loader2 className="w-4 h-4 animate-spin" />
+                        : <Sparkles className="w-4 h-4" />}
+                      <span className="hidden sm:inline">{t('result.actions.aiCover')}</span>
+                    </button>
+                    <button
+                      onClick={() => setShowUnsplash(true)}
+                      disabled={generatingAICover || uploadingCover}
+                      className="btn-ghost text-xs py-1.5 px-2.5 sm:py-2 sm:px-3"
+                      title="Pick a photo from Unsplash"
+                    >
+                      <Camera className="w-4 h-4" />
+                      <span className="hidden sm:inline">Unsplash</span>
                     </button>
                   </>
                 )}
@@ -201,7 +306,7 @@ export default function ResultDisplay({ data, onCoverUpdate }) {
                   className="btn-primary text-xs py-1.5 px-3 sm:py-2 sm:px-4"
                 >
                   {publishing ? <Loader2 className="w-4 h-4 animate-spin" /> : <Share2 className="w-4 h-4" />}
-                  <span className="hidden xs:inline">{publishing ? 'Publishing...' : 'WordPress'}</span>
+                  <span className="hidden xs:inline">{publishing ? t('result.actions.publishing') : t('result.actions.wordpress')}</span>
                 </button>
               </div>
             </div>
@@ -210,7 +315,7 @@ export default function ResultDisplay({ data, onCoverUpdate }) {
           {/* Content */}
           <div className="p-5 sm:p-8 lg:p-10 space-y-6 sm:space-y-8">
             <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
-              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-gray-900 leading-tight flex-grow">
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-gray-900 dark:text-white leading-tight flex-grow">
                 {data.title}
               </h1>
               {publishedUrl && (
@@ -221,13 +326,15 @@ export default function ResultDisplay({ data, onCoverUpdate }) {
               )}
             </div>
 
-            <div className="bg-primary-50/60 border border-primary-100 rounded-xl sm:rounded-2xl p-4 sm:p-5">
-              <p className="label-xs text-primary-600">Meta Description</p>
-              <p className="text-gray-700 text-sm leading-relaxed">{data.metaDescription}</p>
+            <div className="bg-primary-50/60 dark:bg-primary-900/20 border border-primary-100 dark:border-primary-800/50 rounded-xl sm:rounded-2xl p-4 sm:p-5">
+              <p className="label-xs text-primary-600 dark:text-primary-400">{t('result.metaDescription')}</p>
+              <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed">{data.metaDescription}</p>
             </div>
 
-            <div className="prose prose-slate prose-sm sm:prose-base max-w-full break-words overflow-x-auto">
-              <ReactMarkdown>{data.content}</ReactMarkdown>
+            <div className="prose prose-slate dark:prose-invert prose-sm sm:prose-base max-w-full break-words overflow-x-auto">
+              <ReactMarkdown rehypePlugins={[[rehypeSanitize, defaultSchema]]}>
+                {data.content}
+              </ReactMarkdown>
             </div>
           </div>
         </div>
@@ -235,42 +342,48 @@ export default function ResultDisplay({ data, onCoverUpdate }) {
 
       {/* ── Sidebar panels ── */}
       <div className="space-y-4 sm:space-y-6">
-        <div className="premium-card p-4 sm:p-6 bg-white">
-          <div className="flex items-center gap-2 text-primary-600 mb-3 sm:mb-4">
+        <div className="premium-card p-4 sm:p-6 bg-white dark:bg-gray-900">
+          <div className="flex items-center gap-2 text-primary-600 dark:text-primary-400 mb-3 sm:mb-4">
             <ListFilter className="w-4 h-4" />
-            <span className="label-xs text-primary-600 mb-0">Target Keyword</span>
+            <span className="label-xs text-primary-600 dark:text-primary-400 mb-0">{t('result.targetKeyword')}</span>
           </div>
-          <div className="bg-gray-50 border border-gray-100 rounded-xl p-3 sm:p-4 text-center">
-            <p className="font-bold text-gray-900 text-sm sm:text-base">{data.keyword}</p>
+          <div className="bg-gray-50 dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-xl p-3 sm:p-4 text-center">
+            <p className="font-bold text-gray-900 dark:text-white text-sm sm:text-base">{data.keyword}</p>
           </div>
         </div>
 
-        <div className="premium-card p-4 sm:p-6 bg-white">
-          <div className="flex items-center gap-2 text-primary-600 mb-4 sm:mb-5">
-            <SparklesIcon className="w-4 h-4" />
-            <span className="label-xs text-primary-600 mb-0">Strategy Keywords</span>
+        <div className="premium-card p-4 sm:p-6 bg-white dark:bg-gray-900">
+          <div className="flex items-center gap-2 text-primary-600 dark:text-primary-400 mb-4 sm:mb-5">
+            <Sparkles className="w-4 h-4" />
+            <span className="label-xs text-primary-600 dark:text-primary-400 mb-0">{t('result.strategyKeywords')}</span>
           </div>
           <ul className="grid grid-cols-2 sm:grid-cols-1 gap-2 sm:gap-3">
             {data.suggestedKeywords?.map((kw, i) => (
               <li key={i}
-                  className="flex items-center gap-2 sm:gap-3 p-2 sm:p-3 rounded-xl bg-gray-50 border border-gray-100 hover:border-primary-200 hover:bg-primary-50/40 transition-all group">
-                <span className="w-5 h-5 sm:w-7 sm:h-7 rounded-lg bg-white shadow-soft flex items-center justify-center text-[10px] sm:text-xs font-bold text-primary-600 shrink-0">
+                  className="flex items-center gap-2 sm:gap-3 p-2 sm:p-3 rounded-xl bg-gray-50 dark:bg-gray-800 border border-gray-100 dark:border-gray-700 hover:border-primary-200 dark:hover:border-primary-500/50 hover:bg-primary-50/40 dark:hover:bg-primary-900/20 transition-all group">
+                <span className="w-5 h-5 sm:w-7 sm:h-7 rounded-lg bg-white dark:bg-gray-900 shadow-soft flex items-center justify-center text-[10px] sm:text-xs font-bold text-primary-600 dark:text-primary-400 shrink-0">
                   {i + 1}
                 </span>
-                <span className="text-gray-700 text-[10px] sm:text-xs font-semibold leading-tight line-clamp-2">{kw}</span>
+                <span className="text-gray-700 dark:text-gray-300 text-[10px] sm:text-xs font-semibold leading-tight line-clamp-2">{kw}</span>
               </li>
             ))}
           </ul>
         </div>
       </div>
     </motion.div>
+
+    {showUnsplash && (
+      <UnsplashPickerModal
+        articleId={data._id}
+        onClose={() => setShowUnsplash(false)}
+        onCoverSet={(url, credit) => {
+          setCoverUrl(url);
+          onCoverUpdate?.(data._id);
+          toast.success(`Cover set — photo by ${credit?.photographerName || 'Unsplash'}`);
+        }}
+      />
+    )}
+    </>
   );
 }
 
-function SparklesIcon(props) {
-  return (
-    <svg {...props} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/>
-    </svg>
-  );
-}
