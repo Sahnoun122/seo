@@ -22,7 +22,8 @@
     "export": "导出",
     "generate": "生成",
     "generating": "生成中...",
-    "upgrade": "升级套餐"
+    "upgrade": "升级套餐",
+    "tryFree": "免费试用"
   },
   "nav": {
     "dashboard": "仪表盘",
@@ -82,7 +83,9 @@
       "title": "深受内容创作者喜爱",
       "subtitle": "加入数千名使用 SEO Gen AI 更快发布内容的创作者。"
     },
-    "faq": { "title": "常见问题" },
+    "faq": {
+      "title": "常见问题"
+    },
     "cta": {
       "title": "准备好生成您的第一篇文章了吗？",
       "subtitle": "加入 5,000+ 名在数秒内发布 SEO 内容的创作者。",
@@ -122,8 +125,11 @@
       "haveAccount": "已有账户？",
       "signIn": "在此登录",
       "passwordStrength": {
-        "weak": "弱", "fair": "一般", "good": "良好",
-        "strong": "强", "excellent": "极强"
+        "weak": "弱",
+        "fair": "一般",
+        "good": "良好",
+        "strong": "强",
+        "excellent": "极强"
       },
       "success": "账户已创建！欢迎加入。"
     },
@@ -191,11 +197,25 @@
       "linking": "内链助手"
     },
     "credits": {
-      "label": "积分", "unlimited": "无限制",
-      "mode": "模式", "personal": "个人", "shared": "共享"
+      "label": "积分",
+      "unlimited": "无限制",
+      "mode": "模式",
+      "personal": "个人",
+      "shared": "共享"
     },
-    "stats": { "aiModels": "AI 模型", "languages": "语言", "export": "格式", "supported": "支持", "available": "可用", "formats": "格式" },
-    "badges": { "aiGeneration": "AI 生成", "wordpressExport": "WordPress 导出", "instantResults": "即时结果" }
+    "stats": {
+      "aiModels": "AI 模型",
+      "languages": "语言",
+      "export": "格式",
+      "supported": "支持",
+      "available": "可用",
+      "formats": "格式"
+    },
+    "badges": {
+      "aiGeneration": "AI 生成",
+      "wordpressExport": "WordPress 导出",
+      "instantResults": "即时结果"
+    }
   },
   "generator": {
     "placeholder": "写什么主题？例如「可持续时尚趋势 2025」",
@@ -208,7 +228,11 @@
       "keywords": "查找 SEO 关键词",
       "saving": "保存文章"
     },
-    "badges": { "accuracy": "高精准度", "seo": "SEO 优化", "plagiarism": "无抄袭" },
+    "badges": {
+      "accuracy": "高精准度",
+      "seo": "SEO 优化",
+      "plagiarism": "无抄袭"
+    },
     "generateArticle": "生成文章",
     "working": "处理中…"
   },
@@ -220,8 +244,15 @@
     "pdfError": "PDF生成失败",
     "keywords": "SEO 关键词",
     "actions": {
-      "copy": "复制", "copied": "已复制！", "markdown": "Markdown", "html": "HTML", "pdf": "PDF",
-      "replaceCover": "更换封面", "addCover": "添加封面", "aiCover": "AI 封面", "wordpress": "WordPress",
+      "copy": "复制",
+      "copied": "已复制！",
+      "markdown": "Markdown",
+      "html": "HTML",
+      "pdf": "PDF",
+      "replaceCover": "更换封面",
+      "addCover": "添加封面",
+      "aiCover": "AI 封面",
+      "wordpress": "WordPress",
       "copyMarkdown": "复制 Markdown",
       "copyHtml": "复制 HTML",
       "downloadPdf": "下载 PDF",
@@ -274,20 +305,28 @@
     "title": "设置",
     "subtitle": "管理您的账户偏好、集成和订阅。",
     "sections": {
-      "profile": "个人资料", "ai": "AI 配置",
-      "wordpress": "WordPress 集成", "preferences": "内容偏好",
-      "subscription": "订阅", "danger": "危险区域"
+      "profile": "个人资料",
+      "ai": "AI 配置",
+      "wordpress": "WordPress 集成",
+      "preferences": "内容偏好",
+      "subscription": "订阅",
+      "danger": "危险区域"
     },
     "profile": {
-      "name": "全名", "email": "电子邮件地址",
-      "password": "新密码", "passwordPlaceholder": "留空以保持当前密码",
+      "name": "全名",
+      "email": "电子邮件地址",
+      "password": "新密码",
+      "passwordPlaceholder": "留空以保持当前密码",
       "saved": "设置已保存！",
       "passwordMin8": "密码至少需要8个字符。",
       "passwordUppercase": "密码必须包含至少一个大写字母。",
       "passwordNumber": "密码必须包含至少一个数字。",
       "passwordMismatch": "两次输入的密码不一致。"
     },
-    "preferences": { "language": "默认语言", "tone": "默认语气" }
+    "preferences": {
+      "language": "默认语言",
+      "tone": "默认语气"
+    }
   },
   "errors": {
     "notFound": "页面未找到",

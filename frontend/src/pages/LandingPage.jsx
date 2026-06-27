@@ -188,12 +188,12 @@ const LandingPage = () => {
 
       {/* ── Navbar ── */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm border-b border-gray-100 dark:border-gray-800">
-        <div className="max-w-7xl mx-auto px-6 h-16 sm:h-20 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center shadow-lg shadow-primary-500/30">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-14 sm:h-20 flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 shrink-0 rounded-xl bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center shadow-lg shadow-primary-500/30">
               <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
             </div>
-            <span className="text-lg sm:text-xl font-black text-gray-900 dark:text-white tracking-tight">SEO Gen AI</span>
+            <span className="text-base sm:text-xl font-black text-gray-900 dark:text-white tracking-tight truncate">SEO Gen AI</span>
           </div>
           <div className="hidden md:flex items-center gap-6 lg:gap-8">
             <button onClick={() => scrollTo(featuresRef)} className="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
@@ -206,10 +206,11 @@ const LandingPage = () => {
               {t('common.login')}
             </Link>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
             <LanguageSwitcher />
-            <Link to="/register" className="btn-primary text-sm px-4 sm:px-5 py-2 sm:py-2.5">
-              {t('common.startFreeTrial')}
+            <Link to="/register" className="btn-primary text-xs sm:text-sm px-3 sm:px-5 py-2 sm:py-2.5 whitespace-nowrap">
+              <span className="sm:hidden">{t('common.tryFree')}</span>
+              <span className="hidden sm:inline">{t('common.startFreeTrial')}</span>
             </Link>
           </div>
         </div>

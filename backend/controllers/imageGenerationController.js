@@ -91,13 +91,16 @@ export const generateAICover = async (req, res) => {
     article.coverImageId = imageDoc._id;
     await article.save();
 
-    const coverUrl = await ImageService.getSignedUrl(uploadResult.thumbnails.medium, 3600);
+    const coverUrl = `/api/images/${imageDoc._id}/view?size=medium`;
 
     res.status(200).json({ success: true, coverImageId: imageDoc._id, coverUrl });
 
   } catch (error) {
     logger.error('AI COVER GENERATION ERROR:', error);
 
+    if (error?.status === 404) {
+      return res.status(400).json({ error: 'Your current AI provider does not support image generation (DALL-E 3). Please use a direct OpenAI API key to generate AI covers.' });
+    }
     if (error?.status === 400) {
       return res.status(400).json({ error: 'Image request was rejected. Try rephrasing your article title or keyword.' });
     }

@@ -22,7 +22,8 @@
     "export": "تصدير",
     "generate": "توليد",
     "generating": "جاري التوليد...",
-    "upgrade": "ترقية الخطة"
+    "upgrade": "ترقية الخطة",
+    "tryFree": "جرّب مجاناً"
   },
   "nav": {
     "dashboard": "لوحة القيادة",
@@ -82,7 +83,9 @@
       "title": "محبوب من منشئي المحتوى",
       "subtitle": "انضم إلى آلاف المنشئين الذين ينشرون بشكل أسرع مع SEO Gen AI."
     },
-    "faq": { "title": "الأسئلة الشائعة" },
+    "faq": {
+      "title": "الأسئلة الشائعة"
+    },
     "cta": {
       "title": "هل أنت مستعد لإنشاء مقالك الأول؟",
       "subtitle": "انضم إلى أكثر من 5,000 منشئ ينشرون محتوى SEO في ثوانٍ.",
@@ -122,8 +125,11 @@
       "haveAccount": "لديك حساب بالفعل؟",
       "signIn": "سجل الدخول هنا",
       "passwordStrength": {
-        "weak": "ضعيفة", "fair": "مقبولة", "good": "جيدة",
-        "strong": "قوية", "excellent": "ممتازة"
+        "weak": "ضعيفة",
+        "fair": "مقبولة",
+        "good": "جيدة",
+        "strong": "قوية",
+        "excellent": "ممتازة"
       },
       "success": "تم إنشاء الحساب! مرحباً بك."
     },
@@ -191,11 +197,25 @@
       "linking": "مساعد الروابط الداخلية"
     },
     "credits": {
-      "label": "الرصيد", "unlimited": "غير محدود",
-      "mode": "الوضع", "personal": "شخصي", "shared": "مشترك"
+      "label": "الرصيد",
+      "unlimited": "غير محدود",
+      "mode": "الوضع",
+      "personal": "شخصي",
+      "shared": "مشترك"
     },
-    "stats": { "aiModels": "نماذج الذكاء الاصطناعي", "languages": "اللغات", "export": "الصيغ", "supported": "مدعوم", "available": "متاح", "formats": "تنسيقات" },
-    "badges": { "aiGeneration": "الإنشاء بالذكاء الاصطناعي", "wordpressExport": "تصدير WordPress", "instantResults": "نتائج فورية" }
+    "stats": {
+      "aiModels": "نماذج الذكاء الاصطناعي",
+      "languages": "اللغات",
+      "export": "الصيغ",
+      "supported": "مدعوم",
+      "available": "متاح",
+      "formats": "تنسيقات"
+    },
+    "badges": {
+      "aiGeneration": "الإنشاء بالذكاء الاصطناعي",
+      "wordpressExport": "تصدير WordPress",
+      "instantResults": "نتائج فورية"
+    }
   },
   "generator": {
     "placeholder": "ما الموضوع الذي تريد الكتابة عنه؟ مثال: 'اتجاهات الموضة المستدامة 2025'",
@@ -208,7 +228,11 @@
       "keywords": "البحث عن كلمات مفتاحية SEO",
       "saving": "حفظ المقال"
     },
-    "badges": { "accuracy": "دقة عالية", "seo": "محسَّن لـ SEO", "plagiarism": "خالٍ من الانتحال" },
+    "badges": {
+      "accuracy": "دقة عالية",
+      "seo": "محسَّن لـ SEO",
+      "plagiarism": "خالٍ من الانتحال"
+    },
     "generateArticle": "إنشاء مقال",
     "working": "جارٍ العمل…"
   },
@@ -220,8 +244,15 @@
     "pdfError": "فشل في إنشاء ملف PDF",
     "keywords": "كلمات مفتاحية SEO",
     "actions": {
-      "copy": "نسخ", "copied": "تم النسخ!", "markdown": "Markdown", "html": "HTML", "pdf": "PDF",
-      "replaceCover": "تغيير الغلاف", "addCover": "إضافة غلاف", "aiCover": "غلاف ذكاء اصطناعي", "wordpress": "WordPress",
+      "copy": "نسخ",
+      "copied": "تم النسخ!",
+      "markdown": "Markdown",
+      "html": "HTML",
+      "pdf": "PDF",
+      "replaceCover": "تغيير الغلاف",
+      "addCover": "إضافة غلاف",
+      "aiCover": "غلاف ذكاء اصطناعي",
+      "wordpress": "WordPress",
       "copyMarkdown": "نسخ Markdown",
       "copyHtml": "نسخ HTML",
       "downloadPdf": "تحميل PDF",
@@ -274,20 +305,28 @@
     "title": "الإعدادات",
     "subtitle": "أدِر تفضيلات حسابك والتكاملات والاشتراك.",
     "sections": {
-      "profile": "الملف الشخصي", "ai": "إعداد الذكاء الاصطناعي",
-      "wordpress": "تكامل WordPress", "preferences": "تفضيلات المحتوى",
-      "subscription": "الاشتراك", "danger": "منطقة الخطر"
+      "profile": "الملف الشخصي",
+      "ai": "إعداد الذكاء الاصطناعي",
+      "wordpress": "تكامل WordPress",
+      "preferences": "تفضيلات المحتوى",
+      "subscription": "الاشتراك",
+      "danger": "منطقة الخطر"
     },
     "profile": {
-      "name": "الاسم الكامل", "email": "عنوان البريد الإلكتروني",
-      "password": "كلمة مرور جديدة", "passwordPlaceholder": "اتركه فارغاً للإبقاء على الحالي",
+      "name": "الاسم الكامل",
+      "email": "عنوان البريد الإلكتروني",
+      "password": "كلمة مرور جديدة",
+      "passwordPlaceholder": "اتركه فارغاً للإبقاء على الحالي",
       "saved": "تم حفظ الإعدادات!",
       "passwordMin8": "يجب أن تحتوي كلمة المرور على 8 أحرف على الأقل.",
       "passwordUppercase": "يجب أن تحتوي كلمة المرور على حرف كبير واحد على الأقل.",
       "passwordNumber": "يجب أن تحتوي كلمة المرور على رقم واحد على الأقل.",
       "passwordMismatch": "كلمتا المرور غير متطابقتين."
     },
-    "preferences": { "language": "اللغة الافتراضية", "tone": "الأسلوب الافتراضي" }
+    "preferences": {
+      "language": "اللغة الافتراضية",
+      "tone": "الأسلوب الافتراضي"
+    }
   },
   "errors": {
     "notFound": "الصفحة غير موجودة",

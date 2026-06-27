@@ -58,7 +58,9 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 // Security HTTP headers
-app.use(helmet());
+app.use(helmet({
+  crossOriginResourcePolicy: { policy: "cross-origin" }
+}));
 
 // Dynamic CORS — set CLIENT_URL in Vercel env (comma-separated for multiple origins)
 const allowedOrigins = [
@@ -88,8 +90,16 @@ app.use(cors(corsOptions));
 
 app.use(express.json());
 
-// Strip $ and . from user input to prevent MongoDB operator injection
-app.use(mongoSanitize({ replaceWith: '_' }));
+// Strip $ and . from user input to prevent MongoDB operator injection.
+// express-mongo-sanitize@2.x does `req[key] = target` which throws on Express 5
+// because req.query is a read-only getter. We call .sanitize() directly instead —
+// it mutates the object in-place, making the reassignment unnecessary.
+app.use((req, res, next) => {
+  ['body', 'params', 'headers', 'query'].forEach((key) => {
+    if (req[key]) mongoSanitize.sanitize(req[key]);
+  });
+  next();
+});
 
 // HTTP request logging — only in development
 if (process.env.NODE_ENV !== 'production') {

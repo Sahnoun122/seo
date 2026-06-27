@@ -22,7 +22,8 @@
     "export": "Exportar",
     "generate": "Generar",
     "generating": "Generando...",
-    "upgrade": "Mejorar plan"
+    "upgrade": "Mejorar plan",
+    "tryFree": "Prueba gratis"
   },
   "nav": {
     "dashboard": "Panel de control",

@@ -22,7 +22,8 @@
     "export": "Export",
     "generate": "Generate",
     "generating": "Generating...",
-    "upgrade": "Upgrade Plan"
+    "upgrade": "Upgrade Plan",
+    "tryFree": "Try free"
   },
   "nav": {
     "dashboard": "Dashboard",

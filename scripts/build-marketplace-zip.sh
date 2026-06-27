@@ -22,12 +22,16 @@ rm -rf "${STAGING}"
 mkdir -p "${STAGING}"
 
 # ── 2. Copy project (exclude noise) ──────────────────────────────────────────
+# rsync exclude order matters: include rules must come BEFORE the exclude they override
 rsync -a \
   --exclude=".git" \
   --exclude="node_modules" \
+  --include=".env.example" \
   --exclude=".env" \
-  --exclude=".env.*" \
-  --exclude="!.env.example" \
+  --exclude=".env.local" \
+  --exclude=".env.development" \
+  --exclude=".env.test" \
+  --exclude=".env.production" \
   --exclude="*.env" \
   --exclude="release" \
   --exclude="*.log" \
@@ -48,10 +52,12 @@ if find "${STAGING}" -name ".env" -not -name ".env.example" | grep -q .; then
   exit 1
 fi
 
-# Must NOT find common secret patterns (loose check)
-if grep -r "sk-or-v1\|sk_live\|sk_test_51\|pk_test_51\|re_[A-Za-z]" "${STAGING}" 2>/dev/null | grep -v ".env.example" | grep -q .; then
-  echo "WARNING: Possible secret detected in source files. Review before publishing:"
-  grep -r "sk-or-v1\|sk_live\|sk_test_51\|pk_test_51\|re_[A-Za-z]" "${STAGING}" 2>/dev/null | grep -v ".env.example"
+# Must NOT find real secret values (exclude docs/placeholder patterns ending with ... or _...)
+SECRET_HITS=$(grep -rE "sk-or-v1-[a-f0-9]{60,}|sk_(live|test)_[A-Za-z0-9]{40,}|pk_(live|test)_[A-Za-z0-9]{40,}|re_[A-Za-z0-9]{25,}" \
+  "${STAGING}" 2>/dev/null | grep -v ".env.example" || true)
+if [ -n "${SECRET_HITS}" ]; then
+  echo "WARNING: Possible real secret detected — review before publishing:"
+  echo "${SECRET_HITS}"
 fi
 
 echo "Security check passed."

@@ -30,24 +30,20 @@ export default function Settings() {
   const fetchData = async () => {
     setLoading(true);
     try {
-      const [settingsRes, profileRes] = await Promise.all([
-        getSettings(),
-        api.get('/settings'),
-      ]);
+      const settingsRes = await getSettings();
 
       if (settingsRes.success) {
+        const userSettings = settingsRes.personalSettings?.settings || {};
         setContentSettings({
-          defaultLanguage:      settingsRes.settings.defaultLanguage      || 'English',
-          defaultTone:          settingsRes.settings.defaultTone          || 'Professional',
-          preferredModel:       settingsRes.settings.preferredModel       || 'gpt-4o',
-          wpUrl:                settingsRes.settings.wpUrl                || '',
-          wpUsername:           settingsRes.settings.wpUsername           || '',
-          wpApplicationPassword: settingsRes.settings.wpApplicationPassword || '',
+          defaultLanguage:      userSettings.defaultLanguage      || 'English',
+          defaultTone:          userSettings.defaultTone          || 'Professional',
+          preferredModel:       userSettings.preferredModel       || 'gpt-4o',
+          wpUrl:                userSettings.wpUrl                || '',
+          wpUsername:           userSettings.wpUsername           || '',
+          wpApplicationPassword: userSettings.wpApplicationPassword || '',
         });
-      }
 
-      if (profileRes.data.success) {
-        const { personalSettings: pers } = profileRes.data;
+        const pers = settingsRes.personalSettings || {};
         setProfileData({ name: pers.name || '', email: pers.email || '', role: pers.role || 'user', credits: pers.credits || 0 });
       }
     } catch {

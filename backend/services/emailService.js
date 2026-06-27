@@ -1,10 +1,34 @@
 import { Resend } from 'resend';
+import nodemailer from 'nodemailer';
 
 /**
  * Send a password reset email via Resend.
  * Falls back to console.log when RESEND_API_KEY is not set (dev mode).
  */
-export async function sendPasswordResetEmail({ to, resetUrl, appName = 'SEO Gen AI' }) {
+export async function sendPasswordResetEmail({ to, resetUrl, appName = 'AI SEO Article Generator' }) {
+  const smtpUser = process.env.SMTP_USER;
+  const smtpPass = process.env.SMTP_PASS;
+
+  if (smtpUser && smtpPass) {
+    try {
+      const transporter = nodemailer.createTransport({
+        host: process.env.SMTP_HOST || 'smtp.gmail.com',
+        port: process.env.SMTP_PORT || 587,
+        secure: process.env.SMTP_PORT == 465,
+        auth: { user: smtpUser, pass: smtpPass },
+      });
+      const info = await transporter.sendMail({
+        from: `"${appName}" <${smtpUser}>`,
+        to,
+        subject: `Reset your ${appName} password`,
+        html: buildResetEmail({ resetUrl, appName }),
+      });
+      return { success: true, id: info.messageId };
+    } catch (error) {
+      throw new Error(`Échec de l'envoi via SMTP : ${error.message}`);
+    }
+  }
+
   const apiKey = process.env.RESEND_API_KEY;
 
   if (!apiKey) {
@@ -35,13 +59,39 @@ export async function sendPasswordResetEmail({ to, resetUrl, appName = 'SEO Gen 
   });
 
   if (error) {
-    throw new Error(`Email delivery failed: ${error.message}`);
+    if (error.name === 'validation_error') {
+      throw new Error(`Le compte Resend gratuit ne permet d'envoyer des emails qu'à votre adresse principale (celle du compte Resend). Pour envoyer à d'autres adresses, vous devez vérifier un nom de domaine sur resend.com.`);
+    }
+    throw new Error(`Échec de l'envoi de l'email : ${error.message}`);
   }
 
   return { success: true, id: data?.id };
 }
 
-export async function sendEmailVerificationEmail({ to, verifyUrl, appName = 'SEO Gen AI' }) {
+export async function sendEmailVerificationEmail({ to, verifyUrl, appName = 'AI SEO Article Generator' }) {
+  const smtpUser = process.env.SMTP_USER;
+  const smtpPass = process.env.SMTP_PASS;
+
+  if (smtpUser && smtpPass) {
+    try {
+      const transporter = nodemailer.createTransport({
+        host: process.env.SMTP_HOST || 'smtp.gmail.com',
+        port: process.env.SMTP_PORT || 587,
+        secure: process.env.SMTP_PORT == 465,
+        auth: { user: smtpUser, pass: smtpPass },
+      });
+      const info = await transporter.sendMail({
+        from: `"${appName}" <${smtpUser}>`,
+        to,
+        subject: `Verify your ${appName} email address`,
+        html: buildVerificationEmail({ verifyUrl, appName }),
+      });
+      return { success: true, id: info.messageId };
+    } catch (error) {
+      throw new Error(`Échec de l'envoi via SMTP : ${error.message}`);
+    }
+  }
+
   const apiKey = process.env.RESEND_API_KEY;
 
   if (!apiKey) {
@@ -61,7 +111,12 @@ export async function sendEmailVerificationEmail({ to, verifyUrl, appName = 'SEO
     html: buildVerificationEmail({ verifyUrl, appName }),
   });
 
-  if (error) throw new Error(`Email delivery failed: ${error.message}`);
+  if (error) {
+    if (error.name === 'validation_error') {
+      throw new Error(`Le compte Resend gratuit ne permet d'envoyer des emails qu'à votre adresse principale (celle du compte Resend). Pour envoyer à d'autres adresses, vous devez vérifier un nom de domaine sur resend.com.`);
+    }
+    throw new Error(`Échec de l'envoi de l'email : ${error.message}`);
+  }
   return { success: true, id: data?.id };
 }
 

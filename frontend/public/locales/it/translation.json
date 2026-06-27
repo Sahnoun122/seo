@@ -22,7 +22,8 @@
     "export": "Esporta",
     "generate": "Genera",
     "generating": "Generazione in corso...",
-    "upgrade": "Aggiorna piano"
+    "upgrade": "Aggiorna piano",
+    "tryFree": "Prova gratis"
   },
   "nav": {
     "dashboard": "Bacheca",
@@ -82,7 +83,9 @@
       "title": "Amato dai creatori di contenuti",
       "subtitle": "Unisciti a migliaia di creatori che pubblicano più velocemente con SEO Gen AI."
     },
-    "faq": { "title": "Domande frequenti" },
+    "faq": {
+      "title": "Domande frequenti"
+    },
     "cta": {
       "title": "Pronto a generare il tuo primo articolo?",
       "subtitle": "Unisciti a oltre 5.000 creatori che pubblicano contenuti SEO in pochi secondi.",
@@ -122,8 +125,11 @@
       "haveAccount": "Hai già un account?",
       "signIn": "Accedi qui",
       "passwordStrength": {
-        "weak": "Debole", "fair": "Accettabile", "good": "Buona",
-        "strong": "Forte", "excellent": "Eccellente"
+        "weak": "Debole",
+        "fair": "Accettabile",
+        "good": "Buona",
+        "strong": "Forte",
+        "excellent": "Eccellente"
       },
       "success": "Account creato! Benvenuto a bordo."
     },
@@ -191,11 +197,25 @@
       "linking": "Assistente link interni"
     },
     "credits": {
-      "label": "Crediti", "unlimited": "Illimitato",
-      "mode": "Modalità", "personal": "Personale", "shared": "Condiviso"
+      "label": "Crediti",
+      "unlimited": "Illimitato",
+      "mode": "Modalità",
+      "personal": "Personale",
+      "shared": "Condiviso"
     },
-    "stats": { "aiModels": "Modelli IA", "languages": "Lingue", "export": "Formati", "supported": "Supportati", "available": "Disponibili", "formats": "Formati" },
-    "badges": { "aiGeneration": "Generazione IA", "wordpressExport": "Esporta WordPress", "instantResults": "Risultati istantanei" }
+    "stats": {
+      "aiModels": "Modelli IA",
+      "languages": "Lingue",
+      "export": "Formati",
+      "supported": "Supportati",
+      "available": "Disponibili",
+      "formats": "Formati"
+    },
+    "badges": {
+      "aiGeneration": "Generazione IA",
+      "wordpressExport": "Esporta WordPress",
+      "instantResults": "Risultati istantanei"
+    }
   },
   "generator": {
     "placeholder": "Su quale argomento scrivere? es. 'Tendenze Moda Sostenibile 2025'",
@@ -208,7 +228,11 @@
       "keywords": "Ricerca parole chiave SEO",
       "saving": "Salvataggio articolo"
     },
-    "badges": { "accuracy": "Alta precisione", "seo": "Ottimizzato SEO", "plagiarism": "Senza plagio" },
+    "badges": {
+      "accuracy": "Alta precisione",
+      "seo": "Ottimizzato SEO",
+      "plagiarism": "Senza plagio"
+    },
     "generateArticle": "Genera articolo",
     "working": "In corso…"
   },
@@ -220,8 +244,15 @@
     "pdfError": "Impossibile generare il PDF",
     "keywords": "Parole chiave SEO",
     "actions": {
-      "copy": "Copia", "copied": "Copiato!", "markdown": "Markdown", "html": "HTML", "pdf": "PDF",
-      "replaceCover": "Cambia copertina", "addCover": "Aggiungi copertina", "aiCover": "Copertina IA", "wordpress": "WordPress",
+      "copy": "Copia",
+      "copied": "Copiato!",
+      "markdown": "Markdown",
+      "html": "HTML",
+      "pdf": "PDF",
+      "replaceCover": "Cambia copertina",
+      "addCover": "Aggiungi copertina",
+      "aiCover": "Copertina IA",
+      "wordpress": "WordPress",
       "copyMarkdown": "Copia Markdown",
       "copyHtml": "Copia HTML",
       "downloadPdf": "Scarica PDF",
@@ -274,20 +305,28 @@
     "title": "Impostazioni",
     "subtitle": "Gestisci le preferenze del tuo account, integrazioni e abbonamento.",
     "sections": {
-      "profile": "Profilo", "ai": "Configurazione IA",
-      "wordpress": "Integrazione WordPress", "preferences": "Preferenze contenuto",
-      "subscription": "Abbonamento", "danger": "Zona pericolosa"
+      "profile": "Profilo",
+      "ai": "Configurazione IA",
+      "wordpress": "Integrazione WordPress",
+      "preferences": "Preferenze contenuto",
+      "subscription": "Abbonamento",
+      "danger": "Zona pericolosa"
     },
     "profile": {
-      "name": "Nome completo", "email": "Indirizzo e-mail",
-      "password": "Nuova password", "passwordPlaceholder": "Lascia vuoto per mantenere l'attuale",
+      "name": "Nome completo",
+      "email": "Indirizzo e-mail",
+      "password": "Nuova password",
+      "passwordPlaceholder": "Lascia vuoto per mantenere l'attuale",
       "saved": "Impostazioni salvate!",
       "passwordMin8": "La password deve contenere almeno 8 caratteri.",
       "passwordUppercase": "La password deve contenere almeno una lettera maiuscola.",
       "passwordNumber": "La password deve contenere almeno un numero.",
       "passwordMismatch": "Le password non corrispondono."
     },
-    "preferences": { "language": "Lingua predefinita", "tone": "Tono predefinito" }
+    "preferences": {
+      "language": "Lingua predefinita",
+      "tone": "Tono predefinito"
+    }
   },
   "errors": {
     "notFound": "Pagina non trovata",

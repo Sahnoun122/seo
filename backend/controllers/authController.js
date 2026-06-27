@@ -14,7 +14,7 @@ const generateToken = (id) => {
     throw new Error('FATAL: JWT_SECRET environment variable is not set. Cannot sign tokens.');
   }
   return jwt.sign({ id }, process.env.JWT_SECRET, {
-    expiresIn: '7d',
+    expiresIn: '1d',
   });
 };
 
@@ -49,27 +49,29 @@ export const registerUser = async (req, res) => {
       email,
       password,
       role,
-      credits
+      credits,
+      isEmailVerified: process.env.IS_DEMO === 'true',
     });
 
     if (user) {
-      // Generate verification token and send email (non-blocking — register still succeeds)
+      // Generate verification token and send email (non-blocking)
       let devVerifyUrl;
-      try {
-        const rawToken = user.createEmailVerificationToken();
-        await user.save({ validateBeforeSave: false });
-        const appUrl = process.env.APP_URL || 'http://localhost:5173';
-        const verifyUrl = `${appUrl}/verify-email/${rawToken}`;
-        const emailResult = await sendEmailVerificationEmail({
-          to: user.email,
-          verifyUrl,
-        });
-        // Dev mode: no Resend key → return the URL so the frontend can redirect directly
-        if (emailResult?.fallback) {
-          devVerifyUrl = verifyUrl;
+      if (!user.isEmailVerified) {
+        try {
+          const rawToken = user.createEmailVerificationToken();
+          await user.save({ validateBeforeSave: false });
+          const appUrl = process.env.CLIENT_URL || process.env.APP_URL || 'http://localhost:5173';
+          const verifyUrl = `${appUrl}/verify-email/${rawToken}`;
+          const emailResult = await sendEmailVerificationEmail({
+            to: user.email,
+            verifyUrl,
+          });
+          if (emailResult?.fallback) {
+            devVerifyUrl = verifyUrl;
+          }
+        } catch (emailErr) {
+          logger.error('Verification email error:', emailErr.message);
         }
-      } catch (emailErr) {
-        logger.error('Verification email error:', emailErr.message);
       }
 
       res.status(201).json({
@@ -271,7 +273,7 @@ export const resendVerificationEmail = async (req, res) => {
     res.status(200).json({ success: true, message: 'Verification email sent.' });
   } catch (error) {
     logger.error('Resend Verification Error:', error.message);
-    res.status(500).json({ error: 'Failed to send verification email.' });
+    res.status(500).json({ error: error.message || 'Failed to send verification email.' });
   }
 };
 

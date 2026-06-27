@@ -58,14 +58,13 @@ export const getImagesByEntity = async (req, res) => {
 
     const images = await Image.find({ imageableId, imageableType }).sort({ isPrimary: -1, createdAt: -1 });
     
-    // Attach signed URLs to the response for direct access
     const imagesWithUrls = await Promise.all(images.map(async img => {
       const doc = img.toJSON();
-      doc.secureUrl = await ImageService.getSignedUrl(img.path);
+      doc.secureUrl = `/api/images/${img._id}/view`;
       doc.secureThumbnails = {
-        small: await ImageService.getSignedUrl(img.thumbnails.small),
-        medium: await ImageService.getSignedUrl(img.thumbnails.medium),
-        large: await ImageService.getSignedUrl(img.thumbnails.large)
+        small: `/api/images/${img._id}/view?size=small`,
+        medium: `/api/images/${img._id}/view?size=medium`,
+        large: `/api/images/${img._id}/view?size=large`
       };
       return doc;
     }));
@@ -154,11 +153,10 @@ export const viewSecureImage = async (req, res) => {
       targetPath = image.thumbnails[size];
     }
 
-    // Generate a temporary signed URL and redirect the user
-    const signedUrl = await ImageService.getSignedUrl(targetPath, 300); // 5 mins
-    res.redirect(signedUrl);
+    const localPath = ImageService.getLocalFilePath(targetPath);
+    res.sendFile(localPath);
   } catch (error) {
-    res.status(500).json({ error: 'Failed to generate secure URL.' });
+    res.status(500).json({ error: 'Failed to retrieve image.' });
   }
 };
 

@@ -60,7 +60,7 @@ export default function Register() {
   };
 
   return (
-    <div className="min-h-screen flex bg-white">
+    <div className="min-h-screen flex bg-white dark:bg-gray-950">
 
       {/* ── Left panel ── */}
       <div className="hidden lg:flex lg:w-[52%] relative items-center justify-center overflow-hidden"
@@ -72,12 +72,12 @@ export default function Register() {
         <div className="relative z-10 p-16 max-w-xl w-full">
           <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.7 }}>
 
-            <div className="flex items-center gap-3 mb-12">
+            <Link to="/welcome" className="flex items-center gap-3 mb-12 w-fit">
               <div className="bg-white/10 backdrop-blur-sm p-2.5 rounded-xl border border-white/20">
                 <Sparkles className="w-7 h-7 text-primary-200" />
               </div>
               <span className="text-2xl font-bold text-white tracking-tight">SEO Gen AI</span>
-            </div>
+            </Link>
 
             <h1 className="text-5xl font-extrabold text-white leading-[1.1] mb-4 tracking-tight">
               {t('auth.registerPage.headline')}
@@ -108,25 +108,25 @@ export default function Register() {
       </div>
 
       {/* ── Right panel (form) ── */}
-      <div className="w-full lg:w-[48%] flex items-center justify-center p-6 sm:p-8 lg:p-14 bg-white min-h-screen lg:min-h-0">
+      <div className="w-full lg:w-[48%] flex items-center justify-center p-6 sm:p-8 lg:p-14 bg-white dark:bg-gray-900 min-h-screen lg:min-h-0">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
           className="max-w-md w-full"
         >
-          <div className="flex lg:hidden items-center gap-2.5 mb-8 sm:mb-10">
+          <Link to="/welcome" className="flex lg:hidden items-center gap-2.5 mb-8 sm:mb-10 w-fit">
             <div className="bg-primary-600 p-2 rounded-xl">
               <Sparkles className="w-5 h-5 text-white" />
             </div>
-            <span className="text-xl font-bold text-gray-900">SEO Gen AI</span>
-          </div>
+            <span className="text-xl font-bold text-gray-900 dark:text-white">SEO Gen AI</span>
+          </Link>
 
           <div className="mb-7 sm:mb-10">
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-2 tracking-tight">
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 dark:text-white mb-2 tracking-tight">
               {t('auth.register.title')}
             </h2>
-            <p className="text-gray-500 font-medium text-sm sm:text-base">{t('auth.register.subtitle')}</p>
+            <p className="text-gray-500 dark:text-gray-400 font-medium text-sm sm:text-base">{t('auth.register.subtitle')}</p>
           </div>
 
           <form className="space-y-5" onSubmit={handleSubmit}>
@@ -220,9 +220,9 @@ export default function Register() {
             </button>
           </form>
 
-          <p className="text-center text-sm font-medium text-gray-500 mt-8">
+          <p className="text-center text-sm font-medium text-gray-500 dark:text-gray-400 mt-8">
             {t('auth.register.haveAccount')}{' '}
-            <Link to="/login" className="text-primary-600 hover:text-primary-700 font-bold underline underline-offset-4 decoration-2">
+            <Link to="/login" className="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 font-bold underline underline-offset-4 decoration-2">
               {t('auth.register.signIn')}
             </Link>
           </p>

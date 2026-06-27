@@ -11,18 +11,18 @@ const languages = [
   { code: 'ar', name: 'العربية' }
 ];
 
-export default function LanguageSwitcher() {
+export default function LanguageSwitcher({ direction = 'down' }) {
   const { i18n } = useTranslation();
 
   return (
     <div className="relative group">
-      <div className="flex items-center gap-1.5 px-3 py-2.5 text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl transition-all cursor-pointer text-sm font-medium">
-        <Globe className="w-4.5 h-4.5" />
-        <span className="uppercase text-[11px] font-bold tracking-widest">{i18n.language.split('-')[0]}</span>
+      <div className="flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-2 sm:py-2.5 text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl transition-all cursor-pointer text-sm font-medium">
+        <Globe className="w-4 h-4 sm:w-4.5 sm:h-4.5 shrink-0" />
+        <span className="hidden sm:inline uppercase text-[11px] font-bold tracking-widest">{i18n.language.split('-')[0]}</span>
       </div>
-      
+
       {/* Dropdown menu */}
-      <div className="absolute right-0 top-full mt-2 w-32 bg-white dark:bg-gray-900 rounded-xl shadow-lg border border-gray-100 dark:border-gray-800 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+      <div className={`absolute ${direction === 'up' ? 'left-0 bottom-full mb-2' : 'right-0 top-full mt-2'} w-32 bg-white dark:bg-gray-900 rounded-xl shadow-lg border border-gray-100 dark:border-gray-800 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50`}>
         <div className="py-2">
           {languages.map((lng) => (
             <button

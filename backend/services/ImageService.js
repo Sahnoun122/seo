@@ -1,7 +1,6 @@
-import { PutObjectCommand, DeleteObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3';
-import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
+import fs from 'fs/promises';
+import path from 'path';
 import crypto from 'crypto';
-import s3Client, { s3BucketName } from '../config/s3.js';
 
 // Lazy-load sharp so a missing native binary doesn't crash the entire server at startup
 let sharpLib;
@@ -13,14 +12,19 @@ const getSharp = async () => {
   return sharpLib;
 };
 
-class ImageService {
-  constructor() {
-    this.s3 = s3Client;
-    this.bucket = s3BucketName;
-  }
+const UPLOADS_DIR = path.resolve('uploads');
 
+class ImageService {
   generateFilename() {
     return crypto.randomBytes(16).toString('hex');
+  }
+
+  async ensureDirectoryExists(folderPath) {
+    try {
+      await fs.access(folderPath);
+    } catch {
+      await fs.mkdir(folderPath, { recursive: true });
+    }
   }
 
   async optimizeAndGenerateThumbnails(buffer) {
@@ -32,30 +36,27 @@ class ImageService {
     return { original, small, medium, large };
   }
 
-  async uploadToS3(buffer, key, mimetype) {
-    const command = new PutObjectCommand({
-      Bucket: this.bucket,
-      Key: key,
-      Body: buffer,
-      ContentType: mimetype,
-    });
-    await this.s3.send(command);
+  async uploadToLocal(buffer, filePath) {
+    await fs.writeFile(filePath, buffer);
   }
 
   async uploadImage(file, folder = 'misc') {
     const hash = this.generateFilename();
+    const folderPath = path.join(UPLOADS_DIR, folder);
+    await this.ensureDirectoryExists(folderPath);
+
     const baseKey = `${folder}/${hash}`; 
     const finalMimeType = 'image/webp';
 
     // Process all images to webp format for optimization
     const buffers = await this.optimizeAndGenerateThumbnails(file.buffer);
 
-    // Upload to S3 concurrently
+    // Upload to Local concurrently
     await Promise.all([
-      this.uploadToS3(buffers.original, `${baseKey}.webp`, finalMimeType),
-      this.uploadToS3(buffers.small, `${baseKey}-small.webp`, finalMimeType),
-      this.uploadToS3(buffers.medium, `${baseKey}-medium.webp`, finalMimeType),
-      this.uploadToS3(buffers.large, `${baseKey}-large.webp`, finalMimeType)
+      this.uploadToLocal(buffers.original, path.join(UPLOADS_DIR, `${baseKey}.webp`)),
+      this.uploadToLocal(buffers.small, path.join(UPLOADS_DIR, `${baseKey}-small.webp`)),
+      this.uploadToLocal(buffers.medium, path.join(UPLOADS_DIR, `${baseKey}-medium.webp`)),
+      this.uploadToLocal(buffers.large, path.join(UPLOADS_DIR, `${baseKey}-large.webp`))
     ]);
 
     return {
@@ -72,22 +73,18 @@ class ImageService {
   }
 
   async deleteImagePaths(paths) {
-    const promises = paths.map(key => {
-      const command = new DeleteObjectCommand({
-        Bucket: this.bucket,
-        Key: key,
-      });
-      return this.s3.send(command).catch(err => console.error(`Failed to delete ${key}`, err));
+    const promises = paths.map(async key => {
+      try {
+        await fs.unlink(path.join(UPLOADS_DIR, key));
+      } catch (err) {
+        console.error(`Failed to delete ${key}`, err);
+      }
     });
     await Promise.all(promises);
   }
 
-  async getSignedUrl(key, expiresIn = 3600) {
-    const command = new GetObjectCommand({
-      Bucket: this.bucket,
-      Key: key,
-    });
-    return getSignedUrl(this.s3, command, { expiresIn });
+  getLocalFilePath(key) {
+    return path.join(UPLOADS_DIR, key);
   }
 }
 

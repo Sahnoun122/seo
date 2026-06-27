@@ -415,7 +415,7 @@ export default function History() {
                     {article.coverImageId && (
                       <div className="h-36 overflow-hidden bg-gray-100 dark:bg-gray-800">
                         <img
-                          src={`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/images/${article.coverImageId}/view?size=medium`}
+                          src={`${import.meta.env.VITE_API_URL || '/api'}/images/${article.coverImageId}/view?size=medium`}
                           alt="cover"
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                           onError={(e) => { e.target.style.display = 'none'; }}

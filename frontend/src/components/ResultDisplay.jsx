@@ -21,7 +21,8 @@ export default function ResultDisplay({ data, onCoverUpdate }) {
   const [publishedUrl, setPublishedUrl] = useState(null);
   const [uploadingCover, setUploadingCover]         = useState(false);
   const [generatingAICover, setGeneratingAICover]   = useState(false);
-  const [coverUrl, setCoverUrl]                     = useState(data?.coverUrl || null);
+  const initialCoverUrl = data?.coverUrl || (data?.coverImageId ? `${import.meta.env.VITE_API_URL || '/api'}/images/${data.coverImageId}/view?size=medium` : null);
+  const [coverUrl, setCoverUrl]                     = useState(initialCoverUrl);
   const [showUnsplash, setShowUnsplash]             = useState(false);
   const fileInputRef = useRef(null);
 
@@ -142,6 +143,7 @@ export default function ResultDisplay({ data, onCoverUpdate }) {
     URL.revokeObjectURL(url);
   };
 
+
   const handlePublishWordPress = async () => {
     if (!data?._id) { toast.error('Article ID not found.'); return; }
     setPublishing(true);
@@ -255,6 +257,15 @@ export default function ResultDisplay({ data, onCoverUpdate }) {
                   <FileText className="w-4 h-4" />
                   <span className="hidden sm:inline">{t('result.actions.pdf')}</span>
                 </button>
+                <button
+                  onClick={handlePublishWordPress}
+                  disabled={publishing}
+                  className="btn-ghost text-xs py-1.5 px-2.5 sm:py-2 sm:px-3 text-blue-600 hover:text-blue-700 hover:bg-blue-50"
+                  title="Publish to WordPress"
+                >
+                  {publishing ? <Loader2 className="w-4 h-4 animate-spin" /> : <Share2 className="w-4 h-4" />}
+                  <span className="hidden sm:inline">WordPress</span>
+                </button>
 
                 {/* Cover image — upload or AI generate */}
                 {data?._id && (
@@ -277,17 +288,7 @@ export default function ResultDisplay({ data, onCoverUpdate }) {
                         : <ImageIcon className="w-4 h-4" />}
                       <span className="hidden sm:inline">{coverUrl ? t('result.actions.replaceCover') : t('result.actions.addCover')}</span>
                     </button>
-                    <button
-                      onClick={handleGenerateAICover}
-                      disabled={generatingAICover || uploadingCover}
-                      className="btn-ghost text-xs py-1.5 px-2.5 sm:py-2 sm:px-3"
-                      title="Generate cover with DALL-E 3"
-                    >
-                      {generatingAICover
-                        ? <Loader2 className="w-4 h-4 animate-spin" />
-                        : <Sparkles className="w-4 h-4" />}
-                      <span className="hidden sm:inline">{t('result.actions.aiCover')}</span>
-                    </button>
+
                     <button
                       onClick={() => setShowUnsplash(true)}
                       disabled={generatingAICover || uploadingCover}
@@ -300,14 +301,7 @@ export default function ResultDisplay({ data, onCoverUpdate }) {
                   </>
                 )}
 
-                <button
-                  onClick={handlePublishWordPress}
-                  disabled={publishing}
-                  className="btn-primary text-xs py-1.5 px-3 sm:py-2 sm:px-4"
-                >
-                  {publishing ? <Loader2 className="w-4 h-4 animate-spin" /> : <Share2 className="w-4 h-4" />}
-                  <span className="hidden xs:inline">{publishing ? t('result.actions.publishing') : t('result.actions.wordpress')}</span>
-                </button>
+
               </div>
             </div>
           </div>

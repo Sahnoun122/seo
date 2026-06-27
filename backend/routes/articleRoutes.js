@@ -8,14 +8,14 @@ import { generateAICover } from '../controllers/imageGenerationController.js';
 import { setUnsplashCover } from '../controllers/unsplashController.js';
 import { getInternalLinks } from '../controllers/internalLinkingController.js';
 import { protect } from '../middleware/authMiddleware.js';
-import { requireEmailVerified } from '../middleware/requireEmailVerified.js';
+
 import { uploadSingle } from '../middleware/uploadMiddleware.js';
 import { validate, generateArticleSchema, refineArticleSchema, internalLinkingSchema } from '../validators/schemas.js';
 
 const router = express.Router();
 
-router.post('/generate-article', protect, requireEmailVerified, validate(generateArticleSchema), generateArticle);
-router.post('/articles/stream', protect, requireEmailVerified, validate(generateArticleSchema), streamArticle);
+router.post('/generate-article', protect, validate(generateArticleSchema), generateArticle);
+router.post('/articles/stream', protect, validate(generateArticleSchema), streamArticle);
 router.get('/history', protect, getHistory);
 router.patch('/history/:id/refine', protect, validate(refineArticleSchema), refineArticle);
 router.post('/history/:id/restore/:versionIndex', protect, restoreVersion);

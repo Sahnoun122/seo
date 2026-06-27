@@ -120,7 +120,7 @@ export const setUnsplashCover = async (req, res) => {
     article.coverImageId = imageDoc._id;
     await article.save();
 
-    const coverUrl = await ImageService.getSignedUrl(uploadResult.thumbnails.medium, 3600);
+    const coverUrl = `/api/images/${imageDoc._id}/view?size=medium`;
 
     res.json({
       success: true,
