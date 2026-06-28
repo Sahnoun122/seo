@@ -302,7 +302,12 @@ export const publishToWordPress = async (req, res) => {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    const { wpUrl, wpUsername, wpApplicationPassword } = user.settings || {};
+    // Use toObject({ getters: true }) to trigger the decrypt getter on
+    // wpApplicationPassword — without this the raw encrypted string is sent
+    // to WordPress, which causes an authentication failure and can crash the
+    // serverless function with "Invalid character in header content".
+    const userSettings = user.toObject({ getters: true }).settings || {};
+    const { wpUrl, wpUsername, wpApplicationPassword } = userSettings;
     if (!wpUrl?.trim() || !wpUsername?.trim() || !wpApplicationPassword?.trim()) {
       return res.status(400).json({
         error: 'WordPress integration is not fully configured. Please provide the URL, username, and application password in your Settings.'
