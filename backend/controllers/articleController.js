@@ -302,15 +302,12 @@ export const publishToWordPress = async (req, res) => {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    // Use toObject({ getters: true }) to trigger the decrypt getter on
-    // wpApplicationPassword — without this the raw encrypted string is sent
-    // to WordPress, which causes an authentication failure and can crash the
-    // serverless function with "Invalid character in header content".
+    // Decrypt credentials via Mongoose getters
     const userSettings = user.toObject({ getters: true }).settings || {};
     const { wpUrl, wpUsername, wpApplicationPassword } = userSettings;
     if (!wpUrl?.trim() || !wpUsername?.trim() || !wpApplicationPassword?.trim()) {
       return res.status(400).json({
-        error: 'WordPress integration is not fully configured. Please provide the URL, username, and application password in your Settings.'
+        error: 'WordPress integration is not fully configured. Please provide the URL, username, and application password in your Settings.',
       });
     }
 
@@ -321,81 +318,71 @@ export const publishToWordPress = async (req, res) => {
 
     const articleHtml = marked.parse(article.content);
 
-    let baseUrl = wpUrl.trim();
-    if (!baseUrl.startsWith('http://') && !baseUrl.startsWith('https://')) {
-      baseUrl = `https://${baseUrl}`;
+    // Initialize WordPress service
+    const { default: WordPressService } = await import('../services/wordpressService.js');
+    const wp = new WordPressService({
+      siteUrl: wpUrl,
+      username: wpUsername,
+      appPassword: wpApplicationPassword,
+    });
+
+    // ── Step 1: Upload cover image as Featured Media ──────────────────────
+    let featuredMediaId = null;
+    if (article.coverImageId) {
+      try {
+        const coverImage = await Image.findById(article.coverImageId);
+        if (coverImage?.path) {
+          const { buffer, contentType } = await ImageService.getImageBuffer(coverImage.path);
+          featuredMediaId = await wp.uploadMedia(
+            buffer,
+            coverImage.filename || 'cover.webp',
+            contentType,
+            article.title, // alt text for SEO
+          );
+          logger.info(`[WP] Featured image uploaded: media ID ${featuredMediaId}`);
+        }
+      } catch (imgErr) {
+        // Non-blocking — publish the article even if image upload fails
+        logger.warn(`[WP] Cover image upload failed (continuing without): ${imgErr.message}`);
+      }
     }
-    baseUrl = baseUrl.replace(/\/+$/, '');
-    const wpEndpoint = `${baseUrl}/wp-json/wp/v2/posts`;
 
-    const authString = Buffer.from(`${wpUsername}:${wpApplicationPassword}`).toString('base64');
+    // ── Step 2: Create tags from suggested keywords ──────────────────────
+    let tagIds = [];
+    if (article.suggestedKeywords?.length > 0) {
+      try {
+        tagIds = await wp.ensureTags(article.suggestedKeywords);
+        logger.info(`[WP] Tags created/found: ${tagIds.length} tag(s)`);
+      } catch (tagErr) {
+        logger.warn(`[WP] Tag creation failed (continuing without): ${tagErr.message}`);
+      }
+    }
 
-    const wpHeaders = {
-      'Content-Type': 'application/json',
-      'Authorization': `Basic ${authString}`,
-    };
-    const wpBody = JSON.stringify({
+    // ── Step 3: Create the post with SEO enrichment ─────────────────────
+    const result = await wp.createPost({
       title: article.title,
-      content: articleHtml,
-      status: 'draft',
-      excerpt: article.metaDescription,
+      htmlContent: articleHtml,
+      metaDescription: article.metaDescription,
+      focusKeyword: article.keyword,
+      tagIds,
+      featuredMediaId,
     });
-
-    // Disable automatic redirect following — Node.js fetch converts POST → GET
-    // on 301/302 redirects, which causes WordPress to return an HTML page instead
-    // of creating a post. We handle redirects manually below.
-    let response = await fetch(wpEndpoint, {
-      method: 'POST',
-      headers: wpHeaders,
-      body: wpBody,
-      redirect: 'manual',
-    });
-
-    // Follow up to 5 redirects manually, keeping the POST method intact
-    let redirectCount = 0;
-    while ([301, 302, 307, 308].includes(response.status) && redirectCount < 5) {
-      const location = response.headers.get('location');
-      if (!location) break;
-      logger.info(`WordPress redirect ${response.status} → ${location}`);
-      response = await fetch(location, {
-        method: 'POST',
-        headers: wpHeaders,
-        body: wpBody,
-        redirect: 'manual',
-      });
-      redirectCount++;
-    }
-
-    // Safely parse the response — WordPress may return HTML on errors
-    const contentType = response.headers.get('content-type') || '';
-    let wpData;
-
-    if (contentType.includes('application/json')) {
-      wpData = await response.json();
-    } else {
-      const rawBody = await response.text();
-      logger.error(`WordPress returned non-JSON (${response.status}):`, rawBody.slice(0, 500));
-      return res.status(502).json({
-        error: `WordPress returned an unexpected response (HTTP ${response.status}). Please verify your Site URL, Username, and Application Password in Settings.`,
-      });
-    }
-
-    if (!response.ok) {
-      logger.error('WordPress API error:', JSON.stringify(wpData?.message || wpData));
-      return res.status(response.status).json({
-        error: wpData.message || 'Publishing to WordPress failed. Please check your settings and permissions.',
-      });
-    }
 
     res.status(200).json({
       success: true,
       message: 'Article successfully published to WordPress as a draft!',
-      url: wpData.link,
+      url: result.postUrl,
+      editUrl: result.editUrl,
+      featuredImage: !!featuredMediaId,
+      tagsCount: tagIds.length,
     });
 
   } catch (error) {
     logger.error('WordPress Publish Error:', error.message);
-    res.status(500).json({ error: 'An unexpected error occurred while publishing to WordPress.' });
+    const status = error.status || 500;
+    res.status(status).json({
+      error: error.message || 'An unexpected error occurred while publishing to WordPress.',
+    });
   }
 };
 

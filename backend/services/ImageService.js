@@ -222,6 +222,34 @@ class ImageService {
   }
 
   /**
+   * Retrieve the raw image buffer for a given storage key.
+   * Works with S3/MinIO (production) and local disk (development).
+   * Returns { buffer, contentType } or null if not found.
+   */
+  async getImageBuffer(key) {
+    if (useS3()) {
+      const s3 = getS3Client();
+      const result = await s3.send(
+        new GetObjectCommand({ Bucket: getBucket(), Key: key })
+      );
+      // Convert the readable stream to a Buffer
+      const chunks = [];
+      for await (const chunk of result.Body) {
+        chunks.push(chunk);
+      }
+      return {
+        buffer: Buffer.concat(chunks),
+        contentType: result.ContentType || 'image/webp',
+      };
+    }
+
+    // Local disk fallback
+    const localPath = path.join(UPLOADS_DIR, key);
+    const buffer = await fs.readFile(localPath);
+    return { buffer, contentType: 'image/webp' };
+  }
+
+  /**
    * Get the local filesystem path (development only).
    */
   getLocalFilePath(key) {
