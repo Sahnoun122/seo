@@ -330,33 +330,67 @@ export const publishToWordPress = async (req, res) => {
 
     const authString = Buffer.from(`${wpUsername}:${wpApplicationPassword}`).toString('base64');
 
-    const response = await fetch(wpEndpoint, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Basic ${authString}`
-      },
-      body: JSON.stringify({
-        title: article.title,
-        content: articleHtml,
-        status: 'draft',
-        excerpt: article.metaDescription
-      })
+    const wpHeaders = {
+      'Content-Type': 'application/json',
+      'Authorization': `Basic ${authString}`,
+    };
+    const wpBody = JSON.stringify({
+      title: article.title,
+      content: articleHtml,
+      status: 'draft',
+      excerpt: article.metaDescription,
     });
 
-    const wpData = await response.json();
+    // Disable automatic redirect following — Node.js fetch converts POST → GET
+    // on 301/302 redirects, which causes WordPress to return an HTML page instead
+    // of creating a post. We handle redirects manually below.
+    let response = await fetch(wpEndpoint, {
+      method: 'POST',
+      headers: wpHeaders,
+      body: wpBody,
+      redirect: 'manual',
+    });
+
+    // Follow up to 5 redirects manually, keeping the POST method intact
+    let redirectCount = 0;
+    while ([301, 302, 307, 308].includes(response.status) && redirectCount < 5) {
+      const location = response.headers.get('location');
+      if (!location) break;
+      logger.info(`WordPress redirect ${response.status} → ${location}`);
+      response = await fetch(location, {
+        method: 'POST',
+        headers: wpHeaders,
+        body: wpBody,
+        redirect: 'manual',
+      });
+      redirectCount++;
+    }
+
+    // Safely parse the response — WordPress may return HTML on errors
+    const contentType = response.headers.get('content-type') || '';
+    let wpData;
+
+    if (contentType.includes('application/json')) {
+      wpData = await response.json();
+    } else {
+      const rawBody = await response.text();
+      logger.error(`WordPress returned non-JSON (${response.status}):`, rawBody.slice(0, 500));
+      return res.status(502).json({
+        error: `WordPress returned an unexpected response (HTTP ${response.status}). Please verify your Site URL, Username, and Application Password in Settings.`,
+      });
+    }
 
     if (!response.ok) {
       logger.error('WordPress API error:', JSON.stringify(wpData?.message || wpData));
       return res.status(response.status).json({
-        error: wpData.message || 'Publishing to WordPress failed. Please check your settings and permissions.'
+        error: wpData.message || 'Publishing to WordPress failed. Please check your settings and permissions.',
       });
     }
 
     res.status(200).json({
       success: true,
       message: 'Article successfully published to WordPress as a draft!',
-      url: wpData.link
+      url: wpData.link,
     });
 
   } catch (error) {
