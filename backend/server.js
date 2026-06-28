@@ -147,9 +147,27 @@ app.use('/api/admin', adminRoutes);
 app.use('/api/stripe', stripeRoutes);
 app.use('/api', articleRoutes);
 
-// Health check endpoint
-app.get('/health', (req, res) => {
-  res.status(200).json({ status: 'ok', message: 'API is running' });
+// ── Health & Storage diagnostic endpoints ────────────────────────────────────
+app.get('/health', (_req, res) => res.status(200).json({ status: 'ok' }));
+
+app.get('/api/health', async (_req, res) => {
+  const { default: ImageService } = await import('./services/ImageService.js');
+  const storageHealth = await ImageService.healthCheck();
+
+  const dbState = ['disconnected', 'connected', 'connecting', 'disconnecting'];
+  const { connection } = await import('mongoose');
+
+  res.status(storageHealth.ok ? 200 : 207).json({
+    status: storageHealth.ok ? 'ok' : 'degraded',
+    version: process.env.npm_package_version || '1.0.0',
+    environment: process.env.NODE_ENV || 'development',
+    database: {
+      status: dbState[connection.readyState] || 'unknown',
+    },
+    storage: storageHealth,
+    uptime: Math.floor(process.uptime()) + 's',
+    timestamp: new Date().toISOString(),
+  });
 });
 
 // 404 catch-all

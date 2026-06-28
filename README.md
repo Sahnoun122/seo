@@ -6,6 +6,8 @@
 [![MongoDB](https://img.shields.io/badge/MongoDB-6%2B-47A248?logo=mongodb&logoColor=white)](https://www.mongodb.com/)
 [![TailwindCSS 4](https://img.shields.io/badge/TailwindCSS-4-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
 [![Stripe](https://img.shields.io/badge/Stripe-Payments-635BFF?logo=stripe&logoColor=white)](https://stripe.com/)
+[![MinIO](https://img.shields.io/badge/MinIO-Object%20Storage-C72C48?logo=minio&logoColor=white)](https://min.io/)
+[![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?logo=docker&logoColor=white)](https://www.docker.com/)
 
 **SEO Gen AI** is a complete, production-ready SaaS web application for generating SEO-optimized articles using AI. Built with React 19 + Vite on the frontend and Node.js/Express on the backend, it supports multiple AI models, WordPress publishing, Stripe subscriptions, a full admin panel, dark mode, and 6 interface languages.
 
@@ -23,8 +25,9 @@
 ### Publishing & Export
 - **1-Click WordPress Publishing** — Directly publishes drafted articles to any WordPress site via the REST API with featured image attached
 - **Export Options** — Copy as Markdown, export as PDF, or download as HTML
-- **Manual Cover Upload** — Upload any JPEG/PNG/WebP image; backend converts to WebP, generates 4 thumbnail sizes via Sharp, stores on AWS S3
-- **DALL-E 3 AI Cover Generation** — One click generates a professional cover image via DALL-E 3 (1792×1024), downloaded and re-uploaded to S3 for permanent storage
+- **Manual Cover Upload** — Upload any JPEG/PNG/WebP image; backend converts to WebP, generates 4 thumbnail sizes via Sharp, then stores on your chosen object storage
+- **DALL-E 3 AI Cover Generation** — One click generates a professional cover image via DALL-E 3 (1792×1024), downloaded and stored in your configured storage backend
+- **Multi-Provider Object Storage** — Supports **MinIO** (self-hosted, free, Docker-ready), **Cloudflare R2** (free 10 GB CDN), and **AWS S3** — switchable via environment variables with zero code changes. Includes `docker-compose.yml` to launch a full MinIO stack with a single command
 
 ### Platform & Monetization
 - **Stripe Subscriptions** — Starter, Growth, and Pro monthly plans with automatic credit allocation
@@ -72,7 +75,7 @@
 | Database | MongoDB (local or Atlas) |
 | AI | OpenAI SDK (GPT-4o, OpenRouter, DeepSeek, Groq) |
 | Payments | Stripe (subscriptions + one-time purchases + webhooks) |
-| Storage | AWS S3 (article cover images) |
+| Storage | **MinIO** (self-hosted) / Cloudflare R2 (free) / AWS S3 — auto-detected via env vars |
 | Auth | JWT + bcryptjs + AES-256 encryption |
 | Testing Backend | Jest 30 + Supertest + mongodb-memory-server (125+ tests) |
 | Testing Frontend | Vitest 4 + @testing-library/react (56+ tests) |

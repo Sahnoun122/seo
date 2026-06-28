@@ -1,0 +1,119 @@
+version: '3.9'
+
+services:
+
+  # ── MinIO Object Storage ────────────────────────────────────────────────────
+  minio:
+    image: minio/minio:latest
+    container_name: seo-gen-ai-minio
+    command: server /data --console-address ":9001"
+    restart: unless-stopped
+    environment:
+      MINIO_ROOT_USER: ${S3_ACCESS_KEY:-minioadmin}
+      MINIO_ROOT_PASSWORD: ${S3_SECRET_KEY:-minioadmin}
+    ports:
+      - "9000:9000"   # S3 API
+      - "9001:9001"   # MinIO Console (web UI)
+    volumes:
+      - minio_data:/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 15s
+
+  # ── MinIO Bucket Initializer (runs once then exits) ──────────────────────────
+  minio-init:
+    image: minio/mc:latest
+    container_name: seo-gen-ai-minio-init
+    depends_on:
+      minio:
+        condition: service_healthy
+    restart: "no"
+    entrypoint: >
+      /bin/sh -c "
+        echo '⏳ Waiting for MinIO...';
+        until mc alias set local http://minio:9000 $${S3_ACCESS_KEY:-minioadmin} $${S3_SECRET_KEY:-minioadmin}; do
+          sleep 2;
+        done;
+        echo '✅ MinIO ready. Creating bucket...';
+        mc mb --ignore-existing local/$${S3_BUCKET:-seo-gen-ai};
+        mc anonymous set download local/$${S3_BUCKET:-seo-gen-ai}/public;
+        echo '🪣  Bucket ready: '$${S3_BUCKET:-seo-gen-ai};
+      "
+    environment:
+      S3_ACCESS_KEY: ${S3_ACCESS_KEY:-minioadmin}
+      S3_SECRET_KEY: ${S3_SECRET_KEY:-minioadmin}
+      S3_BUCKET: ${S3_BUCKET:-seo-gen-ai}
+
+  # ── MongoDB ──────────────────────────────────────────────────────────────────
+  mongodb:
+    image: mongo:7
+    container_name: seo-gen-ai-mongodb
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_DATABASE: seo-gen-ai
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 20s
+
+  # ── Express Backend ──────────────────────────────────────────────────────────
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: seo-gen-ai-backend
+    restart: unless-stopped
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+    env_file:
+      - ./backend/.env
+    environment:
+      # Override locals with container service hostnames
+      MONGODB_URI: mongodb://mongodb:27017/seo-gen-ai
+      S3_ENDPOINT: http://minio:9000
+      S3_ACCESS_KEY: ${S3_ACCESS_KEY:-minioadmin}
+      S3_SECRET_KEY: ${S3_SECRET_KEY:-minioadmin}
+      S3_BUCKET: ${S3_BUCKET:-seo-gen-ai}
+      S3_REGION: us-east-1
+      NODE_ENV: production
+    ports:
+      - "5000:5000"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 20s
+
+  # ── React Frontend (production build) ───────────────────────────────────────
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_API_URL: http://localhost:5000/api
+    container_name: seo-gen-ai-frontend
+    restart: unless-stopped
+    depends_on:
+      backend:
+        condition: service_healthy
+    ports:
+      - "3000:80"
+
+volumes:
+  minio_data:
+    driver: local
+  mongo_data:
+    driver: local

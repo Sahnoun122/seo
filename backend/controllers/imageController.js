@@ -153,9 +153,17 @@ export const viewSecureImage = async (req, res) => {
       targetPath = image.thumbnails[size];
     }
 
+    // Production (S3/MinIO): redirect to a pre-signed URL
+    const signedUrl = await ImageService.getSignedImageUrl(targetPath);
+    if (signedUrl) {
+      return res.redirect(302, signedUrl);
+    }
+
+    // Development: serve directly from local disk
     const localPath = ImageService.getLocalFilePath(targetPath);
     res.sendFile(localPath);
   } catch (error) {
+    logger.error('View Image Error:', error.message);
     res.status(500).json({ error: 'Failed to retrieve image.' });
   }
 };
