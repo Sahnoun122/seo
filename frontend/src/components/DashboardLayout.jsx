@@ -7,7 +7,7 @@ import { useAuth } from '../context/AuthContext';
 import { useTranslation } from 'react-i18next';
 import PlanBadge from './ui/PlanBadge';
 
-const DESKTOP_BP = 768;
+const DESKTOP_BP = 1024;
 
 export default function DashboardLayout({ children }) {
   const [isDesktop, setIsDesktop] = useState(() => window.innerWidth >= DESKTOP_BP);
@@ -99,7 +99,7 @@ export default function DashboardLayout({ children }) {
         )}
 
         {/* Contenu principal — 40px gauche/droite */}
-        <main className="flex-1 min-h-screen overflow-x-hidden animate-fade-in px-10 py-8 pb-10">
+        <main className="flex-1 min-h-screen overflow-x-hidden animate-fade-in px-4 sm:px-6 lg:px-10 py-6 sm:py-8 pb-10">
           {children}
         </main>
 

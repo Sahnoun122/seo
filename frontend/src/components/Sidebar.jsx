@@ -78,8 +78,8 @@ export default function Sidebar({ isOpen, onClose, isDesktop }) {
           <div className="flex items-center gap-2.5 bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-100 dark:border-emerald-800/40 rounded-xl px-4 py-3">
             <Zap className="w-4 h-4 text-emerald-500 shrink-0 animate-pulse" />
             <div>
-              <p className="text-[10px] font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-widest">Unlimited Mode</p>
-              <p className="text-[10px] text-emerald-500 font-medium">Personal API key active</p>
+              <p className="text-[10px] font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-widest">{t('sidebar.unlimitedMode')}</p>
+              <p className="text-[10px] text-emerald-500 font-medium">{t('sidebar.personalKeyActive')}</p>
             </div>
           </div>
         ) : (

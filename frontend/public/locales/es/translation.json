@@ -268,6 +268,7 @@
     "titleHighlight": "contenido",
     "subtitle": "Accede y gestiona tu historial completo de artículos SEO optimizados con IA.",
     "total": "{{count}} artículos generados",
+    "generated": "{{count}} artículos generados",
     "search": "Buscar por palabra clave o título...",
     "empty": "Sin artículos aún",
     "emptyHint": "¡Vuelve al panel para generar tu primer artículo!",
@@ -287,8 +288,21 @@
       "title": "Modificar con IA",
       "placeholder": "ej. 'Haz la introducción más impactante'",
       "submit": "Refinar",
+      "subtitle": "Pide a la IA que modifique, amplíe o mejore el artículo.",
       "success": "¡Artículo actualizado con IA!",
       "failed": "Error al refinar"
+    },
+    "versions": {
+      "title": "Versiones anteriores",
+      "subtitle": "Restaurar una versión guarda el estado actual primero.",
+      "restore": "Restaurar",
+      "restoreSuccess": "¡Versión restaurada!",
+      "restoreFailed": "Error al restaurar la versión",
+      "hide": "Ocultar versiones",
+      "show": "Historial de versiones ({{count}})"
+    },
+    "pagination": {
+      "page": "Página {{current}} de {{total}}"
     }
   },
   "settings": {
@@ -316,6 +330,27 @@
     "preferences": {
       "language": "Idioma predeterminado",
       "tone": "Tono predeterminado"
+    },
+    "ai": {
+      "apiKey": "Clave API personal",
+      "apiKeyPlaceholder": "sk-... (opcional)",
+      "apiKeyHint": "Usa tu propia clave para generaciones ilimitadas.",
+      "baseUrl": "URL base personalizada",
+      "baseUrlPlaceholder": "https://api.openai.com/v1",
+      "model": "Modelo preferido",
+      "modelPlaceholder": "ej. gpt-4o, deepseek-chat"
+    },
+    "wordpress": {
+      "url": "URL del sitio WordPress",
+      "urlPlaceholder": "https://tublog.com",
+      "username": "Usuario de WordPress",
+      "usernamePlaceholder": "admin",
+      "password": "Contraseña de aplicación",
+      "passwordPlaceholder": "xxxx xxxx xxxx xxxx",
+      "passwordHint": "Genera desde WordPress → Usuarios → Contraseñas de aplicación",
+      "testConnection": "Probar conexión",
+      "connectionSuccess": "¡Conexión WordPress exitosa!",
+      "connectionFailed": "Conexión fallida. Verifica tus credenciales."
     }
   },
   "errors": {
@@ -323,6 +358,96 @@
     "notFoundSubtitle": "La página que buscas no existe o ha sido movida.",
     "goHome": "Ir al panel",
     "networkError": "Error de red. Comprueba tu conexión.",
-    "noCredits": "Te has quedado sin créditos. Compra más o añade tu propia clave API en Ajustes."
+    "noCredits": "Te has quedado sin créditos. Compra más o añade tu propia clave API en Ajustes.",
+    "stripeNotConfigured": "Stripe aún no está configurado por el administrador.",
+    "serverError": "Algo salió mal"
+  },
+  "onboarding": {
+    "skip": "Saltar tutorial",
+    "stepCounter": "Paso {{current}} de {{total}}",
+    "tipLabel": "Consejo:",
+    "getStarted": "Comenzar",
+    "step1": {
+      "title": "Genera artículos en segundos",
+      "body": "Ingresa cualquier palabra clave y deja que la IA escriba un artículo completo y optimizado SEO — título, meta descripción, contenido estructurado y sugerencias de palabras clave.",
+      "tip": "Intenta comenzar con una palabra clave long-tail como 'mejor CRM para pequeñas empresas 2025'."
+    },
+    "step2": {
+      "title": "Hermosas imágenes de portada",
+      "body": "Añade una imagen de portada profesional con un clic. Sube la tuya, genera una con DALL-E 3 IA o elige una foto gratuita de Unsplash.",
+      "tip": "La generación de portada con DALL-E 3 usa 1 crédito extra."
+    },
+    "step3": {
+      "title": "Publica directamente en WordPress",
+      "body": "Conecta tu sitio WordPress en Ajustes → Preferencias de contenido. Una vez conectado, publica cualquier artículo como borrador con un clic.",
+      "tip": "Usa una Contraseña de Aplicación (no tu contraseña de inicio de sesión) por seguridad."
+    },
+    "step4": {
+      "title": "Créditos y modo ilimitado",
+      "body": "Cada generación de artículo usa 1 crédito. ¿Quieres generaciones ilimitadas? Añade tu propia clave API de OpenAI en Ajustes → Modelo IA.",
+      "tip": "Puedes recargar créditos en cualquier momento desde la página Comprar Créditos."
+    },
+    "step5": {
+      "title": "¡Todo listo!",
+      "body": "Eso es todo lo que necesitas para generar contenido SEO de calidad. Ve al panel y escribe tu primer artículo — solo toma segundos."
+    }
+  },
+  "buyCredits": {
+    "title": "Elige tu",
+    "titleHighlight": "plan",
+    "topUp": "Recargar créditos",
+    "subtitle": "Cada crédito = un artículo IA completo (título + meta + contenido + palabras clave).",
+    "oneTime": "único",
+    "generations": "generaciones de artículos IA",
+    "features": {
+      "seo": "Contenido SEO completo + palabras clave",
+      "wordpress": "Publicación directa en WordPress",
+      "priority": "Cola prioritaria"
+    },
+    "buy": "Comprar {{name}}",
+    "secured": "Los pagos se procesan de forma segura mediante Stripe. Los créditos se añaden al instante tras la confirmación.",
+    "success": "¡Créditos añadidos a tu cuenta!",
+    "modal": {
+      "title": "Pago seguro",
+      "orderSummary": "Plan {{name}}",
+      "orderSubtitle": "{{credits}} generaciones de artículos IA",
+      "pay": "Pagar {{amount}}",
+      "processing": "Procesando...",
+      "success": "¡Pago confirmado!",
+      "successSubtitle": "{{credits}} créditos se están añadiendo a tu cuenta...",
+      "cancel": "Cancelar",
+      "secured": "Protegido por Stripe · Tus datos bancarios nunca nos llegan"
+    }
+  },
+  "result": {
+    "title": "Artículo generado",
+    "metaDescription": "Meta descripción",
+    "targetKeyword": "Palabra clave objetivo",
+    "strategyKeywords": "Palabras clave estratégicas",
+    "pdfError": "Error al generar el PDF",
+    "keywords": "Palabras clave SEO",
+    "actions": {
+      "copy": "Copiar",
+      "copied": "¡Copiado!",
+      "markdown": "Markdown",
+      "html": "HTML",
+      "pdf": "PDF",
+      "replaceCover": "Cambiar portada",
+      "addCover": "Añadir portada",
+      "aiCover": "Portada IA",
+      "wordpress": "WordPress",
+      "copyMarkdown": "Copiar Markdown",
+      "copyHtml": "Copiar HTML",
+      "downloadPdf": "Descargar PDF",
+      "publishWordpress": "Publicar en WordPress",
+      "publishing": "Publicando...",
+      "published": "¡Publicado!",
+      "addImage": "Añadir imagen",
+      "generateAiImage": "Generar imagen IA"
+    },
+    "wordpress": {
+      "success": "¡Artículo publicado en WordPress como borrador!",
+      "notConfigured": "Configura WordPress en Ajustes primero."
+    }
   }
 }

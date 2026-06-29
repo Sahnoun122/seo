@@ -280,6 +280,7 @@
     "titleHighlight": "de contenu",
     "subtitle": "Accédez et gérez l'ensemble de votre historique d'articles SEO optimisés par IA.",
     "total": "{{count}} articles générés",
+    "generated": "{{count}} articles générés",
     "search": "Rechercher par mot-clé ou titre...",
     "empty": "Aucun article pour l'instant",
     "emptyHint": "Retournez au tableau de bord pour générer votre premier article !",
@@ -383,6 +384,7 @@
   "buyCredits": {
     "title": "Choisissez votre",
     "titleHighlight": "plan",
+    "topUp": "Recharger les crédits",
     "subtitle": "Chaque crédit = un article IA complet (titre + méta + contenu + mots-clés).",
     "oneTime": "unique",
     "generations": "générations d'articles IA",
@@ -428,6 +430,36 @@
       "deleteUser": "Supprimer l'utilisateur",
       "creditsUpdated": "Crédits mis à jour !",
       "userDeleted": "Utilisateur supprimé."
+    }
+  },
+  "onboarding": {
+    "skip": "Passer le tutoriel",
+    "stepCounter": "Étape {{current}} sur {{total}}",
+    "tipLabel": "Astuce :",
+    "getStarted": "Commencer",
+    "step1": {
+      "title": "Générez des articles en secondes",
+      "body": "Entrez un mot-clé et laissez l'IA rédiger un article complet et optimisé SEO — titre, méta description, contenu structuré et suggestions de mots-clés inclus.",
+      "tip": "Essayez de commencer avec un mot-clé longue traîne comme 'meilleur CRM pour PME 2025'."
+    },
+    "step2": {
+      "title": "De belles images de couverture",
+      "body": "Ajoutez une image de couverture professionnelle en un clic. Uploadez la vôtre, générez-en une avec DALL-E 3 IA, ou choisissez une photo gratuite sur Unsplash.",
+      "tip": "La génération de couverture DALL-E 3 utilise 1 crédit supplémentaire."
+    },
+    "step3": {
+      "title": "Publiez directement sur WordPress",
+      "body": "Connectez votre site WordPress dans Paramètres → Préférences de contenu. Une fois connecté, publiez n'importe quel article en brouillon en un clic — image mise en avant incluse.",
+      "tip": "Utilisez un mot de passe d'application (pas votre mot de passe de connexion) pour la sécurité."
+    },
+    "step4": {
+      "title": "Crédits et mode illimité",
+      "body": "Chaque génération d'article utilise 1 crédit. Vous voulez des générations illimitées ? Ajoutez votre propre clé API OpenAI dans Paramètres → Modèle IA — votre clé personnelle contourne le système de crédits.",
+      "tip": "Vous pouvez recharger vos crédits à tout moment depuis la page Acheter des crédits."
+    },
+    "step5": {
+      "title": "Vous êtes prêt !",
+      "body": "C'est tout ce dont vous avez besoin pour générer du contenu SEO de qualité. Rendez-vous sur le tableau de bord et rédigez votre premier article — ça ne prend que quelques secondes."
     }
   },
   "errors": {

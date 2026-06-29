@@ -118,8 +118,8 @@ export default function Settings() {
 
         {/* Header */}
         <div>
-          <h1 className="text-3xl font-black text-gray-900 tracking-tight">Settings</h1>
-          <p className="text-gray-400 text-sm mt-1 font-medium">Manage your account and writing preferences.</p>
+          <h1 className="text-3xl font-black text-gray-900 dark:text-white tracking-tight">{t('settings.title')}</h1>
+          <p className="text-gray-400 text-sm mt-1 font-medium">{t('settings.subtitle')}</p>
         </div>
 
         {/* Profile */}
@@ -127,19 +127,19 @@ export default function Settings() {
           <form onSubmit={handleSaveProfile}>
             <CardHeader 
               icon={User} 
-              title="Profile Information" 
+              title={t('settings.sections.profile')} 
               className="border-b border-gray-100 dark:border-gray-800"
             />
             <CardContent className="space-y-6">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <Input 
-                  label="Full Name" 
+                  label={t('settings.profile.name')} 
                   value={profileData.name}
                   onChange={(e) => setProfileData({ ...profileData, name: e.target.value })}
                   required 
                 />
                 <Input 
-                  label="Email Address" 
+                  label={t('settings.profile.email')} 
                   type="email"
                   value={profileData.email}
                   onChange={(e) => setProfileData({ ...profileData, email: e.target.value })}
@@ -150,19 +150,19 @@ export default function Settings() {
               <div className="border-t border-gray-100 dark:border-gray-800 pt-6 space-y-1.5">
                 <h3 className="text-sm font-bold text-gray-700 dark:text-gray-300 mb-4 flex items-center gap-2">
                   <Lock className="w-4 h-4 text-gray-400" />
-                  Change Password
-                  <span className="text-[10px] font-medium text-gray-400 normal-case">(leave blank to keep current)</span>
+                  {t('settings.profile.password')}
+                  <span className="text-[10px] font-medium text-gray-400 normal-case">({t('settings.profile.passwordPlaceholder')})</span>
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   <Input 
-                    label="New Password" 
+                    label={t('settings.profile.password')} 
                     type="password"
                     value={passwordData.newPassword}
                     onChange={(e) => setPasswordData({ ...passwordData, newPassword: e.target.value })}
                     placeholder="Min 8 chars, 1 uppercase, 1 number"
                   />
                   <Input 
-                    label="Confirm Password" 
+                    label={t('auth.resetPassword.confirm')} 
                     type="password"
                     value={passwordData.confirmNewPassword}
                     onChange={(e) => setPasswordData({ ...passwordData, confirmNewPassword: e.target.value })}
@@ -174,7 +174,7 @@ export default function Settings() {
             </CardContent>
             <CardFooter className="flex justify-end bg-transparent pt-2">
               <Button type="submit" isLoading={saving} icon={Save}>
-                Save Profile
+                {t('common.save')}
               </Button>
             </CardFooter>
           </form>
@@ -185,12 +185,12 @@ export default function Settings() {
           <form onSubmit={handleSavePreferences}>
             <CardHeader 
               icon={Sliders} 
-              title="Content Preferences" 
+              title={t('settings.sections.preferences')} 
             />
             <CardContent className="space-y-6">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <div className="space-y-1.5">
-                  <label className="label-xs flex items-center gap-1.5"><Globe className="w-3.5 h-3.5" /> Default Language</label>
+                  <label className="label-xs flex items-center gap-1.5"><Globe className="w-3.5 h-3.5" /> {t('settings.preferences.language')}</label>
                   <select value={contentSettings.defaultLanguage}
                     onChange={(e) => setContentSettings({ ...contentSettings, defaultLanguage: e.target.value })}
                     className="w-full py-3 px-4 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm font-medium text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 focus:bg-white dark:focus:bg-gray-900 transition-all duration-200">
@@ -204,7 +204,7 @@ export default function Settings() {
                   </select>
                 </div>
                 <div className="space-y-1.5">
-                  <label className="label-xs flex items-center gap-1.5"><Smile className="w-3.5 h-3.5" /> Writing Tone</label>
+                  <label className="label-xs flex items-center gap-1.5"><Smile className="w-3.5 h-3.5" /> {t('settings.preferences.tone')}</label>
                   <select value={contentSettings.defaultTone}
                     onChange={(e) => setContentSettings({ ...contentSettings, defaultTone: e.target.value })}
                     className="w-full py-3 px-4 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm font-medium text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 focus:bg-white dark:focus:bg-gray-900 transition-all duration-200">
@@ -216,7 +216,7 @@ export default function Settings() {
                   </select>
                 </div>
                 <div className="space-y-1.5 sm:col-span-2">
-                  <label className="label-xs flex items-center gap-1.5"><Brain className="w-3.5 h-3.5" /> AI Model Selection</label>
+                  <label className="label-xs flex items-center gap-1.5"><Brain className="w-3.5 h-3.5" /> {t('settings.ai.model')}</label>
                   <select value={contentSettings.preferredModel}
                     onChange={(e) => setContentSettings({ ...contentSettings, preferredModel: e.target.value })}
                     className="w-full py-3 px-4 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm font-medium text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 focus:bg-white dark:focus:bg-gray-900 transition-all duration-200">
@@ -231,24 +231,23 @@ export default function Settings() {
               <div className="border-t border-gray-100 dark:border-gray-800 pt-6 space-y-4">
                 <h3 className="text-sm font-bold text-gray-700 dark:text-gray-300 flex items-center gap-2">
                   <FileText className="w-4 h-4 text-gray-400" />
-                  WordPress Publishing
-                  <span className="text-[10px] font-medium text-gray-400 normal-case">(optional)</span>
+                  {t('settings.sections.wordpress')}
                 </h3>
                 <Input 
-                  label="Site URL" 
+                  label={t('settings.wordpress.url')} 
                   value={contentSettings.wpUrl}
                   onChange={(e) => setContentSettings({ ...contentSettings, wpUrl: e.target.value })}
                   placeholder="https://myblog.com" 
                 />
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   <Input 
-                    label="Username" 
+                    label={t('settings.wordpress.username')} 
                     value={contentSettings.wpUsername}
                     onChange={(e) => setContentSettings({ ...contentSettings, wpUsername: e.target.value })}
                     placeholder="admin" 
                   />
                   <Input 
-                    label="Application Password" 
+                    label={t('settings.wordpress.password')} 
                     type="password"
                     value={contentSettings.wpApplicationPassword}
                     onChange={(e) => setContentSettings({ ...contentSettings, wpApplicationPassword: e.target.value })}
@@ -261,7 +260,7 @@ export default function Settings() {
 
             <CardFooter className="flex justify-end bg-transparent pt-2">
               <Button type="submit" isLoading={saving} icon={Save}>
-                Save Preferences
+                {t('common.save')}
               </Button>
             </CardFooter>
           </form>

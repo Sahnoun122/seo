@@ -261,6 +261,10 @@
       "published": "已发布！",
       "addImage": "添加封面图片",
       "generateAiImage": "生成 AI 图片"
+    },
+    "wordpress": {
+      "success": "Article published to WordPress as a draft!",
+      "notConfigured": "Configure WordPress in Settings first."
     }
   },
   "history": {
@@ -299,7 +303,11 @@
       "restoreFailed": "恢复失败",
       "hide": "隐藏版本",
       "show": "版本历史 ({{count}})"
-    }
+    },
+    "pagination": {
+      "page": "Page {{current}} of {{total}}"
+    },
+    "generated": "{{count}} Articles Generated"
   },
   "settings": {
     "title": "设置",
@@ -326,6 +334,43 @@
     "preferences": {
       "language": "默认语言",
       "tone": "默认语气"
+    },
+    "wordpress": {
+      "url": "WordPress Site URL",
+      "urlPlaceholder": "https://yourblog.com",
+      "username": "WordPress Username",
+      "usernamePlaceholder": "admin",
+      "password": "Application Password",
+      "passwordPlaceholder": "xxxx xxxx xxxx xxxx",
+      "passwordHint": "Generate from WordPress → Users → Application Passwords",
+      "testConnection": "Test Connection",
+      "connectionSuccess": "WordPress connection successful!",
+      "connectionFailed": "Connection failed. Check your credentials."
+    },
+    "danger": {
+      "deleteAccount": "Delete Account",
+      "deleteWarning": "This action is permanent and cannot be undone. All your articles, images, and data will be deleted.",
+      "deleteConfirm": "Yes, delete my account",
+      "deleted": "Account deleted."
+    },
+    "subscription": {
+      "currentPlan": "Current Plan",
+      "renewsOn": "Renews on {{date}}",
+      "cancelAt": "Cancels at {{date}}",
+      "cancelPlan": "Cancel Plan",
+      "reactivate": "Reactivate Plan",
+      "cancelled": "Plan cancelled.",
+      "reactivated": "Plan reactivated!",
+      "managePlan": "Manage Plan"
+    },
+    "ai": {
+      "apiKey": "Personal API Key",
+      "apiKeyPlaceholder": "sk-... (optional)",
+      "apiKeyHint": "Use your own key for unlimited generations.",
+      "baseUrl": "Custom Base URL",
+      "baseUrlPlaceholder": "https://api.openai.com/v1",
+      "model": "Preferred Model",
+      "modelPlaceholder": "e.g. gpt-4o, deepseek-chat"
     }
   },
   "errors": {
@@ -333,6 +378,89 @@
     "notFoundSubtitle": "您查找的页面不存在或已被移动。",
     "goHome": "前往仪表盘",
     "networkError": "网络错误，请检查您的连接。",
-    "noCredits": "您的积分已用完。请购买更多积分或在设置中添加您自己的 API 密钥。"
+    "noCredits": "您的积分已用完。请购买更多积分或在设置中添加您自己的 API 密钥。",
+    "stripeNotConfigured": "Stripe is not configured by the administrator yet.",
+    "serverError": "Something went wrong"
+  },
+  "onboarding": {
+    "skip": "Skip tutorial",
+    "stepCounter": "Step {{current}} of {{total}}",
+    "tipLabel": "Tip:",
+    "getStarted": "Get started",
+    "step1": {
+      "title": "Generate articles in seconds",
+      "body": "Enter any keyword and let the AI write a complete, SEO-optimized article for you — title, meta description, structured content, and keyword suggestions included.",
+      "tip": "Try starting with a long-tail keyword like 'best CRM for small business 2025'."
+    },
+    "step2": {
+      "title": "Beautiful cover images",
+      "body": "Add a professional cover image to your articles with one click. You can upload your own, generate one with DALL-E 3 AI, or pick a free photo from Unsplash.",
+      "tip": "DALL-E 3 cover generation uses 1 extra credit per image."
+    },
+    "step3": {
+      "title": "Publish directly to WordPress",
+      "body": "Connect your WordPress site in Settings → Content Preferences. Once connected, publish any article as a draft with one click — featured image included.",
+      "tip": "Use an Application Password (not your login password) for security."
+    },
+    "step4": {
+      "title": "Credits & unlimited mode",
+      "body": "Each article generation uses 1 credit. Want unlimited generations? Add your own OpenAI API key in Settings → AI Model — your personal key bypasses the credit system entirely.",
+      "tip": "You can top up credits anytime from the Buy Credits page."
+    },
+    "step5": {
+      "title": "You're all set!",
+      "body": "That's everything you need to start generating high-quality SEO content. Head to the Dashboard and write your first article — it only takes seconds."
+    }
+  },
+  "buyCredits": {
+    "title": "Choose your",
+    "titleHighlight": "plan",
+    "topUp": "Top Up Credits",
+    "subtitle": "Each credit = one complete AI article (title + meta + full content + keywords).",
+    "oneTime": "one-time",
+    "generations": "AI article generations",
+    "features": {
+      "seo": "Full SEO content + keywords",
+      "wordpress": "WordPress direct publish",
+      "priority": "Priority queue"
+    },
+    "buy": "Buy {{name}}",
+    "secured": "Payments are processed securely via Stripe. Credits are added instantly after payment confirmation.",
+    "modal": {
+      "title": "Secure payment",
+      "orderSummary": "{{name}} Plan",
+      "orderSubtitle": "{{credits}} AI article generations",
+      "pay": "Pay {{amount}}",
+      "processing": "Processing...",
+      "success": "Payment confirmed!",
+      "successSubtitle": "{{credits}} credits are being added to your account...",
+      "cancel": "Cancel",
+      "secured": "Secured by Stripe · Card data never touches our servers"
+    },
+    "success": "Credits added to your account!"
+  },
+  "admin": {
+    "dashboard": {
+      "title": "Admin Dashboard",
+      "users": "Total Users",
+      "articles": "Total Articles",
+      "revenue": "Revenue",
+      "activeSubscriptions": "Active Subscriptions"
+    },
+    "users": {
+      "title": "User Management",
+      "search": "Search users...",
+      "name": "Name",
+      "email": "Email",
+      "role": "Role",
+      "credits": "Credits",
+      "plan": "Plan",
+      "joined": "Joined",
+      "actions": "Actions",
+      "editCredits": "Edit credits",
+      "deleteUser": "Delete user",
+      "creditsUpdated": "Credits updated!",
+      "userDeleted": "User deleted."
+    }
   }
 }

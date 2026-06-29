@@ -2,6 +2,7 @@ import React, { useEffect, useState, useCallback, useRef } from 'react';
 import DashboardLayout from '../components/DashboardLayout';
 import { getHistory, refineArticle, deleteArticle, restoreArticleVersion } from '../lib/api';
 import { toast } from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
 import {
   History as HistoryIcon,
   Search,
@@ -62,6 +63,7 @@ function HistoryCardSkeleton() {
 }
 
 export default function History() {
+  const { t } = useTranslation();
   const [articles, setArticles]               = useState([]);
   const [pagination, setPagination]           = useState({ total: 0, page: 1, pages: 1 });
   const [isLoading, setIsLoading]             = useState(true);
@@ -116,11 +118,11 @@ export default function History() {
         setSelectedArticle(data.data);
         setRefinementPrompt('');
         setShowVersions(false);
-        toast.success('Article updated with AI!');
+        toast.success(t('history.refine.success'));
         fetchHistory(page, searchQuery);
       }
     } catch {
-      toast.error('Failed to refine article');
+      toast.error(t('history.refine.failed'));
     } finally {
       setIsRefining(false);
     }
@@ -133,11 +135,11 @@ export default function History() {
       if (data.success) {
         setSelectedArticle(data.data);
         setShowVersions(false);
-        toast.success('Version restored!');
+        toast.success(t('history.versions.restoreSuccess'));
         fetchHistory(page, searchQuery);
       }
     } catch {
-      toast.error('Failed to restore version');
+      toast.error(t('history.versions.restoreFailed'));
     } finally {
       setRestoringIdx(null);
     }
@@ -148,12 +150,12 @@ export default function History() {
     setIsDeleting(true);
     try {
       await deleteArticle(deleteTarget._id);
-      toast.success('Article deleted');
+      toast.success(t('history.deleteSuccess'));
       setDeleteTarget(null);
       if (selectedArticle?._id === deleteTarget._id) setSelectedArticle(null);
       fetchHistory(page, searchQuery);
     } catch {
-      toast.error('Failed to delete article');
+      toast.error(t('history.deleteFailed'));
     } finally {
       setIsDeleting(false);
     }
@@ -206,7 +208,7 @@ export default function History() {
               className="flex items-center space-x-2 text-gray-500 hover:text-primary-600 transition-colors font-medium"
             >
               <ArrowLeft className="w-4 h-4" />
-              <span>Back to History</span>
+              <span>{ t('common.back') } { t('nav.history') }</span>
             </button>
 
             {hasVersions && (
@@ -216,7 +218,7 @@ export default function History() {
                 icon={Clock}
                 className="text-sm font-bold bg-gray-100 hover:bg-primary-50 text-gray-600 hover:text-primary-700"
               >
-                {showVersions ? 'Hide Versions' : `Version History (${selectedArticle.versions.length})`}
+                {showVersions ? t('history.versions.hide') : t('history.versions.show', { count: selectedArticle.versions.length })}
               </Button>
             )}
           </div>
@@ -231,8 +233,8 @@ export default function History() {
                 className="overflow-hidden"
               >
                 <div className="bg-amber-50 border border-amber-200 rounded-2xl p-5 space-y-3">
-                  <p className="text-sm font-black text-amber-800 uppercase tracking-widest">Previous Versions</p>
-                  <p className="text-xs text-amber-600">Restoring a version saves the current state first.</p>
+                  <p className="text-sm font-black text-amber-800 uppercase tracking-widest">{t('history.versions.title')}</p>
+                  <p className="text-xs text-amber-600">{t('history.versions.subtitle')}</p>
                   <div className="space-y-2">
                     {selectedArticle.versions.map((v, i) => (
                       <div key={i} className="flex items-center justify-between bg-white border border-amber-100 rounded-xl px-4 py-3">
@@ -253,7 +255,7 @@ export default function History() {
                           {restoringIdx === i
                             ? <Loader2 className="w-3.5 h-3.5 animate-spin" />
                             : <RotateCcw className="w-3.5 h-3.5" />}
-                          Restore
+                          {t('history.versions.restore')}
                         </button>
                       </div>
                     ))}
@@ -266,20 +268,20 @@ export default function History() {
           <Card>
             <CardContent className="flex flex-col gap-4">
               <div>
-                <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Modify with AI</h1>
-                <p className="text-gray-500 text-sm">Ask the AI to change, extend, or improve the article.</p>
+                <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">{t('history.refine.title')}</h1>
+                <p className="text-gray-500 dark:text-gray-400 text-sm">{t('history.refine.subtitle')}</p>
               </div>
               <form onSubmit={handleRefine} className="flex flex-col sm:flex-row gap-2">
                 <input
                   type="text"
                   value={refinementPrompt}
                   onChange={(e) => setRefinementPrompt(e.target.value)}
-                  placeholder="e.g. 'Make the introduction more aggressive'"
+                  placeholder={t('history.refine.placeholder')}
                   className="flex-1 px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 text-sm"
                   required
                 />
                 <Button type="submit" isLoading={isRefining} icon={Wand2} className="whitespace-nowrap px-6 py-3">
-                  Refine
+                  {t('history.refine.submit')}
                 </Button>
               </form>
             </CardContent>
@@ -301,14 +303,14 @@ export default function History() {
             <div className="inline-flex items-center space-x-2 bg-primary-50 px-3 py-1 rounded-full border border-primary-100">
               <div className="w-1.5 h-1.5 rounded-full bg-primary-600 animate-pulse" />
               <span className="text-[10px] font-black text-primary-700 uppercase tracking-wider">
-                {pagination.total} Articles Generated
+                {t('history.generated', { count: pagination.total })}
               </span>
             </div>
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-gray-900 dark:text-white tracking-tight leading-tight">
-              Content <span className="text-primary-600 dark:text-primary-400">Library</span>
+              {t('history.title')} <span className="text-primary-600 dark:text-primary-400">{t('history.titleHighlight')}</span>
             </h1>
             <p className="text-gray-500 dark:text-gray-400 font-medium text-sm sm:text-base lg:text-lg max-w-lg">
-              Access and manage your complete history of AI-optimized SEO articles.
+              {t('history.subtitle')}
             </p>
           </div>
 
@@ -321,7 +323,7 @@ export default function History() {
                 {selectedIds.size === articles.length && articles.length > 0
                   ? <CheckSquare className="w-4 h-4 text-primary-600" />
                   : <Square className="w-4 h-4" />}
-                {selectedIds.size === articles.length && articles.length > 0 ? 'Deselect all' : 'Select all'}
+                {selectedIds.size === articles.length && articles.length > 0 ? t('history.deselectAll') : t('history.selectAll')}
               </button>
             )}
           </div>
@@ -334,7 +336,7 @@ export default function History() {
               type="text"
               value={searchQuery}
               onChange={handleSearch}
-              placeholder="Search by keyword or title..."
+              placeholder={t('history.search')}
               className="w-full pl-12 pr-6 py-3 sm:py-4 bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-2xl shadow-soft focus:outline-none focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 focus:bg-white dark:focus:bg-gray-800 transition-all font-medium text-gray-900 dark:text-white text-sm sm:text-base"
             />
           </div>
@@ -352,7 +354,7 @@ export default function History() {
               <div className="flex items-center gap-3">
                 <CheckSquare className="w-4 h-4 text-primary-600" />
                 <span className="text-sm font-bold text-primary-700 dark:text-primary-300">
-                  {selectedIds.size} article{selectedIds.size !== 1 ? 's' : ''} selected
+                  {t('history.selected', { count: selectedIds.size })}
                 </span>
               </div>
               <div className="flex items-center gap-2">
@@ -369,7 +371,7 @@ export default function History() {
                   className="flex items-center gap-2 px-4 py-2 bg-red-500 hover:bg-red-600 text-white text-xs font-bold rounded-xl transition-colors disabled:opacity-50 shadow-lg shadow-red-500/20"
                 >
                   {bulkDeleting ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Trash2 className="w-3.5 h-3.5" />}
-                  Delete selected
+                  {t('history.deleteSelected')}
                 </button>
               </div>
             </motion.div>
@@ -390,10 +392,10 @@ export default function History() {
                 <HistoryIcon className="w-8 h-8 text-gray-300 dark:text-gray-600" />
               </div>
               <h3 className="text-lg font-bold text-gray-900 dark:text-white">
-                {searchQuery ? 'No results found' : 'No articles yet'}
+                {searchQuery ? t('history.noResults') : t('history.empty')}
               </h3>
               <p className="text-gray-500 dark:text-gray-400 max-w-sm mx-auto mt-2">
-                {searchQuery ? 'Try a different keyword or title.' : 'Head back to the dashboard to generate your first article!'}
+                {searchQuery ? t('history.noResultsHint') : t('history.emptyHint')}
               </p>
             </CardContent>
           </Card>
@@ -459,7 +461,7 @@ export default function History() {
                           <FileText className="w-6 h-6" />
                         </div>
                         <div className="flex flex-col items-end">
-                          <span className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em]">Created</span>
+                          <span className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em]">{t('history.created')}</span>
                           <span className="text-xs font-bold text-gray-900 dark:text-white">
                             {new Date(article.createdAt).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' })}
                           </span>
@@ -489,7 +491,7 @@ export default function History() {
                       className="px-8 py-5 bg-gray-50/30 dark:bg-gray-800/30 border-t border-gray-100 dark:border-gray-800 flex items-center justify-between group-hover:bg-primary-50/50 dark:group-hover:bg-primary-900/20 transition-all duration-300 cursor-pointer"
                       onClick={() => setSelectedArticle(article)}
                     >
-                      <span className="text-xs font-black uppercase tracking-widest text-gray-400 dark:text-gray-500 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">Open Article</span>
+                      <span className="text-xs font-black uppercase tracking-widest text-gray-400 dark:text-gray-500 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">{t('history.openArticle')}</span>
                       <div className="w-8 h-8 rounded-full bg-white dark:bg-gray-800 flex items-center justify-center shadow-sm group-hover:bg-primary-600 group-hover:text-white transition-all duration-500">
                         <ChevronRight className="w-4 h-4" />
                       </div>
@@ -545,20 +547,20 @@ export default function History() {
                   <Trash2 className="w-8 h-8 text-red-500" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-black text-gray-900 mb-2">Delete this article?</h3>
-                  <p className="text-gray-500 text-sm leading-relaxed">
-                    "<span className="font-bold text-gray-800">{deleteTarget?.title}</span>" will be permanently removed. This action cannot be undone.
+                  <h3 className="text-xl font-black text-gray-900 dark:text-white mb-2">{t('history.deleteTitle')}</h3>
+                  <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed">
+                    "<span className="font-bold text-gray-800 dark:text-gray-200">{deleteTarget?.title}</span>" {t('history.deleteConfirm')}
                   </p>
                 </div>
                 <div className="flex gap-3 pt-2">
-                  <button onClick={() => setDeleteTarget(null)} className="flex-1 btn-ghost py-3">Cancel</button>
+                  <button onClick={() => setDeleteTarget(null)} className="flex-1 btn-ghost py-3">{t('common.cancel')}</button>
                   <button
                     onClick={confirmDelete}
                     disabled={isDeleting}
                     className="flex-1 py-3 text-sm font-bold text-white bg-red-500 hover:bg-red-600 rounded-xl transition-colors flex items-center justify-center gap-2 shadow-lg shadow-red-500/20 cursor-pointer disabled:opacity-50"
                   >
                     {isDeleting && <Loader2 className="w-4 h-4 animate-spin" />}
-                    Yes, Delete
+                    {t('common.confirm')}
                   </button>
                 </div>
               </div>

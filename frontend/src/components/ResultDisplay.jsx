@@ -21,7 +21,14 @@ export default function ResultDisplay({ data, onCoverUpdate }) {
   const [publishedUrl, setPublishedUrl] = useState(null);
   const [uploadingCover, setUploadingCover]         = useState(false);
   const [generatingAICover, setGeneratingAICover]   = useState(false);
-  const initialCoverUrl = data?.coverUrl || (data?.coverImageId ? `${import.meta.env.VITE_API_URL || '/api'}/images/${data.coverImageId}/view?size=medium` : null);
+  const getFullImageUrl = (url) => {
+    if (!url) return null;
+    if (url.startsWith('http')) return url;
+    const baseUrl = import.meta.env.VITE_API_URL || '/api';
+    return `${baseUrl}${url.replace(/^\/api/, '')}`;
+  };
+
+  const initialCoverUrl = getFullImageUrl(data?.coverUrl) || (data?.coverImageId ? `${import.meta.env.VITE_API_URL || '/api'}/images/${data.coverImageId}/view?size=medium` : null);
   const [coverUrl, setCoverUrl]                     = useState(initialCoverUrl);
   const [showUnsplash, setShowUnsplash]             = useState(false);
   const fileInputRef = useRef(null);
@@ -145,27 +152,27 @@ export default function ResultDisplay({ data, onCoverUpdate }) {
 
 
   const handlePublishWordPress = async () => {
-    if (!data?._id) { toast.error('Article ID not found.'); return; }
+    if (!data?._id) { toast.error(t('result.wordpress.notConfigured')); return; }
     setPublishing(true);
     try {
       const res = await api.post(`/articles/${data._id}/publish-wordpress`);
       if (res.data.success) {
         setPublishedUrl(res.data.url);
-        toast.success((t) => (
+        toast.success((tid) => (
           <div className="space-y-1">
-            <p className="font-bold text-gray-900 text-sm">Published to WordPress as draft!</p>
+            <p className="font-bold text-gray-900 text-sm">{t('result.wordpress.success')}</p>
             <a href={res.data.url} target="_blank" rel="noopener noreferrer"
                className="text-xs text-primary-600 hover:underline font-bold flex items-center gap-1"
-               onClick={() => toast.dismiss(t.id)}>
+               onClick={() => toast.dismiss(tid.id)}>
               <Globe className="w-3.5 h-3.5" /> View draft ↗
             </a>
           </div>
         ), { duration: 8000 });
       } else {
-        toast.error(res.data.error || 'Failed to publish to WordPress.');
+        toast.error(res.data.error || t('result.wordpress.notConfigured'));
       }
     } catch (err) {
-      toast.error(err.response?.data?.error || 'WordPress publishing failed.');
+      toast.error(err.response?.data?.error || t('result.wordpress.notConfigured'));
     } finally {
       setPublishing(false);
     }
@@ -177,12 +184,12 @@ export default function ResultDisplay({ data, onCoverUpdate }) {
     try {
       const res = await generateAICoverImage(data._id);
       if (res.coverUrl) {
-        setCoverUrl(res.coverUrl);
-        toast.success('AI cover generated!');
+        setCoverUrl(getFullImageUrl(res.coverUrl));
+        toast.success(t('result.actions.generateAiImage', { defaultValue: 'AI cover generated!' }));
         onCoverUpdate?.(data._id, res.coverImageId);
       }
     } catch (err) {
-      const msg = err.response?.data?.error || 'AI cover generation failed.';
+      const msg = err.response?.data?.error || t('common.error');
       toast.error(msg);
     } finally {
       setGeneratingAICover(false);
@@ -203,12 +210,12 @@ export default function ResultDisplay({ data, onCoverUpdate }) {
     try {
       const res = await uploadCoverImage(data._id, file);
       if (res.success) {
-        setCoverUrl(res.coverUrl);
-        toast.success('Cover image updated!');
+        setCoverUrl(getFullImageUrl(res.coverUrl));
+        toast.success(t('result.actions.addImage', { defaultValue: 'Cover image updated!' }));
         onCoverUpdate?.(data._id, res.coverImageId);
       }
     } catch (err) {
-      toast.error(err.response?.data?.error || 'Failed to upload cover image.');
+      toast.error(err.response?.data?.error || t('common.error'));
     } finally {
       setUploadingCover(false);
       e.target.value = '';

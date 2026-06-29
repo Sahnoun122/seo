@@ -7,6 +7,7 @@ import { useAuth } from '../context/AuthContext';
 import { Card, CardContent } from '../components/ui/Card';
 import Button from '../components/ui/Button';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements, PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
 
@@ -34,6 +35,7 @@ const PACKAGE_COLORS = {
 
 // Inner form — must live inside <Elements> provider
 function CheckoutForm({ pkg, onSuccess, onClose }) {
+  const { t } = useTranslation();
   const stripe = useStripe();
   const elements = useElements();
   const [processing, setProcessing] = useState(false);
@@ -53,7 +55,7 @@ function CheckoutForm({ pkg, onSuccess, onClose }) {
     });
 
     if (error) {
-      setErrorMsg(error.message || 'Payment failed.');
+      setErrorMsg(error.message || t('common.error'));
       setProcessing(false);
       return;
     }
@@ -78,9 +80,9 @@ function CheckoutForm({ pkg, onSuccess, onClose }) {
           <CheckCircle2 className="w-8 h-8 text-emerald-500" />
         </div>
         <div>
-          <p className="text-lg font-bold text-gray-900 dark:text-white">Payment confirmed!</p>
+          <p className="text-lg font-bold text-gray-900 dark:text-white">{t('buyCredits.modal.success')}</p>
           <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-            {pkg.credits} credits are being added to your account…
+            {t('buyCredits.modal.successSubtitle', { credits: pkg.credits })}
           </p>
         </div>
         <Loader2 className="w-4 h-4 animate-spin text-gray-300" />
@@ -93,8 +95,8 @@ function CheckoutForm({ pkg, onSuccess, onClose }) {
       {/* Order summary */}
       <div className="flex items-center justify-between bg-gray-50 dark:bg-gray-800/50 rounded-xl px-4 py-3 border border-gray-100 dark:border-gray-700/50">
         <div>
-          <p className="text-sm font-semibold text-gray-900 dark:text-white">{pkg.name} Plan</p>
-          <p className="text-xs text-gray-500 dark:text-gray-400">{pkg.credits} AI article generations</p>
+          <p className="text-sm font-semibold text-gray-900 dark:text-white">{t('buyCredits.modal.orderSummary', { name: pkg.name })}</p>
+          <p className="text-xs text-gray-500 dark:text-gray-400">{t('buyCredits.modal.orderSubtitle', { credits: pkg.credits })}</p>
         </div>
         <span className="text-lg font-black text-gray-900 dark:text-white">
           ${(pkg.amount / 100).toFixed(2)}
@@ -118,7 +120,7 @@ function CheckoutForm({ pkg, onSuccess, onClose }) {
           disabled={processing}
           className="px-5 py-3 rounded-xl border border-gray-200 dark:border-gray-700 text-sm font-semibold text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors disabled:opacity-40"
         >
-          Cancel
+          {t('buyCredits.modal.cancel')}
         </button>
         <button
           type="submit"
@@ -128,12 +130,12 @@ function CheckoutForm({ pkg, onSuccess, onClose }) {
           {processing ? (
             <>
               <Loader2 className="w-4 h-4 animate-spin" />
-              Processing…
+              {t('buyCredits.modal.processing')}
             </>
           ) : (
             <>
               <Lock className="w-4 h-4" />
-              Pay ${(pkg.amount / 100).toFixed(2)}
+              {t('buyCredits.modal.pay', { amount: `$${(pkg.amount / 100).toFixed(2)}` })}
             </>
           )}
         </button>
@@ -141,7 +143,7 @@ function CheckoutForm({ pkg, onSuccess, onClose }) {
 
       <p className="text-center text-xs text-gray-400 flex items-center justify-center gap-1.5 pt-1">
         <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
-        Secured by Stripe · Card data never touches our servers
+        {t('buyCredits.modal.secured')}
       </p>
     </form>
   );
@@ -192,8 +194,8 @@ function PaymentModal({ pkg, clientSecret, stripePromise, onSuccess, onClose }) 
         <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100 dark:border-gray-800">
           <div className="flex items-center gap-2.5">
             <Lock className="w-4 h-4 text-emerald-500" />
-            <h3 className="text-sm font-bold text-gray-900 dark:text-white tracking-tight">
-              Secure payment
+              <h3 className="text-sm font-bold text-gray-900 dark:text-white tracking-tight">
+              {t('buyCredits.modal.title')}
             </h3>
           </div>
           <button
@@ -217,6 +219,7 @@ function PaymentModal({ pkg, clientSecret, stripePromise, onSuccess, onClose }) 
 
 // Main page
 export default function BuyCredits() {
+  const { t } = useTranslation();
   const [packages, setPackages] = useState([]);
   const [loading, setLoading] = useState(true);
   const [buying, setBuying] = useState(null);
@@ -231,7 +234,7 @@ export default function BuyCredits() {
         const pkgsData = await getCreditPackages();
         if (pkgsData.success) setPackages(pkgsData.data);
       } catch {
-        toast.error('Failed to load credit packages.');
+        toast.error(t('common.error'));
       } finally {
         setLoading(false);
       }
@@ -249,7 +252,7 @@ export default function BuyCredits() {
 
   const handleBuy = async (pkg) => {
     if (!stripePromise) {
-      toast.error('Stripe is not configured yet.');
+      toast.error(t('errors.stripeNotConfigured'));
       return;
     }
     setBuying(pkg.id);
@@ -258,12 +261,12 @@ export default function BuyCredits() {
       if (data.success && data.clientSecret) {
         setModal({ pkg, clientSecret: data.clientSecret });
       } else {
-        toast.error('Failed to initialize payment.');
+        toast.error(t('common.error'));
       }
     } catch (err) {
       const msg = err.response?.data?.error || err.message || 'Payment setup failed.';
       if (msg.toLowerCase().includes('stripe') || msg.toLowerCase().includes('configured')) {
-        toast.error('Stripe is not configured by the administrator yet.', { duration: 5000 });
+        toast.error(t('errors.stripeNotConfigured'), { duration: 5000 });
       } else {
         toast.error(msg);
       }
@@ -274,7 +277,7 @@ export default function BuyCredits() {
 
   const handleSuccess = useCallback(() => {
     setModal(null);
-    toast.success('Credits added to your account!', { duration: 5000 });
+    toast.success(t('buyCredits.success'), { duration: 5000 });
     refreshUser(); // background — no await
   }, [refreshUser]);
 
@@ -288,13 +291,13 @@ export default function BuyCredits() {
         <div className="text-center space-y-4 py-6">
           <div className="inline-flex items-center gap-2 bg-primary-50 border border-primary-100 px-4 py-1.5 rounded-full">
             <CreditCard className="w-4 h-4 text-primary-600" />
-            <span className="text-xs font-black text-primary-700 uppercase tracking-widest">Top Up Credits</span>
+            <span className="text-xs font-black text-primary-700 dark:text-primary-400 uppercase tracking-widest">{t('buyCredits.topUp', { defaultValue: 'Top Up Credits' })}</span>
           </div>
           <h1 className="text-4xl sm:text-5xl font-black text-gray-900 dark:text-white tracking-tight">
-            Choose your <span className="text-primary-600 dark:text-primary-400">plan</span>
+            {t('buyCredits.title')} <span className="text-primary-600 dark:text-primary-400">{t('buyCredits.titleHighlight')}</span>
           </h1>
           <p className="text-gray-500 dark:text-gray-400 text-lg max-w-md mx-auto">
-            Each credit = one complete AI article (title + meta + full content + keywords).
+            {t('buyCredits.subtitle')}
           </p>
         </div>
 
@@ -344,21 +347,21 @@ export default function BuyCredits() {
                         <li className="flex items-center gap-2.5">
                           <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
                           <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">
-                            <strong className="text-gray-900 dark:text-white">{pkg.credits}</strong> AI article generations
+                            <strong className="text-gray-900 dark:text-white">{pkg.credits}</strong> {t('buyCredits.generations')}
                           </span>
                         </li>
                         <li className="flex items-center gap-2.5">
                           <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
-                          <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">Full SEO content + keywords</span>
+                          <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">{t('buyCredits.features.seo')}</span>
                         </li>
                         <li className="flex items-center gap-2.5">
                           <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
-                          <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">WordPress direct publish</span>
+                          <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">{t('buyCredits.features.wordpress')}</span>
                         </li>
                         {pkg.id === 'pro' && (
                           <li className="flex items-center gap-2.5">
                             <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
-                            <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">Priority queue</span>
+                            <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">{t('buyCredits.features.priority')}</span>
                           </li>
                         )}
                       </ul>
@@ -369,7 +372,7 @@ export default function BuyCredits() {
                         icon={CreditCard}
                         className={`w-full py-3.5 mt-auto text-sm uppercase tracking-widest shadow-lg ${colors.btn}`}
                       >
-                        Buy {pkg.name}
+                        {t('buyCredits.buy', { name: pkg.name })}
                       </Button>
                     </CardContent>
                   </Card>
@@ -381,7 +384,7 @@ export default function BuyCredits() {
 
         <p className="text-center text-xs text-gray-400 font-medium flex items-center justify-center gap-1.5">
           <ShieldCheck className="w-4 h-4 text-emerald-500" />
-          Payments are processed securely via Stripe. Credits are added instantly after payment confirmation.
+          {t('buyCredits.secured')}
         </p>
       </div>
 
