@@ -5,6 +5,7 @@ import { toast } from 'react-hot-toast';
 import { UserPlus, Sparkles, ArrowRight, CheckCircle2, Eye, EyeOff } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
+import ThemeToggle from '../components/ThemeToggle';
 
 function getPasswordStrength(pwd) {
   if (!pwd) return { score: 0, key: '', color: '' };
@@ -108,7 +109,10 @@ export default function Register() {
       </div>
 
       {/* ── Right panel (form) ── */}
-      <div className="w-full lg:w-[48%] flex items-center justify-center p-6 sm:p-8 lg:p-14 bg-white dark:bg-gray-900 min-h-screen lg:min-h-0">
+      <div className="w-full lg:w-[48%] flex items-center justify-center p-6 sm:p-8 lg:p-14 bg-white dark:bg-gray-900 min-h-screen lg:min-h-0 relative">
+        <div className="absolute top-4 right-4 sm:top-6 sm:right-6">
+          <ThemeToggle />
+        </div>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

@@ -4,6 +4,7 @@ import { toast } from 'react-hot-toast';
 import { Lock, ArrowLeft, Sparkles, Loader2, CheckCircle2, Eye, EyeOff } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import api from '../lib/api';
+import ThemeToggle from '../components/ThemeToggle';
 
 function getStrength(password) {
   let score = 0;
@@ -77,7 +78,10 @@ export default function ResetPassword() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-6 bg-background">
+    <div className="min-h-screen flex items-center justify-center p-6 bg-background relative">
+      <div className="absolute top-4 right-4 sm:top-6 sm:right-6">
+        <ThemeToggle />
+      </div>
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}

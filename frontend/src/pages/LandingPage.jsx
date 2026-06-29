@@ -7,6 +7,7 @@ import {
   Languages, Download, Cpu, Users, BarChart3, Clock, Check, Minus,
 } from 'lucide-react';
 import LanguageSwitcher from '../components/LanguageSwitcher';
+import ThemeToggle from '../components/ThemeToggle';
 import { useTranslation } from 'react-i18next';
 
 const fadeUp = { hidden: { opacity: 0, y: 24 }, visible: { opacity: 1, y: 0 } };
@@ -207,6 +208,7 @@ const LandingPage = () => {
             </Link>
           </div>
           <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
+            <ThemeToggle />
             <LanguageSwitcher />
             <Link to="/register" className="btn-primary text-xs sm:text-sm px-3 sm:px-5 py-2 sm:py-2.5 whitespace-nowrap">
               <span className="sm:hidden">{t('common.tryFree')}</span>
@@ -327,7 +329,7 @@ const LandingPage = () => {
       </section>
 
       {/* ── Stats ── */}
-      <section className="py-12 sm:py-16 bg-gray-900 dark:bg-gray-950">
+      <section className="py-12 sm:py-16 bg-white dark:bg-gray-950 border-t border-b border-gray-100 dark:border-gray-800">
         <div className="max-w-5xl mx-auto px-6">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             {[
@@ -343,8 +345,8 @@ const LandingPage = () => {
                 transition={{ delay: i * 0.1 }}
                 viewport={{ once: true }}
               >
-                <p className="text-3xl sm:text-4xl font-black text-white mb-1">{stat.value}</p>
-                <p className="text-xs sm:text-sm font-semibold text-gray-400 uppercase tracking-wider">{stat.label}</p>
+                <p className="text-3xl sm:text-4xl font-black text-gray-900 dark:text-white mb-1">{stat.value}</p>
+                <p className="text-xs sm:text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">{stat.label}</p>
               </motion.div>
             ))}
           </div>
@@ -600,17 +602,17 @@ const LandingPage = () => {
 
       {/* ── CTA ── */}
       <section className="py-20 sm:py-32 px-6">
-        <div className="max-w-5xl mx-auto rounded-[2rem] border border-gray-800 shadow-2xl bg-gray-900 p-10 sm:p-16 md:p-20 text-center relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-primary-600/30 to-blue-600/10 pointer-events-none" />
+        <div className="max-w-5xl mx-auto rounded-[2rem] border border-gray-200 dark:border-gray-800 shadow-2xl bg-white dark:bg-gray-900 p-10 sm:p-16 md:p-20 text-center relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-primary-600/5 dark:from-primary-600/30 to-blue-600/5 dark:to-blue-600/10 pointer-events-none" />
           <div className="absolute top-0 right-0 w-80 h-80 bg-primary-500/10 rounded-full blur-[80px] pointer-events-none" />
           <div className="relative z-10">
-            <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 text-white/80 font-bold text-xs mb-6 border border-white/10">
+            <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary-50 dark:bg-white/10 text-primary-600 dark:text-white/80 font-bold text-xs mb-6 border border-primary-100 dark:border-white/10">
               <Cpu className="w-3.5 h-3.5" /> Start generating in 30 seconds
             </span>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white mb-5">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-gray-900 dark:text-white mb-5">
               Ready to dominate the SERPs?
             </h2>
-            <p className="text-lg sm:text-xl text-gray-300 mb-8 sm:mb-10 max-w-2xl mx-auto">
+            <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-300 mb-8 sm:mb-10 max-w-2xl mx-auto">
               Join thousands of creators building their organic traffic engine on autopilot. No credit card required.
             </p>
             <Link to="/register" className="btn-primary px-8 sm:px-10 py-4 sm:py-5 text-base sm:text-lg shadow-glow inline-flex items-center gap-2">
