@@ -1,8 +1,8 @@
 import OpenAI from 'openai';
 import { getSystemSettings } from './settingsService.js';
+import logger from '../utils/logger.js';
 
-const isDev = process.env.NODE_ENV !== 'production';
-const debug = (...args) => { if (isDev) console.log(...args); };
+const debug = (...args) => logger.debug(...args);
 
 /**
  * Resolves the correct OpenAI client and model for a request.
@@ -63,7 +63,7 @@ export const cleanAndParseJSON = (rawString) => {
   try {
     return JSON.parse(rawString.trim());
   } catch (directError) {
-    console.warn("Direct JSON parse failed. Attempting extraction...", directError.message);
+    logger.warn("Direct JSON parse failed. Attempting extraction...", directError.message);
 
     const start = rawString.indexOf('{');
     const end = rawString.lastIndexOf('}');
@@ -83,7 +83,7 @@ export const cleanAndParseJSON = (rawString) => {
     try {
       return JSON.parse(jsonString);
     } catch (extractionError) {
-      console.error("JSON parse failed after extraction. Extracted string:", jsonString);
+      logger.error("JSON parse failed after extraction. Extracted string:", jsonString);
       throw new Error(`Invalid JSON structure returned by AI: ${extractionError.message}`);
     }
   }
@@ -94,7 +94,13 @@ export const cleanAndParseJSON = (rawString) => {
  * and throws a descriptive, user-facing error message.
  */
 export const handleOpenAIError = (error) => {
-  console.error("OpenAI API Exception:", error);
+  // Log only safe, non-sensitive fields — the raw error object can carry the
+  // outbound request (including the Authorization header) in some SDK versions.
+  logger.error("OpenAI API Exception:", {
+    message: error?.message,
+    status: error?.status || error?.response?.status,
+    code: error?.code || error?.response?.data?.error?.code,
+  });
 
   const status = error.status || (error.response && error.response.status);
   const code = error.code || (error.response?.data?.error?.code);

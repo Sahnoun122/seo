@@ -50,7 +50,7 @@ export const registerUser = async (req, res) => {
       password,
       role,
       credits,
-      isEmailVerified: process.env.IS_DEMO === 'true',
+      isEmailVerified: process.env.DEMO_MODE === 'true',
     });
 
     if (user) {

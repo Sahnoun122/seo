@@ -16,6 +16,7 @@ import UnsplashPickerModal from './UnsplashPickerModal';
 marked.setOptions({ gfm: true, breaks: true });
 
 export default function ResultDisplay({ data, onCoverUpdate }) {
+  const { t } = useTranslation();
   const [copied, setCopied]             = useState(false);
   const [publishing, setPublishing]     = useState(false);
   const [publishedUrl, setPublishedUrl] = useState(null);
@@ -34,8 +35,6 @@ export default function ResultDisplay({ data, onCoverUpdate }) {
   const fileInputRef = useRef(null);
 
   if (!data) return null;
-
-  const { t } = useTranslation();
 
   const handleCopy = () => {
     const text = `Title: ${data.title}\n\nMeta Description: ${data.metaDescription}\n\nContent:\n${data.content}\n\nKeywords: ${data.suggestedKeywords?.join(', ')}`;
@@ -248,19 +247,19 @@ export default function ResultDisplay({ data, onCoverUpdate }) {
                 <span className="text-xs font-black uppercase tracking-widest">{t('result.title')}</span>
               </div>
               <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
-                <button onClick={handleCopy} className="btn-ghost text-xs py-1.5 px-2.5 sm:py-2 sm:px-3">
+                <button onClick={handleCopy} className="btn-ghost text-xs py-1.5 px-2.5 sm:py-2 sm:px-3" aria-label={copied ? t('result.actions.copied') : t('result.actions.copy')}>
                   {copied ? <CheckCircle2 className="w-4 h-4 text-emerald-500" /> : <Copy className="w-4 h-4" />}
                   <span className="hidden xs:inline">{copied ? t('result.actions.copied') : t('result.actions.copy')}</span>
                 </button>
-                <button onClick={handleExportMD} className="btn-ghost text-xs py-1.5 px-2.5 sm:py-2 sm:px-3" title="Export as Markdown">
+                <button onClick={handleExportMD} className="btn-ghost text-xs py-1.5 px-2.5 sm:py-2 sm:px-3" title="Export as Markdown" aria-label={t('result.actions.markdown')}>
                   <Download className="w-4 h-4" />
                   <span className="hidden sm:inline">{t('result.actions.markdown')}</span>
                 </button>
-                <button onClick={handleExportHTML} className="btn-ghost text-xs py-1.5 px-2.5 sm:py-2 sm:px-3" title="Export as HTML">
+                <button onClick={handleExportHTML} className="btn-ghost text-xs py-1.5 px-2.5 sm:py-2 sm:px-3" title="Export as HTML" aria-label={t('result.actions.html')}>
                   <FileCode className="w-4 h-4" />
                   <span className="hidden sm:inline">{t('result.actions.html')}</span>
                 </button>
-                <button onClick={handleExportPDF} className="btn-ghost text-xs py-1.5 px-2.5 sm:py-2 sm:px-3" title="Export as PDF">
+                <button onClick={handleExportPDF} className="btn-ghost text-xs py-1.5 px-2.5 sm:py-2 sm:px-3" title="Export as PDF" aria-label={t('result.actions.pdf')}>
                   <FileText className="w-4 h-4" />
                   <span className="hidden sm:inline">{t('result.actions.pdf')}</span>
                 </button>
@@ -269,6 +268,7 @@ export default function ResultDisplay({ data, onCoverUpdate }) {
                   disabled={publishing}
                   className="btn-ghost text-xs py-1.5 px-2.5 sm:py-2 sm:px-3 text-blue-600 hover:text-blue-700 hover:bg-blue-50"
                   title="Publish to WordPress"
+                  aria-label="Publish to WordPress"
                 >
                   {publishing ? <Loader2 className="w-4 h-4 animate-spin" /> : <Share2 className="w-4 h-4" />}
                   <span className="hidden sm:inline">WordPress</span>
@@ -289,6 +289,7 @@ export default function ResultDisplay({ data, onCoverUpdate }) {
                       disabled={uploadingCover || generatingAICover}
                       className="btn-ghost text-xs py-1.5 px-2.5 sm:py-2 sm:px-3"
                       title="Upload cover image"
+                      aria-label={coverUrl ? t('result.actions.replaceCover') : t('result.actions.addCover')}
                     >
                       {uploadingCover
                         ? <Loader2 className="w-4 h-4 animate-spin" />
@@ -301,6 +302,7 @@ export default function ResultDisplay({ data, onCoverUpdate }) {
                       disabled={generatingAICover || uploadingCover}
                       className="btn-ghost text-xs py-1.5 px-2.5 sm:py-2 sm:px-3"
                       title="Pick a photo from Unsplash"
+                      aria-label="Pick a photo from Unsplash"
                     >
                       <Camera className="w-4 h-4" />
                       <span className="hidden sm:inline">Unsplash</span>

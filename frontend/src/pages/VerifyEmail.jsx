@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { CheckCircle2, XCircle, Loader2, Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
 import api from '../lib/api';
 import { useAuth } from '../context/AuthContext';
 
 export default function VerifyEmail() {
+  const { t } = useTranslation();
   const { token } = useParams();
   const { refreshUser } = useAuth();
   const [status, setStatus] = useState('loading'); // loading | success | error
@@ -18,7 +20,7 @@ export default function VerifyEmail() {
         await refreshUser();
         setStatus('success');
       } catch (err) {
-        setMessage(err.response?.data?.error || 'Verification failed. The link may have expired.');
+        setMessage(err.response?.data?.error || t('auth.emailVerification.errorMessage'));
         setStatus('error');
       }
     };
@@ -44,7 +46,7 @@ export default function VerifyEmail() {
         {status === 'loading' && (
           <div className="flex flex-col items-center gap-4 py-4">
             <Loader2 className="w-10 h-10 text-primary-500 animate-spin" />
-            <p className="text-gray-500 font-medium">Verifying your email address…</p>
+            <p className="text-gray-500 font-medium">{t('auth.emailVerification.verifying')}</p>
           </div>
         )}
 
@@ -54,14 +56,14 @@ export default function VerifyEmail() {
               <CheckCircle2 className="w-8 h-8 text-emerald-500" />
             </div>
             <div>
-              <h2 className="text-xl font-black text-gray-900 dark:text-white mb-1">Email verified!</h2>
-              <p className="text-gray-500 text-sm">Your account is now fully activated. You can start generating SEO articles.</p>
+              <h2 className="text-xl font-black text-gray-900 dark:text-white mb-1">{t('auth.emailVerification.successTitle')}</h2>
+              <p className="text-gray-500 text-sm">{t('auth.emailVerification.successMessage')}</p>
             </div>
             <Link
               to="/"
               className="inline-flex items-center gap-2 bg-primary-600 hover:bg-primary-700 text-white font-bold px-6 py-3 rounded-xl text-sm transition-colors shadow-lg shadow-primary-500/20"
             >
-              Go to Dashboard
+              {t('auth.emailVerification.goToDashboard')}
             </Link>
           </div>
         )}
@@ -72,14 +74,14 @@ export default function VerifyEmail() {
               <XCircle className="w-8 h-8 text-red-500" />
             </div>
             <div>
-              <h2 className="text-xl font-black text-gray-900 dark:text-white mb-1">Verification failed</h2>
+              <h2 className="text-xl font-black text-gray-900 dark:text-white mb-1">{t('auth.emailVerification.errorTitle')}</h2>
               <p className="text-gray-500 text-sm">{message}</p>
             </div>
             <Link
               to="/"
               className="inline-flex items-center gap-2 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 font-bold px-6 py-3 rounded-xl text-sm transition-colors"
             >
-              Back to App
+              {t('auth.emailVerification.backToApp')}
             </Link>
           </div>
         )}

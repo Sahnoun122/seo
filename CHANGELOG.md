@@ -25,4 +25,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Rate Limiting and Helmet integrations on Express server.
 
 ---
-*Prepared for commercial release on CodeCanyon & Gumroad.*
+*Prepared for commercial release on Codester.*

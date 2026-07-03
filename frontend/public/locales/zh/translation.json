@@ -16,6 +16,7 @@
     "next": "下一步",
     "or": "或",
     "error": "发生错误，请重试。",
+    "dismiss": "关闭",
     "success": "操作成功。",
     "copied": "已复制！",
     "copy": "复制",
@@ -23,7 +24,9 @@
     "generate": "生成",
     "generating": "生成中...",
     "upgrade": "升级套餐",
-    "tryFree": "免费试用"
+    "tryFree": "免费试用",
+    "openMenu": "打开菜单",
+    "closeMenu": "关闭菜单"
   },
   "nav": {
     "dashboard": "仪表盘",
@@ -51,9 +54,12 @@
     },
     "hero": {
       "badge": "AI 驱动的 SEO 平台",
-      "title": "快速生成 SEO 内容",
-      "titleHighlight": "仅需数秒。",
-      "subtitle": "一个关键词 → 完整文章、元描述和关键词策略。直接发布到 WordPress。",
+      "poweredBy": "由 GPT-4o、DeepSeek 和 Groq 提供支持",
+      "title": "生成真正",
+      "titleHighlight": "能排名的文章。",
+      "subtitle": "不再花数小时创作内容。SEO Gen AI 在几秒内生成高度优化、结构清晰、引人入胜的文章，并直接发布到 WordPress。",
+      "ctaPrimary": "免费开始",
+      "ctaFeatures": "查看功能",
       "cta": "免费开始",
       "ctaSecondary": "查看演示",
       "trustedBy": "超过 5,000 名内容创作者的信赖之选"
@@ -62,42 +68,190 @@
       "articles": "已生成 5,000+ 篇文章",
       "languages": "支持 6 种语言",
       "models": "4+ 个 AI 模型",
-      "uptime": "99.9% 正常运行时间"
+      "uptime": "99.9% 正常运行时间",
+      "items": [
+        { "value": "5,000+", "label": "已生成文章" },
+        { "value": "6",      "label": "支持语言" },
+        { "value": "4+",     "label": "AI 模型" },
+        { "value": "99.9%",  "label": "正常运行时间" }
+      ]
     },
     "features": {
       "title": "SEO 制胜所需的一切",
-      "subtitle": "从关键词研究到 WordPress 发布——一站式平台。"
+      "subtitle": "从关键词研究到 WordPress 发布——一站式平台。",
+      "badge": "您所需的一切",
+      "sectionTitle": "强化您的内容引擎",
+      "sectionSubtitle": "专为 SEO 专家、营销机构和希望获得实际成果的利基站点创作者设计。",
+      "items": [
+        {
+          "title": "多模型 AI 引擎",
+          "desc": "在 GPT-4o、DeepSeek、Groq 和 OpenRouter 之间切换。始终为每项任务使用最佳模型。"
+        },
+        {
+          "title": "完美 SEO 结构",
+          "desc": "每篇文章均包含 H1/H2/H3 层次结构、最佳关键词密度和语义关键词集群。"
+        },
+        {
+          "title": "一键 WordPress 发布",
+          "desc": "通过 REST API 将带有精选图片的草稿直接发布到任何 WordPress 网站。"
+        },
+        {
+          "title": "AI 图片与 Unsplash",
+          "desc": "使用 DALL-E 3 生成封面，或从 Unsplash 搜索数百万张免费图片——无需离开应用。"
+        },
+        {
+          "title": "内部链接助手",
+          "desc": "上传您的网站地图，获取直接嵌入文章的智能内部链接建议。"
+        },
+        {
+          "title": "6 种内置语言",
+          "desc": "完整界面支持英语、法语、西班牙语、阿拉伯语（RTL）、意大利语和中文——无需插件。"
+        }
+      ]
     },
     "howItWorks": {
       "title": "3 步完成 SEO 内容",
-      "subtitle": "从关键词到发布文章，不到 60 秒。"
+      "subtitle": "从关键词到发布文章，不到 60 秒。",
+      "badge": "从关键词到文章仅需 30 秒",
+      "sectionTitle": "使用方法",
+      "sectionSubtitle": "三个步骤。零学习曲线。即发即用的文章。",
+      "items": [
+        {
+          "num": "01",
+          "title": "输入关键词",
+          "desc": "输入任何关键词或主题。选择 AI 模型、语言和文章长度。"
+        },
+        {
+          "num": "02",
+          "title": "实时观看生成过程",
+          "desc": "实时查看文章生成——标题、元数据、完整内容和关键词集群。"
+        },
+        {
+          "num": "03",
+          "title": "发布或导出",
+          "desc": "复制 Markdown 或 HTML，生成 PDF，或一键直接发布到 WordPress。"
+        }
+      ]
     },
     "pricing": {
       "title": "简单透明的定价",
       "subtitle": "免费开始，按需升级。",
       "monthly": "每月",
       "getStarted": "立即开始",
-      "mostPopular": "最受欢迎"
+      "mostPopular": "最受欢迎",
+      "badge": "简单定价",
+      "sectionTitle": "适合每个团队的方案",
+      "sectionSubtitle": "无隐藏费用。无需信用卡即可开始。随时取消。",
+      "freeTrial": "所有方案均包含 5 个免费试用积分。无需信用卡。",
+      "getStartedFree": "免费开始",
+      "plans": [
+        {
+          "name": "入门版",
+          "price": "¥65",
+          "period": "/月",
+          "desc": "适合小型博客和个人创作者。",
+          "popular": false,
+          "features": ["每月 20 篇文章", "标准 AI 模型", "Markdown 和 HTML 导出"],
+          "excluded": ["WordPress 自动发布"]
+        },
+        {
+          "name": "成长版",
+          "price": "¥210",
+          "period": "/月",
+          "desc": "适合成长中的创作者和机构。",
+          "popular": true,
+          "features": ["每月 100 篇文章", "GPT-4o 和高级模型", "一键 WordPress 发布", "优先支持"],
+          "excluded": []
+        },
+        {
+          "name": "专业版",
+          "price": "¥720",
+          "period": "/月",
+          "desc": "适合高产量机构和出版商。",
+          "popular": false,
+          "features": ["每月 500 篇文章", "所有高级模型", "多站点 WordPress", "自定义 AI 提示", "24/7 专属支持"],
+          "excluded": []
+        }
+      ]
     },
     "testimonials": {
       "title": "深受内容创作者喜爱",
-      "subtitle": "加入数千名使用 SEO Gen AI 更快发布内容的创作者。"
+      "subtitle": "加入数千名使用 SEO Gen AI 更快发布内容的创作者。",
+      "sectionTitle": "深受 SEO 专业人士喜爱",
+      "sectionSubtitle": "加入数千名自动构建自然流量的创作者。",
+      "disclaimer": "* 示例评价。",
+      "items": [
+        {
+          "name": "Sarah Mitchell",
+          "role": "ScaleUp Agency 内容总监",
+          "avatar": "SM",
+          "text": "我们用 SEO Gen AI 替代了 3 名自由撰稿人。质量相当，内容产出提升了 10 倍。WordPress 集成每天为我们节省 2 小时。"
+        },
+        {
+          "name": "James Okafor",
+          "role": "利基站点创作者",
+          "avatar": "JO",
+          "text": "我管理着 14 个利基网站。SEO Gen AI 让我每天在所有网站上发布 5 篇文章。前 60 天排名明显提升。关键词集群功能改变了我的工作方式。"
+        },
+        {
+          "name": "Léa Fontaine",
+          "role": "SEO 顾问，巴黎",
+          "avatar": "LF",
+          "text": "法语输出无懈可击——比价格高出 3 倍的工具更好。内部链接助手省去了大量手动工作。"
+        }
+      ]
     },
     "faq": {
-      "title": "常见问题"
+      "title": "常见问题",
+      "sectionTitle": "常见问题",
+      "sectionSubtitle": "您需要了解的一切。没找到答案？",
+      "contactUs": "联系我们。",
+      "items": [
+        {
+          "q": "支持哪些 AI 模型？",
+          "a": "SEO Gen AI 支持 GPT-4o（OpenAI）、DeepSeek、Groq（Llama 3）和 OpenRouter。您可以提供自己的 API 密钥进行无限生成，或使用共享积分池。"
+        },
+        {
+          "q": "我可以使用自己的 OpenAI API 密钥吗？",
+          "a": "可以。在设置 → AI 配置中添加您的个人密钥。这将解锁无限生成，并完全绕过积分系统。"
+        },
+        {
+          "q": "WordPress 集成如何工作？",
+          "a": "在设置中添加您的 WordPress 网站 URL、用户名和应用密码。然后从任何生成的文章中点击“发布到 WordPress”。帖子将以带有精选图片的草稿形式创建。"
+        },
+        {
+          "q": "有免费试用吗？",
+          "a": "每个新账户获得 5 个免费积分，无需信用卡即可生成您的前几篇文章。随时升级到付费计划。"
+        },
+        {
+          "q": "我可以随时取消订阅吗？",
+          "a": "当然可以。从您的账户设置中取消。您可以使用到计费周期结束，之后不会再收费。"
+        }
+      ]
     },
     "cta": {
       "title": "准备好生成您的第一篇文章了吗？",
       "subtitle": "加入 5,000+ 名在数秒内发布 SEO 内容的创作者。",
-      "button": "免费开始 — 无需信用卡"
+      "button": "免费开始 — 无需信用卡",
+      "badge": "30 秒内开始生成",
+      "sectionTitle": "准备好主导搜索结果了吗？",
+      "sectionSubtitle": "加入数千名自动构建自然流量的创作者。无需信用卡。",
+      "getStartedFree": "免费开始",
+      "freeArticles": "每个新账户包含 5 篇免费文章"
     },
     "footer": {
       "tagline": "面向现代内容团队的 AI 驱动 SEO 文章生成平台。",
       "product": "产品",
+      "account": "账户",
       "legal": "法律",
       "privacy": "隐私政策",
       "terms": "服务条款",
-      "rights": "保留所有权利。"
+      "rights": "保留所有权利。",
+      "signUpFree": "免费注册",
+      "login": "登录",
+      "register": "注册",
+      "forgotPassword": "忘记密码",
+      "copyright": "© 2026 SEO Gen AI. 保留所有权利。"
     }
   },
   "auth": {
@@ -164,15 +318,36 @@
       "backToLogin": "返回登录",
       "sent": "请查看您的收件箱",
       "sentSubtitle": "我们已向 {{email}} 发送了密码重置链接。",
+      "expiresIn": "链接将在 1 小时后失效。",
+      "notReceived": "没有收到？请检查垃圾邮件文件夹或重新发送。",
+      "rememberPassword": "想起密码了？",
       "resend": "重新发送邮件",
-      "resendCooldown": "{{seconds}}秒后重新发送"
+      "resendCooldown": "{{seconds}}秒后重新发送",
+      "sendError": "发送重置邮件失败。",
+      "resendSuccess": "重置链接已重新发送！",
+      "resendError": "重新发送失败。"
     },
     "resetPassword": {
       "title": "设置新密码",
+      "subtitle": "请设置一个强密码 — 至少 8 个字符。",
       "password": "新密码",
+      "passwordPlaceholder": "至少 8 个字符",
       "confirm": "确认密码",
+      "confirmPlaceholder": "重复输入密码",
+      "mismatch": "两次输入的密码不一致",
       "submit": "重置密码",
-      "success": "密码已更新！现在可以登录了。"
+      "success": "密码已更新！现在可以登录了。",
+      "successTitle": "密码已更新！",
+      "redirecting": "正在跳转到登录页…",
+      "expiredError": "链接已失效，请重新申请。",
+      "strength": {
+        "tooShort": "过短",
+        "weak": "弱",
+        "fair": "一般",
+        "good": "良好",
+        "strong": "强",
+        "veryStrong": "非常强"
+      }
     },
     "emailVerification": {
       "banner": "请验证您的电子邮件地址以解锁所有功能。",
@@ -181,9 +356,13 @@
       "sending": "发送中...",
       "verifying": "正在验证您的邮箱...",
       "successTitle": "邮箱已验证！",
-      "successMessage": "您的账户现已完全激活。",
+      "successMessage": "您的账户现已完全激活，可以开始生成 SEO 文章了。",
       "errorTitle": "验证失败",
-      "goToDashboard": "前往仪表盘"
+      "errorMessage": "验证失败，链接可能已过期。",
+      "goToDashboard": "前往仪表盘",
+      "backToApp": "返回应用",
+      "resendSuccess": "验证邮件已发送！请查看您的收件箱。",
+      "resendError": "发送邮件失败。"
     }
   },
   "dashboard": {
@@ -228,6 +407,14 @@
       "keywords": "查找 SEO 关键词",
       "saving": "保存文章"
     },
+    "tips": {
+      "1": "长尾关键词的转化率比泛用关键词高 3 倍。",
+      "2": "字数保持在 1,500–2,500 字之间有助于获得更好的谷歌排名。",
+      "3": "吸引人的元描述能提升点击率。",
+      "4": "使用 H2/H3 标题组织内容，有助于获得精选摘要。",
+      "5": "内部链接能让读者在您的网站停留更久。",
+      "6": "定期更新的内容排名更高。"
+    },
     "badges": {
       "accuracy": "高精准度",
       "seo": "SEO 优化",
@@ -263,8 +450,8 @@
       "generateAiImage": "生成 AI 图片"
     },
     "wordpress": {
-      "success": "Article published to WordPress as a draft!",
-      "notConfigured": "Configure WordPress in Settings first."
+      "success": "文章已作为草稿发布到 WordPress！",
+      "notConfigured": "请先在设置中配置 WordPress。"
     }
   },
   "history": {
@@ -272,6 +459,7 @@
     "titleHighlight": "资料库",
     "subtitle": "访问并管理您所有 AI 优化的 SEO 文章历史记录。",
     "total": "已生成 {{count}} 篇文章",
+    "generated": "已生成 {{count}} 篇文章",
     "search": "按关键词或标题搜索...",
     "empty": "暂无文章",
     "emptyHint": "返回仪表盘生成您的第一篇文章！",
@@ -286,6 +474,7 @@
     "selectAll": "全选",
     "deselectAll": "取消全选",
     "selected": "已选择 {{count}} 篇文章",
+    "bulkDeleteSuccess": "已删除 {{count}} 篇文章。",
     "deleteSelected": "删除所选",
     "refine": {
       "title": "使用 AI 修改",
@@ -305,9 +494,8 @@
       "show": "版本历史 ({{count}})"
     },
     "pagination": {
-      "page": "Page {{current}} of {{total}}"
-    },
-    "generated": "{{count}} Articles Generated"
+      "page": "第 {{current}} 页，共 {{total}} 页"
+    }
   },
   "settings": {
     "title": "设置",
@@ -336,41 +524,161 @@
       "tone": "默认语气"
     },
     "wordpress": {
-      "url": "WordPress Site URL",
+      "url": "WordPress 网站 URL",
       "urlPlaceholder": "https://yourblog.com",
-      "username": "WordPress Username",
+      "username": "WordPress 用户名",
       "usernamePlaceholder": "admin",
-      "password": "Application Password",
+      "password": "应用程序密码",
       "passwordPlaceholder": "xxxx xxxx xxxx xxxx",
-      "passwordHint": "Generate from WordPress → Users → Application Passwords",
-      "testConnection": "Test Connection",
-      "connectionSuccess": "WordPress connection successful!",
-      "connectionFailed": "Connection failed. Check your credentials."
-    },
-    "danger": {
-      "deleteAccount": "Delete Account",
-      "deleteWarning": "This action is permanent and cannot be undone. All your articles, images, and data will be deleted.",
-      "deleteConfirm": "Yes, delete my account",
-      "deleted": "Account deleted."
-    },
-    "subscription": {
-      "currentPlan": "Current Plan",
-      "renewsOn": "Renews on {{date}}",
-      "cancelAt": "Cancels at {{date}}",
-      "cancelPlan": "Cancel Plan",
-      "reactivate": "Reactivate Plan",
-      "cancelled": "Plan cancelled.",
-      "reactivated": "Plan reactivated!",
-      "managePlan": "Manage Plan"
+      "passwordHint": "从 WordPress → 用户 → 应用程序密码 生成",
+      "testConnection": "测试连接",
+      "connectionSuccess": "WordPress 连接成功！",
+      "connectionFailed": "连接失败，请检查您的凭据。"
     },
     "ai": {
-      "apiKey": "Personal API Key",
-      "apiKeyPlaceholder": "sk-... (optional)",
-      "apiKeyHint": "Use your own key for unlimited generations.",
-      "baseUrl": "Custom Base URL",
+      "apiKey": "个人 API 密钥",
+      "apiKeyPlaceholder": "sk-...（可选）",
+      "apiKeyHint": "使用您自己的密钥进行无限生成。",
+      "baseUrl": "自定义基础 URL",
       "baseUrlPlaceholder": "https://api.openai.com/v1",
-      "model": "Preferred Model",
-      "modelPlaceholder": "e.g. gpt-4o, deepseek-chat"
+      "model": "首选模型",
+      "modelPlaceholder": "例如 gpt-4o、deepseek-chat"
+    },
+    "subscription": {
+      "currentPlan": "当前套餐",
+      "renewsOn": "续订日期：{{date}}",
+      "cancelAt": "取消日期：{{date}}",
+      "cancelPlan": "取消套餐",
+      "reactivate": "重新激活套餐",
+      "cancelled": "套餐已取消。",
+      "reactivated": "套餐已重新激活！",
+      "managePlan": "管理套餐",
+      "loading": "正在加载订阅…",
+      "noSubscription": "您还没有有效订阅。",
+      "viewPlans": "查看套餐",
+      "status": {
+        "active": "有效",
+        "trialing": "试用中",
+        "pastDue": "已逾期",
+        "canceled": "已取消"
+      },
+      "accessUntil": "可使用至 {{date}}",
+      "changePlanAction": "更改套餐",
+      "changePlanTitle": "更改套餐",
+      "prorated": "套餐变更将按比例计费并立即扣款。",
+      "creditsPerMonth": "{{count}} 积分/月",
+      "currentPlanBadge": "当前套餐",
+      "cancelError": "取消订阅失败。",
+      "reactivateError": "重新激活订阅失败。",
+      "planChanged": "套餐已更新！已收取按比例分摊的费用。",
+      "planChangeError": "更改套餐失败。",
+      "cancelConfirmTitle": "确定要取消订阅吗？",
+      "cancelConfirmBody": "订阅将保持有效直至当前计费周期结束，此后不再续订。",
+      "keepSubscription": "保留订阅",
+      "confirmCancel": "是的，取消",
+      "confirmCancel": "要在当前计费周期结束时取消订阅吗？"
+    },
+    "danger": {
+      "deleteAccount": "删除账户",
+      "deleteWarning": "此操作是永久性的且无法撤消。您的所有文章、图片和数据都将被删除。",
+      "deleteConfirm": "是的，删除我的账户",
+      "deleted": "账户已删除。"
+    }
+  },
+  "buyCredits": {
+    "title": "选择您的",
+    "titleHighlight": "套餐",
+    "topUp": "充值积分",
+    "subtitle": "每个积分 = 一篇完整的 AI 文章（标题 + 元描述 + 完整内容 + 关键词）。",
+    "oneTime": "一次性",
+    "generations": "次 AI 文章生成",
+    "features": {
+      "seo": "完整 SEO 内容 + 关键词",
+      "wordpress": "WordPress 直接发布",
+      "priority": "优先队列"
+    },
+    "buy": "购买 {{name}}",
+    "secured": "通过 Stripe 安全处理付款。确认付款后立即添加积分。",
+    "modal": {
+      "title": "安全支付",
+      "orderSummary": "{{name}} 套餐",
+      "orderSubtitle": "{{credits}} 次 AI 文章生成",
+      "pay": "支付 {{amount}}",
+      "processing": "处理中...",
+      "success": "付款已确认！",
+      "successSubtitle": "正在将 {{credits}} 个积分添加到您的账户...",
+      "cancel": "取消",
+      "secured": "由 Stripe 保障安全 · 卡片数据从不接触我们的服务器"
+    },
+    "success": "积分已添加到您的账户！"
+  },
+  "admin": {
+    "dashboard": {
+      "title": "管理员仪表盘",
+      "users": "用户总数",
+      "articles": "文章总数",
+      "revenue": "收入",
+      "activeSubscriptions": "有效订阅"
+    },
+    "users": {
+      "title": "用户管理",
+      "subtitle": "管理用户访问权限、AI 积分和平台设置。",
+      "superAdminZone": "超级管理员专区",
+      "listTitle": "用户列表",
+      "search": "搜索用户...",
+      "userColumn": "用户",
+      "name": "姓名",
+      "email": "电子邮件",
+      "role": "角色",
+      "credits": "积分",
+      "aiCredits": "AI 积分",
+      "plan": "套餐",
+      "joined": "加入时间",
+      "actions": "操作",
+      "noResults": "未找到用户。",
+      "editCredits": "编辑积分",
+      "deleteUser": "删除用户",
+      "manageCredits": "管理积分",
+      "newBalance": "新积分余额",
+      "deleteConfirmTitle": "删除此账户？",
+      "deleteConfirmBodyPrefix": "您即将永久删除以下账户：",
+      "deleteConfirmBodySuffix": "此操作无法撤销。",
+      "yesDelete": "是的，删除",
+      "creditsUpdated": "积分已更新！",
+      "userDeleted": "用户已删除。",
+      "loadError": "加载用户失败",
+      "creditsUpdateError": "更新积分失败",
+      "deleteError": "删除用户失败"
+    }
+  },
+  "onboarding": {
+    "skip": "跳过教程",
+    "stepCounter": "第 {{current}} 步，共 {{total}} 步",
+    "tipLabel": "提示：",
+    "getStarted": "开始使用",
+    "step1": {
+      "title": "几秒内生成文章",
+      "body": "输入任何关键词，让 AI 为您撰写完整的 SEO 优化文章——包含标题、元描述、结构化内容和关键词建议。",
+      "tip": "尝试使用长尾关键词，例如「2025 年最佳中小企业 CRM」。"
+    },
+    "step2": {
+      "title": "精美的封面图片",
+      "body": "一键为文章添加专业封面图片。您可以上传自己的图片、使用 DALL-E 3 AI 生成，或从 Unsplash 选择免费照片。",
+      "tip": "DALL-E 3 封面生成每张额外消耗 1 个积分。"
+    },
+    "step3": {
+      "title": "直接发布到 WordPress",
+      "body": "在设置 → 内容偏好中连接您的 WordPress 网站。连接后，一键将任何文章发布为草稿——包含精选图片。",
+      "tip": "为安全起见，请使用应用程序密码（而非您的登录密码）。"
+    },
+    "step4": {
+      "title": "积分与无限模式",
+      "body": "每次文章生成消耗 1 个积分。想要无限生成？在设置 → AI 模型中添加您自己的 OpenAI API 密钥——您的个人密钥将完全绕过积分系统。",
+      "tip": "您可以随时从购买积分页面充值积分。"
+    },
+    "step5": {
+      "title": "您已准备就绪！",
+      "body": "这就是您开始生成高质量 SEO 内容所需的一切。前往仪表盘写下您的第一篇文章——只需几秒钟。"
     }
   },
   "errors": {
@@ -379,88 +687,59 @@
     "goHome": "前往仪表盘",
     "networkError": "网络错误，请检查您的连接。",
     "noCredits": "您的积分已用完。请购买更多积分或在设置中添加您自己的 API 密钥。",
-    "stripeNotConfigured": "Stripe is not configured by the administrator yet.",
-    "serverError": "Something went wrong"
+    "stripeNotConfigured": "管理员尚未配置 Stripe。",
+    "serverError": "发生了一些错误"
   },
-  "onboarding": {
-    "skip": "Skip tutorial",
-    "stepCounter": "Step {{current}} of {{total}}",
-    "tipLabel": "Tip:",
-    "getStarted": "Get started",
-    "step1": {
-      "title": "Generate articles in seconds",
-      "body": "Enter any keyword and let the AI write a complete, SEO-optimized article for you — title, meta description, structured content, and keyword suggestions included.",
-      "tip": "Try starting with a long-tail keyword like 'best CRM for small business 2025'."
-    },
-    "step2": {
-      "title": "Beautiful cover images",
-      "body": "Add a professional cover image to your articles with one click. You can upload your own, generate one with DALL-E 3 AI, or pick a free photo from Unsplash.",
-      "tip": "DALL-E 3 cover generation uses 1 extra credit per image."
-    },
-    "step3": {
-      "title": "Publish directly to WordPress",
-      "body": "Connect your WordPress site in Settings → Content Preferences. Once connected, publish any article as a draft with one click — featured image included.",
-      "tip": "Use an Application Password (not your login password) for security."
-    },
-    "step4": {
-      "title": "Credits & unlimited mode",
-      "body": "Each article generation uses 1 credit. Want unlimited generations? Add your own OpenAI API key in Settings → AI Model — your personal key bypasses the credit system entirely.",
-      "tip": "You can top up credits anytime from the Buy Credits page."
-    },
-    "step5": {
-      "title": "You're all set!",
-      "body": "That's everything you need to start generating high-quality SEO content. Head to the Dashboard and write your first article — it only takes seconds."
-    }
+  "pricingPage": {
+    "subtitle": "选择最适合您内容需求的套餐。无隐藏费用，随时可取消。",
+    "subscribeNow": "立即订阅",
+    "subscribeError": "启动订阅流程失败。",
+    "secureCheckout": "安全结账"
   },
-  "buyCredits": {
-    "title": "Choose your",
-    "titleHighlight": "plan",
-    "topUp": "Top Up Credits",
-    "subtitle": "Each credit = one complete AI article (title + meta + full content + keywords).",
-    "oneTime": "one-time",
-    "generations": "AI article generations",
-    "features": {
-      "seo": "Full SEO content + keywords",
-      "wordpress": "WordPress direct publish",
-      "priority": "Priority queue"
-    },
-    "buy": "Buy {{name}}",
-    "secured": "Payments are processed securely via Stripe. Credits are added instantly after payment confirmation.",
-    "modal": {
-      "title": "Secure payment",
-      "orderSummary": "{{name}} Plan",
-      "orderSubtitle": "{{credits}} AI article generations",
-      "pay": "Pay {{amount}}",
-      "processing": "Processing...",
-      "success": "Payment confirmed!",
-      "successSubtitle": "{{credits}} credits are being added to your account...",
-      "cancel": "Cancel",
-      "secured": "Secured by Stripe · Card data never touches our servers"
-    },
-    "success": "Credits added to your account!"
+  "internalLinking": {
+    "contentAnalysis": "内容分析",
+    "articleContent": "文章内容",
+    "articleContentPlaceholder": "请在此粘贴您的文章内容...",
+    "knownUrls": "已知目标网址",
+    "knownUrlsHint": "输入您网站的目标网址，使用逗号或换行符分隔每个网址。",
+    "knownUrlsPlaceholder": "https://mysite.com/about\nhttps://mysite.com/contact, https://mysite.com/pricing",
+    "analyze": "分析并建议链接",
+    "emptyTitle": "暂无分析结果",
+    "emptyBody": "粘贴您的文章并添加目标网址，即可启动 AI 语义锚文本分析。",
+    "loadingText": "AI 正在分析上下文...",
+    "errorTitle": "链接分析失败",
+    "genericError": "由于服务器技术错误，无法生成链接。",
+    "noResultsTitle": "未找到链接",
+    "noResultsBody": "我们未能在内容中为所提供的网址找到语义锚点机会。请尝试调整关键词或目标网址。",
+    "suggestions": "建议（{{count}}）",
+    "relevance": "相关度：{{score}}%",
+    "copyAnchor": "复制 HTML 锚文本",
+    "copied": "已复制！",
+    "anchorText": "锚文本",
+    "targetUrl": "目标网址",
+    "contextSnippet": "上下文片段",
+    "emptyContentError": "请输入文章内容",
+    "generateSuccess": "内部链接生成成功！",
+    "generateError": "链接分析失败"
   },
-  "admin": {
-    "dashboard": {
-      "title": "Admin Dashboard",
-      "users": "Total Users",
-      "articles": "Total Articles",
-      "revenue": "Revenue",
-      "activeSubscriptions": "Active Subscriptions"
-    },
-    "users": {
-      "title": "User Management",
-      "search": "Search users...",
-      "name": "Name",
-      "email": "Email",
-      "role": "Role",
-      "credits": "Credits",
-      "plan": "Plan",
-      "joined": "Joined",
-      "actions": "Actions",
-      "editCredits": "Edit credits",
-      "deleteUser": "Delete user",
-      "creditsUpdated": "Credits updated!",
-      "userDeleted": "User deleted."
-    }
+  "unsplashPicker": {
+    "title": "Unsplash 图片选择器",
+    "searchPlaceholder": "搜索图片（例如：SEO、营销、科技）…",
+    "search": "搜索",
+    "emptyState": "搜索图片以开始",
+    "usePhoto": "使用这张图片",
+    "loadMore": "加载更多",
+    "providedBy": "图片提供方：",
+    "searchError": "搜索 Unsplash 失败。",
+    "loadMoreError": "加载更多图片失败。",
+    "selectError": "设置封面图片失败。"
+  },
+  "cookieBanner": {
+    "ariaLabel": "Cookie 同意",
+    "title": "我们使用 Cookie",
+    "bodyBefore": "我们使用必要的 Cookie 进行身份验证。可选的分析 Cookie 可帮助我们改进平台。详见我们的",
+    "bodyAfter": "。",
+    "essentialOnly": "仅必要项",
+    "acceptAll": "全部接受"
   }
 }

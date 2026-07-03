@@ -1,6 +1,11 @@
 import mongoose from 'mongoose';
 
 const imageSchema = new mongoose.Schema({
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    index: true,
+  },
   url: {
     type: String,
     default: ''

@@ -46,7 +46,9 @@ export const updateSettingsSchema = z.object({
   preferredModel: z.string().max(100).optional(),
   defaultLanguage: z.enum(['English', 'French', 'Spanish', 'Arabic', 'Italian', 'Chinese']).optional(),
   defaultTone: z.enum(['Professional', 'Informative', 'Conversational', 'Persuasive', 'Creative']).optional(),
-  wpUrl: z.string().max(500).optional(),
+  wpUrl: z.string().max(500).trim()
+    .regex(/^(https?:\/\/)?[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?)+(?::\d{1,5})?(?:\/.*)?$/, 'Must be a valid domain or URL')
+    .optional().or(z.literal('')),
   wpUsername: z.string().max(255).optional(),
   wpApplicationPassword: z.string().max(500).optional(),
   systemSettings: z.object({

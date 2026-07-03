@@ -28,6 +28,78 @@ export const generateArticle = async (req, res) => {
       return res.status(404).json({ error: 'Authenticated user not found' });
     }
 
+    // DEMO_MODE: return a pre-generated article without any external API call
+    if (process.env.DEMO_MODE === 'true') {
+      const demoContent = [
+        `# The Complete Guide to ${keyword} in 2025`,
+        '',
+        '## Introduction',
+        '',
+        `In today's competitive digital landscape, understanding **${keyword}** is more important than ever. This guide covers everything you need to succeed.`,
+        '',
+        `## Why ${keyword} Matters`,
+        '',
+        `Millions of searches happen daily around **${keyword}**. Businesses and creators who master this topic gain a significant competitive edge over their rivals.`,
+        '',
+        '## Key Strategies for Success',
+        '',
+        '### 1. Research and Planning',
+        '',
+        `Before diving into **${keyword}**, invest time in thorough research. Understand your audience's pain points and search intent.`,
+        '',
+        '### 2. High-Quality Content Creation',
+        '',
+        'Focus on E-E-A-T (Experience, Expertise, Authoritativeness, Trustworthiness). Create content that genuinely helps your readers solve their problems.',
+        '',
+        '### 3. Technical Optimization',
+        '',
+        'Ensure proper heading structure (H1 → H2 → H3), optimal keyword density, fast page load, and mobile-first design.',
+        '',
+        '### 4. Measure and Iterate',
+        '',
+        'Track rankings, organic traffic, and conversions. Use real data to refine your approach continuously.',
+        '',
+        '## Best Practices',
+        '',
+        `- **Keyword placement**: Use **${keyword}** naturally in the title, intro, and throughout`,
+        '- **User intent**: Match content format to what searchers actually want',
+        '- **Internal linking**: Connect related pages to build topical authority',
+        '- **Multimedia**: Images and videos boost engagement and dwell time',
+        '',
+        '## Common Mistakes to Avoid',
+        '',
+        '1. Keyword stuffing — always prioritise readability over density',
+        '2. Ignoring search intent — understand the "why" behind every query',
+        '3. Skipping meta descriptions — they directly impact click-through rates',
+        '4. Neglecting mobile — over 60 % of searches happen on mobile devices',
+        '',
+        '## Conclusion',
+        '',
+        `Mastering **${keyword}** requires consistent effort and a data-driven approach. Apply these strategies today and track your progress — SEO is a marathon, but results compound over time.`,
+      ].join('\n');
+
+      const demoArticle = new Article({
+        user: user._id,
+        keyword,
+        title: `The Complete Guide to ${keyword} in 2025`,
+        metaDescription: `Discover everything about ${keyword}. Expert tips, strategies, and best practices to help you achieve top rankings in 2025.`,
+        content: demoContent,
+        suggestedKeywords: [
+          `best ${keyword} strategies`,
+          `how to improve ${keyword}`,
+          `${keyword} tips for beginners`,
+          `${keyword} best practices 2025`,
+          `${keyword} complete guide`,
+          `${keyword} tools and resources`,
+          `${keyword} for small business`,
+          `${keyword} ROI`,
+        ],
+      });
+
+      await demoArticle.save();
+      return res.status(200).json({ success: true, data: demoArticle, demo: true });
+    }
+
     let openai, model, isUserKey, language, tone;
     try {
       ({ openai, model, isUserKey, language, tone } = await getOpenAIClientAndModel(user));
@@ -485,6 +557,7 @@ export const setCoverImage = async (req, res) => {
     const uploadResult = await ImageService.uploadImage(req.file, 'articles');
 
     const imageDoc = await Image.create({
+      user: req.user.id,
       url: '',
       path: uploadResult.path,
       filename: uploadResult.filename,
@@ -540,6 +613,72 @@ export const streamArticle = async (req, res) => {
 
   if (!isUserKey && user.credits <= 0) {
     return res.status(403).json({ error: 'You have run out of credits. Please configure your own API key in Settings or contact support.' });
+  }
+
+  // DEMO_MODE: stream a pre-built article without any external API call
+  if (process.env.DEMO_MODE === 'true') {
+    res.setHeader('Content-Type', 'text/event-stream');
+    res.setHeader('Cache-Control', 'no-cache');
+    res.setHeader('Connection', 'keep-alive');
+    res.flushHeaders();
+    const send = (obj) => res.write(`data: ${JSON.stringify(obj)}\n\n`);
+
+    const demoTitle = `The Complete Guide to ${keyword} in 2025`;
+    const demaMeta = `Discover everything about ${keyword}. Expert tips, strategies, and best practices to help you achieve top rankings in 2025.`;
+    const demoLines = [
+      `# The Complete Guide to ${keyword} in 2025`, '',
+      '## Introduction', '',
+      `In today's competitive digital landscape, understanding **${keyword}** is more important than ever. This guide covers everything you need to succeed.`, '',
+      `## Why ${keyword} Matters`, '',
+      `Millions of searches happen daily around **${keyword}**. Businesses and creators who master this topic gain a significant competitive edge over their rivals.`, '',
+      '## Key Strategies for Success', '',
+      '### 1. Research and Planning', '',
+      `Before diving into **${keyword}**, invest time in thorough research. Understand your audience's pain points and search intent.`, '',
+      '### 2. High-Quality Content Creation', '',
+      'Focus on E-E-A-T (Experience, Expertise, Authoritativeness, Trustworthiness). Create content that genuinely helps your readers solve their problems.', '',
+      '### 3. Technical Optimization', '',
+      'Ensure proper heading structure (H1 → H2 → H3), optimal keyword density, fast page load, and mobile-first design.', '',
+      '### 4. Measure and Iterate', '',
+      'Track rankings, organic traffic, and conversions. Use real data to refine your approach continuously.', '',
+      '## Best Practices', '',
+      `- **Keyword placement**: Use **${keyword}** naturally in the title, intro, and throughout`,
+      '- **User intent**: Match content format to what searchers actually want',
+      '- **Internal linking**: Connect related pages to build topical authority',
+      '- **Multimedia**: Images and videos boost engagement and dwell time', '',
+      '## Common Mistakes to Avoid', '',
+      '1. Keyword stuffing — always prioritise readability over density',
+      '2. Ignoring search intent — understand the "why" behind every query',
+      '3. Skipping meta descriptions — they directly impact click-through rates',
+      '4. Neglecting mobile — over 60 % of searches happen on mobile devices', '',
+      '## Conclusion', '',
+      `Mastering **${keyword}** requires consistent effort and a data-driven approach. Apply these strategies today and track your progress — SEO is a marathon, but results compound over time.`,
+    ];
+    const demoContent = demoLines.join('\n');
+
+    send({ type: 'status', step: 'meta' });
+    send({ type: 'meta', title: demoTitle, metaDescription: demaMeta });
+    send({ type: 'status', step: 'content' });
+    for (const line of demoLines) {
+      send({ type: 'delta', delta: line + '\n' });
+    }
+    send({ type: 'status', step: 'keywords' });
+    send({ type: 'status', step: 'saving' });
+    const demoArticle = await Article.create({
+      user: user._id,
+      keyword,
+      title: demoTitle,
+      metaDescription: demaMeta,
+      content: demoContent,
+      suggestedKeywords: [
+        `best ${keyword} strategies`, `how to improve ${keyword}`,
+        `${keyword} tips for beginners`, `${keyword} best practices 2025`,
+        `${keyword} complete guide`, `${keyword} tools and resources`,
+        `${keyword} for small business`, `${keyword} ROI`,
+      ],
+    });
+    send({ type: 'done', data: demoArticle });
+    res.end();
+    return;
   }
 
   // Switch to SSE

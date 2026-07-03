@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Check, Minus, Loader2, Sparkles, Zap, Shield, Crown, X, ArrowLeft } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import { Check, Minus, Loader2, Sparkles, Zap, Shield, Crown, X } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 import { motion } from 'framer-motion';
 import { loadStripe } from '@stripe/stripe-js';
@@ -9,49 +10,24 @@ import DashboardLayout from '../components/DashboardLayout';
 import { useAuth } from '../context/AuthContext';
 import api from '../lib/api';
 
-const plans = [
-  {
-    id: import.meta.env.VITE_STRIPE_PRICE_STARTER,
-    name: 'Starter',
-    icon: Shield,
-    price: '$9',
-    period: '/month',
-    description: 'Perfect for testing and small blogs.',
-    features: ['20 Articles per month', 'Standard AI Model', 'Basic Support', 'No WordPress Auto-Publish'],
-    color: 'text-blue-500 dark:text-blue-400',
-    bg: 'bg-blue-50 dark:bg-blue-900/30',
-  },
-  {
-    id: import.meta.env.VITE_STRIPE_PRICE_GROWTH,
-    name: 'Growth',
-    icon: Zap,
-    price: '$29',
-    period: '/month',
-    description: 'Best for growing content creators.',
-    features: ['100 Articles per month', 'Premium AI Models (GPT-4o)', 'WordPress Auto-Publish', 'Priority Support'],
-    color: 'text-primary-500 dark:text-primary-400',
-    bg: 'bg-primary-50 dark:bg-primary-900/30',
-    popular: true,
-  },
-  {
-    id: import.meta.env.VITE_STRIPE_PRICE_PRO,
-    name: 'Pro',
-    icon: Crown,
-    price: '$99',
-    period: '/month',
-    description: 'For agencies and high-volume publishers.',
-    features: ['500 Articles per month', 'All Premium Models', 'Multi-site Auto-Publish', '24/7 Dedicated Support', 'Custom AI Prompts'],
-    color: 'text-amber-500 dark:text-amber-400',
-    bg: 'bg-amber-50 dark:bg-amber-900/30',
-  }
+// Presentation-only metadata, merged by index with the translated plan
+// content from locales/*/translation.json → landing.pricing.plans
+const PLAN_META = [
+  { id: import.meta.env.VITE_STRIPE_PRICE_STARTER, icon: Shield, color: 'text-blue-500 dark:text-blue-400', bg: 'bg-blue-50 dark:bg-blue-900/30' },
+  { id: import.meta.env.VITE_STRIPE_PRICE_GROWTH,  icon: Zap,    color: 'text-primary-500 dark:text-primary-400', bg: 'bg-primary-50 dark:bg-primary-900/30' },
+  { id: import.meta.env.VITE_STRIPE_PRICE_PRO,     icon: Crown,  color: 'text-amber-500 dark:text-amber-400', bg: 'bg-amber-50 dark:bg-amber-900/30' },
 ];
 
 export default function Pricing() {
+  const { t } = useTranslation();
   const [loadingId, setLoadingId] = useState(null);
   const [stripePromise, setStripePromise] = useState(null);
   const [checkoutClientSecret, setCheckoutClientSecret] = useState('');
   const navigate = useNavigate();
   const { user } = useAuth();
+
+  const planItems = t('landing.pricing.plans', { returnObjects: true });
+  const plans = planItems.map((p, i) => ({ ...p, ...PLAN_META[i] }));
 
   useEffect(() => {
     api.get('/stripe/config')
@@ -69,7 +45,7 @@ export default function Pricing() {
       return;
     }
     if (!planId) {
-      toast.error('Stripe is not configured yet. Set VITE_STRIPE_PRICE_* in your frontend .env file.');
+      toast.error(t('errors.stripeNotConfigured'));
       return;
     }
     setLoadingId(planId);
@@ -79,7 +55,7 @@ export default function Pricing() {
         setCheckoutClientSecret(res.data.clientSecret);
       }
     } catch (error) {
-      toast.error(error.response?.data?.error || 'Failed to start subscription process.');
+      toast.error(error.response?.data?.error || t('pricingPage.subscribeError'));
     } finally {
       setLoadingId(null);
     }
@@ -95,10 +71,10 @@ export default function Pricing() {
         <div className="text-center mb-16">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
             <h1 className="text-4xl md:text-5xl font-black text-gray-900 dark:text-white tracking-tight mb-4">
-              Simple, transparent pricing
+              {t('landing.pricing.title')}
             </h1>
             <p className="text-lg text-gray-500 dark:text-gray-400 max-w-2xl mx-auto">
-              Choose the plan that best fits your content needs. No hidden fees. Cancel anytime.
+              {t('pricingPage.subtitle')}
             </p>
           </motion.div>
         </div>
@@ -117,7 +93,7 @@ export default function Pricing() {
                 {plan.popular && (
                   <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2">
                     <span className="bg-primary-500 text-white text-xs font-bold uppercase tracking-wider py-1 px-3 rounded-full flex items-center gap-1 shadow-lg">
-                      <Sparkles className="w-3 h-3" /> Most Popular
+                      <Sparkles className="w-3 h-3" /> {t('landing.pricing.mostPopular')}
                     </span>
                   </div>
                 )}
@@ -127,7 +103,7 @@ export default function Pricing() {
                 </div>
 
                 <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">{plan.name}</h3>
-                <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">{plan.description}</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">{plan.desc}</p>
 
                 <div className="mb-8">
                   <span className="text-4xl font-black text-gray-900 dark:text-white">{plan.price}</span>
@@ -135,23 +111,26 @@ export default function Pricing() {
                 </div>
 
                 <ul className="space-y-4 mb-8 flex-1">
-                  {plan.features.map((feature, i) => {
-                    const isExcluded = feature.startsWith('No ');
-                    return (
-                      <li key={i} className="flex items-start gap-3">
-                        <div className={`mt-0.5 w-5 h-5 rounded-full flex items-center justify-center shrink-0 ${isExcluded ? 'bg-gray-100 dark:bg-gray-800' : 'bg-emerald-50 dark:bg-emerald-900/30'}`}>
-                          {isExcluded ? (
-                            <Minus className="w-3 h-3 text-gray-400 font-bold" />
-                          ) : (
-                            <Check className="w-3 h-3 text-emerald-500 font-bold" />
-                          )}
-                        </div>
-                        <span className={`text-sm font-medium ${isExcluded ? 'text-gray-400 dark:text-gray-500 line-through' : 'text-gray-700 dark:text-gray-300'}`}>
-                          {isExcluded ? feature.replace('No ', '') : feature}
-                        </span>
-                      </li>
-                    );
-                  })}
+                  {plan.features.map((feature, i) => (
+                    <li key={`f-${i}`} className="flex items-start gap-3">
+                      <div className="mt-0.5 w-5 h-5 rounded-full flex items-center justify-center shrink-0 bg-emerald-50 dark:bg-emerald-900/30">
+                        <Check className="w-3 h-3 text-emerald-500 font-bold" />
+                      </div>
+                      <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                        {feature}
+                      </span>
+                    </li>
+                  ))}
+                  {plan.excluded.map((feature, i) => (
+                    <li key={`x-${i}`} className="flex items-start gap-3">
+                      <div className="mt-0.5 w-5 h-5 rounded-full flex items-center justify-center shrink-0 bg-gray-100 dark:bg-gray-800">
+                        <Minus className="w-3 h-3 text-gray-400 font-bold" />
+                      </div>
+                      <span className="text-sm font-medium text-gray-400 dark:text-gray-500 line-through">
+                        {feature}
+                      </span>
+                    </li>
+                  ))}
                 </ul>
 
                 <button
@@ -166,7 +145,7 @@ export default function Pricing() {
                   {loadingId === plan.id ? (
                     <Loader2 className="w-5 h-5 animate-spin" />
                   ) : (
-                    'Subscribe Now'
+                    t('pricingPage.subscribeNow')
                   )}
                 </button>
               </motion.div>
@@ -179,7 +158,7 @@ export default function Pricing() {
           <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 bg-black/60 backdrop-blur-sm animate-fade-in">
             <div className="bg-white dark:bg-gray-900 w-full max-w-3xl rounded-2xl shadow-2xl overflow-hidden relative flex flex-col max-h-[90vh]">
               <div className="flex items-center justify-between p-4 border-b border-gray-100 dark:border-gray-800">
-                <h3 className="text-lg font-bold text-gray-900 dark:text-white">Secure Checkout</h3>
+                <h3 className="text-lg font-bold text-gray-900 dark:text-white">{t('pricingPage.secureCheckout')}</h3>
                 <button 
                   onClick={() => setCheckoutClientSecret('')}
                   className="p-2 text-gray-400 hover:text-gray-900 dark:hover:text-white bg-gray-100 dark:bg-gray-800 rounded-full transition-colors"
@@ -216,10 +195,10 @@ export default function Pricing() {
             </Link>
             <div className="flex items-center gap-3">
               <Link to="/login" className="text-sm font-bold text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">
-                Login
+                {t('landing.footer.login')}
               </Link>
               <Link to="/register" className="btn-primary text-sm px-5 py-2.5">
-                Get started free
+                {t('cta.getStartedFree')}
               </Link>
             </div>
           </div>
@@ -228,9 +207,9 @@ export default function Pricing() {
           {pricingContent}
         </div>
         <footer className="border-t border-gray-100 dark:border-gray-800 py-6 text-center text-sm text-gray-400 dark:text-gray-500">
-          © 2026 SEO Gen AI. All rights reserved. ·{' '}
-          <Link to="/privacy" className="hover:text-primary-600 transition-colors">Privacy</Link> ·{' '}
-          <Link to="/terms" className="hover:text-primary-600 transition-colors">Terms</Link>
+          {t('landing.footer.copyright')} ·{' '}
+          <Link to="/privacy" className="hover:text-primary-600 transition-colors">{t('landing.footer.privacy')}</Link> ·{' '}
+          <Link to="/terms" className="hover:text-primary-600 transition-colors">{t('landing.footer.terms')}</Link>
         </footer>
       </div>
     );

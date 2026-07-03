@@ -74,6 +74,7 @@ export const generateAICover = async (req, res) => {
     const uploadResult = await ImageService.uploadImage(mockFile, 'ai-covers');
 
     const imageDoc = await Image.create({
+      user: req.user.id,
       url: '',
       path: uploadResult.path,
       filename: uploadResult.filename,

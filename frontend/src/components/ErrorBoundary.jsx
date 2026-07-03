@@ -20,12 +20,12 @@ export default class ErrorBoundary extends React.Component {
       return (
         <div className="min-h-screen flex items-center justify-center bg-background px-6">
           <div className="text-center space-y-6 max-w-md">
-            <div className="w-20 h-20 bg-red-50 rounded-3xl flex items-center justify-center mx-auto">
+            <div className="w-20 h-20 bg-red-50 dark:bg-red-900/30 rounded-3xl flex items-center justify-center mx-auto">
               <AlertTriangle className="w-10 h-10 text-red-500" />
             </div>
             <div className="space-y-2">
-              <h1 className="text-2xl font-black text-gray-900">Something went wrong</h1>
-              <p className="text-gray-500 text-sm">
+              <h1 className="text-2xl font-black text-gray-900 dark:text-white">Something went wrong</h1>
+              <p className="text-gray-500 dark:text-gray-400 text-sm">
                 An unexpected error occurred. Please refresh the page or contact support if the problem persists.
               </p>
             </div>

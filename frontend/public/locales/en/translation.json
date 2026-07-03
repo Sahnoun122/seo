@@ -17,13 +17,16 @@
     "or": "or",
     "error": "An error occurred. Please try again.",
     "success": "Operation successful.",
+    "dismiss": "Dismiss",
     "copied": "Copied!",
     "copy": "Copy",
     "export": "Export",
     "generate": "Generate",
     "generating": "Generating...",
     "upgrade": "Upgrade Plan",
-    "tryFree": "Try free"
+    "tryFree": "Try free",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu"
   },
   "nav": {
     "dashboard": "Dashboard",
@@ -51,9 +54,12 @@
     },
     "hero": {
       "badge": "AI-Powered SEO Platform",
-      "title": "Generate SEO content",
-      "titleHighlight": "in seconds.",
-      "subtitle": "One keyword → full article, meta description, and keyword strategy. Publish directly to WordPress.",
+      "poweredBy": "Powered by GPT-4o, DeepSeek & Groq",
+      "title": "Generate articles that",
+      "titleHighlight": "actually rank.",
+      "subtitle": "Stop wasting hours on content creation. SEO Gen AI generates highly-optimized, structured, and engaging articles in seconds — then publishes them directly to WordPress.",
+      "ctaPrimary": "Start for free",
+      "ctaFeatures": "See features",
       "cta": "Start generating for free",
       "ctaSecondary": "View demo",
       "trustedBy": "Trusted by 5,000+ content creators"
@@ -62,42 +68,190 @@
       "articles": "5,000+ articles generated",
       "languages": "6 languages supported",
       "models": "4+ AI models",
-      "uptime": "99.9% uptime"
+      "uptime": "99.9% uptime",
+      "items": [
+        { "value": "5,000+", "label": "Articles Generated" },
+        { "value": "6",      "label": "Languages Supported" },
+        { "value": "4+",     "label": "AI Models" },
+        { "value": "99.9%",  "label": "Uptime" }
+      ]
     },
     "features": {
       "title": "Everything you need to dominate SEO",
-      "subtitle": "From keyword research to WordPress publishing — all in one platform."
+      "subtitle": "From keyword research to WordPress publishing — all in one platform.",
+      "badge": "Everything you need",
+      "sectionTitle": "Scale your content engine",
+      "sectionSubtitle": "Built specifically for SEOs, agencies, and niche site builders who need results, not just words.",
+      "items": [
+        {
+          "title": "Multi-Model AI Engine",
+          "desc": "Switch between GPT-4o, DeepSeek, Groq, and OpenRouter. Always use the best model for each task."
+        },
+        {
+          "title": "SEO-Perfect Structure",
+          "desc": "Every article ships with H1/H2/H3 hierarchy, optimal keyword density, and a semantic keyword cluster."
+        },
+        {
+          "title": "1-Click WordPress",
+          "desc": "Push generated drafts with featured images directly to any WordPress site via the REST API."
+        },
+        {
+          "title": "AI & Unsplash Images",
+          "desc": "Generate cover art with DALL-E 3 or search millions of free Unsplash photos — all without leaving the app."
+        },
+        {
+          "title": "Internal Linking Assistant",
+          "desc": "Upload your sitemap and get smart internal link suggestions injected directly into your article."
+        },
+        {
+          "title": "6 Languages Built-In",
+          "desc": "Full UI in English, French, Spanish, Arabic (RTL), Italian, and Chinese — no plugin required."
+        }
+      ]
     },
     "howItWorks": {
       "title": "3 steps to SEO content",
-      "subtitle": "From keyword to published article in under 60 seconds."
+      "subtitle": "From keyword to published article in under 60 seconds.",
+      "badge": "From keyword to article in 30 seconds",
+      "sectionTitle": "How it works",
+      "sectionSubtitle": "Three steps. No learning curve. Full article ready to publish.",
+      "items": [
+        {
+          "num": "01",
+          "title": "Enter your keyword",
+          "desc": "Type any keyword or topic. Choose your AI model, language, and article length."
+        },
+        {
+          "num": "02",
+          "title": "Watch it generate live",
+          "desc": "See your article appear in real time via streaming — title, meta, full content, and keyword cluster."
+        },
+        {
+          "num": "03",
+          "title": "Publish or export",
+          "desc": "Copy as Markdown or HTML, generate a PDF, or push directly to WordPress with one click."
+        }
+      ]
     },
     "pricing": {
       "title": "Simple, transparent pricing",
       "subtitle": "Start free. Upgrade when you need more.",
       "monthly": "monthly",
       "getStarted": "Get started",
-      "mostPopular": "Most Popular"
+      "mostPopular": "Most Popular",
+      "badge": "Simple pricing",
+      "sectionTitle": "Plans for every team",
+      "sectionSubtitle": "No hidden fees. No credit card required to start. Cancel anytime.",
+      "freeTrial": "All plans include a 5-credit free trial. No credit card required.",
+      "getStartedFree": "Get started free",
+      "plans": [
+        {
+          "name": "Starter",
+          "price": "$9",
+          "period": "/month",
+          "desc": "Perfect for small blogs and solo creators.",
+          "popular": false,
+          "features": ["20 articles per month", "Standard AI model", "Markdown & HTML export"],
+          "excluded": ["WordPress auto-publish"]
+        },
+        {
+          "name": "Growth",
+          "price": "$29",
+          "period": "/month",
+          "desc": "Best for growing content creators and agencies.",
+          "popular": true,
+          "features": ["100 articles per month", "GPT-4o & premium models", "WordPress 1-click publish", "Priority support"],
+          "excluded": []
+        },
+        {
+          "name": "Pro",
+          "price": "$99",
+          "period": "/month",
+          "desc": "For agencies and high-volume publishers.",
+          "popular": false,
+          "features": ["500 articles per month", "All premium AI models", "Multi-site WordPress", "Custom AI prompts", "24/7 dedicated support"],
+          "excluded": []
+        }
+      ]
     },
     "testimonials": {
       "title": "Loved by content creators",
-      "subtitle": "Join thousands of creators who publish faster with SEO Gen AI."
+      "subtitle": "Join thousands of creators who publish faster with SEO Gen AI.",
+      "sectionTitle": "Loved by SEO professionals",
+      "sectionSubtitle": "Join thousands of creators building their organic traffic engine on autopilot.",
+      "disclaimer": "* Illustrative reviews.",
+      "items": [
+        {
+          "name": "Sarah Mitchell",
+          "role": "Content Director @ ScaleUp Agency",
+          "avatar": "SM",
+          "text": "We replaced 3 freelance writers with SEO Gen AI. Output quality is on par and we produce 10× more content. The WordPress integration alone saves us 2 hours a day."
+        },
+        {
+          "name": "James Okafor",
+          "role": "Niche Site Builder",
+          "avatar": "JO",
+          "text": "I have 14 niche sites. SEO Gen AI lets me publish 5 articles a day across all of them. Rankings improved within the first 60 days. The keyword cluster feature is a game-changer."
+        },
+        {
+          "name": "Léa Fontaine",
+          "role": "SEO Consultant, Paris",
+          "avatar": "LF",
+          "text": "The French output is impeccable — better than tools costing 3× the price. The internal linking assistant saves me a ton of manual work on every project."
+        }
+      ]
     },
     "faq": {
-      "title": "Frequently Asked Questions"
+      "title": "Frequently Asked Questions",
+      "sectionTitle": "Frequently asked questions",
+      "sectionSubtitle": "Everything you need to know. Can't find your answer?",
+      "contactUs": "Contact us.",
+      "items": [
+        {
+          "q": "Which AI models are supported?",
+          "a": "SEO Gen AI supports GPT-4o (OpenAI), DeepSeek, Groq (Llama 3), and OpenRouter. You can provide your own API key for unlimited generation or use the shared credits pool."
+        },
+        {
+          "q": "Can I use my own OpenAI API key?",
+          "a": "Yes. Add your personal API key in Settings → AI Configuration. This unlocks unlimited generations and bypasses the credit system entirely."
+        },
+        {
+          "q": "How does the WordPress integration work?",
+          "a": "Add your WordPress site URL, username, and application password in Settings. Then hit \"Publish to WordPress\" from any generated article. The post is created as a draft with the featured image attached."
+        },
+        {
+          "q": "Is there a free trial?",
+          "a": "Every new account receives 5 free credits to generate your first articles — no credit card required. Upgrade anytime to a paid plan for more capacity."
+        },
+        {
+          "q": "Can I cancel my subscription at any time?",
+          "a": "Absolutely. Cancel from your account settings. You keep access until the end of your billing period and will never be charged again."
+        }
+      ]
     },
     "cta": {
       "title": "Ready to generate your first article?",
       "subtitle": "Join 5,000+ content creators who ship SEO content in seconds.",
-      "button": "Start for free — no credit card required"
+      "button": "Start for free — no credit card required",
+      "badge": "Start generating in 30 seconds",
+      "sectionTitle": "Ready to dominate the SERPs?",
+      "sectionSubtitle": "Join thousands of creators building their organic traffic engine on autopilot. No credit card required.",
+      "getStartedFree": "Get started free",
+      "freeArticles": "5 free articles included with every new account"
     },
     "footer": {
-      "tagline": "AI-powered SEO article generation for modern content teams.",
+      "tagline": "AI-powered SEO content generation platform.",
       "product": "Product",
+      "account": "Account",
       "legal": "Legal",
       "privacy": "Privacy Policy",
       "terms": "Terms of Service",
-      "rights": "All rights reserved."
+      "rights": "All rights reserved.",
+      "signUpFree": "Sign up free",
+      "login": "Login",
+      "register": "Register",
+      "forgotPassword": "Forgot password",
+      "copyright": "© 2026 SEO Gen AI. All rights reserved."
     }
   },
   "auth": {
@@ -164,15 +318,36 @@
       "backToLogin": "Back to login",
       "sent": "Check your inbox",
       "sentSubtitle": "We sent a password reset link to {{email}}.",
+      "expiresIn": "The link expires in 1 hour.",
+      "notReceived": "Didn't receive it? Check your spam folder or resend.",
+      "rememberPassword": "Remember your password?",
       "resend": "Resend email",
-      "resendCooldown": "Resend in {{seconds}}s"
+      "resendCooldown": "Resend in {{seconds}}s",
+      "sendError": "Failed to send reset email.",
+      "resendSuccess": "Reset link resent!",
+      "resendError": "Failed to resend."
     },
     "resetPassword": {
       "title": "Set a new password",
+      "subtitle": "Choose a strong password — at least 8 characters.",
       "password": "New Password",
+      "passwordPlaceholder": "Min 8 characters",
       "confirm": "Confirm Password",
+      "confirmPlaceholder": "Repeat password",
+      "mismatch": "Passwords do not match",
       "submit": "Reset Password",
-      "success": "Password updated! You can now sign in."
+      "success": "Password updated! You can now sign in.",
+      "successTitle": "Password updated!",
+      "redirecting": "Redirecting you to sign in…",
+      "expiredError": "Link expired. Please request a new one.",
+      "strength": {
+        "tooShort": "Too short",
+        "weak": "Weak",
+        "fair": "Fair",
+        "good": "Good",
+        "strong": "Strong",
+        "veryStrong": "Very strong"
+      }
     },
     "emailVerification": {
       "banner": "Please verify your email address to unlock all features.",
@@ -181,9 +356,13 @@
       "sending": "Sending...",
       "verifying": "Verifying your email...",
       "successTitle": "Email verified!",
-      "successMessage": "Your account is now fully activated.",
+      "successMessage": "Your account is now fully activated. You can start generating SEO articles.",
       "errorTitle": "Verification failed",
-      "goToDashboard": "Go to Dashboard"
+      "errorMessage": "Verification failed. The link may have expired.",
+      "goToDashboard": "Go to Dashboard",
+      "backToApp": "Back to App",
+      "resendSuccess": "Verification email sent! Check your inbox.",
+      "resendError": "Failed to send email."
     }
   },
   "dashboard": {
@@ -295,6 +474,7 @@
     "selectAll": "Select all",
     "deselectAll": "Deselect all",
     "selected": "{{count}} article(s) selected",
+    "bulkDeleteSuccess": "{{count}} article(s) deleted.",
     "deleteSelected": "Delete selected",
     "refine": {
       "title": "Modify with AI",
@@ -372,7 +552,31 @@
       "reactivate": "Reactivate Plan",
       "cancelled": "Plan cancelled.",
       "reactivated": "Plan reactivated!",
-      "managePlan": "Manage Plan"
+      "managePlan": "Manage Plan",
+      "loading": "Loading subscription…",
+      "noSubscription": "You don't have an active subscription.",
+      "viewPlans": "View Plans",
+      "status": {
+        "active": "Active",
+        "trialing": "Trialing",
+        "pastDue": "Past due",
+        "canceled": "Canceled"
+      },
+      "accessUntil": "Access until {{date}}",
+      "changePlanAction": "Change plan",
+      "changePlanTitle": "Change Plan",
+      "prorated": "Plan changes are prorated and charged immediately.",
+      "creditsPerMonth": "{{count}} credits/month",
+      "currentPlanBadge": "Current plan",
+      "cancelError": "Failed to cancel subscription.",
+      "reactivateError": "Failed to reactivate subscription.",
+      "planChanged": "Plan updated! Prorated charge applied.",
+      "planChangeError": "Failed to change plan.",
+      "cancelConfirmTitle": "Cancel your subscription?",
+      "cancelConfirmBody": "It will remain active until the end of the current billing period, then stop renewing.",
+      "keepSubscription": "Keep subscription",
+      "confirmCancel": "Yes, cancel",
+      "confirmCancel": "Cancel your subscription at the end of the current period?"
     },
     "danger": {
       "deleteAccount": "Delete Account",
@@ -418,18 +622,33 @@
     },
     "users": {
       "title": "User Management",
+      "subtitle": "Manage user access, AI credits, and platform-wide settings.",
+      "superAdminZone": "Super Admin Zone",
+      "listTitle": "Users List",
       "search": "Search users...",
+      "userColumn": "User",
       "name": "Name",
       "email": "Email",
       "role": "Role",
       "credits": "Credits",
+      "aiCredits": "AI Credits",
       "plan": "Plan",
       "joined": "Joined",
       "actions": "Actions",
+      "noResults": "No users found.",
       "editCredits": "Edit credits",
       "deleteUser": "Delete user",
+      "manageCredits": "Manage Credits",
+      "newBalance": "New Credit Balance",
+      "deleteConfirmTitle": "Delete this account?",
+      "deleteConfirmBodyPrefix": "You are about to permanently delete the account of",
+      "deleteConfirmBodySuffix": "This action cannot be undone.",
+      "yesDelete": "Yes, Delete",
       "creditsUpdated": "Credits updated!",
-      "userDeleted": "User deleted."
+      "userDeleted": "User deleted.",
+      "loadError": "Failed to load users",
+      "creditsUpdateError": "Failed to update credits",
+      "deleteError": "Failed to delete user"
     }
   },
   "onboarding": {
@@ -470,5 +689,57 @@
     "networkError": "Network error. Please check your connection.",
     "noCredits": "You have run out of credits. Please buy more or add your own API key in Settings.",
     "stripeNotConfigured": "Stripe is not configured by the administrator yet."
+  },
+  "pricingPage": {
+    "subtitle": "Choose the plan that best fits your content needs. No hidden fees. Cancel anytime.",
+    "subscribeNow": "Subscribe Now",
+    "subscribeError": "Failed to start subscription process.",
+    "secureCheckout": "Secure Checkout"
+  },
+  "internalLinking": {
+    "contentAnalysis": "Content Analysis",
+    "articleContent": "Article Content",
+    "articleContentPlaceholder": "Paste your article content here...",
+    "knownUrls": "Known Target URLs",
+    "knownUrlsHint": "Enter the target URLs of your website. Separate each URL using a comma or a new line.",
+    "knownUrlsPlaceholder": "https://mysite.com/about\nhttps://mysite.com/contact, https://mysite.com/pricing",
+    "analyze": "Analyze & Suggest Links",
+    "emptyTitle": "No Analysis Yet",
+    "emptyBody": "Paste your article and add target URLs to trigger AI-powered semantic anchor analysis.",
+    "loadingText": "AI is analyzing context...",
+    "errorTitle": "Linking Analysis Failed",
+    "genericError": "Failed to generate links due to a technical server error.",
+    "noResultsTitle": "No Links Found",
+    "noResultsBody": "We couldn't identify semantic anchor opportunities in the content for the provided URLs. Try adjusting the keywords or target URLs.",
+    "suggestions": "Suggestions ({{count}})",
+    "relevance": "Relevance: {{score}}%",
+    "copyAnchor": "Copy HTML Anchor",
+    "copied": "Copied!",
+    "anchorText": "Anchor Text",
+    "targetUrl": "Target URL",
+    "contextSnippet": "Context Snippet",
+    "emptyContentError": "Please enter article content",
+    "generateSuccess": "Internal links generated!",
+    "generateError": "Linking analysis failed"
+  },
+  "unsplashPicker": {
+    "title": "Unsplash Photo Picker",
+    "searchPlaceholder": "Search for a photo (e.g. SEO, marketing, technology)…",
+    "search": "Search",
+    "emptyState": "Search for a photo to get started",
+    "usePhoto": "Use this photo",
+    "loadMore": "Load more",
+    "providedBy": "Photos provided by",
+    "searchError": "Failed to search Unsplash.",
+    "loadMoreError": "Failed to load more photos.",
+    "selectError": "Failed to set cover image."
+  },
+  "cookieBanner": {
+    "ariaLabel": "Cookie consent",
+    "title": "We use cookies",
+    "bodyBefore": "We use essential cookies for authentication. Optional analytics cookies help us improve the platform. See our",
+    "bodyAfter": "for details.",
+    "essentialOnly": "Essential only",
+    "acceptAll": "Accept all"
   }
 }

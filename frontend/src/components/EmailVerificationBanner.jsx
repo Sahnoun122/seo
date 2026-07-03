@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { MailWarning, X, RefreshCw, CheckCircle2 } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 import { resendVerificationEmail } from '../lib/api';
@@ -6,6 +7,7 @@ import { useAuth } from '../context/AuthContext';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function EmailVerificationBanner() {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const [dismissed, setDismissed] = useState(false);
   const [sending, setSending] = useState(false);
@@ -19,9 +21,9 @@ export default function EmailVerificationBanner() {
     try {
       await resendVerificationEmail();
       setSent(true);
-      toast.success('Verification email sent! Check your inbox.');
+      toast.success(t('auth.emailVerification.resendSuccess'));
     } catch (err) {
-      toast.error(err.response?.data?.error || 'Failed to send email.');
+      toast.error(err.response?.data?.error || t('auth.emailVerification.resendError'));
     } finally {
       setSending(false);
     }
@@ -38,7 +40,7 @@ export default function EmailVerificationBanner() {
         <div className="max-w-7xl mx-auto px-4 py-2.5 flex items-center gap-3">
           <MailWarning className="w-4 h-4 text-amber-600 shrink-0" />
           <p className="text-xs font-semibold text-amber-800 flex-1 leading-snug">
-            Please verify your email address to unlock all features.
+            {t('auth.emailVerification.banner')}
           </p>
           <button
             onClick={handleResend}
@@ -48,19 +50,19 @@ export default function EmailVerificationBanner() {
             {sent ? (
               <>
                 <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-                <span className="text-emerald-700">Sent!</span>
+                <span className="text-emerald-700">{t('auth.emailVerification.sent')}</span>
               </>
             ) : (
               <>
                 <RefreshCw className={`w-3.5 h-3.5 ${sending ? 'animate-spin' : ''}`} />
-                {sending ? 'Sending…' : 'Resend link'}
+                {sending ? t('auth.emailVerification.sending') : t('auth.emailVerification.resend')}
               </>
             )}
           </button>
           <button
             onClick={() => setDismissed(true)}
             className="p-1 rounded-lg text-amber-400 hover:text-amber-700 hover:bg-amber-100 transition-colors shrink-0"
-            aria-label="Dismiss"
+            aria-label={t('common.dismiss')}
           >
             <X className="w-3.5 h-3.5" />
           </button>

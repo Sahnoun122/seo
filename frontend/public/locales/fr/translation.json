@@ -16,6 +16,7 @@
     "next": "Suivant",
     "or": "ou",
     "error": "Une erreur est survenue. Veuillez réessayer.",
+    "dismiss": "Fermer",
     "success": "Opération réussie.",
     "copied": "Copié !",
     "copy": "Copier",
@@ -23,7 +24,9 @@
     "generate": "Générer",
     "generating": "Génération en cours...",
     "upgrade": "Améliorer le plan",
-    "tryFree": "Essai gratuit"
+    "tryFree": "Essai gratuit",
+    "openMenu": "Ouvrir le menu",
+    "closeMenu": "Fermer le menu"
   },
   "nav": {
     "dashboard": "Tableau de bord",
@@ -51,9 +54,12 @@
     },
     "hero": {
       "badge": "Plateforme SEO propulsée par l'IA",
-      "title": "Générez du contenu SEO",
-      "titleHighlight": "en quelques secondes.",
-      "subtitle": "Un mot-clé → article complet, méta description et stratégie de mots-clés. Publiez directement sur WordPress.",
+      "poweredBy": "Propulsé par GPT-4o, DeepSeek & Groq",
+      "title": "Générez des articles qui",
+      "titleHighlight": "se positionnent vraiment.",
+      "subtitle": "Arrêtez de perdre des heures à créer du contenu. SEO Gen AI génère des articles hautement optimisés, structurés et engageants en quelques secondes — puis les publie directement sur WordPress.",
+      "ctaPrimary": "Commencer gratuitement",
+      "ctaFeatures": "Voir les fonctionnalités",
       "cta": "Commencer gratuitement",
       "ctaSecondary": "Voir la démo",
       "trustedBy": "Plus de 5 000 créateurs de contenu nous font confiance"
@@ -62,42 +68,190 @@
       "articles": "+ de 5 000 articles générés",
       "languages": "6 langues supportées",
       "models": "+ de 4 modèles IA",
-      "uptime": "99,9 % de disponibilité"
+      "uptime": "99,9 % de disponibilité",
+      "items": [
+        { "value": "5 000+", "label": "Articles générés" },
+        { "value": "6",      "label": "Langues supportées" },
+        { "value": "4+",     "label": "Modèles IA" },
+        { "value": "99,9%",  "label": "Disponibilité" }
+      ]
     },
     "features": {
       "title": "Tout ce qu'il vous faut pour dominer le SEO",
-      "subtitle": "De la recherche de mots-clés à la publication WordPress — tout en une seule plateforme."
+      "subtitle": "De la recherche de mots-clés à la publication WordPress — tout en une seule plateforme.",
+      "badge": "Tout ce qu'il vous faut",
+      "sectionTitle": "Boostez votre moteur de contenu",
+      "sectionSubtitle": "Conçu spécifiquement pour les référenceurs, les agences et les créateurs de sites de niche qui veulent des résultats.",
+      "items": [
+        {
+          "title": "Moteur IA multi-modèles",
+          "desc": "Basculez entre GPT-4o, DeepSeek, Groq et OpenRouter. Utilisez toujours le meilleur modèle pour chaque tâche."
+        },
+        {
+          "title": "Structure SEO parfaite",
+          "desc": "Chaque article est livré avec une hiérarchie H1/H2/H3, une densité de mots-clés optimale et un cluster sémantique."
+        },
+        {
+          "title": "WordPress en 1 clic",
+          "desc": "Publiez des brouillons avec images en vedette directement sur n'importe quel site WordPress via l'API REST."
+        },
+        {
+          "title": "Images IA & Unsplash",
+          "desc": "Générez des visuels avec DALL-E 3 ou cherchez parmi des millions de photos Unsplash gratuites — sans quitter l'appli."
+        },
+        {
+          "title": "Assistant de liens internes",
+          "desc": "Importez votre sitemap et obtenez des suggestions de liens internes pertinentes directement dans votre article."
+        },
+        {
+          "title": "6 langues intégrées",
+          "desc": "Interface complète en anglais, français, espagnol, arabe (RTL), italien et chinois — sans plugin."
+        }
+      ]
     },
     "howItWorks": {
       "title": "3 étapes pour votre contenu SEO",
-      "subtitle": "Du mot-clé à l'article publié en moins de 60 secondes."
+      "subtitle": "Du mot-clé à l'article publié en moins de 60 secondes.",
+      "badge": "Du mot-clé à l'article en 30 secondes",
+      "sectionTitle": "Comment ça marche",
+      "sectionSubtitle": "Trois étapes. Aucune courbe d'apprentissage. Article prêt à publier.",
+      "items": [
+        {
+          "num": "01",
+          "title": "Entrez votre mot-clé",
+          "desc": "Tapez n'importe quel mot-clé ou sujet. Choisissez votre modèle IA, la langue et la longueur de l'article."
+        },
+        {
+          "num": "02",
+          "title": "Regardez la génération en direct",
+          "desc": "Voyez votre article apparaître en temps réel — titre, méta, contenu complet et cluster de mots-clés."
+        },
+        {
+          "num": "03",
+          "title": "Publiez ou exportez",
+          "desc": "Copiez en Markdown ou HTML, générez un PDF, ou publiez directement sur WordPress en un clic."
+        }
+      ]
     },
     "pricing": {
       "title": "Tarification simple et transparente",
       "subtitle": "Commencez gratuitement. Passez à un plan supérieur si besoin.",
       "monthly": "par mois",
       "getStarted": "Commencer",
-      "mostPopular": "Le plus populaire"
+      "mostPopular": "Le plus populaire",
+      "badge": "Tarification simple",
+      "sectionTitle": "Des plans pour chaque équipe",
+      "sectionSubtitle": "Pas de frais cachés. Aucune carte bancaire requise pour commencer. Annulable à tout moment.",
+      "freeTrial": "Tous les plans incluent un essai gratuit de 5 crédits. Sans carte bancaire.",
+      "getStartedFree": "Commencer gratuitement",
+      "plans": [
+        {
+          "name": "Starter",
+          "price": "9 €",
+          "period": "/mois",
+          "desc": "Idéal pour les petits blogs et les créateurs solo.",
+          "popular": false,
+          "features": ["20 articles par mois", "Modèle IA standard", "Export Markdown & HTML"],
+          "excluded": ["Publication auto WordPress"]
+        },
+        {
+          "name": "Growth",
+          "price": "29 €",
+          "period": "/mois",
+          "desc": "Idéal pour les créateurs en croissance et les agences.",
+          "popular": true,
+          "features": ["100 articles par mois", "GPT-4o & modèles premium", "Publication WordPress 1 clic", "Support prioritaire"],
+          "excluded": []
+        },
+        {
+          "name": "Pro",
+          "price": "99 €",
+          "period": "/mois",
+          "desc": "Pour les agences et les éditeurs à haut volume.",
+          "popular": false,
+          "features": ["500 articles par mois", "Tous les modèles premium", "WordPress multi-sites", "Prompts IA personnalisés", "Support dédié 24/7"],
+          "excluded": []
+        }
+      ]
     },
     "testimonials": {
       "title": "Adoré par les créateurs de contenu",
-      "subtitle": "Rejoignez des milliers de créateurs qui publient plus vite avec SEO Gen AI."
+      "subtitle": "Rejoignez des milliers de créateurs qui publient plus vite avec SEO Gen AI.",
+      "sectionTitle": "Adoré par les professionnels du SEO",
+      "sectionSubtitle": "Rejoignez des milliers de créateurs qui construisent leur trafic organique en pilote automatique.",
+      "disclaimer": "* Avis illustratifs.",
+      "items": [
+        {
+          "name": "Sarah Mitchell",
+          "role": "Directrice de contenu @ ScaleUp Agency",
+          "avatar": "SM",
+          "text": "Nous avons remplacé 3 rédacteurs freelances par SEO Gen AI. La qualité est au rendez-vous et nous produisons 10× plus de contenu. L'intégration WordPress nous économise 2 heures par jour."
+        },
+        {
+          "name": "James Okafor",
+          "role": "Créateur de sites de niche",
+          "avatar": "JO",
+          "text": "J'ai 14 sites de niche. SEO Gen AI me permet de publier 5 articles par jour sur tous. Les classements se sont améliorés dans les 60 premiers jours. Le cluster de mots-clés est révolutionnaire."
+        },
+        {
+          "name": "Léa Fontaine",
+          "role": "Consultante SEO, Paris",
+          "avatar": "LF",
+          "text": "Le rendu en français est impeccable — bien mieux que des outils à 3× le prix. L'assistant de liens internes me fait économiser énormément de travail manuel."
+        }
+      ]
     },
     "faq": {
-      "title": "Questions fréquemment posées"
+      "title": "Questions fréquemment posées",
+      "sectionTitle": "Questions fréquentes",
+      "sectionSubtitle": "Tout ce que vous devez savoir. Vous ne trouvez pas votre réponse ?",
+      "contactUs": "Contactez-nous.",
+      "items": [
+        {
+          "q": "Quels modèles IA sont supportés ?",
+          "a": "SEO Gen AI supporte GPT-4o (OpenAI), DeepSeek, Groq (Llama 3) et OpenRouter. Vous pouvez fournir votre propre clé API pour des générations illimitées ou utiliser le pool de crédits partagés."
+        },
+        {
+          "q": "Puis-je utiliser ma propre clé API OpenAI ?",
+          "a": "Oui. Ajoutez votre clé personnelle dans Paramètres → Configuration IA. Cela débloque les générations illimitées et contourne entièrement le système de crédits."
+        },
+        {
+          "q": "Comment fonctionne l'intégration WordPress ?",
+          "a": "Ajoutez l'URL de votre site WordPress, votre identifiant et votre mot de passe d'application dans les Paramètres. Cliquez ensuite sur \"Publier sur WordPress\" depuis n'importe quel article. Le post est créé en brouillon avec l'image en vedette."
+        },
+        {
+          "q": "Y a-t-il un essai gratuit ?",
+          "a": "Chaque nouveau compte reçoit 5 crédits gratuits pour générer vos premiers articles — sans carte bancaire. Passez à un plan payant à tout moment pour plus de capacité."
+        },
+        {
+          "q": "Puis-je annuler mon abonnement à tout moment ?",
+          "a": "Absolument. Annulez depuis les paramètres de votre compte. Vous conservez l'accès jusqu'à la fin de votre période de facturation et ne serez plus jamais débité."
+        }
+      ]
     },
     "cta": {
       "title": "Prêt à générer votre premier article ?",
       "subtitle": "Rejoignez + de 5 000 créateurs qui publient du contenu SEO en quelques secondes.",
-      "button": "Commencer gratuitement — sans carte bancaire"
+      "button": "Commencer gratuitement — sans carte bancaire",
+      "badge": "Commencez à générer en 30 secondes",
+      "sectionTitle": "Prêt à dominer les SERPs ?",
+      "sectionSubtitle": "Rejoignez des milliers de créateurs qui construisent leur trafic organique en pilote automatique. Sans carte bancaire.",
+      "getStartedFree": "Commencer gratuitement",
+      "freeArticles": "5 articles gratuits inclus avec chaque nouveau compte"
     },
     "footer": {
-      "tagline": "Génération d'articles SEO propulsée par l'IA pour les équipes de contenu modernes.",
+      "tagline": "Plateforme de génération de contenu SEO propulsée par l'IA.",
       "product": "Produit",
+      "account": "Compte",
       "legal": "Légal",
       "privacy": "Politique de confidentialité",
       "terms": "Conditions d'utilisation",
-      "rights": "Tous droits réservés."
+      "rights": "Tous droits réservés.",
+      "signUpFree": "S'inscrire gratuitement",
+      "login": "Connexion",
+      "register": "Inscription",
+      "forgotPassword": "Mot de passe oublié",
+      "copyright": "© 2026 SEO Gen AI. Tous droits réservés."
     }
   },
   "auth": {
@@ -164,15 +318,36 @@
       "backToLogin": "Retour à la connexion",
       "sent": "Vérifiez votre boîte e-mail",
       "sentSubtitle": "Nous avons envoyé un lien de réinitialisation à {{email}}.",
+      "expiresIn": "Le lien expire dans 1 heure.",
+      "notReceived": "Vous ne l'avez pas reçu ? Vérifiez vos spams ou renvoyez-le.",
+      "rememberPassword": "Vous vous souvenez de votre mot de passe ?",
       "resend": "Renvoyer l'e-mail",
-      "resendCooldown": "Renvoyer dans {{seconds}}s"
+      "resendCooldown": "Renvoyer dans {{seconds}}s",
+      "sendError": "Échec de l'envoi de l'e-mail de réinitialisation.",
+      "resendSuccess": "Lien de réinitialisation renvoyé !",
+      "resendError": "Échec du renvoi."
     },
     "resetPassword": {
       "title": "Définir un nouveau mot de passe",
+      "subtitle": "Choisissez un mot de passe robuste — au moins 8 caractères.",
       "password": "Nouveau mot de passe",
+      "passwordPlaceholder": "Min. 8 caractères",
       "confirm": "Confirmer le mot de passe",
+      "confirmPlaceholder": "Répétez le mot de passe",
+      "mismatch": "Les mots de passe ne correspondent pas",
       "submit": "Réinitialiser le mot de passe",
-      "success": "Mot de passe mis à jour ! Vous pouvez maintenant vous connecter."
+      "success": "Mot de passe mis à jour ! Vous pouvez maintenant vous connecter.",
+      "successTitle": "Mot de passe mis à jour !",
+      "redirecting": "Redirection vers la connexion…",
+      "expiredError": "Le lien a expiré. Veuillez en demander un nouveau.",
+      "strength": {
+        "tooShort": "Trop court",
+        "weak": "Faible",
+        "fair": "Correct",
+        "good": "Bon",
+        "strong": "Fort",
+        "veryStrong": "Très fort"
+      }
     },
     "emailVerification": {
       "banner": "Veuillez vérifier votre adresse e-mail pour accéder à toutes les fonctionnalités.",
@@ -181,9 +356,13 @@
       "sending": "Envoi en cours...",
       "verifying": "Vérification de votre e-mail...",
       "successTitle": "E-mail vérifié !",
-      "successMessage": "Votre compte est maintenant entièrement activé.",
+      "successMessage": "Votre compte est maintenant entièrement activé. Vous pouvez commencer à générer des articles SEO.",
       "errorTitle": "Échec de la vérification",
-      "goToDashboard": "Aller au tableau de bord"
+      "errorMessage": "Échec de la vérification. Le lien a peut-être expiré.",
+      "goToDashboard": "Aller au tableau de bord",
+      "backToApp": "Retour à l'application",
+      "resendSuccess": "E-mail de vérification envoyé ! Vérifiez votre boîte de réception.",
+      "resendError": "Échec de l'envoi de l'e-mail."
     }
   },
   "dashboard": {
@@ -295,6 +474,7 @@
     "selectAll": "Tout sélectionner",
     "deselectAll": "Tout désélectionner",
     "selected": "{{count}} article(s) sélectionné(s)",
+    "bulkDeleteSuccess": "{{count}} article(s) supprimé(s).",
     "deleteSelected": "Supprimer la sélection",
     "refine": {
       "title": "Modifier avec l'IA",
@@ -372,7 +552,31 @@
       "reactivate": "Réactiver le plan",
       "cancelled": "Plan annulé.",
       "reactivated": "Plan réactivé !",
-      "managePlan": "Gérer le plan"
+      "managePlan": "Gérer le plan",
+      "loading": "Chargement de l'abonnement…",
+      "noSubscription": "Vous n'avez pas d'abonnement actif.",
+      "viewPlans": "Voir les formules",
+      "status": {
+        "active": "Actif",
+        "trialing": "Essai",
+        "pastDue": "Paiement en retard",
+        "canceled": "Annulé"
+      },
+      "accessUntil": "Accès jusqu'au {{date}}",
+      "changePlanAction": "Changer de formule",
+      "changePlanTitle": "Changer de formule",
+      "prorated": "Les changements de formule sont proratisés et facturés immédiatement.",
+      "creditsPerMonth": "{{count}} crédits/mois",
+      "currentPlanBadge": "Formule actuelle",
+      "cancelError": "Échec de l'annulation de l'abonnement.",
+      "reactivateError": "Échec de la réactivation de l'abonnement.",
+      "planChanged": "Formule mise à jour ! Facturation au prorata appliquée.",
+      "planChangeError": "Échec du changement de formule.",
+      "cancelConfirmTitle": "Annuler votre abonnement ?",
+      "cancelConfirmBody": "Il restera actif jusqu'à la fin de la période de facturation en cours, puis ne se renouvellera plus.",
+      "keepSubscription": "Conserver l'abonnement",
+      "confirmCancel": "Oui, annuler",
+      "confirmCancel": "Annuler votre abonnement à la fin de la période en cours ?"
     },
     "danger": {
       "deleteAccount": "Supprimer le compte",
@@ -418,18 +622,33 @@
     },
     "users": {
       "title": "Gestion des utilisateurs",
+      "subtitle": "Gérez l'accès des utilisateurs, les crédits IA et les paramètres de la plateforme.",
+      "superAdminZone": "Zone Super Admin",
+      "listTitle": "Liste des utilisateurs",
       "search": "Rechercher des utilisateurs...",
+      "userColumn": "Utilisateur",
       "name": "Nom",
       "email": "E-mail",
       "role": "Rôle",
       "credits": "Crédits",
+      "aiCredits": "Crédits IA",
       "plan": "Plan",
       "joined": "Inscrit le",
       "actions": "Actions",
+      "noResults": "Aucun utilisateur trouvé.",
       "editCredits": "Modifier les crédits",
       "deleteUser": "Supprimer l'utilisateur",
+      "manageCredits": "Gérer les crédits",
+      "newBalance": "Nouveau solde de crédits",
+      "deleteConfirmTitle": "Supprimer ce compte ?",
+      "deleteConfirmBodyPrefix": "Vous êtes sur le point de supprimer définitivement le compte de",
+      "deleteConfirmBodySuffix": "Cette action est irréversible.",
+      "yesDelete": "Oui, supprimer",
       "creditsUpdated": "Crédits mis à jour !",
-      "userDeleted": "Utilisateur supprimé."
+      "userDeleted": "Utilisateur supprimé.",
+      "loadError": "Échec du chargement des utilisateurs",
+      "creditsUpdateError": "Échec de la mise à jour des crédits",
+      "deleteError": "Échec de la suppression de l'utilisateur"
     }
   },
   "onboarding": {
@@ -470,5 +689,57 @@
     "networkError": "Erreur réseau. Vérifiez votre connexion.",
     "noCredits": "Vous n'avez plus de crédits. Veuillez en acheter ou ajouter votre propre clé API dans les Paramètres.",
     "stripeNotConfigured": "Stripe n'est pas encore configuré par l'administrateur."
+  },
+  "pricingPage": {
+    "subtitle": "Choisissez la formule qui correspond le mieux à vos besoins de contenu. Aucun frais caché. Annulez à tout moment.",
+    "subscribeNow": "S'abonner",
+    "subscribeError": "Échec du démarrage de l'abonnement.",
+    "secureCheckout": "Paiement sécurisé"
+  },
+  "internalLinking": {
+    "contentAnalysis": "Analyse du contenu",
+    "articleContent": "Contenu de l'article",
+    "articleContentPlaceholder": "Collez le contenu de votre article ici...",
+    "knownUrls": "URLs cibles connues",
+    "knownUrlsHint": "Saisissez les URLs cibles de votre site. Séparez chaque URL par une virgule ou un retour à la ligne.",
+    "knownUrlsPlaceholder": "https://monsite.com/a-propos\nhttps://monsite.com/contact, https://monsite.com/tarifs",
+    "analyze": "Analyser et suggérer des liens",
+    "emptyTitle": "Aucune analyse pour l'instant",
+    "emptyBody": "Collez votre article et ajoutez des URLs cibles pour lancer l'analyse sémantique par IA.",
+    "loadingText": "L'IA analyse le contexte...",
+    "errorTitle": "Échec de l'analyse des liens",
+    "genericError": "Échec de la génération des liens en raison d'une erreur technique du serveur.",
+    "noResultsTitle": "Aucun lien trouvé",
+    "noResultsBody": "Nous n'avons pas identifié d'opportunités d'ancres sémantiques dans le contenu pour les URLs fournies. Essayez d'ajuster les mots-clés ou les URLs cibles.",
+    "suggestions": "Suggestions ({{count}})",
+    "relevance": "Pertinence : {{score}}%",
+    "copyAnchor": "Copier l'ancre HTML",
+    "copied": "Copié !",
+    "anchorText": "Texte d'ancrage",
+    "targetUrl": "URL cible",
+    "contextSnippet": "Extrait de contexte",
+    "emptyContentError": "Veuillez saisir le contenu de l'article",
+    "generateSuccess": "Liens internes générés !",
+    "generateError": "Échec de l'analyse des liens"
+  },
+  "unsplashPicker": {
+    "title": "Sélecteur de photos Unsplash",
+    "searchPlaceholder": "Rechercher une photo (ex. SEO, marketing, technologie)…",
+    "search": "Rechercher",
+    "emptyState": "Recherchez une photo pour commencer",
+    "usePhoto": "Utiliser cette photo",
+    "loadMore": "Charger plus",
+    "providedBy": "Photos fournies par",
+    "searchError": "Échec de la recherche Unsplash.",
+    "loadMoreError": "Échec du chargement de photos supplémentaires.",
+    "selectError": "Échec de la définition de l'image de couverture."
+  },
+  "cookieBanner": {
+    "ariaLabel": "Consentement aux cookies",
+    "title": "Nous utilisons des cookies",
+    "bodyBefore": "Nous utilisons des cookies essentiels pour l'authentification. Des cookies analytiques facultatifs nous aident à améliorer la plateforme. Consultez notre",
+    "bodyAfter": "pour plus de détails.",
+    "essentialOnly": "Essentiels uniquement",
+    "acceptAll": "Tout accepter"
   }
 }

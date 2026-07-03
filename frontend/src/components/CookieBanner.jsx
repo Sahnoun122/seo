@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { Cookie, X, CheckCircle2 } from 'lucide-react';
 
 const CONSENT_KEY = 'seo_gen_ai_cookie_consent';
 
 export default function CookieBanner() {
+  const { t } = useTranslation();
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -31,7 +33,7 @@ export default function CookieBanner() {
   return (
     <div
       role="dialog"
-      aria-label="Cookie consent"
+      aria-label={t('cookieBanner.ariaLabel')}
       className="fixed bottom-4 left-4 right-4 sm:left-auto sm:right-6 sm:bottom-6 sm:max-w-sm z-50 animate-in slide-in-from-bottom-4 duration-300"
     >
       <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 p-5">
@@ -40,20 +42,19 @@ export default function CookieBanner() {
             <Cookie className="w-4 h-4 text-amber-600 dark:text-amber-400" />
           </div>
           <div>
-            <p className="text-sm font-bold text-gray-900 dark:text-white mb-1">We use cookies</p>
+            <p className="text-sm font-bold text-gray-900 dark:text-white mb-1">{t('cookieBanner.title')}</p>
             <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
-              We use essential cookies for authentication. Optional analytics cookies help us improve the platform.
-              See our{' '}
+              {t('cookieBanner.bodyBefore')}{' '}
               <Link to="/privacy" className="text-primary-600 hover:underline font-medium" onClick={decline}>
-                Privacy Policy
+                {t('landing.footer.privacy')}
               </Link>{' '}
-              for details.
+              {t('cookieBanner.bodyAfter')}
             </p>
           </div>
           <button
             onClick={decline}
             className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors shrink-0"
-            aria-label="Dismiss"
+            aria-label={t('common.dismiss')}
           >
             <X className="w-4 h-4" />
           </button>
@@ -64,14 +65,14 @@ export default function CookieBanner() {
             onClick={decline}
             className="flex-1 py-2 px-3 text-xs font-bold text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-gray-800 rounded-xl hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
           >
-            Essential only
+            {t('cookieBanner.essentialOnly')}
           </button>
           <button
             onClick={accept}
             className="flex-1 py-2 px-3 text-xs font-bold text-white bg-primary-600 rounded-xl hover:bg-primary-700 transition-colors flex items-center justify-center gap-1.5"
           >
             <CheckCircle2 className="w-3.5 h-3.5" />
-            Accept all
+            {t('cookieBanner.acceptAll')}
           </button>
         </div>
       </div>

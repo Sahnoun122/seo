@@ -77,11 +77,11 @@
 | Payments | Stripe (subscriptions + one-time purchases + webhooks) |
 | Storage | **MinIO** (self-hosted) / Cloudflare R2 (free) / AWS S3 — auto-detected via env vars |
 | Auth | JWT + bcryptjs + AES-256 encryption |
-| Testing Backend | Jest 30 + Supertest + mongodb-memory-server (125+ tests) |
+| Testing Backend | Jest 29 + Supertest + mongodb-memory-server (125+ tests) |
 | Testing Frontend | Vitest 4 + @testing-library/react (56+ tests) |
 | CI/CD | GitHub Actions (ci.yml + security.yml) |
 | API Docs | swagger-ui-express + OpenAPI 3.0.3 |
-| Deploy | Vercel (frontend + backend via `vercel.json`) |
+| Deploy | Vercel (frontend SPA) + Railway/Render (backend — see note below) |
 
 ---
 
@@ -143,6 +143,17 @@ cd backend && node scripts/seed.js
 | **User** | `john@example.com` | `Demo1234!` |
 
 > The Admin account has access to the Admin Dashboard (`/admin/dashboard`) with real-time stats and user management. The User account has demo articles pre-loaded in the Content Library.
+
+### Testing article generation without an AI key
+
+Add `DEMO_MODE=true` to `backend/.env`. In this mode, every generation request returns a complete pre-built article **instantly** — no OpenAI key, no credits, no external API calls required. Perfect for reviewers who want to walk through the full generation → history → WordPress publish flow without configuring a paid API key.
+
+```env
+# backend/.env
+DEMO_MODE=true
+```
+
+Remove or set to `false` before going to production.
 
 ---
 

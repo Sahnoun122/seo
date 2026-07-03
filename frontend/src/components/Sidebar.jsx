@@ -65,6 +65,7 @@ export default function Sidebar({ isOpen, onClose, isDesktop }) {
         {!isDesktop && (
           <button
             onClick={onClose}
+            aria-label={t('common.close')}
             className="p-1.5 text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors cursor-pointer"
           >
             <X className="w-5 h-5" />
@@ -147,7 +148,7 @@ export default function Sidebar({ isOpen, onClose, isDesktop }) {
           <div className="pt-3 mt-3 border-t border-gray-100 dark:border-gray-800">
             <p className="px-4 text-[9px] font-black text-gray-400 dark:text-gray-600 uppercase tracking-[0.2em] mb-2">{t('common.admin')}</p>
             {[
-              { to: '/admin/dashboard', Icon: LayoutDashboard, label: 'Dashboard' },
+              { to: '/admin/dashboard', Icon: LayoutDashboard, label: t('nav.adminDashboard') },
               { to: '/admin/users',     Icon: Users,            label: t('nav.userManager') },
             ].map(({ to, Icon, label }) => (
               <NavLink
@@ -178,7 +179,8 @@ export default function Sidebar({ isOpen, onClose, isDesktop }) {
         <button
           onClick={toggleTheme}
           className="p-2 text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl transition-all cursor-pointer"
-          title="Basculer le thème"
+          title={isDark ? t('common.lightMode') : t('common.darkMode')}
+          aria-label={isDark ? t('common.lightMode') : t('common.darkMode')}
         >
           {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
         </button>
@@ -210,7 +212,8 @@ export default function Sidebar({ isOpen, onClose, isDesktop }) {
               e.stopPropagation();
               handleLogout();
             }}
-            title="Déconnexion"
+            title={t('common.logout')}
+            aria-label={t('common.logout')}
             className="p-1.5 text-gray-300 hover:text-red-500 dark:text-gray-600 dark:hover:text-red-400 rounded-lg transition-colors opacity-0 group-hover:opacity-100 cursor-pointer"
           >
             <LogOut className="w-4 h-4" />

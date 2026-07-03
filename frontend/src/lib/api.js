@@ -100,8 +100,8 @@ export const createPaymentIntent = async (packageId) => {
 };
 
 // Admin Endpoints
-export const fetchUsers = async (page = 1, limit = 10) => {
-  const response = await api.get(`/admin/users?page=${page}&limit=${limit}`);
+export const fetchUsers = async (page = 1, limit = 10, search = '') => {
+  const response = await api.get(`/admin/users?page=${page}&limit=${limit}&search=${encodeURIComponent(search)}`);
   return response.data;
 };
 

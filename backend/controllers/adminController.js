@@ -10,8 +10,16 @@ export const getAllUsers = async (req, res) => {
     const limit = parseInt(req.query.limit, 10) || 10;
     const startIndex = (page - 1) * limit;
 
-    const total = await User.countDocuments();
-    const users = await User.find()
+    const search = (req.query.search || '').trim();
+    let filter = {};
+    if (search) {
+      const escaped = search.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const pattern = new RegExp(escaped, 'i');
+      filter = { $or: [{ name: pattern }, { email: pattern }] };
+    }
+
+    const total = await User.countDocuments(filter);
+    const users = await User.find(filter)
       .select('-password')
       .skip(startIndex)
       .limit(limit)

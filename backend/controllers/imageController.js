@@ -22,6 +22,7 @@ export const uploadImages = async (req, res) => {
 
       // Create database record
       const imageDoc = new Image({
+        user: req.user.id,
         url: `/api/images/view/`, // Will be updated with actual ID below
         path: uploadResult.path,
         filename: uploadResult.filename,
@@ -56,7 +57,7 @@ export const getImagesByEntity = async (req, res) => {
       return res.status(400).json({ error: 'imageableId and imageableType are required.' });
     }
 
-    const images = await Image.find({ imageableId, imageableType }).sort({ isPrimary: -1, createdAt: -1 });
+    const images = await Image.find({ imageableId, imageableType, user: req.user.id }).sort({ isPrimary: -1, createdAt: -1 });
     
     const imagesWithUrls = await Promise.all(images.map(async img => {
       const doc = img.toJSON();
@@ -82,6 +83,9 @@ export const deleteImage = async (req, res) => {
 
     if (!image) {
       return res.status(404).json({ error: 'Image not found.' });
+    }
+    if (!image.user || image.user.toString() !== req.user.id.toString()) {
+      return res.status(403).json({ error: 'You do not have permission to delete this image.' });
     }
 
     const pathsToDelete = [
@@ -110,6 +114,9 @@ export const replaceImage = async (req, res) => {
     const oldImage = await Image.findById(id);
     if (!oldImage) {
       return res.status(404).json({ error: 'Image not found.' });
+    }
+    if (!oldImage.user || oldImage.user.toString() !== req.user.id.toString()) {
+      return res.status(403).json({ error: 'You do not have permission to replace this image.' });
     }
 
     const targetFolder = oldImage.path.split('/')[0] || 'misc'; // Extract old folder
@@ -172,13 +179,16 @@ export const setPrimaryImage = async (req, res) => {
   try {
     const { id } = req.params;
     const image = await Image.findById(id);
-    
+
     if (!image) return res.status(404).json({ error: 'Image not found.' });
+    if (!image.user || image.user.toString() !== req.user.id.toString()) {
+      return res.status(403).json({ error: 'You do not have permission to modify this image.' });
+    }
 
     // Remove primary flag from other images of the same entity
     if (image.imageableId && image.imageableType) {
       await Image.updateMany(
-        { imageableId: image.imageableId, imageableType: image.imageableType },
+        { imageableId: image.imageableId, imageableType: image.imageableType, user: req.user.id },
         { isPrimary: false }
       );
     }

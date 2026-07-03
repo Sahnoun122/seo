@@ -1,5 +1,6 @@
 import { Resend } from 'resend';
 import nodemailer from 'nodemailer';
+import logger from '../utils/logger.js';
 
 /**
  * Send a password reset email via Resend.
@@ -32,9 +33,7 @@ export async function sendPasswordResetEmail({ to, resetUrl, appName = 'AI SEO A
   const apiKey = process.env.RESEND_API_KEY;
 
   if (!apiKey) {
-    console.log('\n📧 [Email] RESEND_API_KEY not set — logging reset URL:');
-    console.log(`   To:  ${to}`);
-    console.log(`   URL: ${resetUrl}\n`);
+    logger.warn(`[Email] RESEND_API_KEY not set — logging reset URL. To: ${to} | URL: ${resetUrl}`);
     return { success: true, fallback: true };
   }
 
@@ -43,9 +42,9 @@ export async function sendPasswordResetEmail({ to, resetUrl, appName = 'AI SEO A
   const fromEmail = process.env.EMAIL_FROM || 'onboarding@resend.dev';
 
   if (!process.env.EMAIL_FROM) {
-    console.warn(
-      '[Email] EMAIL_FROM is not set — using Resend test sender (onboarding@resend.dev).\n' +
-      '        Set EMAIL_FROM=noreply@yourdomain.com with a verified Resend domain for production.'
+    logger.warn(
+      '[Email] EMAIL_FROM is not set — using Resend test sender (onboarding@resend.dev). ' +
+      'Set EMAIL_FROM=noreply@yourdomain.com with a verified Resend domain for production.'
     );
   }
 
@@ -95,9 +94,7 @@ export async function sendEmailVerificationEmail({ to, verifyUrl, appName = 'AI 
   const apiKey = process.env.RESEND_API_KEY;
 
   if (!apiKey) {
-    console.log('\n📧 [Email] RESEND_API_KEY not set — logging verification URL:');
-    console.log(`   To:  ${to}`);
-    console.log(`   URL: ${verifyUrl}\n`);
+    logger.warn(`[Email] RESEND_API_KEY not set — logging verification URL. To: ${to} | URL: ${verifyUrl}`);
     return { success: true, fallback: true };
   }
 

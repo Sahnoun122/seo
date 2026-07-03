@@ -28,7 +28,7 @@ Authorization: Bearer <your_token>
 | Article generation | 5 req / 15 min / IP |
     `,
     contact: { name: 'SEO Gen AI Support', email: 'support@seogenai.com' },
-    license: { name: 'Commercial', url: 'https://codecanyon.net' },
+    license: { name: 'Commercial License' },
   },
   servers: [
     { url: '/api', description: 'Current server' },

@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
 # -----------------------------------------------------------------------------
 # Marketplace Release Builder
-# Produces a clean ZIP for CodeCanyon / CodeSter submission:
+# Produces a clean ZIP for Codester submission:
 #   - No .git directory
 #   - No node_modules
 #   - No real .env files (only .env.example templates)
+#   - No developer uploads or build scripts
 #   - Verified: no secrets in output
 # Usage: bash scripts/build-marketplace-zip.sh [version]
 # -----------------------------------------------------------------------------
@@ -42,6 +43,11 @@ rsync -a \
   --exclude="Thumbs.db" \
   "$(pwd)/" "${STAGING}/"
 
+# ── 2b. Remove developer artifacts not needed by buyers ──────────────────────
+rm -rf "${STAGING}/backend/uploads"
+rm -rf "${STAGING}/scripts"
+rm -rf "${STAGING}/backend/scripts"
+
 # ── 3. Security check — abort if any real .env slipped through ───────────────
 echo "Running security check..."
 
@@ -68,6 +74,7 @@ echo "Security check passed."
 
 # ── 5. Create the ZIP ────────────────────────────────────────────────────────
 cd "${OUT_DIR}"
+rm -f "${ZIP_NAME}"
 zip -r "${ZIP_NAME}" "seo-gen-ai/" -q
 rm -rf "${STAGING}"
 

@@ -20,20 +20,20 @@ function ArticleSkeleton() {
     >
       <div className="lg:col-span-2 space-y-6">
         <Card className="overflow-hidden">
-          <div className="px-4 sm:px-6 py-4 border-b border-gray-100 flex items-center gap-3">
-            <div className="h-3 w-32 bg-gray-100 rounded-full animate-pulse" />
+          <div className="px-4 sm:px-6 py-4 border-b border-gray-100 dark:border-gray-800 flex items-center gap-3">
+            <div className="h-3 w-32 bg-gray-100 dark:bg-gray-800 rounded-full animate-pulse" />
           </div>
           <CardContent className="p-5 sm:p-10 space-y-6">
-            <div className="h-7 sm:h-8 w-3/4 bg-gray-100 rounded-xl animate-pulse" />
-            <div className="h-5 w-1/2 bg-gray-100 rounded-xl animate-pulse" />
-            <div className="bg-primary-50/40 rounded-2xl p-4 sm:p-5 space-y-2">
-              <div className="h-3 w-24 bg-primary-100 rounded-full animate-pulse" />
-              <div className="h-4 w-full bg-primary-100/60 rounded-full animate-pulse" />
-              <div className="h-4 w-4/5 bg-primary-100/60 rounded-full animate-pulse" />
+            <div className="h-7 sm:h-8 w-3/4 bg-gray-100 dark:bg-gray-800 rounded-xl animate-pulse" />
+            <div className="h-5 w-1/2 bg-gray-100 dark:bg-gray-800 rounded-xl animate-pulse" />
+            <div className="bg-primary-50/40 dark:bg-primary-900/20 rounded-2xl p-4 sm:p-5 space-y-2">
+              <div className="h-3 w-24 bg-primary-100 dark:bg-primary-900/40 rounded-full animate-pulse" />
+              <div className="h-4 w-full bg-primary-100/60 dark:bg-primary-900/30 rounded-full animate-pulse" />
+              <div className="h-4 w-4/5 bg-primary-100/60 dark:bg-primary-900/30 rounded-full animate-pulse" />
             </div>
             <div className="space-y-3">
               {[100, 95, 90, 80, 95, 70, 85].map((w, i) => (
-                <div key={i} className="h-3 bg-gray-100 rounded-full animate-pulse"
+                <div key={i} className="h-3 bg-gray-100 dark:bg-gray-800 rounded-full animate-pulse"
                      style={{ width: `${w}%`, animationDelay: `${i * 80}ms` }} />
               ))}
             </div>
@@ -43,15 +43,15 @@ function ArticleSkeleton() {
       <div className="space-y-6">
         <Card>
           <CardContent className="space-y-4">
-            <div className="h-3 w-28 bg-gray-100 rounded-full animate-pulse" />
-            <div className="h-12 bg-gray-50 rounded-xl animate-pulse" />
+            <div className="h-3 w-28 bg-gray-100 dark:bg-gray-800 rounded-full animate-pulse" />
+            <div className="h-12 bg-gray-50 dark:bg-gray-800/60 rounded-xl animate-pulse" />
           </CardContent>
         </Card>
         <Card>
           <CardContent className="space-y-4">
-            <div className="h-3 w-32 bg-gray-100 rounded-full animate-pulse" />
+            <div className="h-3 w-32 bg-gray-100 dark:bg-gray-800 rounded-full animate-pulse" />
             {Array.from({ length: 5 }).map((_, i) => (
-              <div key={i} className="h-10 bg-gray-50 rounded-xl animate-pulse"
+              <div key={i} className="h-10 bg-gray-50 dark:bg-gray-800/60 rounded-xl animate-pulse"
                    style={{ animationDelay: `${i * 60}ms` }} />
             ))}
           </CardContent>

@@ -1,6 +1,6 @@
 import express from 'express';
 import {
-  getPackages, createCheckoutSession, handleWebhook, getStripeConfig,
+  getPackages, createCheckoutSession, getStripeConfig,
   createPaymentIntent, createSubscriptionSession, verifyPayment,
   getSubscription, cancelSubscription, reactivateSubscription, changeSubscriptionPlan,
 } from '../controllers/stripeController.js';
@@ -9,8 +9,9 @@ import { validate, checkoutSchema } from '../validators/schemas.js';
 
 const router = express.Router();
 
-// Webhook must receive raw body — mounted BEFORE express.json()
-router.post('/webhook', express.raw({ type: 'application/json' }), handleWebhook);
+// NOTE: POST /webhook is intentionally NOT registered here — it is mounted
+// directly in server.js, before the global express.json() parser, so it
+// can receive the raw body Stripe's signature verification requires.
 
 router.get('/config', protect, getStripeConfig);
 router.get('/packages', protect, getPackages);

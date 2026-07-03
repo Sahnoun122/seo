@@ -16,6 +16,7 @@
     "next": "التالي",
     "or": "أو",
     "error": "حدث خطأ. يرجى المحاولة مرة أخرى.",
+    "dismiss": "إغلاق",
     "success": "تمت العملية بنجاح.",
     "copied": "تم النسخ!",
     "copy": "نسخ",
@@ -23,7 +24,9 @@
     "generate": "توليد",
     "generating": "جاري التوليد...",
     "upgrade": "ترقية الخطة",
-    "tryFree": "جرّب مجاناً"
+    "tryFree": "جرّب مجاناً",
+    "openMenu": "فتح القائمة",
+    "closeMenu": "إغلاق القائمة"
   },
   "nav": {
     "dashboard": "لوحة القيادة",
@@ -51,9 +54,12 @@
     },
     "hero": {
       "badge": "منصة SEO مدعومة بالذكاء الاصطناعي",
-      "title": "أنشئ محتوى SEO",
-      "titleHighlight": "في ثوانٍ.",
-      "subtitle": "كلمة مفتاحية واحدة ← مقال كامل، وصف ميتا، واستراتيجية كلمات مفتاحية. انشر مباشرة على WordPress.",
+      "poweredBy": "مدعوم بـ GPT-4o وDeepSeek وGroq",
+      "title": "أنشئ مقالات",
+      "titleHighlight": "تتصدر نتائج البحث فعلاً.",
+      "subtitle": "توقف عن إضاعة ساعات في إنشاء المحتوى. يُولِّد SEO Gen AI مقالات مُحسَّنة للغاية ومنظمة وجذابة في ثوانٍ — وينشرها مباشرةً على WordPress.",
+      "ctaPrimary": "ابدأ مجاناً",
+      "ctaFeatures": "استعرض المميزات",
       "cta": "ابدأ مجاناً",
       "ctaSecondary": "مشاهدة العرض التوضيحي",
       "trustedBy": "أكثر من 5,000 منشئ محتوى يثقون بنا"
@@ -62,42 +68,190 @@
       "articles": "أكثر من 5,000 مقال تم توليده",
       "languages": "6 لغات مدعومة",
       "models": "أكثر من 4 نماذج ذكاء اصطناعي",
-      "uptime": "وقت تشغيل 99.9%"
+      "uptime": "وقت تشغيل 99.9%",
+      "items": [
+        { "value": "+5,000", "label": "مقال مُوَلَّد" },
+        { "value": "6",      "label": "لغات مدعومة" },
+        { "value": "+4",     "label": "نماذج ذكاء اصطناعي" },
+        { "value": "99.9%",  "label": "وقت التشغيل" }
+      ]
     },
     "features": {
       "title": "كل ما تحتاجه للتفوق في SEO",
-      "subtitle": "من البحث عن الكلمات المفتاحية إلى النشر على WordPress — كل شيء في منصة واحدة."
+      "subtitle": "من البحث عن الكلمات المفتاحية إلى النشر على WordPress — كل شيء في منصة واحدة.",
+      "badge": "كل ما تحتاجه",
+      "sectionTitle": "عزّز محرك المحتوى الخاص بك",
+      "sectionSubtitle": "مصمَّم لمتخصصي SEO والوكالات ومنشئي المواقع المتخصصة الراغبين في نتائج حقيقية.",
+      "items": [
+        {
+          "title": "محرك ذكاء اصطناعي متعدد النماذج",
+          "desc": "التبديل بين GPT-4o وDeepSeek وGroq وOpenRouter. استخدم دائماً أفضل نموذج لكل مهمة."
+        },
+        {
+          "title": "هيكل SEO مثالي",
+          "desc": "كل مقال يأتي مع تسلسل هرمي H1/H2/H3 وكثافة كلمات مفتاحية مثلى وتجمع دلالي."
+        },
+        {
+          "title": "نشر WordPress بنقرة واحدة",
+          "desc": "انشر المسودات مع صور مميزة مباشرةً على أي موقع WordPress عبر REST API."
+        },
+        {
+          "title": "صور ذكاء اصطناعي وUnsplash",
+          "desc": "أنشئ أغلفة بـ DALL-E 3 أو ابحث في ملايين الصور المجانية على Unsplash — دون مغادرة التطبيق."
+        },
+        {
+          "title": "مساعد الروابط الداخلية",
+          "desc": "ارفع خريطة موقعك واحصل على اقتراحات روابط داخلية ذكية مُدرجة مباشرةً في المقال."
+        },
+        {
+          "title": "6 لغات مدمجة",
+          "desc": "واجهة كاملة بالإنجليزية والفرنسية والإسبانية والعربية (RTL) والإيطالية والصينية — دون إضافات."
+        }
+      ]
     },
     "howItWorks": {
       "title": "3 خطوات لمحتوى SEO",
-      "subtitle": "من الكلمة المفتاحية إلى المقال المنشور في أقل من 60 ثانية."
+      "subtitle": "من الكلمة المفتاحية إلى المقال المنشور في أقل من 60 ثانية.",
+      "badge": "من الكلمة المفتاحية إلى المقال في 30 ثانية",
+      "sectionTitle": "كيف يعمل",
+      "sectionSubtitle": "ثلاث خطوات. صفر منحنى تعلّم. مقال جاهز للنشر.",
+      "items": [
+        {
+          "num": "٠١",
+          "title": "أدخل الكلمة المفتاحية",
+          "desc": "اكتب أي كلمة مفتاحية أو موضوع. اختر نموذج الذكاء الاصطناعي واللغة وطول المقال."
+        },
+        {
+          "num": "٠٢",
+          "title": "شاهد التوليد مباشرةً",
+          "desc": "راقب مقالك وهو يظهر في الوقت الفعلي — العنوان والميتا والمحتوى الكامل وتجمع الكلمات المفتاحية."
+        },
+        {
+          "num": "٠٣",
+          "title": "انشر أو صدِّر",
+          "desc": "انسخ Markdown أو HTML، أنشئ PDF، أو انشر مباشرةً على WordPress بنقرة واحدة."
+        }
+      ]
     },
     "pricing": {
       "title": "أسعار بسيطة وشفافة",
       "subtitle": "ابدأ مجاناً. قم بالترقية عند الحاجة.",
       "monthly": "شهرياً",
       "getStarted": "ابدأ الآن",
-      "mostPopular": "الأكثر شيوعاً"
+      "mostPopular": "الأكثر شيوعاً",
+      "badge": "أسعار بسيطة",
+      "sectionTitle": "خطط لكل فريق",
+      "sectionSubtitle": "لا رسوم خفية. لا بطاقة ائتمانية للبدء. إلغاء في أي وقت.",
+      "freeTrial": "جميع الخطط تتضمن 5 أرصدة تجريبية مجانية. لا حاجة لبطاقة ائتمانية.",
+      "getStartedFree": "ابدأ مجاناً",
+      "plans": [
+        {
+          "name": "مبتدئ",
+          "price": "٣٤ ر.س",
+          "period": "/شهرياً",
+          "desc": "مثالي للمدونات الصغيرة والمنشئين المستقلين.",
+          "popular": false,
+          "features": ["20 مقالاً شهرياً", "نموذج ذكاء اصطناعي قياسي", "تصدير Markdown وHTML"],
+          "excluded": ["النشر التلقائي على WordPress"]
+        },
+        {
+          "name": "نمو",
+          "price": "١٠٩ ر.س",
+          "period": "/شهرياً",
+          "desc": "مثالي للمنشئين في مرحلة النمو والوكالات.",
+          "popular": true,
+          "features": ["100 مقال شهرياً", "GPT-4o والنماذج المتميزة", "WordPress بنقرة واحدة", "دعم ذو أولوية"],
+          "excluded": []
+        },
+        {
+          "name": "احترافي",
+          "price": "٣٧٥ ر.س",
+          "period": "/شهرياً",
+          "desc": "للوكالات وناشري المحتوى الكبير.",
+          "popular": false,
+          "features": ["500 مقال شهرياً", "جميع النماذج المتميزة", "WordPress متعدد المواقع", "تعليمات ذكاء اصطناعي مخصصة", "دعم مخصص 24/7"],
+          "excluded": []
+        }
+      ]
     },
     "testimonials": {
       "title": "محبوب من منشئي المحتوى",
-      "subtitle": "انضم إلى آلاف المنشئين الذين ينشرون بشكل أسرع مع SEO Gen AI."
+      "subtitle": "انضم إلى آلاف المنشئين الذين ينشرون بشكل أسرع مع SEO Gen AI.",
+      "sectionTitle": "محبوب من محترفي SEO",
+      "sectionSubtitle": "انضم إلى آلاف المنشئين الذين يبنون حركة زيارات عضوية تلقائياً.",
+      "disclaimer": "* آراء توضيحية.",
+      "items": [
+        {
+          "name": "سارة ميتشيل",
+          "role": "مديرة المحتوى في ScaleUp Agency",
+          "avatar": "SM",
+          "text": "استبدلنا 3 كتّاب مستقلين بـ SEO Gen AI. الجودة مماثلة ونُنتج محتوى أضعافاً مضاعفة. يُوفّر لنا تكامل WordPress ساعتين يومياً."
+        },
+        {
+          "name": "جيمس أوكافور",
+          "role": "منشئ مواقع متخصصة",
+          "avatar": "JO",
+          "text": "أدير 14 موقعاً متخصصاً. يُمكّنني SEO Gen AI من نشر 5 مقالات يومياً على جميع المواقع. تحسّنت تصنيفاتي في أول 60 يوماً. تجمّع الكلمات المفتاحية رائع."
+        },
+        {
+          "name": "ليا فونتين",
+          "role": "مستشارة SEO، باريس",
+          "avatar": "LF",
+          "text": "الإخراج بالفرنسية لا تشوبه شائبة — أفضل من أدوات تُكلّف 3 أضعاف السعر. يُوفّر عليّ مساعد الروابط الداخلية الكثير من العمل اليدوي."
+        }
+      ]
     },
     "faq": {
-      "title": "الأسئلة الشائعة"
+      "title": "الأسئلة الشائعة",
+      "sectionTitle": "الأسئلة الشائعة",
+      "sectionSubtitle": "كل ما تحتاج معرفته. لم تجد إجابتك؟",
+      "contactUs": "تواصل معنا.",
+      "items": [
+        {
+          "q": "ما نماذج الذكاء الاصطناعي المدعومة؟",
+          "a": "يدعم SEO Gen AI: GPT-4o (OpenAI) وDeepSeek وGroq (Llama 3) وOpenRouter. يمكنك تقديم مفتاح API الخاص بك لتوليدات غير محدودة أو استخدام مجموعة الأرصدة المشتركة."
+        },
+        {
+          "q": "هل يمكنني استخدام مفتاح API الخاص بي من OpenAI؟",
+          "a": "نعم. أضف مفتاحك الشخصي في الإعدادات → إعداد الذكاء الاصطناعي. سيُفعّل ذلك توليدات غير محدودة ويتجاوز نظام الأرصدة بالكامل."
+        },
+        {
+          "q": "كيف يعمل تكامل WordPress؟",
+          "a": "أضف رابط موقع WordPress واسم المستخدم وكلمة مرور التطبيق في الإعدادات. ثم اضغط على 'النشر على WordPress' من أي مقال مُولَّد. سيُنشأ المنشور كمسودة مع صورة مميزة."
+        },
+        {
+          "q": "هل هناك تجربة مجانية؟",
+          "a": "يحصل كل حساب جديد على 5 أرصدة مجانية لتوليد مقالاتك الأولى — بدون بطاقة ائتمانية. قم بالترقية إلى خطة مدفوعة في أي وقت."
+        },
+        {
+          "q": "هل يمكنني إلغاء الاشتراك في أي وقت؟",
+          "a": "بالطبع. ألغِ من إعدادات حسابك. ستحتفظ بالوصول حتى نهاية فترة الفوترة ولن يُحصَّل منك أي رسوم بعد ذلك."
+        }
+      ]
     },
     "cta": {
       "title": "هل أنت مستعد لإنشاء مقالك الأول؟",
       "subtitle": "انضم إلى أكثر من 5,000 منشئ ينشرون محتوى SEO في ثوانٍ.",
-      "button": "ابدأ مجاناً — لا حاجة لبطاقة ائتمان"
+      "button": "ابدأ مجاناً — لا حاجة لبطاقة ائتمان",
+      "badge": "ابدأ التوليد في 30 ثانية",
+      "sectionTitle": "هل أنت مستعد للهيمنة على نتائج البحث؟",
+      "sectionSubtitle": "انضم إلى آلاف المنشئين الذين يبنون حركة زيارات عضوية تلقائياً. لا حاجة لبطاقة ائتمانية.",
+      "getStartedFree": "ابدأ مجاناً",
+      "freeArticles": "5 مقالات مجانية مع كل حساب جديد"
     },
     "footer": {
       "tagline": "توليد مقالات SEO بالذكاء الاصطناعي لفرق المحتوى الحديثة.",
       "product": "المنتج",
+      "account": "الحساب",
       "legal": "قانوني",
       "privacy": "سياسة الخصوصية",
       "terms": "شروط الخدمة",
-      "rights": "جميع الحقوق محفوظة."
+      "rights": "جميع الحقوق محفوظة.",
+      "signUpFree": "التسجيل مجاناً",
+      "login": "تسجيل الدخول",
+      "register": "إنشاء حساب",
+      "forgotPassword": "نسيت كلمة المرور",
+      "copyright": "© 2026 SEO Gen AI. جميع الحقوق محفوظة."
     }
   },
   "auth": {
@@ -164,15 +318,36 @@
       "backToLogin": "العودة إلى تسجيل الدخول",
       "sent": "تحقق من بريدك الإلكتروني",
       "sentSubtitle": "لقد أرسلنا رابط إعادة تعيين كلمة المرور إلى {{email}}.",
+      "expiresIn": "تنتهي صلاحية الرابط خلال ساعة واحدة.",
+      "notReceived": "لم تستلمه؟ تحقق من مجلد البريد العشوائي أو أعد الإرسال.",
+      "rememberPassword": "تتذكر كلمة المرور؟",
       "resend": "إعادة إرسال البريد الإلكتروني",
-      "resendCooldown": "إعادة الإرسال خلال {{seconds}} ثانية"
+      "resendCooldown": "إعادة الإرسال خلال {{seconds}} ثانية",
+      "sendError": "فشل إرسال بريد إعادة التعيين.",
+      "resendSuccess": "تم إعادة إرسال رابط إعادة التعيين!",
+      "resendError": "فشلت إعادة الإرسال."
     },
     "resetPassword": {
       "title": "تعيين كلمة مرور جديدة",
+      "subtitle": "اختر كلمة مرور قوية — 8 أحرف على الأقل.",
       "password": "كلمة المرور الجديدة",
+      "passwordPlaceholder": "8 أحرف كحد أدنى",
       "confirm": "تأكيد كلمة المرور",
+      "confirmPlaceholder": "أعد كتابة كلمة المرور",
+      "mismatch": "كلمتا المرور غير متطابقتين",
       "submit": "إعادة تعيين كلمة المرور",
-      "success": "تم تحديث كلمة المرور! يمكنك الآن تسجيل الدخول."
+      "success": "تم تحديث كلمة المرور! يمكنك الآن تسجيل الدخول.",
+      "successTitle": "تم تحديث كلمة المرور!",
+      "redirecting": "جارٍ إعادة التوجيه إلى تسجيل الدخول…",
+      "expiredError": "انتهت صلاحية الرابط. يرجى طلب رابط جديد.",
+      "strength": {
+        "tooShort": "قصيرة جدًا",
+        "weak": "ضعيفة",
+        "fair": "مقبولة",
+        "good": "جيدة",
+        "strong": "قوية",
+        "veryStrong": "قوية جدًا"
+      }
     },
     "emailVerification": {
       "banner": "يرجى التحقق من عنوان بريدك الإلكتروني لفتح جميع الميزات.",
@@ -181,9 +356,13 @@
       "sending": "جاري الإرسال...",
       "verifying": "جاري التحقق من بريدك الإلكتروني...",
       "successTitle": "تم التحقق من البريد الإلكتروني!",
-      "successMessage": "تم تفعيل حسابك بالكامل.",
+      "successMessage": "تم تفعيل حسابك بالكامل الآن. يمكنك البدء في إنشاء مقالات SEO.",
       "errorTitle": "فشل التحقق",
-      "goToDashboard": "الذهاب إلى لوحة القيادة"
+      "errorMessage": "فشل التحقق. قد يكون الرابط منتهي الصلاحية.",
+      "goToDashboard": "الذهاب إلى لوحة القيادة",
+      "backToApp": "العودة إلى التطبيق",
+      "resendSuccess": "تم إرسال بريد التحقق! تحقق من بريدك الوارد.",
+      "resendError": "فشل إرسال البريد الإلكتروني."
     }
   },
   "dashboard": {
@@ -228,6 +407,14 @@
       "keywords": "البحث عن كلمات مفتاحية SEO",
       "saving": "حفظ المقال"
     },
+    "tips": {
+      "1": "الكلمات المفتاحية طويلة الذيل تحقق تحويلات أفضل بثلاث مرات من الكلمات العامة.",
+      "2": "استهدف كتابة 1500 إلى 2500 كلمة لتحقيق أفضل ترتيب في جوجل.",
+      "3": "الوصف التعريفي الجذاب يرفع معدل النقر.",
+      "4": "استخدم عناوين H2/H3 لتنظيم المحتوى والظهور في المقتطفات المميزة.",
+      "5": "الروابط الداخلية تُبقي القراء لفترة أطول على موقعك.",
+      "6": "المحتوى المُحدَّث بانتظام يحصل على ترتيب أفضل."
+    },
     "badges": {
       "accuracy": "دقة عالية",
       "seo": "محسَّن لـ SEO",
@@ -263,8 +450,8 @@
       "generateAiImage": "توليد صورة بالذكاء الاصطناعي"
     },
     "wordpress": {
-      "success": "Article published to WordPress as a draft!",
-      "notConfigured": "Configure WordPress in Settings first."
+      "success": "تم نشر المقال على WordPress كمسودة!",
+      "notConfigured": "يرجى إعداد WordPress في الإعدادات أولاً."
     }
   },
   "history": {
@@ -272,6 +459,7 @@
     "titleHighlight": "المحتوى",
     "subtitle": "اطلع على سجل مقالاتك المُحسَّنة بالذكاء الاصطناعي وأدِرها.",
     "total": "{{count}} مقال مُوَلَّد",
+    "generated": "{{count}} مقال مُوَلَّد",
     "search": "البحث بالكلمة المفتاحية أو العنوان...",
     "empty": "لا توجد مقالات بعد",
     "emptyHint": "عد إلى لوحة القيادة لإنشاء مقالك الأول!",
@@ -286,6 +474,7 @@
     "selectAll": "تحديد الكل",
     "deselectAll": "إلغاء تحديد الكل",
     "selected": "{{count}} مقال محدد",
+    "bulkDeleteSuccess": "تم حذف {{count}} مقال.",
     "deleteSelected": "حذف المحدد",
     "refine": {
       "title": "التعديل بالذكاء الاصطناعي",
@@ -305,9 +494,8 @@
       "show": "سجل النسخ ({{count}})"
     },
     "pagination": {
-      "page": "Page {{current}} of {{total}}"
-    },
-    "generated": "{{count}} Articles Generated"
+      "page": "الصفحة {{current}} من {{total}}"
+    }
   },
   "settings": {
     "title": "الإعدادات",
@@ -336,41 +524,161 @@
       "tone": "الأسلوب الافتراضي"
     },
     "wordpress": {
-      "url": "WordPress Site URL",
+      "url": "رابط موقع WordPress",
       "urlPlaceholder": "https://yourblog.com",
-      "username": "WordPress Username",
+      "username": "اسم مستخدم WordPress",
       "usernamePlaceholder": "admin",
-      "password": "Application Password",
+      "password": "كلمة مرور التطبيق",
       "passwordPlaceholder": "xxxx xxxx xxxx xxxx",
-      "passwordHint": "Generate from WordPress → Users → Application Passwords",
-      "testConnection": "Test Connection",
-      "connectionSuccess": "WordPress connection successful!",
-      "connectionFailed": "Connection failed. Check your credentials."
-    },
-    "danger": {
-      "deleteAccount": "Delete Account",
-      "deleteWarning": "This action is permanent and cannot be undone. All your articles, images, and data will be deleted.",
-      "deleteConfirm": "Yes, delete my account",
-      "deleted": "Account deleted."
-    },
-    "subscription": {
-      "currentPlan": "Current Plan",
-      "renewsOn": "Renews on {{date}}",
-      "cancelAt": "Cancels at {{date}}",
-      "cancelPlan": "Cancel Plan",
-      "reactivate": "Reactivate Plan",
-      "cancelled": "Plan cancelled.",
-      "reactivated": "Plan reactivated!",
-      "managePlan": "Manage Plan"
+      "passwordHint": "أنشئها من WordPress ← المستخدمون ← كلمات مرور التطبيقات",
+      "testConnection": "اختبار الاتصال",
+      "connectionSuccess": "اتصال WordPress ناجح!",
+      "connectionFailed": "فشل الاتصال. تحقق من بياناتك."
     },
     "ai": {
-      "apiKey": "Personal API Key",
-      "apiKeyPlaceholder": "sk-... (optional)",
-      "apiKeyHint": "Use your own key for unlimited generations.",
-      "baseUrl": "Custom Base URL",
+      "apiKey": "مفتاح API الشخصي",
+      "apiKeyPlaceholder": "sk-... (اختياري)",
+      "apiKeyHint": "استخدم مفتاحك الخاص لتوليدات غير محدودة.",
+      "baseUrl": "رابط أساسي مخصص",
       "baseUrlPlaceholder": "https://api.openai.com/v1",
-      "model": "Preferred Model",
-      "modelPlaceholder": "e.g. gpt-4o, deepseek-chat"
+      "model": "النموذج المفضل",
+      "modelPlaceholder": "مثال: gpt-4o، deepseek-chat"
+    },
+    "subscription": {
+      "currentPlan": "الخطة الحالية",
+      "renewsOn": "يتجدد في {{date}}",
+      "cancelAt": "يُلغى في {{date}}",
+      "cancelPlan": "إلغاء الخطة",
+      "reactivate": "إعادة تفعيل الخطة",
+      "cancelled": "تم إلغاء الخطة.",
+      "reactivated": "تم إعادة تفعيل الخطة!",
+      "managePlan": "إدارة الخطة",
+      "loading": "جارٍ تحميل الاشتراك…",
+      "noSubscription": "ليس لديك اشتراك نشط.",
+      "viewPlans": "عرض الخطط",
+      "status": {
+        "active": "نشط",
+        "trialing": "تجريبي",
+        "pastDue": "متأخر السداد",
+        "canceled": "ملغى"
+      },
+      "accessUntil": "الوصول متاح حتى {{date}}",
+      "changePlanAction": "تغيير الخطة",
+      "changePlanTitle": "تغيير الخطة",
+      "prorated": "يتم احتساب تغييرات الخطة تناسبيًا وخصمها فورًا.",
+      "creditsPerMonth": "{{count}} رصيد/شهريًا",
+      "currentPlanBadge": "الخطة الحالية",
+      "cancelError": "فشل إلغاء الاشتراك.",
+      "reactivateError": "فشلت إعادة تفعيل الاشتراك.",
+      "planChanged": "تم تحديث الخطة! تم تطبيق الرسوم التناسبية.",
+      "planChangeError": "فشل تغيير الخطة.",
+      "cancelConfirmTitle": "هل تريد إلغاء اشتراكك؟",
+      "cancelConfirmBody": "سيظل نشطًا حتى نهاية فترة الفوترة الحالية، ثم لن يتم تجديده.",
+      "keepSubscription": "الإبقاء على الاشتراك",
+      "confirmCancel": "نعم، إلغاء",
+      "confirmCancel": "هل تريد إلغاء اشتراكك في نهاية الفترة الحالية؟"
+    },
+    "danger": {
+      "deleteAccount": "حذف الحساب",
+      "deleteWarning": "هذا الإجراء دائم ولا يمكن التراجع عنه. ستُحذف جميع مقالاتك وصورك وبياناتك.",
+      "deleteConfirm": "نعم، احذف حسابي",
+      "deleted": "تم حذف الحساب."
+    }
+  },
+  "buyCredits": {
+    "title": "اختر",
+    "titleHighlight": "خطتك",
+    "topUp": "شحن الرصيد",
+    "subtitle": "كل رصيد = مقال ذكاء اصطناعي كامل (عنوان + ميتا + محتوى كامل + كلمات مفتاحية).",
+    "oneTime": "مرة واحدة",
+    "generations": "توليد مقالات ذكاء اصطناعي",
+    "features": {
+      "seo": "محتوى SEO كامل + كلمات مفتاحية",
+      "wordpress": "نشر مباشر على WordPress",
+      "priority": "طابور ذو أولوية"
+    },
+    "buy": "اشترِ {{name}}",
+    "secured": "تُعالَج المدفوعات بأمان عبر Stripe. تُضاف الأرصدة فوراً بعد تأكيد الدفع.",
+    "modal": {
+      "title": "دفع آمن",
+      "orderSummary": "خطة {{name}}",
+      "orderSubtitle": "{{credits}} توليد مقال ذكاء اصطناعي",
+      "pay": "ادفع {{amount}}",
+      "processing": "جاري المعالجة...",
+      "success": "تم تأكيد الدفع!",
+      "successSubtitle": "جاري إضافة {{credits}} رصيداً إلى حسابك...",
+      "cancel": "إلغاء",
+      "secured": "محمي بـ Stripe · بيانات البطاقة لا تصل إلى خوادمنا أبداً"
+    },
+    "success": "تمت إضافة الأرصدة إلى حسابك!"
+  },
+  "admin": {
+    "dashboard": {
+      "title": "لوحة المشرف",
+      "users": "إجمالي المستخدمين",
+      "articles": "إجمالي المقالات",
+      "revenue": "الإيرادات",
+      "activeSubscriptions": "الاشتراكات النشطة"
+    },
+    "users": {
+      "title": "إدارة المستخدمين",
+      "subtitle": "إدارة وصول المستخدمين، ورصيد الذكاء الاصطناعي، وإعدادات المنصة.",
+      "superAdminZone": "منطقة المشرف الأعلى",
+      "listTitle": "قائمة المستخدمين",
+      "search": "البحث عن مستخدمين...",
+      "userColumn": "المستخدم",
+      "name": "الاسم",
+      "email": "البريد الإلكتروني",
+      "role": "الدور",
+      "credits": "الرصيد",
+      "aiCredits": "رصيد الذكاء الاصطناعي",
+      "plan": "الخطة",
+      "joined": "تاريخ الانضمام",
+      "actions": "إجراءات",
+      "noResults": "لم يتم العثور على مستخدمين.",
+      "editCredits": "تعديل الرصيد",
+      "deleteUser": "حذف المستخدم",
+      "manageCredits": "إدارة الرصيد",
+      "newBalance": "الرصيد الجديد",
+      "deleteConfirmTitle": "هل تريد حذف هذا الحساب؟",
+      "deleteConfirmBodyPrefix": "أنت على وشك الحذف النهائي لحساب",
+      "deleteConfirmBodySuffix": "لا يمكن التراجع عن هذا الإجراء.",
+      "yesDelete": "نعم، احذف",
+      "creditsUpdated": "تم تحديث الرصيد!",
+      "userDeleted": "تم حذف المستخدم.",
+      "loadError": "فشل تحميل المستخدمين",
+      "creditsUpdateError": "فشل تحديث الرصيد",
+      "deleteError": "فشل حذف المستخدم"
+    }
+  },
+  "onboarding": {
+    "skip": "تخطي الشرح",
+    "stepCounter": "الخطوة {{current}} من {{total}}",
+    "tipLabel": "نصيحة:",
+    "getStarted": "ابدأ الآن",
+    "step1": {
+      "title": "أنشئ مقالات في ثوانٍ",
+      "body": "أدخل أي كلمة مفتاحية ودع الذكاء الاصطناعي يكتب لك مقالاً كاملاً مُحسَّناً لمحركات البحث — يشمل العنوان والوصف الميتا والمحتوى المنظَّم واقتراحات الكلمات المفتاحية.",
+      "tip": "جرّب البدء بكلمة مفتاحية طويلة مثل 'أفضل CRM للشركات الصغيرة 2025'."
+    },
+    "step2": {
+      "title": "صور غلاف رائعة",
+      "body": "أضف صورة غلاف احترافية لمقالاتك بنقرة واحدة. يمكنك رفع صورتك الخاصة، أو توليد واحدة بذكاء DALL-E 3 الاصطناعي، أو اختيار صورة مجانية من Unsplash.",
+      "tip": "يستهلك توليد الغلاف بـ DALL-E 3 رصيداً إضافياً واحداً لكل صورة."
+    },
+    "step3": {
+      "title": "النشر مباشرةً على WordPress",
+      "body": "اربط موقع WordPress الخاص بك في الإعدادات ← تفضيلات المحتوى. بعد الربط، انشر أي مقال كمسودة بنقرة واحدة — مع الصورة المميزة.",
+      "tip": "استخدم كلمة مرور التطبيق (وليس كلمة مرور تسجيل الدخول) للأمان."
+    },
+    "step4": {
+      "title": "الأرصدة والوضع غير المحدود",
+      "body": "كل توليد مقال يستهلك رصيداً واحداً. تريد توليدات غير محدودة؟ أضف مفتاح API OpenAI الخاص بك في الإعدادات ← نموذج الذكاء الاصطناعي — مفتاحك الشخصي يتجاوز نظام الأرصدة بالكامل.",
+      "tip": "يمكنك شحن الأرصدة في أي وقت من صفحة شراء الرصيد."
+    },
+    "step5": {
+      "title": "أنت جاهز!",
+      "body": "هذا كل ما تحتاجه لبدء توليد محتوى SEO عالي الجودة. توجّه إلى لوحة القيادة واكتب مقالك الأول — لن يستغرق سوى ثوانٍ."
     }
   },
   "errors": {
@@ -379,88 +687,59 @@
     "goHome": "الذهاب إلى لوحة القيادة",
     "networkError": "خطأ في الشبكة. تحقق من اتصالك.",
     "noCredits": "نفد رصيدك. يرجى شراء المزيد أو إضافة مفتاح API الخاص بك في الإعدادات.",
-    "stripeNotConfigured": "Stripe is not configured by the administrator yet.",
-    "serverError": "Something went wrong"
+    "stripeNotConfigured": "لم يُعِدَّ المشرف Stripe بعد.",
+    "serverError": "حدث خطأ ما"
   },
-  "onboarding": {
-    "skip": "Skip tutorial",
-    "stepCounter": "Step {{current}} of {{total}}",
-    "tipLabel": "Tip:",
-    "getStarted": "Get started",
-    "step1": {
-      "title": "Generate articles in seconds",
-      "body": "Enter any keyword and let the AI write a complete, SEO-optimized article for you — title, meta description, structured content, and keyword suggestions included.",
-      "tip": "Try starting with a long-tail keyword like 'best CRM for small business 2025'."
-    },
-    "step2": {
-      "title": "Beautiful cover images",
-      "body": "Add a professional cover image to your articles with one click. You can upload your own, generate one with DALL-E 3 AI, or pick a free photo from Unsplash.",
-      "tip": "DALL-E 3 cover generation uses 1 extra credit per image."
-    },
-    "step3": {
-      "title": "Publish directly to WordPress",
-      "body": "Connect your WordPress site in Settings → Content Preferences. Once connected, publish any article as a draft with one click — featured image included.",
-      "tip": "Use an Application Password (not your login password) for security."
-    },
-    "step4": {
-      "title": "Credits & unlimited mode",
-      "body": "Each article generation uses 1 credit. Want unlimited generations? Add your own OpenAI API key in Settings → AI Model — your personal key bypasses the credit system entirely.",
-      "tip": "You can top up credits anytime from the Buy Credits page."
-    },
-    "step5": {
-      "title": "You're all set!",
-      "body": "That's everything you need to start generating high-quality SEO content. Head to the Dashboard and write your first article — it only takes seconds."
-    }
+  "pricingPage": {
+    "subtitle": "اختر الخطة الأنسب لاحتياجاتك من المحتوى. بدون رسوم خفية. يمكنك الإلغاء في أي وقت.",
+    "subscribeNow": "اشترك الآن",
+    "subscribeError": "فشل بدء عملية الاشتراك.",
+    "secureCheckout": "الدفع الآمن"
   },
-  "buyCredits": {
-    "title": "Choose your",
-    "titleHighlight": "plan",
-    "topUp": "Top Up Credits",
-    "subtitle": "Each credit = one complete AI article (title + meta + full content + keywords).",
-    "oneTime": "one-time",
-    "generations": "AI article generations",
-    "features": {
-      "seo": "Full SEO content + keywords",
-      "wordpress": "WordPress direct publish",
-      "priority": "Priority queue"
-    },
-    "buy": "Buy {{name}}",
-    "secured": "Payments are processed securely via Stripe. Credits are added instantly after payment confirmation.",
-    "modal": {
-      "title": "Secure payment",
-      "orderSummary": "{{name}} Plan",
-      "orderSubtitle": "{{credits}} AI article generations",
-      "pay": "Pay {{amount}}",
-      "processing": "Processing...",
-      "success": "Payment confirmed!",
-      "successSubtitle": "{{credits}} credits are being added to your account...",
-      "cancel": "Cancel",
-      "secured": "Secured by Stripe · Card data never touches our servers"
-    },
-    "success": "Credits added to your account!"
+  "internalLinking": {
+    "contentAnalysis": "تحليل المحتوى",
+    "articleContent": "محتوى المقال",
+    "articleContentPlaceholder": "الصق محتوى مقالك هنا...",
+    "knownUrls": "روابط الوجهة المعروفة",
+    "knownUrlsHint": "أدخل روابط الوجهة الخاصة بموقعك. افصل كل رابط بفاصلة أو بسطر جديد.",
+    "knownUrlsPlaceholder": "https://mysite.com/about\nhttps://mysite.com/contact, https://mysite.com/pricing",
+    "analyze": "تحليل واقتراح الروابط",
+    "emptyTitle": "لا يوجد تحليل بعد",
+    "emptyBody": "الصق مقالك وأضف روابط الوجهة لبدء التحليل الدلالي بالذكاء الاصطناعي.",
+    "loadingText": "الذكاء الاصطناعي يحلل السياق...",
+    "errorTitle": "فشل تحليل الروابط",
+    "genericError": "تعذّر إنشاء الروابط بسبب خطأ تقني في الخادم.",
+    "noResultsTitle": "لم يتم العثور على روابط",
+    "noResultsBody": "لم نتمكن من تحديد فرص ربط دلالية في المحتوى للروابط المقدمة. جرّب تعديل الكلمات المفتاحية أو روابط الوجهة.",
+    "suggestions": "الاقتراحات ({{count}})",
+    "relevance": "الصلة: {{score}}%",
+    "copyAnchor": "نسخ رابط HTML",
+    "copied": "تم النسخ!",
+    "anchorText": "نص الرابط",
+    "targetUrl": "رابط الوجهة",
+    "contextSnippet": "مقتطف السياق",
+    "emptyContentError": "يرجى إدخال محتوى المقال",
+    "generateSuccess": "تم إنشاء الروابط الداخلية!",
+    "generateError": "فشل تحليل الروابط"
   },
-  "admin": {
-    "dashboard": {
-      "title": "Admin Dashboard",
-      "users": "Total Users",
-      "articles": "Total Articles",
-      "revenue": "Revenue",
-      "activeSubscriptions": "Active Subscriptions"
-    },
-    "users": {
-      "title": "User Management",
-      "search": "Search users...",
-      "name": "Name",
-      "email": "Email",
-      "role": "Role",
-      "credits": "Credits",
-      "plan": "Plan",
-      "joined": "Joined",
-      "actions": "Actions",
-      "editCredits": "Edit credits",
-      "deleteUser": "Delete user",
-      "creditsUpdated": "Credits updated!",
-      "userDeleted": "User deleted."
-    }
+  "unsplashPicker": {
+    "title": "منتقي صور Unsplash",
+    "searchPlaceholder": "ابحث عن صورة (مثال: SEO، تسويق، تقنية)…",
+    "search": "بحث",
+    "emptyState": "ابحث عن صورة للبدء",
+    "usePhoto": "استخدام هذه الصورة",
+    "loadMore": "تحميل المزيد",
+    "providedBy": "الصور مقدَّمة من",
+    "searchError": "فشل البحث في Unsplash.",
+    "loadMoreError": "فشل تحميل المزيد من الصور.",
+    "selectError": "فشل تعيين صورة الغلاف."
+  },
+  "cookieBanner": {
+    "ariaLabel": "موافقة ملفات تعريف الارتباط",
+    "title": "نحن نستخدم ملفات تعريف الارتباط",
+    "bodyBefore": "نستخدم ملفات تعريف ارتباط أساسية للمصادقة. تساعدنا ملفات تعريف الارتباط التحليلية الاختيارية على تحسين المنصة. راجع",
+    "bodyAfter": "لمزيد من التفاصيل.",
+    "essentialOnly": "الأساسية فقط",
+    "acceptAll": "قبول الكل"
   }
 }

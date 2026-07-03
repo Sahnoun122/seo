@@ -1,3 +1,5 @@
+import logger from '../utils/logger.js';
+
 /**
  * Global Express Error Handler
  * Catches all unhandled errors from routes and middleware.
@@ -9,9 +11,9 @@ const errorHandler = (err, req, res, _next) => {
 
   // Log full error in development, minimal in production
   if (process.env.NODE_ENV !== 'production') {
-    console.error('[ErrorHandler]', { message: err.message, stack: err.stack });
+    logger.error('[ErrorHandler]', { message: err.message, stack: err.stack });
   } else {
-    console.error('[ErrorHandler]', err.message);
+    logger.error('[ErrorHandler]', err.message);
   }
 
   res.status(statusCode).json({

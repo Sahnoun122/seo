@@ -1,19 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, NavLink } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Sidebar from './Sidebar';
-import { Menu, X, Sparkles, Moon, Sun, Settings, LogOut, LayoutDashboard, History, ShoppingCart } from 'lucide-react';
-import { useTheme } from '../context/ThemeContext';
+import { Menu, X, Sparkles } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useTranslation } from 'react-i18next';
-import PlanBadge from './ui/PlanBadge';
 
 const DESKTOP_BP = 1024;
 
 export default function DashboardLayout({ children }) {
   const [isDesktop, setIsDesktop] = useState(() => window.innerWidth >= DESKTOP_BP);
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
-  const { isDark, toggleTheme } = useTheme();
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   const navigate = useNavigate();
   const { t } = useTranslation();
 
@@ -26,17 +23,6 @@ export default function DashboardLayout({ children }) {
     window.addEventListener('resize', onResize);
     return () => window.removeEventListener('resize', onResize);
   }, []);
-
-  const handleLogout = () => {
-    logout();
-    navigate('/login');
-  };
-
-  const hasPersonalKey = user?.settings?.userApiKey && user.settings.userApiKey.trim() !== '';
-  const effectivePlan = user?.role === 'admin'
-    ? 'admin'
-    : hasPersonalKey ? 'unlimited'
-    : (user?.plan || 'free');
 
   return (
     <div className="flex min-h-screen bg-background">
@@ -74,7 +60,7 @@ export default function DashboardLayout({ children }) {
               <button
                 onClick={() => setIsMobileSidebarOpen((v) => !v)}
                 className="p-2 rounded-xl text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 transition-all cursor-pointer"
-                aria-label={isMobileSidebarOpen ? 'Fermer le menu' : 'Ouvrir le menu'}
+                aria-label={isMobileSidebarOpen ? t('common.closeMenu') : t('common.openMenu')}
               >
                 {isMobileSidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
               </button>

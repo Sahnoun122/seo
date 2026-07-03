@@ -26,6 +26,7 @@ import settingsRoutes from './routes/settingsRoutes.js';
 import imageRoutes from './routes/imageRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
 import stripeRoutes from './routes/stripeRoutes.js';
+import { handleWebhook } from './controllers/stripeController.js';
 
 const app = express();
 app.set('trust proxy', 1);
@@ -88,6 +89,25 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 
+// Database connection middleware for serverless — must run before ANY route
+// that touches Mongoose, including the raw-body webhook route below.
+app.use(async (req, res, next) => {
+  try {
+    await connectDB();
+    next();
+  } catch (error) {
+    logger.error('Database connection error in middleware:', error.message);
+    res.status(500).json({ error: 'Database connection failed.' });
+  }
+});
+
+// Stripe webhook needs the raw request body for signature verification.
+// It must be registered BEFORE the global express.json() parser below —
+// once express.json() consumes the request stream, express.raw() on a
+// route declared later (even in its own router) receives an already-parsed
+// object instead of a Buffer, and Stripe's SDK rejects it.
+app.post('/api/stripe/webhook', express.raw({ type: 'application/json' }), handleWebhook);
+
 app.use(express.json());
 
 // Strip $ and . from user input to prevent MongoDB operator injection.
@@ -114,17 +134,6 @@ app.post('/api/auth/login', authLimiter);
 app.post('/api/auth/register', authLimiter);
 app.post('/api/generate-article', generationLimiter);
 app.post('/api/articles', generationLimiter);
-
-// Database connection Middleware for Serverless
-app.use(async (req, res, next) => {
-  try {
-    await connectDB();
-    next();
-  } catch (error) {
-    logger.error('Database connection error in middleware:', error.message);
-    res.status(500).json({ error: 'Database connection failed.' });
-  }
-});
 
 // API Documentation — Swagger UI
 // Disable CSP for this route so the Swagger UI scripts can load

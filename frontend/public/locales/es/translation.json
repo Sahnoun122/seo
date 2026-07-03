@@ -16,6 +16,7 @@
     "next": "Siguiente",
     "or": "o",
     "error": "Ocurrió un error. Por favor, inténtalo de nuevo.",
+    "dismiss": "Cerrar",
     "success": "Operación exitosa.",
     "copied": "¡Copiado!",
     "copy": "Copiar",
@@ -23,7 +24,9 @@
     "generate": "Generar",
     "generating": "Generando...",
     "upgrade": "Mejorar plan",
-    "tryFree": "Prueba gratis"
+    "tryFree": "Prueba gratis",
+    "openMenu": "Abrir menú",
+    "closeMenu": "Cerrar menú"
   },
   "nav": {
     "dashboard": "Panel de control",
@@ -51,9 +54,12 @@
     },
     "hero": {
       "badge": "Plataforma SEO con IA",
-      "title": "Genera contenido SEO",
-      "titleHighlight": "en segundos.",
-      "subtitle": "Una palabra clave → artículo completo, meta descripción y estrategia de palabras clave. Publica directamente en WordPress.",
+      "poweredBy": "Impulsado por GPT-4o, DeepSeek y Groq",
+      "title": "Genera artículos que",
+      "titleHighlight": "realmente posicionan.",
+      "subtitle": "Deja de perder horas creando contenido. SEO Gen AI genera artículos altamente optimizados, estructurados y atractivos en segundos — y los publica directamente en WordPress.",
+      "ctaPrimary": "Comenzar gratis",
+      "ctaFeatures": "Ver características",
       "cta": "Comenzar gratis",
       "ctaSecondary": "Ver demo",
       "trustedBy": "Más de 5.000 creadores de contenido confían en nosotros"
@@ -62,42 +68,190 @@
       "articles": "+5.000 artículos generados",
       "languages": "6 idiomas admitidos",
       "models": "+4 modelos IA",
-      "uptime": "99,9% de disponibilidad"
+      "uptime": "99,9% de disponibilidad",
+      "items": [
+        { "value": "5.000+", "label": "Artículos generados" },
+        { "value": "6",      "label": "Idiomas disponibles" },
+        { "value": "4+",     "label": "Modelos IA" },
+        { "value": "99,9%",  "label": "Disponibilidad" }
+      ]
     },
     "features": {
       "title": "Todo lo que necesitas para dominar el SEO",
-      "subtitle": "Desde la investigación de palabras clave hasta la publicación en WordPress — todo en una plataforma."
+      "subtitle": "Desde la investigación de palabras clave hasta la publicación en WordPress — todo en una plataforma.",
+      "badge": "Todo lo que necesitas",
+      "sectionTitle": "Escala tu motor de contenido",
+      "sectionSubtitle": "Diseñado específicamente para SEOs, agencias y creadores de sitios de nicho que necesitan resultados reales.",
+      "items": [
+        {
+          "title": "Motor IA multi-modelo",
+          "desc": "Cambia entre GPT-4o, DeepSeek, Groq y OpenRouter. Usa siempre el mejor modelo para cada tarea."
+        },
+        {
+          "title": "Estructura SEO perfecta",
+          "desc": "Cada artículo incluye jerarquía H1/H2/H3, densidad de palabras clave óptima y un clúster semántico."
+        },
+        {
+          "title": "WordPress con 1 clic",
+          "desc": "Publica borradores con imágenes destacadas directamente en cualquier sitio WordPress vía la API REST."
+        },
+        {
+          "title": "Imágenes IA & Unsplash",
+          "desc": "Genera portadas con DALL-E 3 o busca entre millones de fotos gratuitas de Unsplash — sin salir de la app."
+        },
+        {
+          "title": "Asistente de enlaces internos",
+          "desc": "Importa tu sitemap y obtén sugerencias inteligentes de enlaces internos inyectadas en tu artículo."
+        },
+        {
+          "title": "6 idiomas integrados",
+          "desc": "Interfaz completa en inglés, francés, español, árabe (RTL), italiano y chino — sin plugin."
+        }
+      ]
     },
     "howItWorks": {
       "title": "3 pasos para tu contenido SEO",
-      "subtitle": "De la palabra clave al artículo publicado en menos de 60 segundos."
+      "subtitle": "De la palabra clave al artículo publicado en menos de 60 segundos.",
+      "badge": "De la palabra clave al artículo en 30 segundos",
+      "sectionTitle": "Cómo funciona",
+      "sectionSubtitle": "Tres pasos. Sin curva de aprendizaje. Artículo listo para publicar.",
+      "items": [
+        {
+          "num": "01",
+          "title": "Ingresa tu palabra clave",
+          "desc": "Escribe cualquier palabra clave o tema. Elige tu modelo IA, idioma y longitud del artículo."
+        },
+        {
+          "num": "02",
+          "title": "Observa la generación en vivo",
+          "desc": "Mira cómo aparece tu artículo en tiempo real — título, meta, contenido completo y clúster de palabras clave."
+        },
+        {
+          "num": "03",
+          "title": "Publica o exporta",
+          "desc": "Copia en Markdown o HTML, genera un PDF o publica directamente en WordPress con un clic."
+        }
+      ]
     },
     "pricing": {
       "title": "Precios simples y transparentes",
       "subtitle": "Comienza gratis. Mejora cuando lo necesites.",
       "monthly": "mensual",
       "getStarted": "Comenzar",
-      "mostPopular": "Más popular"
+      "mostPopular": "Más popular",
+      "badge": "Precios simples",
+      "sectionTitle": "Planes para cada equipo",
+      "sectionSubtitle": "Sin tarifas ocultas. Sin tarjeta de crédito para empezar. Cancela cuando quieras.",
+      "freeTrial": "Todos los planes incluyen 5 créditos de prueba gratuita. Sin tarjeta de crédito.",
+      "getStartedFree": "Comenzar gratis",
+      "plans": [
+        {
+          "name": "Starter",
+          "price": "$9",
+          "period": "/mes",
+          "desc": "Perfecto para blogs pequeños y creadores independientes.",
+          "popular": false,
+          "features": ["20 artículos por mes", "Modelo IA estándar", "Exportación Markdown y HTML"],
+          "excluded": ["Publicación automática en WordPress"]
+        },
+        {
+          "name": "Growth",
+          "price": "$29",
+          "period": "/mes",
+          "desc": "El mejor para creadores en crecimiento y agencias.",
+          "popular": true,
+          "features": ["100 artículos por mes", "GPT-4o y modelos premium", "WordPress con 1 clic", "Soporte prioritario"],
+          "excluded": []
+        },
+        {
+          "name": "Pro",
+          "price": "$99",
+          "period": "/mes",
+          "desc": "Para agencias y editores de alto volumen.",
+          "popular": false,
+          "features": ["500 artículos por mes", "Todos los modelos premium", "WordPress multisitio", "Prompts IA personalizados", "Soporte dedicado 24/7"],
+          "excluded": []
+        }
+      ]
     },
     "testimonials": {
       "title": "Amado por los creadores de contenido",
-      "subtitle": "Únete a miles de creadores que publican más rápido con SEO Gen AI."
+      "subtitle": "Únete a miles de creadores que publican más rápido con SEO Gen AI.",
+      "sectionTitle": "Amado por los profesionales del SEO",
+      "sectionSubtitle": "Únete a miles de creadores que construyen su tráfico orgánico en piloto automático.",
+      "disclaimer": "* Reseñas ilustrativas.",
+      "items": [
+        {
+          "name": "Sarah Mitchell",
+          "role": "Directora de contenido @ ScaleUp Agency",
+          "avatar": "SM",
+          "text": "Reemplazamos a 3 redactores freelance con SEO Gen AI. La calidad es igual y producimos 10× más contenido. La integración de WordPress nos ahorra 2 horas al día."
+        },
+        {
+          "name": "James Okafor",
+          "role": "Creador de sitios de nicho",
+          "avatar": "JO",
+          "text": "Tengo 14 sitios de nicho. SEO Gen AI me permite publicar 5 artículos al día en todos ellos. Los rankings mejoraron en los primeros 60 días. El clúster de palabras clave es revolucionario."
+        },
+        {
+          "name": "Léa Fontaine",
+          "role": "Consultora SEO, París",
+          "avatar": "LF",
+          "text": "El resultado en francés es impecable — mejor que herramientas que cuestan 3× el precio. El asistente de enlaces internos me ahorra mucho trabajo manual en cada proyecto."
+        }
+      ]
     },
     "faq": {
-      "title": "Preguntas frecuentes"
+      "title": "Preguntas frecuentes",
+      "sectionTitle": "Preguntas frecuentes",
+      "sectionSubtitle": "Todo lo que necesitas saber. ¿No encuentras tu respuesta?",
+      "contactUs": "Contáctanos.",
+      "items": [
+        {
+          "q": "¿Qué modelos de IA son compatibles?",
+          "a": "SEO Gen AI admite GPT-4o (OpenAI), DeepSeek, Groq (Llama 3) y OpenRouter. Puedes usar tu propia clave API para generaciones ilimitadas o usar el pool de créditos compartidos."
+        },
+        {
+          "q": "¿Puedo usar mi propia clave API de OpenAI?",
+          "a": "Sí. Añade tu clave personal en Ajustes → Configuración IA. Esto desbloquea generaciones ilimitadas y bypasea completamente el sistema de créditos."
+        },
+        {
+          "q": "¿Cómo funciona la integración con WordPress?",
+          "a": "Añade la URL de tu sitio WordPress, tu usuario y contraseña de aplicación en Ajustes. Luego presiona \"Publicar en WordPress\" desde cualquier artículo generado. El post se crea como borrador con la imagen destacada."
+        },
+        {
+          "q": "¿Hay prueba gratuita?",
+          "a": "Cada nueva cuenta recibe 5 créditos gratuitos para generar tus primeros artículos — sin tarjeta de crédito. Mejora a un plan de pago en cualquier momento."
+        },
+        {
+          "q": "¿Puedo cancelar mi suscripción en cualquier momento?",
+          "a": "Por supuesto. Cancela desde la configuración de tu cuenta. Conservas el acceso hasta el final del período de facturación y nunca más se te cobrará."
+        }
+      ]
     },
     "cta": {
       "title": "¿Listo para generar tu primer artículo?",
       "subtitle": "Únete a +5.000 creadores que publican contenido SEO en segundos.",
-      "button": "Comenzar gratis — sin tarjeta de crédito"
+      "button": "Comenzar gratis — sin tarjeta de crédito",
+      "badge": "Empieza a generar en 30 segundos",
+      "sectionTitle": "¿Listo para dominar los SERPs?",
+      "sectionSubtitle": "Únete a miles de creadores que construyen su tráfico orgánico en piloto automático. Sin tarjeta de crédito.",
+      "getStartedFree": "Comenzar gratis",
+      "freeArticles": "5 artículos gratuitos incluidos con cada nueva cuenta"
     },
     "footer": {
-      "tagline": "Generación de artículos SEO con IA para equipos de contenido modernos.",
+      "tagline": "Plataforma de generación de contenido SEO con IA.",
       "product": "Producto",
+      "account": "Cuenta",
       "legal": "Legal",
       "privacy": "Política de privacidad",
       "terms": "Términos de servicio",
-      "rights": "Todos los derechos reservados."
+      "rights": "Todos los derechos reservados.",
+      "signUpFree": "Registrarse gratis",
+      "login": "Iniciar sesión",
+      "register": "Registrarse",
+      "forgotPassword": "Olvidé mi contraseña",
+      "copyright": "© 2026 SEO Gen AI. Todos los derechos reservados."
     }
   },
   "auth": {
@@ -164,15 +318,36 @@
       "backToLogin": "Volver al inicio de sesión",
       "sent": "Revisa tu bandeja de entrada",
       "sentSubtitle": "Enviamos un enlace a {{email}}.",
+      "expiresIn": "El enlace caduca en 1 hora.",
+      "notReceived": "¿No lo recibiste? Revisa tu carpeta de spam o reenvíalo.",
+      "rememberPassword": "¿Recuerdas tu contraseña?",
       "resend": "Reenviar correo",
-      "resendCooldown": "Reenviar en {{seconds}}s"
+      "resendCooldown": "Reenviar en {{seconds}}s",
+      "sendError": "Error al enviar el correo de restablecimiento.",
+      "resendSuccess": "¡Enlace de restablecimiento reenviado!",
+      "resendError": "Error al reenviar."
     },
     "resetPassword": {
       "title": "Establecer nueva contraseña",
+      "subtitle": "Elige una contraseña segura — al menos 8 caracteres.",
       "password": "Nueva contraseña",
+      "passwordPlaceholder": "Mín. 8 caracteres",
       "confirm": "Confirmar contraseña",
+      "confirmPlaceholder": "Repite la contraseña",
+      "mismatch": "Las contraseñas no coinciden",
       "submit": "Restablecer contraseña",
-      "success": "¡Contraseña actualizada! Ahora puedes iniciar sesión."
+      "success": "¡Contraseña actualizada! Ahora puedes iniciar sesión.",
+      "successTitle": "¡Contraseña actualizada!",
+      "redirecting": "Redirigiendo al inicio de sesión…",
+      "expiredError": "El enlace ha caducado. Solicita uno nuevo.",
+      "strength": {
+        "tooShort": "Demasiado corta",
+        "weak": "Débil",
+        "fair": "Aceptable",
+        "good": "Buena",
+        "strong": "Fuerte",
+        "veryStrong": "Muy fuerte"
+      }
     },
     "emailVerification": {
       "banner": "Por favor verifica tu dirección de correo para desbloquear todas las funciones.",
@@ -181,9 +356,13 @@
       "sending": "Enviando...",
       "verifying": "Verificando tu correo...",
       "successTitle": "¡Correo verificado!",
-      "successMessage": "Tu cuenta está completamente activada.",
+      "successMessage": "Tu cuenta ya está totalmente activada. Ya puedes empezar a generar artículos SEO.",
       "errorTitle": "Error de verificación",
-      "goToDashboard": "Ir al panel"
+      "errorMessage": "Error de verificación. Es posible que el enlace haya caducado.",
+      "goToDashboard": "Ir al panel",
+      "backToApp": "Volver a la aplicación",
+      "resendSuccess": "¡Correo de verificación enviado! Revisa tu bandeja de entrada.",
+      "resendError": "Error al enviar el correo."
     }
   },
   "dashboard": {
@@ -228,6 +407,14 @@
       "keywords": "Buscando palabras clave SEO",
       "saving": "Guardando artículo"
     },
+    "tips": {
+      "1": "Las palabras clave de cola larga convierten 3× mejor que las genéricas.",
+      "2": "Apunta a 1500–2500 palabras para los mejores puestos en Google.",
+      "3": "Una meta descripción convincente mejora tu tasa de clics.",
+      "4": "Usa encabezados H2/H3 para estructurar el contenido y optar a fragmentos destacados.",
+      "5": "Los enlaces internos mantienen a los lectores más tiempo en tu sitio.",
+      "6": "El contenido actualizado con regularidad posiciona mejor."
+    },
     "badges": {
       "accuracy": "Alta precisión",
       "seo": "Optimizado SEO",
@@ -261,6 +448,10 @@
       "published": "¡Publicado!",
       "addImage": "Añadir imagen",
       "generateAiImage": "Generar imagen IA"
+    },
+    "wordpress": {
+      "success": "¡Artículo publicado en WordPress como borrador!",
+      "notConfigured": "Configura WordPress en Ajustes primero."
     }
   },
   "history": {
@@ -283,6 +474,7 @@
     "selectAll": "Seleccionar todo",
     "deselectAll": "Deseleccionar todo",
     "selected": "{{count}} artículo(s) seleccionado(s)",
+    "bulkDeleteSuccess": "{{count}} artículo(s) eliminado(s).",
     "deleteSelected": "Eliminar selección",
     "refine": {
       "title": "Modificar con IA",
@@ -351,6 +543,46 @@
       "testConnection": "Probar conexión",
       "connectionSuccess": "¡Conexión WordPress exitosa!",
       "connectionFailed": "Conexión fallida. Verifica tus credenciales."
+    },
+    "subscription": {
+      "currentPlan": "Plan actual",
+      "renewsOn": "Renueva el {{date}}",
+      "cancelAt": "Cancela el {{date}}",
+      "cancelPlan": "Cancelar plan",
+      "reactivate": "Reactivar plan",
+      "cancelled": "Plan cancelado.",
+      "reactivated": "¡Plan reactivado!",
+      "managePlan": "Gestionar plan",
+      "loading": "Cargando suscripción…",
+      "noSubscription": "No tienes una suscripción activa.",
+      "viewPlans": "Ver planes",
+      "status": {
+        "active": "Activa",
+        "trialing": "En prueba",
+        "pastDue": "Pago pendiente",
+        "canceled": "Cancelada"
+      },
+      "accessUntil": "Acceso hasta el {{date}}",
+      "changePlanAction": "Cambiar plan",
+      "changePlanTitle": "Cambiar plan",
+      "prorated": "Los cambios de plan se prorratean y se cobran de inmediato.",
+      "creditsPerMonth": "{{count}} créditos/mes",
+      "currentPlanBadge": "Plan actual",
+      "cancelError": "Error al cancelar la suscripción.",
+      "reactivateError": "Error al reactivar la suscripción.",
+      "planChanged": "¡Plan actualizado! Se aplicó el cargo prorrateado.",
+      "planChangeError": "Error al cambiar de plan.",
+      "cancelConfirmTitle": "¿Cancelar tu suscripción?",
+      "cancelConfirmBody": "Permanecerá activa hasta el final del período de facturación actual y luego dejará de renovarse.",
+      "keepSubscription": "Mantener suscripción",
+      "confirmCancel": "Sí, cancelar",
+      "confirmCancel": "¿Cancelar tu suscripción al final del período actual?"
+    },
+    "danger": {
+      "deleteAccount": "Eliminar cuenta",
+      "deleteWarning": "Esta acción es permanente e irreversible. Todos tus artículos, imágenes y datos serán eliminados.",
+      "deleteConfirm": "Sí, eliminar mi cuenta",
+      "deleted": "Cuenta eliminada."
     }
   },
   "errors": {
@@ -419,35 +651,95 @@
       "secured": "Protegido por Stripe · Tus datos bancarios nunca nos llegan"
     }
   },
-  "result": {
-    "title": "Artículo generado",
-    "metaDescription": "Meta descripción",
-    "targetKeyword": "Palabra clave objetivo",
-    "strategyKeywords": "Palabras clave estratégicas",
-    "pdfError": "Error al generar el PDF",
-    "keywords": "Palabras clave SEO",
-    "actions": {
-      "copy": "Copiar",
-      "copied": "¡Copiado!",
-      "markdown": "Markdown",
-      "html": "HTML",
-      "pdf": "PDF",
-      "replaceCover": "Cambiar portada",
-      "addCover": "Añadir portada",
-      "aiCover": "Portada IA",
-      "wordpress": "WordPress",
-      "copyMarkdown": "Copiar Markdown",
-      "copyHtml": "Copiar HTML",
-      "downloadPdf": "Descargar PDF",
-      "publishWordpress": "Publicar en WordPress",
-      "publishing": "Publicando...",
-      "published": "¡Publicado!",
-      "addImage": "Añadir imagen",
-      "generateAiImage": "Generar imagen IA"
+  "admin": {
+    "dashboard": {
+      "title": "Panel Admin",
+      "users": "Total usuarios",
+      "articles": "Total artículos",
+      "revenue": "Ingresos",
+      "activeSubscriptions": "Suscripciones activas"
     },
-    "wordpress": {
-      "success": "¡Artículo publicado en WordPress como borrador!",
-      "notConfigured": "Configura WordPress en Ajustes primero."
+    "users": {
+      "title": "Gestión de usuarios",
+      "subtitle": "Gestiona el acceso de los usuarios, los créditos de IA y la configuración de la plataforma.",
+      "superAdminZone": "Zona de Super Admin",
+      "listTitle": "Lista de usuarios",
+      "search": "Buscar usuarios...",
+      "userColumn": "Usuario",
+      "name": "Nombre",
+      "email": "Correo",
+      "role": "Rol",
+      "credits": "Créditos",
+      "aiCredits": "Créditos IA",
+      "plan": "Plan",
+      "joined": "Registrado",
+      "actions": "Acciones",
+      "noResults": "No se encontraron usuarios.",
+      "editCredits": "Editar créditos",
+      "deleteUser": "Eliminar usuario",
+      "manageCredits": "Gestionar créditos",
+      "newBalance": "Nuevo saldo de créditos",
+      "deleteConfirmTitle": "¿Eliminar esta cuenta?",
+      "deleteConfirmBodyPrefix": "Estás a punto de eliminar permanentemente la cuenta de",
+      "deleteConfirmBodySuffix": "Esta acción no se puede deshacer.",
+      "yesDelete": "Sí, eliminar",
+      "creditsUpdated": "¡Créditos actualizados!",
+      "userDeleted": "Usuario eliminado.",
+      "loadError": "Error al cargar los usuarios",
+      "creditsUpdateError": "Error al actualizar los créditos",
+      "deleteError": "Error al eliminar el usuario"
     }
+  },
+  "pricingPage": {
+    "subtitle": "Elige el plan que mejor se adapte a tus necesidades de contenido. Sin cargos ocultos. Cancela cuando quieras.",
+    "subscribeNow": "Suscribirme",
+    "subscribeError": "Error al iniciar el proceso de suscripción.",
+    "secureCheckout": "Pago seguro"
+  },
+  "internalLinking": {
+    "contentAnalysis": "Análisis de contenido",
+    "articleContent": "Contenido del artículo",
+    "articleContentPlaceholder": "Pega aquí el contenido de tu artículo...",
+    "knownUrls": "URLs de destino conocidas",
+    "knownUrlsHint": "Introduce las URLs de destino de tu sitio. Separa cada URL con una coma o un salto de línea.",
+    "knownUrlsPlaceholder": "https://misitio.com/nosotros\nhttps://misitio.com/contacto, https://misitio.com/precios",
+    "analyze": "Analizar y sugerir enlaces",
+    "emptyTitle": "Aún no hay análisis",
+    "emptyBody": "Pega tu artículo y añade URLs de destino para activar el análisis semántico con IA.",
+    "loadingText": "La IA está analizando el contexto...",
+    "errorTitle": "Error en el análisis de enlaces",
+    "genericError": "No se pudieron generar los enlaces debido a un error técnico del servidor.",
+    "noResultsTitle": "No se encontraron enlaces",
+    "noResultsBody": "No identificamos oportunidades de anclaje semántico en el contenido para las URLs proporcionadas. Prueba a ajustar las palabras clave o las URLs de destino.",
+    "suggestions": "Sugerencias ({{count}})",
+    "relevance": "Relevancia: {{score}}%",
+    "copyAnchor": "Copiar ancla HTML",
+    "copied": "¡Copiado!",
+    "anchorText": "Texto de anclaje",
+    "targetUrl": "URL de destino",
+    "contextSnippet": "Fragmento de contexto",
+    "emptyContentError": "Introduce el contenido del artículo",
+    "generateSuccess": "¡Enlaces internos generados!",
+    "generateError": "Error en el análisis de enlaces"
+  },
+  "unsplashPicker": {
+    "title": "Selector de fotos de Unsplash",
+    "searchPlaceholder": "Busca una foto (ej. SEO, marketing, tecnología)…",
+    "search": "Buscar",
+    "emptyState": "Busca una foto para empezar",
+    "usePhoto": "Usar esta foto",
+    "loadMore": "Cargar más",
+    "providedBy": "Fotos proporcionadas por",
+    "searchError": "Error al buscar en Unsplash.",
+    "loadMoreError": "Error al cargar más fotos.",
+    "selectError": "Error al establecer la imagen de portada."
+  },
+  "cookieBanner": {
+    "ariaLabel": "Consentimiento de cookies",
+    "title": "Usamos cookies",
+    "bodyBefore": "Usamos cookies esenciales para la autenticación. Las cookies analíticas opcionales nos ayudan a mejorar la plataforma. Consulta nuestra",
+    "bodyAfter": "para más detalles.",
+    "essentialOnly": "Solo esenciales",
+    "acceptAll": "Aceptar todo"
   }
 }

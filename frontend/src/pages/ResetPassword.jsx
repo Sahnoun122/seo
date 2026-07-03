@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { toast } from 'react-hot-toast';
 import { Lock, ArrowLeft, Sparkles, Loader2, CheckCircle2, Eye, EyeOff } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -16,19 +17,22 @@ function getStrength(password) {
   return score; // 0–5
 }
 
-const STRENGTH_CONFIG = [
-  { label: 'Too short',  color: 'bg-red-400',    text: 'text-red-500'    },
-  { label: 'Weak',       color: 'bg-red-400',    text: 'text-red-500'    },
-  { label: 'Fair',       color: 'bg-amber-400',  text: 'text-amber-500'  },
-  { label: 'Good',       color: 'bg-blue-400',   text: 'text-blue-500'   },
-  { label: 'Strong',     color: 'bg-emerald-400',text: 'text-emerald-500'},
-  { label: 'Very strong',color: 'bg-emerald-500',text: 'text-emerald-600'},
+const STRENGTH_KEYS = ['tooShort', 'weak', 'fair', 'good', 'strong', 'veryStrong'];
+const STRENGTH_STYLES = [
+  { color: 'bg-red-400',     text: 'text-red-500'    },
+  { color: 'bg-red-400',     text: 'text-red-500'    },
+  { color: 'bg-amber-400',   text: 'text-amber-500'  },
+  { color: 'bg-blue-400',    text: 'text-blue-500'   },
+  { color: 'bg-emerald-400', text: 'text-emerald-500'},
+  { color: 'bg-emerald-500', text: 'text-emerald-600'},
 ];
 
 function PasswordStrengthBar({ password }) {
+  const { t } = useTranslation();
   const score = useMemo(() => getStrength(password), [password]);
   if (!password) return null;
-  const config = STRENGTH_CONFIG[score];
+  const style = STRENGTH_STYLES[score];
+  const label = t(`auth.resetPassword.strength.${STRENGTH_KEYS[score]}`);
 
   return (
     <div className="mt-2 space-y-1.5">
@@ -37,17 +41,18 @@ function PasswordStrengthBar({ password }) {
           <div
             key={i}
             className={`h-1 flex-1 rounded-full transition-all duration-300 ${
-              i < score ? config.color : 'bg-gray-100 dark:bg-gray-800'
+              i < score ? style.color : 'bg-gray-100 dark:bg-gray-800'
             }`}
           />
         ))}
       </div>
-      <p className={`text-[11px] font-semibold ${config.text}`}>{config.label}</p>
+      <p className={`text-[11px] font-semibold ${style.text}`}>{label}</p>
     </div>
   );
 }
 
 export default function ResetPassword() {
+  const { t }        = useTranslation();
   const { token }    = useParams();
   const navigate     = useNavigate();
   const [password, setPassword]             = useState('');
@@ -68,10 +73,10 @@ export default function ResetPassword() {
     try {
       await api.post(`/auth/reset-password/${token}`, { password });
       setSuccess(true);
-      toast.success('Password updated!');
+      toast.success(t('auth.resetPassword.success'));
       setTimeout(() => navigate('/login'), 2800);
     } catch (err) {
-      toast.error(err.response?.data?.error || 'Link expired. Please request a new one.');
+      toast.error(err.response?.data?.error || t('auth.resetPassword.expiredError'));
     } finally {
       setIsLoading(false);
     }
@@ -111,10 +116,10 @@ export default function ResetPassword() {
               </div>
               <div>
                 <h2 className="text-2xl font-extrabold text-gray-900 dark:text-white mb-2 tracking-tight">
-                  Password updated!
+                  {t('auth.resetPassword.successTitle')}
                 </h2>
                 <p className="text-gray-500 dark:text-gray-400 text-sm">
-                  Redirecting you to sign in…
+                  {t('auth.resetPassword.redirecting')}
                 </p>
               </div>
               <div className="flex justify-center">
@@ -131,17 +136,17 @@ export default function ResetPassword() {
             >
               <div className="mb-7">
                 <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white mb-2 tracking-tight">
-                  Set new password
+                  {t('auth.resetPassword.title')}
                 </h2>
                 <p className="text-gray-500 dark:text-gray-400 text-sm">
-                  Choose a strong password — at least 8 characters.
+                  {t('auth.resetPassword.subtitle')}
                 </p>
               </div>
 
               <form className="space-y-5" onSubmit={handleSubmit}>
                 {/* New password */}
                 <div>
-                  <label className="label-xs" htmlFor="new-password">New password</label>
+                  <label className="label-xs" htmlFor="new-password">{t('auth.resetPassword.password')}</label>
                   <div className="relative">
                     <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
                     <input
@@ -150,7 +155,7 @@ export default function ResetPassword() {
                       required
                       autoFocus
                       className="input-field pl-10 pr-10"
-                      placeholder="Min 8 characters"
+                      placeholder={t('auth.resetPassword.passwordPlaceholder')}
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                     />
@@ -168,7 +173,7 @@ export default function ResetPassword() {
 
                 {/* Confirm password */}
                 <div>
-                  <label className="label-xs" htmlFor="confirm-password">Confirm password</label>
+                  <label className="label-xs" htmlFor="confirm-password">{t('auth.resetPassword.confirm')}</label>
                   <div className="relative">
                     <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
                     <input
@@ -178,7 +183,7 @@ export default function ResetPassword() {
                       className={`input-field pl-10 pr-10 transition-colors ${
                         !passwordsMatch ? 'border-red-300 dark:border-red-700 focus:border-red-400' : ''
                       }`}
-                      placeholder="Repeat password"
+                      placeholder={t('auth.resetPassword.confirmPlaceholder')}
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
                     />
@@ -199,7 +204,7 @@ export default function ResetPassword() {
                         exit={{ opacity: 0, height: 0 }}
                         className="text-[11px] text-red-500 font-semibold mt-1.5"
                       >
-                        Passwords do not match
+                        {t('auth.resetPassword.mismatch')}
                       </motion.p>
                     )}
                   </AnimatePresence>
@@ -215,7 +220,7 @@ export default function ResetPassword() {
                   ) : (
                     <>
                       <Lock className="w-4 h-4" />
-                      <span>Update Password</span>
+                      <span>{t('auth.resetPassword.submit')}</span>
                     </>
                   )}
                 </button>
@@ -227,7 +232,7 @@ export default function ResetPassword() {
                   className="text-primary-600 hover:text-primary-700 font-bold underline underline-offset-4 decoration-2 inline-flex items-center gap-1"
                 >
                   <ArrowLeft className="w-3.5 h-3.5" />
-                  Back to Sign In
+                  {t('auth.forgotPassword.backToLogin')}
                 </Link>
               </p>
             </motion.div>

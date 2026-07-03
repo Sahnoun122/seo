@@ -63,7 +63,7 @@ function HistoryCardSkeleton() {
 }
 
 export default function History() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [articles, setArticles]               = useState([]);
   const [pagination, setPagination]           = useState({ total: 0, page: 1, pages: 1 });
   const [isLoading, setIsLoading]             = useState(true);
@@ -190,7 +190,7 @@ export default function History() {
         // continue deleting others
       }
     }
-    toast.success(`${deleted} article${deleted !== 1 ? 's' : ''} deleted.`);
+    toast.success(t('history.bulkDeleteSuccess', { count: deleted }));
     setSelectedIds(new Set());
     fetchHistory(page, searchQuery);
     setBulkDeleting(false);
@@ -362,6 +362,7 @@ export default function History() {
                   onClick={() => setSelectedIds(new Set())}
                   className="p-1.5 rounded-lg text-primary-400 hover:text-primary-700 hover:bg-primary-100 dark:hover:bg-primary-800/50 transition-colors"
                   title="Clear selection"
+                  aria-label="Clear selection"
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -448,6 +449,7 @@ export default function History() {
                       onClick={(e) => { e.stopPropagation(); setDeleteTarget(article); }}
                       className="absolute top-3 right-3 z-10 p-1.5 rounded-lg text-gray-300 hover:text-red-500 hover:bg-red-50 transition-all opacity-0 group-hover:opacity-100"
                       title="Delete article"
+                      aria-label="Delete article"
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
@@ -463,7 +465,7 @@ export default function History() {
                         <div className="flex flex-col items-end">
                           <span className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em]">{t('history.created')}</span>
                           <span className="text-xs font-bold text-gray-900 dark:text-white">
-                            {new Date(article.createdAt).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' })}
+                            {new Date(article.createdAt).toLocaleDateString(i18n.language, { day: 'numeric', month: 'short', year: 'numeric' })}
                           </span>
                         </div>
                       </div>

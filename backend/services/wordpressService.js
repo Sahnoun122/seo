@@ -9,6 +9,7 @@
  */
 
 import logger from '../utils/logger.js';
+import { assertPublicHttpUrl } from '../utils/urlSafety.js';
 
 class WordPressService {
   /**
@@ -24,6 +25,7 @@ class WordPressService {
     }
     this.baseUrl = base.replace(/\/+$/, '');
     this.authHeader = `Basic ${Buffer.from(`${username}:${appPassword}`).toString('base64')}`;
+    this._urlChecked = false;
   }
 
   // ── Core HTTP helper ────────────────────────────────────────────────────────
@@ -33,6 +35,13 @@ class WordPressService {
    * Follows up to 5 redirects while keeping the original HTTP method.
    */
   async _request(endpoint, { method = 'GET', headers = {}, body } = {}) {
+    // SSRF guard — the site URL is user-supplied; reject internal/private targets.
+    // Checked once per instance since baseUrl never changes after construction.
+    if (!this._urlChecked) {
+      await assertPublicHttpUrl(this.baseUrl);
+      this._urlChecked = true;
+    }
+
     const url = `${this.baseUrl}/wp-json/wp/v2${endpoint}`;
     const reqHeaders = { Authorization: this.authHeader, ...headers };
 
@@ -43,6 +52,7 @@ class WordPressService {
     while ([301, 302, 307, 308].includes(response.status) && redirects < 5) {
       const location = response.headers.get('location');
       if (!location) break;
+      await assertPublicHttpUrl(location); // redirects can also be abused for SSRF
       logger.info(`[WP] Redirect ${response.status} → ${location}`);
       response = await fetch(location, { method, headers: reqHeaders, body, redirect: 'manual' });
       redirects++;

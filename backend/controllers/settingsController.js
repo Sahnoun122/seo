@@ -2,7 +2,6 @@ import User from '../models/User.js';
 import Settings from '../models/Settings.js';
 import { getSystemSettings } from '../services/settingsService.js';
 import bcrypt from 'bcryptjs';
-import { getAllUsers, updateUserCredits, deleteUser } from './adminController.js';
 import logger from '../utils/logger.js';
 
 // @desc    Get all settings (global system settings, user profile, and user list if admin)
@@ -202,6 +201,3 @@ export const updateSettings = async (req, res) => {
     res.status(500).json({ error: 'Failed to update settings.' });
   }
 };
-
-// Re-exported from adminController to avoid duplication
-export { getAllUsers, updateUserCredits, deleteUser };

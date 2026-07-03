@@ -178,7 +178,13 @@ describe('fetchUsers()', () => {
   it('GETs /admin/users with page and limit params', async () => {
     mockAxiosInstance.get.mockResolvedValue({ data: { data: {} } });
     await fetchUsers(2, 5);
-    expect(mockAxiosInstance.get).toHaveBeenCalledWith('/admin/users?page=2&limit=5');
+    expect(mockAxiosInstance.get).toHaveBeenCalledWith('/admin/users?page=2&limit=5&search=');
+  });
+
+  it('GETs /admin/users with an encoded search param', async () => {
+    mockAxiosInstance.get.mockResolvedValue({ data: { data: {} } });
+    await fetchUsers(1, 10, 'jane doe');
+    expect(mockAxiosInstance.get).toHaveBeenCalledWith('/admin/users?page=1&limit=10&search=jane%20doe');
   });
 });
 

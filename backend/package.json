@@ -39,7 +39,7 @@
   },
   "devDependencies": {
     "cross-env": "^10.1.0",
-    "jest": "^25.0.0",
+    "jest": "^29.7.0",
     "mongodb-memory-server": "^11.2.0",
     "nodemon": "^3.1.14",
     "supertest": "^7.2.2"
@@ -47,6 +47,9 @@
   "jest": {
     "testEnvironment": "node",
     "transform": {},
+    "moduleNameMapper": {
+      "^(\\.{1,2}/.*)\\.js$": "$1"
+    },
     "setupFilesAfterEnv": [],
     "testTimeout": 30000,
     "collectCoverageFrom": [

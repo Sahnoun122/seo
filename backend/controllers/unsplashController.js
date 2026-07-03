@@ -2,6 +2,7 @@ import logger from '../utils/logger.js';
 import Article from '../models/Article.js';
 import Image from '../models/Image.js';
 import ImageService from '../services/ImageService.js';
+import { isUnsplashHost } from '../utils/urlSafety.js';
 
 const getAccessKey = () => {
   const key = process.env.UNSPLASH_ACCESS_KEY;
@@ -68,6 +69,12 @@ export const setUnsplashCover = async (req, res) => {
     const { photoUrl, downloadLocation, photographerName, photographerUrl } = req.body;
 
     if (!photoUrl) return res.status(400).json({ error: 'photoUrl is required.' });
+    if (!isUnsplashHost(photoUrl)) {
+      return res.status(400).json({ error: 'photoUrl must be an unsplash.com URL.' });
+    }
+    if (downloadLocation && !isUnsplashHost(downloadLocation)) {
+      return res.status(400).json({ error: 'downloadLocation must be an unsplash.com URL.' });
+    }
 
     const accessKey = getAccessKey();
 
@@ -103,6 +110,7 @@ export const setUnsplashCover = async (req, res) => {
     const uploadResult = await ImageService.uploadImage(mockFile, 'unsplash-covers');
 
     const imageDoc = await Image.create({
+      user: req.user.id,
       url: '',
       path: uploadResult.path,
       filename: uploadResult.filename,

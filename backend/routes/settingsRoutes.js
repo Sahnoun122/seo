@@ -1,5 +1,5 @@
 import express from 'express';
-import { getSettings, updateSettings, updateUserCredits, deleteUser } from '../controllers/settingsController.js';
+import { getSettings, updateSettings } from '../controllers/settingsController.js';
 import { protect } from '../middleware/authMiddleware.js';
 import { validate, updateSettingsSchema } from '../validators/schemas.js';
 
@@ -11,10 +11,8 @@ router.get('/', protect, getSettings);
 // Update general profile/global settings
 router.put('/', protect, validate(updateSettingsSchema), updateSettings);
 
-// Update a specific user's credits and roles (Admin only inside controller)
-router.put('/users/:id', protect, updateUserCredits);
-
-// Delete a specific user account (Admin only inside controller)
-router.delete('/users/:id', protect, deleteUser);
+// NOTE: user credit/role management and account deletion for admins live
+// exclusively under /api/admin/users/:id (routes/adminRoutes.js), which is
+// protected by the isAdmin middleware. Do not re-expose them here.
 
 export default router;

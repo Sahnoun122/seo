@@ -343,24 +343,28 @@ This creates:
 
 ## 12. Deployment
 
-### Option A — Vercel (Recommended for quick start)
+> **Important — Backend hosting:** The backend streams article generation via **Server-Sent Events (SSE)**. Vercel serverless functions have a 10 s timeout on the Hobby plan and 60 s on Pro — both too short for a 30–90 s generation. **Deploy the backend on Railway, Render, or a VPS** (all support long-lived HTTP connections). The frontend can be hosted anywhere, including Vercel.
 
-**Frontend:**
-1. Connect your GitHub repo to [Vercel](https://vercel.com)
-2. Set root directory to `frontend`
-3. Add environment variable: `VITE_API_URL=https://api.yourdomain.com/api`
+### Option A — Railway (Recommended for the backend)
 
-**Backend:**
-1. Add a second Vercel project, root directory `backend`
-2. The included `vercel.json` handles routing
-3. Add all backend environment variables in Vercel dashboard
+1. Create a new [Railway](https://railway.app) project
+2. Add a **MongoDB** service from the Railway template marketplace
+3. Deploy the `backend/` directory as a Node.js service
+4. Set all backend environment variables in the Railway dashboard (copy from `.env.example`)
+5. Copy the generated Railway URL → set as `VITE_API_URL` in the frontend
 
-### Option B — Railway
+**Frontend on Vercel:**
+1. Connect your GitHub repo to [Vercel](https://vercel.com), set root directory to `frontend`
+2. Add environment variable: `VITE_API_URL=https://<your-railway-backend>.up.railway.app/api`
 
-1. Create a new Railway project
-2. Add a MongoDB service
-3. Deploy backend and frontend as separate services
-4. Set environment variables in Railway dashboard
+### Option B — Vercel (both frontend and backend)
+
+**Only viable on Vercel Pro (60 s function timeout).** Not recommended for the Hobby plan (10 s limit — article generation will time out).
+
+1. Connect GitHub repo to [Vercel](https://vercel.com), set root directory to `backend`
+2. The included `vercel.json` handles routing; `maxDuration` is set to 60 s
+3. Add all backend environment variables in the Vercel dashboard
+4. Deploy a second Vercel project for the frontend (root directory `frontend`)
 
 ### Option C — VPS (Ubuntu/Debian)
 
