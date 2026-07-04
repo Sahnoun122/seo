@@ -428,6 +428,8 @@
     "metaDescription": "الوصف الميتا",
     "targetKeyword": "الكلمة المفتاحية المستهدفة",
     "strategyKeywords": "الكلمات المفتاحية الاستراتيجية",
+    "regenerateKeywords": "إعادة التوليد",
+    "keywordsEmpty": "اقتراحات الكلمات المفتاحية غير متوفرة حاليًا.",
     "pdfError": "فشل في إنشاء ملف PDF",
     "keywords": "كلمات مفتاحية SEO",
     "actions": {
@@ -447,7 +449,8 @@
       "publishing": "جاري النشر...",
       "published": "تم النشر!",
       "addImage": "إضافة صورة غلاف",
-      "generateAiImage": "توليد صورة بالذكاء الاصطناعي"
+      "generateAiImage": "توليد صورة بالذكاء الاصطناعي",
+      "aiCoverGenerated": "تم إنشاء صورة الغلاف بالذكاء الاصطناعي!"
     },
     "wordpress": {
       "success": "تم نشر المقال على WordPress كمسودة!",

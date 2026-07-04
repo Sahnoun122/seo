@@ -24,9 +24,31 @@ jest.unstable_mockModule('../services/openaiService.js', () => ({
     language: 'English',
     tone: 'Professional',
   }),
+  chatCompletionWithFallback: jest.fn().mockImplementation(async (openai, model, params) => ({
+    completion: await openai.chat.completions.create({ ...params, model }),
+    modelUsed: model,
+  })),
+  streamCompletionWithFallback: jest.fn().mockImplementation(async (openai, model, params, { onDelta } = {}) => {
+    const stream = await openai.chat.completions.create({ ...params, model, stream: true });
+    let fullContent = '';
+    for await (const chunk of stream) {
+      const delta = chunk.choices[0]?.delta?.content || '';
+      if (delta) {
+        fullContent += delta;
+        onDelta?.(delta);
+      }
+    }
+    return { fullContent, modelUsed: model };
+  }),
 }));
 
-// Import AFTER mock is registered
+// Import AFTER mock is registered — resolve the mocked module's exports once
+// here and reuse this exact reference everywhere. A second, later
+// `await import('../services/openaiService.js')` call from inside a test can
+// resolve to a distinct module record under Jest's experimental VM modules,
+// so mockResolvedValueOnce() on that second reference silently never affects
+// the function articleController.js actually calls.
+const { getOpenAIClientAndModel } = await import('../services/openaiService.js');
 const articleRoutes = (await import('../routes/articleRoutes.js')).default;
 
 // ─── App setup ───────────────────────────────────────────────────────────────
@@ -113,7 +135,6 @@ describe('POST /api/generate-article', () => {
   });
 
   it('does NOT deduct credit when user has their own API key (isUserKey=true)', async () => {
-    const { getOpenAIClientAndModel } = await import('../services/openaiService.js');
     getOpenAIClientAndModel.mockResolvedValueOnce({
       openai: { chat: { completions: { create: mockCreate } } },
       model: 'gpt-4o',

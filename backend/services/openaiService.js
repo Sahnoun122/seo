@@ -4,6 +4,138 @@ import logger from '../utils/logger.js';
 
 const debug = (...args) => logger.debug(...args);
 
+// Free/shared models on providers like OpenRouter get throttled with transient 429s.
+// The SDK already retries 429/5xx with backoff (honoring Retry-After).
+const MAX_RETRIES = 2;
+
+// OpenRouter's ":free" models are shared across all their users and get rate-limited
+// independently of each other. If the configured free model is throttled even after the
+// SDK's own retries, spreading the request across a few other free models (different
+// underlying providers) gives a real shot at completing the request instead of failing.
+const FREE_MODEL_FALLBACKS = [
+  'google/gemma-4-31b-it:free',
+  'meta-llama/llama-3.3-70b-instruct:free',
+  'qwen/qwen3-next-80b-a3b-instruct:free',
+  'openai/gpt-oss-120b:free',
+  'nvidia/nemotron-3-super-120b-a12b:free',
+];
+
+const isRetryableStatus = (error) => {
+  const status = error?.status || error?.response?.status;
+  // No status at all means the request never got a response — a stalled/hung
+  // connection (APIConnectionTimeoutError) or network failure. That's exactly
+  // the case where moving on to the next fallback model is the right call.
+  if (status === undefined) return true;
+  return status === 429 || status >= 500;
+};
+
+/**
+ * Runs a chat completion (streaming or not — pass `stream: true` in params) and,
+ * if the configured model is a free OpenRouter model that's currently rate-limited,
+ * erroring, or silently stalled, retries the same request against other free models
+ * before giving up. Returns { completion, modelUsed } — for streaming requests
+ * `completion` is the stream.
+ *
+ * `timeoutMs` bounds each individual attempt. Without it, a provider that stalls
+ * instead of erroring would hang on the SDK's ~10 minute default, and the whole
+ * generation would just sit there forever with no error ever shown to the user.
+ */
+export const chatCompletionWithFallback = async (openai, model, params, { timeoutMs } = {}) => {
+  const candidates = model.endsWith(':free')
+    ? [model, ...FREE_MODEL_FALLBACKS.filter((m) => m !== model)]
+    : [model];
+
+  // When there's a chain of fallback models to try, keep each one's own retry
+  // budget small (moving to the next model beats waiting out a bigger backoff
+  // on one that's already rate-limited) — otherwise the whole chain can take
+  // minutes. With a single candidate (paid model, no fallback) allow more.
+  const perCallRetries = candidates.length > 1 ? 1 : MAX_RETRIES;
+
+  let lastError;
+  for (const candidate of candidates) {
+    try {
+      const completion = await openai.chat.completions.create(
+        { ...params, model: candidate },
+        { maxRetries: perCallRetries, ...(timeoutMs ? { timeout: timeoutMs } : {}) }
+      );
+      // OpenRouter proxies many underlying providers — an occasional flaky one
+      // returns HTTP 200 with no actual choices. Treat that the same as an error
+      // so we move on to the next fallback model instead of crashing later on
+      // `.choices[0]`.
+      if (!completion?.choices?.[0]) {
+        throw Object.assign(new Error(`Model ${candidate} returned an empty/malformed response.`), { status: undefined });
+      }
+      return { completion, modelUsed: candidate };
+    } catch (error) {
+      lastError = error;
+      if (!isRetryableStatus(error)) throw error;
+      logger.warn(`[OpenAI] Model ${candidate} unavailable (status ${error.status || error?.response?.status || 'timeout/network'}), trying next fallback model...`);
+    }
+  }
+  throw lastError;
+};
+
+/**
+ * Streams a chat completion with the same free-model fallback chain as
+ * chatCompletionWithFallback, plus an idle-timeout watchdog.
+ *
+ * The `timeout` option on the OpenAI client only bounds the wait for the initial
+ * response headers — once a model starts streaming, the SDK's timer is cleared,
+ * so a provider that stops sending chunks mid-generation (no error, just silence)
+ * would otherwise hang until Node's socket-level timeout, potentially forever from
+ * the user's perspective. This watchdog re-arms on every chunk and aborts the
+ * candidate if none arrives within `timeoutMs`.
+ *
+ * If a candidate fails (or stalls) before yielding any content, it's safe to move
+ * to the next fallback model. If it fails after some content was already streamed
+ * to the caller via `onDelta`, we cannot safely retry from scratch (would duplicate
+ * or contradict what the user already sees), so the error is thrown as-is.
+ *
+ * Returns { fullContent, modelUsed }.
+ */
+export const streamCompletionWithFallback = async (openai, model, params, { timeoutMs, onDelta }) => {
+  const candidates = model.endsWith(':free')
+    ? [model, ...FREE_MODEL_FALLBACKS.filter((m) => m !== model)]
+    : [model];
+  const perCallRetries = candidates.length > 1 ? 1 : MAX_RETRIES;
+
+  let lastError;
+  for (const candidate of candidates) {
+    let fullContent = '';
+    try {
+      const stream = await openai.chat.completions.create(
+        { ...params, model: candidate, stream: true },
+        { maxRetries: perCallRetries, timeout: timeoutMs }
+      );
+
+      const iterator = stream[Symbol.asyncIterator]();
+      while (true) {
+        const stalled = Symbol('stalled');
+        const nextChunk = await Promise.race([
+          iterator.next(),
+          new Promise((resolve) => setTimeout(() => resolve(stalled), timeoutMs)),
+        ]);
+        if (nextChunk === stalled) {
+          throw new Error(`Model ${candidate} stopped responding (no data for ${timeoutMs / 1000}s).`);
+        }
+        if (nextChunk.done) break;
+        const delta = nextChunk.value.choices?.[0]?.delta?.content || '';
+        if (delta) {
+          fullContent += delta;
+          onDelta(delta);
+        }
+      }
+      return { fullContent, modelUsed: candidate };
+    } catch (error) {
+      lastError = error;
+      if (fullContent) throw error;
+      if (!isRetryableStatus(error)) throw error;
+      logger.warn(`[OpenAI] Model ${candidate} stalled/unavailable while streaming, trying next fallback model...`);
+    }
+  }
+  throw lastError;
+};
+
 /**
  * Resolves the correct OpenAI client and model for a request.
  * Uses the user's personal API key if configured and globally allowed.
@@ -23,6 +155,7 @@ export const getOpenAIClientAndModel = async (user) => {
       openai: new OpenAI({
         apiKey: user.settings.userApiKey,
         baseURL: user.settings.userBaseUrl || 'https://api.openai.com/v1',
+        maxRetries: MAX_RETRIES,
       }),
       model: user.settings.preferredModel || systemSettings.defaultModel || 'gpt-4o',
       isUserKey: true,
@@ -43,7 +176,7 @@ export const getOpenAIClientAndModel = async (user) => {
   debug('[OpenAI] Resolved BaseURL:', baseURL, '| Model:', model);
 
   return {
-    openai: new OpenAI({ apiKey: globalKey, baseURL }),
+    openai: new OpenAI({ apiKey: globalKey, baseURL, maxRetries: MAX_RETRIES }),
     model,
     isUserKey: false,
     language: user?.settings?.defaultLanguage || 'French',

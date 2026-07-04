@@ -18,6 +18,26 @@ const generateToken = (id) => {
   });
 };
 
+// Browser clients authenticate via this httpOnly cookie — JS on the page can never read it,
+// which closes off token theft via XSS. The documented deployment topology (SETUP.md) puts
+// the frontend on Vercel and the backend on Railway/Render — different registrable domains —
+// so the cookie must be cross-site. SameSite=None (+ Secure, mandatory for None) is required
+// for that; SameSite=Lax would silently stop being sent on cross-site XHR/fetch, breaking auth
+// on every request after login. In local dev both run on localhost (same-site), where Lax over
+// plain HTTP is what allows the cookie to work without HTTPS.
+const isProd = process.env.NODE_ENV === 'production';
+const TOKEN_COOKIE = 'token';
+const tokenCookieOptions = {
+  httpOnly: true,
+  secure: isProd,
+  sameSite: isProd ? 'none' : 'lax',
+  maxAge: 24 * 60 * 60 * 1000, // 1d, matches JWT expiresIn
+};
+
+const setTokenCookie = (res, token) => {
+  res.cookie(TOKEN_COOKIE, token, tokenCookieOptions);
+};
+
 // @desc    Register a new user
 // @route   POST /api/auth/register
 // @access  Public
@@ -74,6 +94,9 @@ export const registerUser = async (req, res) => {
         }
       }
 
+      const token = generateToken(user._id);
+      setTokenCookie(res, token);
+
       res.status(201).json({
         _id: user.id,
         name: user.name,
@@ -82,7 +105,7 @@ export const registerUser = async (req, res) => {
         credits: user.credits,
         plan: user.plan || 'free',
         isEmailVerified: user.isEmailVerified,
-        token: generateToken(user._id),
+        token,
         ...(devVerifyUrl && { devVerifyUrl }),
       });
     } else {
@@ -109,6 +132,9 @@ export const loginUser = async (req, res) => {
     const user = await User.findOne({ email });
 
     if (user && (await user.matchPassword(password))) {
+      const token = generateToken(user._id);
+      setTokenCookie(res, token);
+
       res.json({
         _id: user.id,
         name: user.name,
@@ -117,7 +143,7 @@ export const loginUser = async (req, res) => {
         credits: user.credits,
         plan: user.plan || 'free',
         isEmailVerified: user.isEmailVerified,
-        token: generateToken(user._id),
+        token,
       });
     } else {
       res.status(401).json({ error: 'Invalid credentials' });
@@ -126,6 +152,14 @@ export const loginUser = async (req, res) => {
     logger.error('Login Error:', error.message);
     res.status(500).json({ error: 'Server error during login' });
   }
+};
+
+// @desc    Log out the current user
+// @route   POST /api/auth/logout
+// @access  Private
+export const logoutUser = (req, res) => {
+  res.clearCookie(TOKEN_COOKIE, tokenCookieOptions);
+  res.status(200).json({ success: true });
 };
 
 // @desc    Get user data

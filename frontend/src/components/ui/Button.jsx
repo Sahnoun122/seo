@@ -1,6 +1,4 @@
-import React from 'react';
 import { Loader2 } from 'lucide-react';
-import { motion } from 'framer-motion';
 
 const baseStyles = "inline-flex items-center justify-center gap-2 font-bold rounded-xl transition-all duration-200 active:scale-95 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed disabled:active:scale-100";
 

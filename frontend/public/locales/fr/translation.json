@@ -428,6 +428,8 @@
     "metaDescription": "Méta description",
     "targetKeyword": "Mot-clé cible",
     "strategyKeywords": "Mots-clés stratégiques",
+    "regenerateKeywords": "Régénérer",
+    "keywordsEmpty": "Suggestions de mots-clés indisponibles pour le moment.",
     "pdfError": "Échec de la génération du PDF",
     "keywords": "Mots-clés SEO",
     "actions": {
@@ -447,7 +449,8 @@
       "publishing": "Publication...",
       "published": "Publié !",
       "addImage": "Ajouter une image",
-      "generateAiImage": "Générer une image IA"
+      "generateAiImage": "Générer une image IA",
+      "aiCoverGenerated": "Image de couverture IA générée !"
     },
     "wordpress": {
       "success": "Article publié sur WordPress en brouillon !",

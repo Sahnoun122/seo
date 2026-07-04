@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-hot-toast';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -23,7 +23,7 @@ export default function UsersManager() {
   const [creditAmount, setCreditAmount]           = useState(0);
   const [actionLoading, setActionLoading]         = useState(false);
 
-  const loadUsers = async () => {
+  const loadUsers = useCallback(async () => {
     setLoading(true);
     try {
       const res = await fetchUsers(pagination.page, pagination.limit, search);
@@ -38,7 +38,7 @@ export default function UsersManager() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [pagination.page, pagination.limit, search, t]);
 
   // Debounce the search input, then apply it and jump back to page 1
   useEffect(() => {
@@ -49,7 +49,7 @@ export default function UsersManager() {
     return () => clearTimeout(id);
   }, [searchInput]);
 
-  useEffect(() => { loadUsers(); }, [pagination.page, search]);
+  useEffect(() => { loadUsers(); }, [loadUsers]);
 
   const handleUpdateCredits = async (e) => {
     e.preventDefault();

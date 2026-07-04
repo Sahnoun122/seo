@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import { Sparkles, ArrowLeft, Shield } from 'lucide-react';
 
@@ -147,7 +146,7 @@ export default function PrivacyPolicy() {
           </Section>
 
           <Section title="8. Cookies">
-            <p>We use only essential cookies required for authentication (session tokens stored in <code className="bg-gray-100 dark:bg-gray-800 px-1 rounded text-xs">localStorage</code>).
+            <p>We use only essential cookies required for authentication (a secure, <code className="bg-gray-100 dark:bg-gray-800 px-1 rounded text-xs">httpOnly</code> session cookie that cannot be read by JavaScript).
               We do not use tracking cookies or advertising cookies.</p>
             <p>If you choose to accept optional analytics cookies via our cookie banner, you may withdraw consent at any time by clearing your browser storage.</p>
           </Section>

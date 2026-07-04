@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { Search, Loader2, ArrowRight, CheckCircle2, Circle, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
@@ -11,18 +11,18 @@ function LoadingSteps() {
   const { t } = useTranslation();
   const [step, setStep]     = useState(0);
   const [tipIdx, setTipIdx] = useState(0);
-  const timers = useRef([]);
 
   useEffect(() => {
+    const timers = [];
     let elapsed = 0;
     STEP_DURATIONS.forEach((duration, i) => {
       const timer = setTimeout(() => setStep(i + 1), elapsed + duration);
-      timers.current.push(timer);
+      timers.push(timer);
       elapsed += duration;
     });
     const tipTimer = setInterval(() => setTipIdx(p => (p + 1) % TIP_COUNT), 5000);
-    timers.current.push(tipTimer);
-    return () => timers.current.forEach(clearTimeout);
+    timers.push(tipTimer);
+    return () => timers.forEach(clearTimeout);
   }, []);
 
   return (

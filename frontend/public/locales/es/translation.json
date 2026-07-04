@@ -428,6 +428,8 @@
     "metaDescription": "Meta descripción",
     "targetKeyword": "Palabra clave objetivo",
     "strategyKeywords": "Palabras clave estratégicas",
+    "regenerateKeywords": "Regenerar",
+    "keywordsEmpty": "Las sugerencias de palabras clave no están disponibles en este momento.",
     "pdfError": "Error al generar el PDF",
     "keywords": "Palabras clave SEO",
     "actions": {
@@ -447,7 +449,8 @@
       "publishing": "Publicando...",
       "published": "¡Publicado!",
       "addImage": "Añadir imagen",
-      "generateAiImage": "Generar imagen IA"
+      "generateAiImage": "Generar imagen IA",
+      "aiCoverGenerated": "¡Portada IA generada!"
     },
     "wordpress": {
       "success": "¡Artículo publicado en WordPress como borrador!",

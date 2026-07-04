@@ -1,6 +1,6 @@
 {
   "name": "ai-seo-article-generator",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Premium AI-powered SEO article generator application with React frontend and Node/Express backend.",
   "scripts": {
     "install:all": "npm install --prefix backend && npm install --prefix frontend && npm install",
@@ -19,7 +19,7 @@
     "mongoose"
   ],
   "author": "Sahnoun",
-  "license": "ISC",
+  "license": "SEE LICENSE IN LICENSE",
   "devDependencies": {
     "concurrently": "^8.2.2"
   }

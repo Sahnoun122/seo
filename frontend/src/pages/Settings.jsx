@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { toast } from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
-import { User, Save, Lock, Loader2, Globe, Smile, Sliders, X, Brain, FileText } from 'lucide-react';
+import { User, Save, Lock, Loader2, Globe, Smile, Sliders, Brain, FileText } from 'lucide-react';
 import DashboardLayout from '../components/DashboardLayout';
 import SubscriptionCard from '../components/SubscriptionCard';
 import api, { getSettings, updateSettings } from '../lib/api';
@@ -24,8 +24,6 @@ export default function Settings() {
     wpUsername: '',
     wpApplicationPassword: '',
   });
-
-  useEffect(() => { fetchData(); }, []);
 
   const fetchData = async () => {
     setLoading(true);
@@ -52,6 +50,8 @@ export default function Settings() {
       setLoading(false);
     }
   };
+
+  useEffect(() => { fetchData(); }, []);
 
   const handleSaveProfile = async (e) => {
     e.preventDefault();

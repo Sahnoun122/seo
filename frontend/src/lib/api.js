@@ -2,23 +2,16 @@ import axios from 'axios';
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000/api',
+  // The JWT lives in an httpOnly cookie set by the backend — the browser attaches it
+  // automatically to same-site requests. No token handling needed on the client.
+  withCredentials: true,
 });
 
-// Attach token to every request
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token');
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
-}, (error) => Promise.reject(error));
-
-// Auto-logout on expired/invalid token
+// Auto-logout on expired/invalid session
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
-      localStorage.removeItem('token');
+    if (error.response?.status === 401 && !error.config?._skipAuthRedirect) {
       window.location.href = '/welcome';
     }
     return Promise.reject(error);
@@ -51,6 +44,11 @@ export const restoreArticleVersion = async (id, versionIndex) => {
 
 export const deleteArticle = async (id) => {
   const response = await api.delete(`/articles/${id}`);
+  return response.data;
+};
+
+export const regenerateKeywords = async (articleId) => {
+  const response = await api.post(`/articles/${articleId}/regenerate-keywords`);
   return response.data;
 };
 

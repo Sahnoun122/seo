@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import { FileSearch, ArrowLeft, Home, Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';

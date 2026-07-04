@@ -1,4 +1,3 @@
-import React from 'react';
 import { Zap, Star, TrendingUp, Crown, Shield, Sparkles } from 'lucide-react';
 
 const PLANS = {

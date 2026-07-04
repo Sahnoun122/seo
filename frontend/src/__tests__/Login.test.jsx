@@ -2,6 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
+import { ThemeProvider } from '../context/ThemeContext';
 
 // ─── Mocks ────────────────────────────────────────────────────────────────────
 const mockLogin = vi.fn();
@@ -39,9 +40,11 @@ import { toast } from 'react-hot-toast';
 
 const renderLogin = () =>
   render(
-    <MemoryRouter>
-      <Login />
-    </MemoryRouter>
+    <ThemeProvider>
+      <MemoryRouter>
+        <Login />
+      </MemoryRouter>
+    </ThemeProvider>
   );
 
 beforeEach(() => {
@@ -136,7 +139,7 @@ describe('Login page — form submission', () => {
     fireEvent.submit(screen.getByRole('button', { name: /sign in/i }).closest('form'));
 
     await waitFor(() => {
-      expect(toast.success).toHaveBeenCalledWith('Welcome back!');
+      expect(toast.success).toHaveBeenCalledWith('Welcome back');
     });
   });
 

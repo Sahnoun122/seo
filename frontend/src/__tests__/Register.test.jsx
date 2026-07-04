@@ -2,6 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
+import { ThemeProvider } from '../context/ThemeContext';
 
 // ─── Mocks ────────────────────────────────────────────────────────────────────
 const mockRegister = vi.fn();
@@ -30,9 +31,11 @@ import { toast } from 'react-hot-toast';
 
 const renderRegister = () =>
   render(
-    <MemoryRouter>
-      <Register />
-    </MemoryRouter>
+    <ThemeProvider>
+      <MemoryRouter>
+        <Register />
+      </MemoryRouter>
+    </ThemeProvider>
   );
 
 beforeEach(() => vi.clearAllMocks());

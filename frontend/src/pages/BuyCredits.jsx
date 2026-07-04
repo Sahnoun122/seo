@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import DashboardLayout from '../components/DashboardLayout';
 import api, { getCreditPackages, createPaymentIntent } from '../lib/api';
 import { toast } from 'react-hot-toast';
@@ -151,6 +151,7 @@ function CheckoutForm({ pkg, onSuccess, onClose }) {
 
 // Payment modal wraps CheckoutForm inside Elements provider
 function PaymentModal({ pkg, clientSecret, stripePromise, onSuccess, onClose }) {
+  const { t } = useTranslation();
   const appearance = {
     theme: 'stripe',
     variables: {
@@ -248,6 +249,9 @@ export default function BuyCredits() {
         }
       })
       .catch(() => {});
+    // Intentionally run once on mount only — switching language shouldn't
+    // re-fetch credit packages or re-initialize Stripe.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleBuy = async (pkg) => {
@@ -279,7 +283,7 @@ export default function BuyCredits() {
     setModal(null);
     toast.success(t('buyCredits.success'), { duration: 5000 });
     refreshUser(); // background — no await
-  }, [refreshUser]);
+  }, [refreshUser, t]);
 
   const handleClose = useCallback(() => setModal(null), []);
 

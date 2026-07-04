@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { toast } from 'react-hot-toast';
 import DashboardLayout from '../components/DashboardLayout';
 import GeneratorForm from '../components/GeneratorForm';
@@ -87,7 +87,6 @@ export default function Dashboard() {
     setResult(null);
     setStreamStep('meta');
 
-    const token = localStorage.getItem('token');
     const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
     let accumulated = { title: '', metaDescription: '', content: '', suggestedKeywords: [], keyword };
@@ -101,13 +100,17 @@ export default function Dashboard() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
         },
+        credentials: 'include', // sends the httpOnly session cookie
         body: JSON.stringify({ keyword }),
         signal: controller.signal,
       });
 
       if (!response.ok) {
+        if (response.status === 401) {
+          window.location.href = '/welcome';
+          return;
+        }
         const errData = await response.json().catch(() => ({}));
         throw new Error(errData.error || `HTTP ${response.status}`);
       }

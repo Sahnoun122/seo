@@ -3,6 +3,7 @@ import {
   generateArticle, getHistory, refineArticle,
   publishToWordPress, deleteArticle,
   restoreVersion, setCoverImage, streamArticle,
+  regenerateKeywords,
 } from '../controllers/articleController.js';
 import { generateAICover } from '../controllers/imageGenerationController.js';
 import { setUnsplashCover } from '../controllers/unsplashController.js';
@@ -25,5 +26,6 @@ router.post('/internal-links', protect, validate(internalLinkingSchema), getInte
 router.post('/articles/:id/publish-wordpress', protect, publishToWordPress);
 router.post('/articles/:id/generate-cover-ai', protect, generateAICover);
 router.post('/articles/:id/cover-unsplash', protect, setUnsplashCover);
+router.post('/articles/:id/regenerate-keywords', protect, regenerateKeywords);
 
 export default router;

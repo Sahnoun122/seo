@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { CheckCircle2, XCircle, Loader2, Sparkles } from 'lucide-react';
@@ -25,6 +25,10 @@ export default function VerifyEmail() {
       }
     };
     verify();
+    // refreshUser is recreated on every AuthProvider render (not memoized) and
+    // calling it here updates that same provider — including it would re-run
+    // this effect and re-submit the single-use verification token in a loop.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token]);
 
   return (

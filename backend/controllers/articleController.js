@@ -3,7 +3,7 @@ import User from '../models/User.js';
 import Image from '../models/Image.js';
 import ImageService from '../services/ImageService.js';
 import { marked } from 'marked';
-import { cleanAndParseJSON, handleOpenAIError, getOpenAIClientAndModel } from '../services/openaiService.js';
+import { cleanAndParseJSON, handleOpenAIError, getOpenAIClientAndModel, chatCompletionWithFallback, streamCompletionWithFallback } from '../services/openaiService.js';
 import logger from '../utils/logger.js';
 
 marked.setOptions({ gfm: true, breaks: true });
@@ -130,9 +130,9 @@ export const generateArticle = async (req, res) => {
     `;
 
     let rawArticleText;
+    let modelUsed = model;
     try {
-      const articleCompletion = await openai.chat.completions.create({
-        model: model,
+      const { completion: articleCompletion, modelUsed: resolvedModel } = await chatCompletionWithFallback(openai, model, {
         max_tokens: 3000,
         messages: [
           {
@@ -141,7 +141,8 @@ export const generateArticle = async (req, res) => {
           },
           { role: "user", content: articlePrompt }
         ],
-      });
+      }, { timeoutMs: 60000 });
+      modelUsed = resolvedModel;
       const message = articleCompletion.choices[0].message;
       if (message.refusal) {
         throw new Error("AI refused the request: " + message.refusal);
@@ -159,7 +160,9 @@ export const generateArticle = async (req, res) => {
 
     const articleData = cleanAndParseJSON(rawArticleText);
 
-    // Generate keyword suggestions
+    // Generate keyword suggestions. This is a bonus feature on top of the article —
+    // if it fails (rate limit, refusal, malformed JSON), the already-generated title
+    // and content must still be saved rather than discarding the user's article.
     const keywordPrompt = `
       You are an expert SEO strategist. Suggest 5 to 10 highly relevant, long-tail, and LSI keywords related to: "${keyword}".
 
@@ -167,10 +170,9 @@ export const generateArticle = async (req, res) => {
       "keywords" (an array of strings)
     `;
 
-    let rawKeywordText;
+    let suggestedKeywords = [];
     try {
-      const keywordCompletion = await openai.chat.completions.create({
-        model: model,
+      const { completion: keywordCompletion } = await chatCompletionWithFallback(openai, modelUsed, {
         max_tokens: 500,
         messages: [
           {
@@ -179,23 +181,19 @@ export const generateArticle = async (req, res) => {
           },
           { role: "user", content: keywordPrompt }
         ],
-      });
+      }, { timeoutMs: 25000 });
       const message = keywordCompletion.choices[0].message;
       if (message.refusal) {
         throw new Error("AI refused the keyword request: " + message.refusal);
       }
-      rawKeywordText = message.content;
-      if (!rawKeywordText) {
-        throw new Error("The AI returned an empty response for keywords. Please try again.");
+      if (!message.content) {
+        throw new Error("The AI returned an empty response for keywords.");
       }
-    } catch (openaiErr) {
-      if (openaiErr.message && (openaiErr.message.includes("refused") || openaiErr.message.includes("empty response"))) {
-        throw openaiErr;
-      }
-      handleOpenAIError(openaiErr);
+      const keywordData = cleanAndParseJSON(message.content);
+      suggestedKeywords = keywordData.keywords || [];
+    } catch (keywordErr) {
+      logger.warn('Keyword suggestion step failed — saving article without them:', keywordErr.message);
     }
-
-    const keywordData = cleanAndParseJSON(rawKeywordText);
 
     const newArticle = new Article({
       user: user._id,
@@ -203,7 +201,7 @@ export const generateArticle = async (req, res) => {
       title: articleData.title,
       metaDescription: articleData.metaDescription,
       content: articleData.content,
-      suggestedKeywords: keywordData.keywords || []
+      suggestedKeywords
     });
 
     await newArticle.save();
@@ -359,6 +357,56 @@ export const refineArticle = async (req, res) => {
   } catch (error) {
     logger.error('Refinement Error:', error.message);
     res.status(500).json({ error: 'Failed to refine article.' });
+  }
+};
+
+// @desc    Regenerate SEO keyword suggestions for an existing article. Keyword
+// suggestions are a bonus step during generation, so if it fails at that point
+// (rate limit, malformed response) the article is saved with an empty list rather
+// than being discarded — this endpoint lets the user retry just that small step.
+// @route   POST /api/articles/:id/regenerate-keywords
+// @access  Private
+export const regenerateKeywords = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const article = await Article.findOne({ _id: id, user: req.user.id });
+    if (!article) {
+      return res.status(404).json({ error: 'Article not found' });
+    }
+
+    const user = await User.findById(req.user.id);
+    if (!user) {
+      return res.status(404).json({ error: 'Authenticated user not found' });
+    }
+
+    let openai, model;
+    try {
+      ({ openai, model } = await getOpenAIClientAndModel(user));
+    } catch (configError) {
+      return res.status(400).json({ error: configError.message });
+    }
+
+    try {
+      const { completion } = await chatCompletionWithFallback(openai, model, {
+        max_tokens: 500,
+        messages: [
+          { role: 'system', content: 'You are an SEO strategist. Respond only in valid JSON. No markdown fences.' },
+          { role: 'user', content: `Suggest 5 to 10 highly relevant long-tail and LSI keywords for: "${article.keyword}". Respond with JSON key "keywords" (array of strings).` },
+        ],
+      }, { timeoutMs: 25000 });
+      const keywordData = cleanAndParseJSON(completion.choices[0].message.content);
+      article.suggestedKeywords = keywordData.keywords || [];
+    } catch (keywordErr) {
+      handleOpenAIError(keywordErr);
+    }
+
+    await article.save();
+
+    res.status(200).json({ success: true, data: article });
+  } catch (error) {
+    logger.error('Regenerate Keywords Error:', error.message);
+    res.status(500).json({ error: error.message || 'Failed to regenerate keywords.' });
   }
 };
 
@@ -692,49 +740,48 @@ export const streamArticle = async (req, res) => {
   try {
     // Step 1: Get title + meta (fast, non-streaming)
     send({ type: 'status', step: 'meta' });
-    const metaCompletion = await openai.chat.completions.create({
-      model,
+    const { completion: metaCompletion, modelUsed } = await chatCompletionWithFallback(openai, model, {
       max_tokens: 300,
       messages: [
         { role: 'system', content: 'You are an SEO expert. Respond only in valid JSON. No markdown fences.' },
         { role: 'user', content: `Generate a catchy SEO title and a meta description (under 160 chars) for the keyword: "${keyword}". Language: ${language}. Tone: ${tone}. Respond with JSON keys "title" and "metaDescription".` },
       ],
-    });
+    }, { timeoutMs: 25000 });
     const metaData = cleanAndParseJSON(metaCompletion.choices[0].message.content);
     send({ type: 'meta', title: metaData.title, metaDescription: metaData.metaDescription });
 
-    // Step 2: Stream the article content
+    // Step 2: Stream the article content. Reuse whichever model answered the meta step —
+    // it just proved itself available, no need to re-probe the fallback chain from scratch.
     send({ type: 'status', step: 'content' });
-    const contentStream = await openai.chat.completions.create({
-      model,
+    const { fullContent, modelUsed: contentModelUsed } = await streamCompletionWithFallback(openai, modelUsed, {
       max_tokens: 3000,
-      stream: true,
       messages: [
         { role: 'system', content: 'You are an expert SEO copywriter. Write well-structured Markdown articles.' },
         { role: 'user', content: `Write a comprehensive, SEO-optimized article body for the title: "${metaData.title}" and keyword: "${keyword}". Use H2/H3 headings, bullet lists, and a strong introduction and conclusion. Language: ${language}. Tone: ${tone}. Output only Markdown — no JSON, no code fences.` },
       ],
+    }, {
+      timeoutMs: 30000,
+      onDelta: (delta) => send({ type: 'delta', delta }),
     });
 
-    let fullContent = '';
-    for await (const chunk of contentStream) {
-      const delta = chunk.choices[0]?.delta?.content || '';
-      if (delta) {
-        fullContent += delta;
-        send({ type: 'delta', delta });
-      }
-    }
-
-    // Step 3: Get keyword suggestions (fast, non-streaming)
+    // Step 3: Get keyword suggestions (fast, non-streaming). This is a bonus feature —
+    // if it fails (rate limit, malformed JSON), the already-streamed title and content
+    // must still be saved rather than discarding the user's article.
     send({ type: 'status', step: 'keywords' });
-    const keywordCompletion = await openai.chat.completions.create({
-      model,
-      max_tokens: 500,
-      messages: [
-        { role: 'system', content: 'You are an SEO strategist. Respond only in valid JSON. No markdown fences.' },
-        { role: 'user', content: `Suggest 5 to 10 highly relevant long-tail and LSI keywords for: "${keyword}". Respond with JSON key "keywords" (array of strings).` },
-      ],
-    });
-    const keywordData = cleanAndParseJSON(keywordCompletion.choices[0].message.content);
+    let suggestedKeywords = [];
+    try {
+      const { completion: keywordCompletion } = await chatCompletionWithFallback(openai, contentModelUsed, {
+        max_tokens: 500,
+        messages: [
+          { role: 'system', content: 'You are an SEO strategist. Respond only in valid JSON. No markdown fences.' },
+          { role: 'user', content: `Suggest 5 to 10 highly relevant long-tail and LSI keywords for: "${keyword}". Respond with JSON key "keywords" (array of strings).` },
+        ],
+      }, { timeoutMs: 25000 });
+      const keywordData = cleanAndParseJSON(keywordCompletion.choices[0].message.content);
+      suggestedKeywords = keywordData.keywords || [];
+    } catch (keywordErr) {
+      logger.warn('Keyword suggestion step failed — saving article without them:', keywordErr.message);
+    }
 
     // Step 4: Save to DB
     send({ type: 'status', step: 'saving' });
@@ -744,7 +791,7 @@ export const streamArticle = async (req, res) => {
       title: metaData.title,
       metaDescription: metaData.metaDescription,
       content: fullContent,
-      suggestedKeywords: keywordData.keywords || [],
+      suggestedKeywords,
     });
 
     if (!isUserKey) {
@@ -756,8 +803,14 @@ export const streamArticle = async (req, res) => {
     res.end();
   } catch (error) {
     logger.error('Stream Article Error:', error.message);
+    let userMessage = error.message || 'Generation failed.';
     try {
-      send({ type: 'error', message: error.message || 'Generation failed.' });
+      handleOpenAIError(error);
+    } catch (mappedError) {
+      userMessage = mappedError.message;
+    }
+    try {
+      send({ type: 'error', message: userMessage });
       res.end();
     } catch (_) {}
   }

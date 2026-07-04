@@ -1,5 +1,5 @@
 import express from 'express';
-import { registerUser, loginUser, getMe, getSettings, updateSettings, deleteAccount, verifyEmail, resendVerificationEmail } from '../controllers/authController.js';
+import { registerUser, loginUser, logoutUser, getMe, getSettings, updateSettings, deleteAccount, verifyEmail, resendVerificationEmail } from '../controllers/authController.js';
 import { forgotPassword, resetPassword } from '../controllers/passwordResetController.js';
 import { protect } from '../middleware/authMiddleware.js';
 import { validate, registerSchema, loginSchema, forgotPasswordSchema, resetPasswordSchema } from '../validators/schemas.js';
@@ -8,6 +8,7 @@ const router = express.Router();
 
 router.post('/register', validate(registerSchema), registerUser);
 router.post('/login', validate(loginSchema), loginUser);
+router.post('/logout', logoutUser);
 router.post('/forgot-password', validate(forgotPasswordSchema), forgotPassword);
 router.post('/reset-password/:token', validate(resetPasswordSchema), resetPassword);
 router.get('/verify-email/:token', verifyEmail);

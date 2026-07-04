@@ -31,16 +31,17 @@ const renderWithProvider = () => render(<AuthProvider><TestConsumer /></AuthProv
 
 beforeEach(() => {
   vi.clearAllMocks();
-  localStorage.clear();
 });
 
 // ─────────────────────────────────────────────────
 // Initial state
 // ─────────────────────────────────────────────────
+// The session lives in an httpOnly cookie the browser sends automatically —
+// AuthContext no longer reads anything from localStorage. It always probes
+// GET /auth/me on mount and derives auth state from the response.
 describe('AuthProvider — initial state', () => {
   it('renders children after loading resolves', async () => {
     api.get.mockResolvedValue({ data: { email: 'user@example.com' } });
-    localStorage.setItem('token', 'valid-token');
 
     renderWithProvider();
 
@@ -49,36 +50,25 @@ describe('AuthProvider — initial state', () => {
     });
   });
 
-  it('sets user from /auth/me when token exists in localStorage', async () => {
+  it('sets user from /auth/me when a valid session cookie is present', async () => {
     api.get.mockResolvedValue({ data: { email: 'user@example.com', role: 'user' } });
-    localStorage.setItem('token', 'valid-token');
 
     renderWithProvider();
 
     await waitFor(() => {
       expect(screen.getByTestId('user').textContent).toBe('user@example.com');
     });
+    expect(api.get).toHaveBeenCalledWith('/auth/me', { _skipAuthRedirect: true });
   });
 
-  it('leaves user as null when no token in localStorage', async () => {
-    renderWithProvider();
-
-    await waitFor(() => {
-      expect(screen.getByTestId('user').textContent).toBe('null');
-    });
-    expect(api.get).not.toHaveBeenCalled();
-  });
-
-  it('clears token and sets user=null when /auth/me fails', async () => {
+  it('sets user=null when /auth/me fails (no/invalid session cookie)', async () => {
     api.get.mockRejectedValue(new Error('Unauthorized'));
-    localStorage.setItem('token', 'expired-token');
 
     renderWithProvider();
 
     await waitFor(() => {
       expect(screen.getByTestId('user').textContent).toBe('null');
     });
-    expect(localStorage.getItem('token')).toBeNull();
   });
 });
 
@@ -96,9 +86,9 @@ describe('AuthProvider — login()', () => {
     );
   };
 
-  it('sets user and stores token in localStorage on success', async () => {
+  it('sets user from the login response on success', async () => {
     api.get.mockResolvedValue({ data: null });
-    api.post.mockResolvedValue({ data: { email: 'user@example.com', token: 'tok-123' } });
+    api.post.mockResolvedValue({ data: { email: 'user@example.com' } });
 
     render(<AuthProvider><LoginConsumer /></AuthProvider>);
     await waitFor(() => expect(screen.getByTestId('user')).toBeInTheDocument());
@@ -110,26 +100,34 @@ describe('AuthProvider — login()', () => {
     await waitFor(() => {
       expect(screen.getByTestId('user').textContent).toBe('user@example.com');
     });
-    expect(localStorage.getItem('token')).toBe('tok-123');
   });
 
   it('throws on failed login so the caller can handle the error', async () => {
     api.get.mockResolvedValue({ data: null });
     api.post.mockRejectedValue({ response: { data: { error: 'Invalid credentials' } } });
 
-    const { login } = (() => {
-      let ctx;
-      render(
-        <AuthProvider>
-          <LoginConsumer />
-          {/* capture context via a side effect */}
-        </AuthProvider>
+    let caughtError = null;
+    const ThrowingLoginConsumer = () => {
+      const { login } = useAuth();
+      return (
+        <button onClick={async () => {
+          try {
+            await login('user@example.com', 'wrong-password');
+          } catch (err) {
+            caughtError = err;
+          }
+        }}>Login</button>
       );
-      return { login: async () => { throw new Error('credentials'); } };
-    })();
+    };
 
-    // The API throws — token should NOT be persisted
-    expect(localStorage.getItem('token')).toBeNull();
+    render(<AuthProvider><ThrowingLoginConsumer /></AuthProvider>);
+    await waitFor(() => expect(screen.getByRole('button')).toBeInTheDocument());
+
+    await act(async () => {
+      screen.getByRole('button').click();
+    });
+
+    await waitFor(() => expect(caughtError).not.toBeNull());
   });
 });
 
@@ -148,9 +146,9 @@ describe('AuthProvider — logout()', () => {
     );
   };
 
-  it('clears user and removes token from localStorage', async () => {
+  it('clears user and asks the backend to clear the session cookie', async () => {
     api.get.mockResolvedValue({ data: null });
-    api.post.mockResolvedValue({ data: { email: 'u@e.com', token: 'tok-xyz' } });
+    api.post.mockResolvedValue({ data: { email: 'u@e.com' } });
 
     render(<AuthProvider><LogoutConsumer /></AuthProvider>);
     await waitFor(() => expect(screen.getByTestId('user')).toBeInTheDocument());
@@ -162,6 +160,7 @@ describe('AuthProvider — logout()', () => {
     await waitFor(() => expect(screen.getByTestId('user').textContent).toBe('u@e.com'));
 
     // Now logout
+    api.post.mockResolvedValue({ data: { success: true } });
     await act(async () => {
       screen.getByTestId('logout-btn').click();
     });
@@ -169,7 +168,7 @@ describe('AuthProvider — logout()', () => {
     await waitFor(() => {
       expect(screen.getByTestId('user').textContent).toBe('null');
     });
-    expect(localStorage.getItem('token')).toBeNull();
+    expect(api.post).toHaveBeenCalledWith('/auth/logout');
   });
 });
 
@@ -187,9 +186,9 @@ describe('AuthProvider — register()', () => {
     );
   };
 
-  it('sets user and stores token after successful registration', async () => {
+  it('sets user from the register response on success', async () => {
     api.get.mockResolvedValue({ data: null });
-    api.post.mockResolvedValue({ data: { email: 'alice@example.com', token: 'reg-tok' } });
+    api.post.mockResolvedValue({ data: { email: 'alice@example.com' } });
 
     render(<AuthProvider><RegisterConsumer /></AuthProvider>);
     await waitFor(() => expect(screen.getByTestId('user')).toBeInTheDocument());
@@ -201,6 +200,5 @@ describe('AuthProvider — register()', () => {
     await waitFor(() => {
       expect(screen.getByTestId('user').textContent).toBe('alice@example.com');
     });
-    expect(localStorage.getItem('token')).toBe('reg-tok');
   });
 });

@@ -428,6 +428,8 @@
     "metaDescription": "元描述",
     "targetKeyword": "目标关键词",
     "strategyKeywords": "策略关键词",
+    "regenerateKeywords": "重新生成",
+    "keywordsEmpty": "关键词建议暂时无法生成。",
     "pdfError": "PDF生成失败",
     "keywords": "SEO 关键词",
     "actions": {
@@ -447,7 +449,8 @@
       "publishing": "发布中...",
       "published": "已发布！",
       "addImage": "添加封面图片",
-      "generateAiImage": "生成 AI 图片"
+      "generateAiImage": "生成 AI 图片",
+      "aiCoverGenerated": "AI 封面已生成！"
     },
     "wordpress": {
       "success": "文章已作为草稿发布到 WordPress！",

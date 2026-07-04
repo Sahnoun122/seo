@@ -428,6 +428,8 @@
     "metaDescription": "Meta Description",
     "targetKeyword": "Target Keyword",
     "strategyKeywords": "Strategy Keywords",
+    "regenerateKeywords": "Regenerate",
+    "keywordsEmpty": "Keyword suggestions aren't available right now.",
     "pdfError": "Failed to generate PDF",
     "keywords": "SEO Keywords",
     "actions": {
@@ -447,7 +449,8 @@
       "publishing": "Publishing...",
       "published": "Published!",
       "addImage": "Add Cover Image",
-      "generateAiImage": "Generate AI Image"
+      "generateAiImage": "Generate AI Image",
+      "aiCoverGenerated": "AI cover generated!"
     },
     "wordpress": {
       "success": "Article published to WordPress as a draft!",

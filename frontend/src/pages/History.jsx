@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, useRef } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import DashboardLayout from '../components/DashboardLayout';
 import { getHistory, refineArticle, deleteArticle, restoreArticleVersion } from '../lib/api';
 import { toast } from 'react-hot-toast';
@@ -23,8 +23,6 @@ import ResultDisplay from '../components/ResultDisplay';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Card, CardContent } from '../components/ui/Card';
 import Button from '../components/ui/Button';
-import Input from '../components/ui/Input';
-import Badge from '../components/ui/Badge';
 
 const PAGE_SIZE = 12;
 
@@ -96,6 +94,10 @@ export default function History() {
     }
   }, [page, searchQuery]);
 
+  // Fires only on page changes — search changes are already handled by the
+  // debounced handleSearch below, which calls fetchHistory directly. Adding
+  // fetchHistory/searchQuery here would double-fetch on every keystroke.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => { fetchHistory(page, searchQuery); }, [page]);
 
   const handleSearch = (e) => {

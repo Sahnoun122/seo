@@ -1,11 +1,10 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import axios from 'axios';
 
 // ─── Mock axios.create so we can inspect the instance ────────────────────────
 vi.mock('axios');
 
-// Capture the interceptors added by the module under test
-let requestInterceptor;
+// Capture the interceptor added by the module under test
 let responseInterceptorFulfilled;
 let responseInterceptorRejected;
 
@@ -16,7 +15,7 @@ const mockAxiosInstance = {
   delete: vi.fn(),
   interceptors: {
     request: {
-      use: vi.fn((fn) => { requestInterceptor = fn; }),
+      use: vi.fn(),
     },
     response: {
       use: vi.fn((ok, err) => {
@@ -31,13 +30,11 @@ axios.create = vi.fn(() => mockAxiosInstance);
 
 // Import AFTER mocking axios.create
 const {
-  default: api,
   generateArticle,
   getHistory,
   deleteArticle,
   getSettings,
   updateSettings,
-  getCreditPackages,
   fetchUsers,
   updateUserCredits,
   deleteUserAccount,
@@ -45,62 +42,38 @@ const {
 
 beforeEach(() => {
   vi.clearAllMocks();
-  localStorage.clear();
-});
-
-// ─────────────────────────────────────────────────
-// Request interceptor — token attachment
-// ─────────────────────────────────────────────────
-describe('API request interceptor', () => {
-  it('attaches Authorization header when token is in localStorage', () => {
-    localStorage.setItem('token', 'my-jwt-token');
-    const config = { headers: {} };
-    const result = requestInterceptor(config);
-    expect(result.headers.Authorization).toBe('Bearer my-jwt-token');
-  });
-
-  it('does not add Authorization header when no token exists', () => {
-    const config = { headers: {} };
-    const result = requestInterceptor(config);
-    expect(result.headers.Authorization).toBeUndefined();
-  });
-
-  it('passes through the config object unchanged otherwise', () => {
-    localStorage.setItem('token', 'tok');
-    const config = { headers: {}, timeout: 5000 };
-    const result = requestInterceptor(config);
-    expect(result.timeout).toBe(5000);
-  });
 });
 
 // ─────────────────────────────────────────────────
 // Response interceptor — auto-logout on 401
 // ─────────────────────────────────────────────────
+// The JWT now lives in an httpOnly cookie sent automatically via withCredentials —
+// there is no request interceptor and nothing in localStorage to attach or clear.
 describe('API response interceptor', () => {
   it('passes through successful responses unchanged', () => {
     const response = { data: { ok: true }, status: 200 };
     expect(responseInterceptorFulfilled(response)).toBe(response);
   });
 
-  it('removes token from localStorage on 401 response', async () => {
-    localStorage.setItem('token', 'expired-token');
-    const error = { response: { status: 401 } };
+  it('redirects to /welcome on 401 response', async () => {
+    const error = { response: { status: 401 }, config: {} };
 
-    try { await responseInterceptorRejected(error); } catch (_) {}
+    try { await responseInterceptorRejected(error); } catch { /* expected — asserting the side effect below */ }
 
-    expect(localStorage.getItem('token')).toBeNull();
+    expect(window.location.href).toBe('/welcome');
   });
 
-  it('redirects to /login on 401 response', async () => {
-    const error = { response: { status: 401 } };
+  it('does not redirect when the request opted out via _skipAuthRedirect', async () => {
+    window.location.href = '/dashboard';
+    const error = { response: { status: 401 }, config: { _skipAuthRedirect: true } };
 
-    try { await responseInterceptorRejected(error); } catch (_) {}
+    try { await responseInterceptorRejected(error); } catch { /* expected */ }
 
-    expect(window.location.href).toBe('/login');
+    expect(window.location.href).toBe('/dashboard');
   });
 
   it('rejects with the original error on non-401 status', async () => {
-    const error = { response: { status: 500 } };
+    const error = { response: { status: 500 }, config: {} };
     await expect(responseInterceptorRejected(error)).rejects.toEqual(error);
   });
 
@@ -158,19 +131,19 @@ describe('deleteArticle()', () => {
 });
 
 describe('getSettings()', () => {
-  it('GETs /auth/settings', async () => {
+  it('GETs /settings', async () => {
     mockAxiosInstance.get.mockResolvedValue({ data: { settings: {} } });
     await getSettings();
-    expect(mockAxiosInstance.get).toHaveBeenCalledWith('/auth/settings');
+    expect(mockAxiosInstance.get).toHaveBeenCalledWith('/settings');
   });
 });
 
 describe('updateSettings()', () => {
-  it('PUTs to /auth/settings with provided data', async () => {
+  it('PUTs to /settings with provided data', async () => {
     const payload = { preferredModel: 'gpt-4o' };
     mockAxiosInstance.put = vi.fn().mockResolvedValue({ data: { success: true } });
     await updateSettings(payload);
-    expect(mockAxiosInstance.put).toHaveBeenCalledWith('/auth/settings', payload);
+    expect(mockAxiosInstance.put).toHaveBeenCalledWith('/settings', payload);
   });
 });
 

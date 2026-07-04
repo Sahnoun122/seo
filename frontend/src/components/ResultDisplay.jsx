@@ -1,14 +1,14 @@
-import React, { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import {
   Copy, CheckCircle2, ListFilter, FileText,
-  Download, FileCode, Loader2, Globe, Share2, Image as ImageIcon, Sparkles, Camera,
+  Download, FileCode, Loader2, Globe, Share2, Image as ImageIcon, Sparkles, Camera, WandSparkles, RefreshCw,
 } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import rehypeSanitize, { defaultSchema } from 'rehype-sanitize';
 import { marked } from 'marked';
 import { motion } from 'framer-motion';
 import { jsPDF } from 'jspdf';
-import api, { uploadCoverImage, generateAICoverImage } from '../lib/api';
+import api, { uploadCoverImage, generateAICoverImage, regenerateKeywords } from '../lib/api';
 import { toast } from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import UnsplashPickerModal from './UnsplashPickerModal';
@@ -32,15 +32,35 @@ export default function ResultDisplay({ data, onCoverUpdate }) {
   const initialCoverUrl = getFullImageUrl(data?.coverUrl) || (data?.coverImageId ? `${import.meta.env.VITE_API_URL || '/api'}/images/${data.coverImageId}/view?size=medium` : null);
   const [coverUrl, setCoverUrl]                     = useState(initialCoverUrl);
   const [showUnsplash, setShowUnsplash]             = useState(false);
+  const [suggestedKeywords, setSuggestedKeywords]   = useState(data?.suggestedKeywords || []);
+  const [regeneratingKeywords, setRegeneratingKeywords] = useState(false);
   const fileInputRef = useRef(null);
+
+  // Keeps local state in sync as `data` evolves during streaming (keywords arrive in
+  // their own SSE step) or when a different saved article is opened from history.
+  useEffect(() => {
+    setSuggestedKeywords(data?.suggestedKeywords || []);
+  }, [data?._id, data?.suggestedKeywords]);
 
   if (!data) return null;
 
   const handleCopy = () => {
-    const text = `Title: ${data.title}\n\nMeta Description: ${data.metaDescription}\n\nContent:\n${data.content}\n\nKeywords: ${data.suggestedKeywords?.join(', ')}`;
+    const text = `Title: ${data.title}\n\nMeta Description: ${data.metaDescription}\n\nContent:\n${data.content}\n\nKeywords: ${suggestedKeywords.join(', ')}`;
     navigator.clipboard.writeText(text);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
+  };
+
+  const handleRegenerateKeywords = async () => {
+    setRegeneratingKeywords(true);
+    try {
+      const res = await regenerateKeywords(data._id);
+      setSuggestedKeywords(res.data.suggestedKeywords || []);
+    } catch (err) {
+      toast.error(err.response?.data?.error || t('common.error'));
+    } finally {
+      setRegeneratingKeywords(false);
+    }
   };
 
   const handleExportMD = () => {
@@ -184,7 +204,7 @@ export default function ResultDisplay({ data, onCoverUpdate }) {
       const res = await generateAICoverImage(data._id);
       if (res.coverUrl) {
         setCoverUrl(getFullImageUrl(res.coverUrl));
-        toast.success(t('result.actions.generateAiImage', { defaultValue: 'AI cover generated!' }));
+        toast.success(t('result.actions.aiCoverGenerated'));
         onCoverUpdate?.(data._id, res.coverImageId);
       }
     } catch (err) {
@@ -307,6 +327,19 @@ export default function ResultDisplay({ data, onCoverUpdate }) {
                       <Camera className="w-4 h-4" />
                       <span className="hidden sm:inline">Unsplash</span>
                     </button>
+
+                    <button
+                      onClick={handleGenerateAICover}
+                      disabled={generatingAICover || uploadingCover}
+                      className="btn-ghost text-xs py-1.5 px-2.5 sm:py-2 sm:px-3"
+                      title={t('result.actions.aiCover')}
+                      aria-label={t('result.actions.aiCover')}
+                    >
+                      {generatingAICover
+                        ? <Loader2 className="w-4 h-4 animate-spin" />
+                        : <WandSparkles className="w-4 h-4" />}
+                      <span className="hidden sm:inline">{t('result.actions.aiCover')}</span>
+                    </button>
                   </>
                 )}
 
@@ -356,21 +389,41 @@ export default function ResultDisplay({ data, onCoverUpdate }) {
         </div>
 
         <div className="premium-card p-4 sm:p-6 bg-white dark:bg-gray-900">
-          <div className="flex items-center gap-2 text-primary-600 dark:text-primary-400 mb-4 sm:mb-5">
-            <Sparkles className="w-4 h-4" />
-            <span className="label-xs text-primary-600 dark:text-primary-400 mb-0">{t('result.strategyKeywords')}</span>
+          <div className="flex items-center justify-between gap-2 mb-4 sm:mb-5">
+            <div className="flex items-center gap-2 text-primary-600 dark:text-primary-400">
+              <Sparkles className="w-4 h-4" />
+              <span className="label-xs text-primary-600 dark:text-primary-400 mb-0">{t('result.strategyKeywords')}</span>
+            </div>
+            {data._id && suggestedKeywords.length > 0 && (
+              <button type="button" onClick={handleRegenerateKeywords} disabled={regeneratingKeywords}
+                      title={t('result.regenerateKeywords')}
+                      className="text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors disabled:opacity-50">
+                <RefreshCw className={`w-3.5 h-3.5 ${regeneratingKeywords ? 'animate-spin' : ''}`} />
+              </button>
+            )}
           </div>
-          <ul className="grid grid-cols-2 sm:grid-cols-1 gap-2 sm:gap-3">
-            {data.suggestedKeywords?.map((kw, i) => (
-              <li key={i}
-                  className="flex items-center gap-2 sm:gap-3 p-2 sm:p-3 rounded-xl bg-gray-50 dark:bg-gray-800 border border-gray-100 dark:border-gray-700 hover:border-primary-200 dark:hover:border-primary-500/50 hover:bg-primary-50/40 dark:hover:bg-primary-900/20 transition-all group">
-                <span className="w-5 h-5 sm:w-7 sm:h-7 rounded-lg bg-white dark:bg-gray-900 shadow-soft flex items-center justify-center text-[10px] sm:text-xs font-bold text-primary-600 dark:text-primary-400 shrink-0">
-                  {i + 1}
-                </span>
-                <span className="text-gray-700 dark:text-gray-300 text-[10px] sm:text-xs font-semibold leading-tight line-clamp-2">{kw}</span>
-              </li>
-            ))}
-          </ul>
+          {suggestedKeywords.length > 0 ? (
+            <ul className="grid grid-cols-2 sm:grid-cols-1 gap-2 sm:gap-3">
+              {suggestedKeywords.map((kw, i) => (
+                <li key={i}
+                    className="flex items-center gap-2 sm:gap-3 p-2 sm:p-3 rounded-xl bg-gray-50 dark:bg-gray-800 border border-gray-100 dark:border-gray-700 hover:border-primary-200 dark:hover:border-primary-500/50 hover:bg-primary-50/40 dark:hover:bg-primary-900/20 transition-all group">
+                  <span className="w-5 h-5 sm:w-7 sm:h-7 rounded-lg bg-white dark:bg-gray-900 shadow-soft flex items-center justify-center text-[10px] sm:text-xs font-bold text-primary-600 dark:text-primary-400 shrink-0">
+                    {i + 1}
+                  </span>
+                  <span className="text-gray-700 dark:text-gray-300 text-[10px] sm:text-xs font-semibold leading-tight line-clamp-2">{kw}</span>
+                </li>
+              ))}
+            </ul>
+          ) : data._id ? (
+            <div className="text-center py-4 space-y-2.5">
+              <p className="text-gray-500 dark:text-gray-400 text-xs">{t('result.keywordsEmpty')}</p>
+              <button type="button" onClick={handleRegenerateKeywords} disabled={regeneratingKeywords}
+                      className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary-600 dark:text-primary-400 hover:underline disabled:opacity-50">
+                <RefreshCw className={`w-3.5 h-3.5 ${regeneratingKeywords ? 'animate-spin' : ''}`} />
+                {t('result.regenerateKeywords')}
+              </button>
+            </div>
+          ) : null}
         </div>
       </div>
     </motion.div>
