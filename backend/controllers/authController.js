@@ -7,6 +7,7 @@ import ImageService from '../services/ImageService.js';
 import { getSystemSettings } from '../services/settingsService.js';
 import { sendEmailVerificationEmail } from '../services/emailService.js';
 import logger from '../utils/logger.js';
+import { isProduction } from '../utils/env.js';
 
 // Generate JWT token
 const generateToken = (id) => {
@@ -25,12 +26,11 @@ const generateToken = (id) => {
 // for that; SameSite=Lax would silently stop being sent on cross-site XHR/fetch, breaking auth
 // on every request after login. In local dev both run on localhost (same-site), where Lax over
 // plain HTTP is what allows the cookie to work without HTTPS.
-const isProd = process.env.NODE_ENV === 'production';
 const TOKEN_COOKIE = 'token';
 const tokenCookieOptions = {
   httpOnly: true,
-  secure: isProd,
-  sameSite: isProd ? 'none' : 'lax',
+  secure: isProduction(),
+  sameSite: isProduction() ? 'none' : 'lax',
   maxAge: 24 * 60 * 60 * 1000, // 1d, matches JWT expiresIn
 };
 
@@ -91,7 +91,7 @@ export const registerUser = async (req, res) => {
           // in production would leak this dev convenience into the register response,
           // and the frontend would follow it instead of landing on the dashboard —
           // stranding real users on a verification page instead of the app.
-          if (emailResult?.fallback && process.env.NODE_ENV !== 'production') {
+          if (emailResult?.fallback && !isProduction()) {
             devVerifyUrl = verifyUrl;
           }
         } catch (emailErr) {

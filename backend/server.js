@@ -9,13 +9,14 @@ import helmet from 'helmet';
 import mongoSanitize from 'express-mongo-sanitize';
 import swaggerUi from 'swagger-ui-express';
 import openApiSpec from './docs/openapi.js';
+import { isProduction } from './utils/env.js';
 
 // Sentry must be initialized before any other code runs (optional — only when DSN is set)
 if (process.env.SENTRY_DSN) {
   Sentry.init({
     dsn: process.env.SENTRY_DSN,
-    environment: process.env.NODE_ENV || 'development',
-    tracesSampleRate: process.env.NODE_ENV === 'production' ? 0.2 : 1.0,
+    environment: process.env.NODE_ENV?.trim() || 'development',
+    tracesSampleRate: isProduction() ? 0.2 : 1.0,
   });
 }
 import connectDB from './config/db.js';
@@ -40,7 +41,7 @@ if (!process.env.OPENAI_API_KEY || process.env.OPENAI_API_KEY.trim() === '') {
 const encKey = process.env.ENCRYPTION_KEY || '';
 if (encKey.trim().length < 32) {
   const msg = 'SECURITY ERROR: ENCRYPTION_KEY must be at least 32 characters. API keys stored in the database will NOT be encrypted securely.';
-  if (process.env.NODE_ENV === 'production') {
+  if (isProduction()) {
     logger.error(`FATAL: ${msg}`);
     process.exit(1);
   } else {
@@ -51,7 +52,7 @@ if (encKey.trim().length < 32) {
 const PORT = process.env.PORT || 5000;
 
 // Force HTTPS in production (handles reverse proxies like Vercel/Heroku)
-if (process.env.NODE_ENV === 'production') {
+if (isProduction()) {
   app.use((req, res, next) => {
     if (req.headers['x-forwarded-proto'] !== 'https') {
       return res.redirect(301, `https://${req.get('host')}${req.url}`);
@@ -68,11 +69,11 @@ app.use(helmet({
 // Dynamic CORS — set CLIENT_URL in Vercel env (comma-separated for multiple origins)
 const allowedOrigins = [
   ...(process.env.CLIENT_URL ? process.env.CLIENT_URL.split(',').map(u => u.trim()) : []),
-  ...(process.env.NODE_ENV !== 'production' ? ['http://localhost:5173'] : [])
+  ...(!isProduction() ? ['http://localhost:5173'] : [])
 ].filter(Boolean);
 
 if (allowedOrigins.length === 0) {
-  if (process.env.NODE_ENV === 'production') {
+  if (isProduction()) {
     logger.error('FATAL: CLIENT_URL is not set. Browser requests will be blocked. Exiting.');
     process.exit(1);
   } else {
@@ -125,7 +126,7 @@ app.use((req, res, next) => {
 });
 
 // HTTP request logging — only in development
-if (process.env.NODE_ENV !== 'production') {
+if (!isProduction()) {
   app.use(morgan('dev'));
 }
 
@@ -171,7 +172,7 @@ app.get('/api/health', async (_req, res) => {
   res.status(storageHealth.ok ? 200 : 207).json({
     status: storageHealth.ok ? 'ok' : 'degraded',
     version: process.env.npm_package_version || '1.0.0',
-    environment: process.env.NODE_ENV || 'development',
+    environment: process.env.NODE_ENV?.trim() || 'development',
     database: {
       status: dbState[mongoose.connection.readyState] || 'unknown',
     },
@@ -195,7 +196,7 @@ if (process.env.SENTRY_DSN) {
 app.use(errorHandler);
 
 // Server initialization for local development
-if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
+if (!isProduction() && !process.env.VERCEL) {
   app.listen(PORT, () => {
     logger.info(`Server listening on port ${PORT}`);
   });

@@ -2,6 +2,7 @@ import logger from '../utils/logger.js';
 import User from '../models/User.js';
 import PasswordReset from '../models/PasswordReset.js';
 import { sendPasswordResetEmail } from '../services/emailService.js';
+import { isProduction } from '../utils/env.js';
 
 // @desc    Request a password reset link
 // @route   POST /api/auth/forgot-password
@@ -28,7 +29,7 @@ export const forgotPassword = async (req, res) => {
     } catch (emailErr) {
       logger.error('Email send failed:', emailErr.message);
       // In dev, still expose the URL so the flow can be tested
-      if (process.env.NODE_ENV !== 'production') {
+      if (!isProduction()) {
         return res.status(200).json({ ...genericSuccess, resetUrl });
       }
       return res.status(500).json({ error: 'Failed to send reset email. Please try again later.' });

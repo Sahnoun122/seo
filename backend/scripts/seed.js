@@ -10,10 +10,11 @@ import dotenv from 'dotenv';
 import User from '../models/User.js';
 import Article from '../models/Article.js';
 import connectDB from '../config/db.js';
+import { isProduction } from '../utils/env.js';
 
 dotenv.config({ path: new URL('../.env', import.meta.url).pathname });
 
-if (process.env.NODE_ENV === 'production') {
+if (isProduction()) {
   console.error('ERROR: Seed script must not be run in production.');
   process.exit(1);
 }

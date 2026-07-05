@@ -1,4 +1,5 @@
 import logger from '../utils/logger.js';
+import { isProduction } from '../utils/env.js';
 
 /**
  * Global Express Error Handler
@@ -10,7 +11,7 @@ const errorHandler = (err, req, res, _next) => {
   const message = err.message || 'An unexpected server error occurred.';
 
   // Log full error in development, minimal in production
-  if (process.env.NODE_ENV !== 'production') {
+  if (!isProduction()) {
     logger.error('[ErrorHandler]', { message: err.message, stack: err.stack });
   } else {
     logger.error('[ErrorHandler]', err.message);
@@ -18,7 +19,7 @@ const errorHandler = (err, req, res, _next) => {
 
   res.status(statusCode).json({
     success: false,
-    error: process.env.NODE_ENV === 'production' && statusCode === 500
+    error: isProduction() && statusCode === 500
       ? 'An unexpected server error occurred.'
       : message,
   });
