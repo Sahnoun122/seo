@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import * as Sentry from '@sentry/node';
 import express from 'express';
+import mongoose from 'mongoose';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
@@ -166,14 +167,13 @@ app.get('/api/health', async (_req, res) => {
   const storageHealth = await ImageService.healthCheck();
 
   const dbState = ['disconnected', 'connected', 'connecting', 'disconnecting'];
-  const { connection } = await import('mongoose');
 
   res.status(storageHealth.ok ? 200 : 207).json({
     status: storageHealth.ok ? 'ok' : 'degraded',
     version: process.env.npm_package_version || '1.0.0',
     environment: process.env.NODE_ENV || 'development',
     database: {
-      status: dbState[connection.readyState] || 'unknown',
+      status: dbState[mongoose.connection.readyState] || 'unknown',
     },
     storage: storageHealth,
     uptime: Math.floor(process.uptime()) + 's',
