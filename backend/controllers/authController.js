@@ -86,7 +86,12 @@ export const registerUser = async (req, res) => {
             to: user.email,
             verifyUrl,
           });
-          if (emailResult?.fallback) {
+          // Only ever hand the raw verify link back to the client outside production.
+          // Otherwise a misconfigured RESEND_API_KEY (or any other email-send failure)
+          // in production would leak this dev convenience into the register response,
+          // and the frontend would follow it instead of landing on the dashboard —
+          // stranding real users on a verification page instead of the app.
+          if (emailResult?.fallback && process.env.NODE_ENV !== 'production') {
             devVerifyUrl = verifyUrl;
           }
         } catch (emailErr) {
