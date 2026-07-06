@@ -337,7 +337,19 @@ This creates:
 - `jane@example.com` / `Demo1234!` — Regular user
 - `bob@example.com` / `Demo1234!` — Regular user
 
-> **Warning:** The seed script drops the existing database. Do not run in production with real user data.
+> **Note:** This script is safe to re-run at any time. It never drops the database or touches any other user — for the 4 accounts above specifically, it upserts keyed on email, resetting `name`/`password`/`role`/`credits`/`isEmailVerified` back to the values listed here on every run (their `_id` and existing article history are left untouched). It refuses to run at all when `NODE_ENV=production` is detected, as a safety rail against accidentally running it inside a real production process — that does not stop you from pointing it at a production database from your own machine, see below.
+
+### Running this against a remote/production database
+
+Vercel's serverless model has no mechanism to run one-off scripts after deploy, so if these demo accounts need to be created or fixed in a hosted database (e.g. MongoDB Atlas), run the script from your own machine, pointed at that database:
+
+```bash
+export MONGODB_URI="<production connection string, from your hosting dashboard>"
+node backend/scripts/seed.js
+unset MONGODB_URI
+```
+
+Leave `NODE_ENV` unset/non-production locally, or the script's safety guard will refuse to run. Double-check which database `MONGODB_URI` points to before running — it overwrites the 4 demo accounts' fields in whatever database it connects to. Unset it again immediately after, so no later local command accidentally targets production.
 
 ---
 
