@@ -113,11 +113,6 @@ export const deleteUserAccount = async (id) => {
   return response.data;
 };
 
-export const generateAICoverImage = async (articleId, customPrompt = '') => {
-  const response = await api.post(`/articles/${articleId}/generate-cover-ai`, { customPrompt });
-  return response.data;
-};
-
 export const deleteMyAccount = async () => {
   const response = await api.delete('/auth/account');
   return response.data;
@@ -125,19 +120,6 @@ export const deleteMyAccount = async () => {
 
 export const resendVerificationEmail = async () => {
   const response = await api.post('/auth/resend-verification');
-  return response.data;
-};
-
-// Unsplash
-export const searchUnsplashPhotos = async (query, page = 1) => {
-  const response = await api.get('/images/unsplash/search', { params: { query, page } });
-  return response.data;
-};
-
-export const setUnsplashCover = async (articleId, { photoUrl, downloadLocation, photographerName, photographerUrl }) => {
-  const response = await api.post(`/articles/${articleId}/cover-unsplash`, {
-    photoUrl, downloadLocation, photographerName, photographerUrl,
-  });
   return response.data;
 };
 

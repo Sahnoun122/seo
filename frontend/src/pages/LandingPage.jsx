@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import {
   ArrowRight, Sparkles, Zap, Shield, Crown,
-  FileText, Globe, ChevronDown, Star, Brain, Image, Link as LinkIcon,
+  FileText, Globe, ChevronDown, Star, Brain, Link as LinkIcon,
   Languages, Cpu, Clock, Check, Minus,
 } from 'lucide-react';
 import LanguageSwitcher from '../components/LanguageSwitcher';
@@ -12,12 +12,11 @@ import { useTranslation } from 'react-i18next';
 
 const fadeUp = { hidden: { opacity: 0, y: 24 }, visible: { opacity: 1, y: 0 } };
 
-const FEATURE_ICONS = [Brain, FileText, Globe, Image, LinkIcon, Languages];
+const FEATURE_ICONS = [Brain, FileText, Globe, LinkIcon, Languages];
 const FEATURE_STYLES = [
   { color: 'text-primary-600 dark:text-primary-400', bg: 'bg-primary-50 dark:bg-primary-900/30' },
   { color: 'text-blue-600 dark:text-blue-400',       bg: 'bg-blue-50 dark:bg-blue-900/30' },
   { color: 'text-emerald-600 dark:text-emerald-400', bg: 'bg-emerald-50 dark:bg-emerald-900/30' },
-  { color: 'text-rose-600 dark:text-rose-400',       bg: 'bg-rose-50 dark:bg-rose-900/30' },
   { color: 'text-amber-600 dark:text-amber-400',     bg: 'bg-amber-50 dark:bg-amber-900/30' },
   { color: 'text-teal-600 dark:text-teal-400',       bg: 'bg-teal-50 dark:bg-teal-900/30' },
 ];

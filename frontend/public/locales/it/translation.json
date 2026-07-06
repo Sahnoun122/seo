@@ -96,10 +96,6 @@
           "desc": "Pubblica bozze con immagini in evidenza direttamente su qualsiasi sito WordPress tramite l'API REST."
         },
         {
-          "title": "Immagini IA e Unsplash",
-          "desc": "Genera copertine con DALL-E 3 o cerca milioni di foto gratuite su Unsplash — senza uscire dall'app."
-        },
-        {
           "title": "Assistente Link Interni",
           "desc": "Carica la tua sitemap e ottieni suggerimenti intelligenti per link interni inseriti direttamente nell'articolo."
         },
@@ -440,7 +436,6 @@
       "pdf": "PDF",
       "replaceCover": "Cambia copertina",
       "addCover": "Aggiungi copertina",
-      "aiCover": "Copertina IA",
       "wordpress": "WordPress",
       "copyMarkdown": "Copia Markdown",
       "copyHtml": "Copia HTML",
@@ -448,9 +443,7 @@
       "publishWordpress": "Pubblica su WordPress",
       "publishing": "Pubblicazione...",
       "published": "Pubblicato!",
-      "addImage": "Aggiungi immagine",
-      "generateAiImage": "Genera immagine IA",
-      "aiCoverGenerated": "Copertina IA generata!"
+      "addImage": "Aggiungi immagine"
     },
     "wordpress": {
       "success": "Articolo pubblicato su WordPress come bozza!",
@@ -666,8 +659,8 @@
     },
     "step2": {
       "title": "Bellissime immagini di copertina",
-      "body": "Aggiungi un'immagine di copertina professionale con un clic. Carica la tua, generane una con DALL-E 3 IA o scegli una foto gratuita da Unsplash.",
-      "tip": "La generazione di copertine DALL-E 3 usa 1 credito extra per immagine."
+      "body": "Aggiungi un'immagine di copertina professionale con un clic caricando la tua immagine.",
+      "tip": "Supporta JPEG, PNG, WebP e GIF — ridimensionata e ottimizzata automaticamente."
     },
     "step3": {
       "title": "Pubblica direttamente su WordPress",
@@ -724,18 +717,6 @@
     "emptyContentError": "Inserisci il contenuto dell'articolo",
     "generateSuccess": "Link interni generati!",
     "generateError": "Analisi dei link non riuscita"
-  },
-  "unsplashPicker": {
-    "title": "Selettore foto Unsplash",
-    "searchPlaceholder": "Cerca una foto (es. SEO, marketing, tecnologia)…",
-    "search": "Cerca",
-    "emptyState": "Cerca una foto per iniziare",
-    "usePhoto": "Usa questa foto",
-    "loadMore": "Carica altro",
-    "providedBy": "Foto fornite da",
-    "searchError": "Ricerca su Unsplash non riuscita.",
-    "loadMoreError": "Caricamento di altre foto non riuscito.",
-    "selectError": "Impostazione dell'immagine di copertina non riuscita."
   },
   "cookieBanner": {
     "ariaLabel": "Consenso ai cookie",

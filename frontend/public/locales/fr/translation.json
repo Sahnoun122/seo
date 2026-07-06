@@ -96,10 +96,6 @@
           "desc": "Publiez des brouillons avec images en vedette directement sur n'importe quel site WordPress via l'API REST."
         },
         {
-          "title": "Images IA & Unsplash",
-          "desc": "Générez des visuels avec DALL-E 3 ou cherchez parmi des millions de photos Unsplash gratuites — sans quitter l'appli."
-        },
-        {
           "title": "Assistant de liens internes",
           "desc": "Importez votre sitemap et obtenez des suggestions de liens internes pertinentes directement dans votre article."
         },
@@ -440,7 +436,6 @@
       "pdf": "PDF",
       "replaceCover": "Changer la couverture",
       "addCover": "Ajouter une couverture",
-      "aiCover": "Couverture IA",
       "wordpress": "WordPress",
       "copyMarkdown": "Copier Markdown",
       "copyHtml": "Copier HTML",
@@ -448,9 +443,7 @@
       "publishWordpress": "Publier sur WordPress",
       "publishing": "Publication...",
       "published": "Publié !",
-      "addImage": "Ajouter une image",
-      "generateAiImage": "Générer une image IA",
-      "aiCoverGenerated": "Image de couverture IA générée !"
+      "addImage": "Ajouter une image"
     },
     "wordpress": {
       "success": "Article publié sur WordPress en brouillon !",
@@ -666,8 +659,8 @@
     },
     "step2": {
       "title": "De belles images de couverture",
-      "body": "Ajoutez une image de couverture professionnelle en un clic. Uploadez la vôtre, générez-en une avec DALL-E 3 IA, ou choisissez une photo gratuite sur Unsplash.",
-      "tip": "La génération de couverture DALL-E 3 utilise 1 crédit supplémentaire."
+      "body": "Ajoutez une image de couverture professionnelle en un clic en important votre propre image.",
+      "tip": "Compatible avec JPEG, PNG, WebP et GIF — redimensionnée et optimisée automatiquement."
     },
     "step3": {
       "title": "Publiez directement sur WordPress",
@@ -724,18 +717,6 @@
     "emptyContentError": "Veuillez saisir le contenu de l'article",
     "generateSuccess": "Liens internes générés !",
     "generateError": "Échec de l'analyse des liens"
-  },
-  "unsplashPicker": {
-    "title": "Sélecteur de photos Unsplash",
-    "searchPlaceholder": "Rechercher une photo (ex. SEO, marketing, technologie)…",
-    "search": "Rechercher",
-    "emptyState": "Recherchez une photo pour commencer",
-    "usePhoto": "Utiliser cette photo",
-    "loadMore": "Charger plus",
-    "providedBy": "Photos fournies par",
-    "searchError": "Échec de la recherche Unsplash.",
-    "loadMoreError": "Échec du chargement de photos supplémentaires.",
-    "selectError": "Échec de la définition de l'image de couverture."
   },
   "cookieBanner": {
     "ariaLabel": "Consentement aux cookies",

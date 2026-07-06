@@ -1,17 +1,16 @@
 import { useState, useRef, useEffect } from 'react';
 import {
   Copy, CheckCircle2, ListFilter, FileText,
-  Download, FileCode, Loader2, Globe, Share2, Image as ImageIcon, Sparkles, Camera, WandSparkles, RefreshCw,
+  Download, FileCode, Loader2, Globe, Share2, Image as ImageIcon, Sparkles, RefreshCw,
 } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import rehypeSanitize, { defaultSchema } from 'rehype-sanitize';
 import { marked } from 'marked';
 import { motion } from 'framer-motion';
 import { jsPDF } from 'jspdf';
-import api, { uploadCoverImage, generateAICoverImage, regenerateKeywords } from '../lib/api';
+import api, { uploadCoverImage, regenerateKeywords } from '../lib/api';
 import { toast } from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
-import UnsplashPickerModal from './UnsplashPickerModal';
 
 marked.setOptions({ gfm: true, breaks: true });
 
@@ -21,7 +20,6 @@ export default function ResultDisplay({ data, onCoverUpdate }) {
   const [publishing, setPublishing]     = useState(false);
   const [publishedUrl, setPublishedUrl] = useState(null);
   const [uploadingCover, setUploadingCover]         = useState(false);
-  const [generatingAICover, setGeneratingAICover]   = useState(false);
   const getFullImageUrl = (url) => {
     if (!url) return null;
     if (url.startsWith('http')) return url;
@@ -31,7 +29,6 @@ export default function ResultDisplay({ data, onCoverUpdate }) {
 
   const initialCoverUrl = getFullImageUrl(data?.coverUrl) || (data?.coverImageId ? `${import.meta.env.VITE_API_URL || '/api'}/images/${data.coverImageId}/view?size=medium` : null);
   const [coverUrl, setCoverUrl]                     = useState(initialCoverUrl);
-  const [showUnsplash, setShowUnsplash]             = useState(false);
   const [suggestedKeywords, setSuggestedKeywords]   = useState(data?.suggestedKeywords || []);
   const [regeneratingKeywords, setRegeneratingKeywords] = useState(false);
   const fileInputRef = useRef(null);
@@ -197,24 +194,6 @@ export default function ResultDisplay({ data, onCoverUpdate }) {
     }
   };
 
-  const handleGenerateAICover = async () => {
-    if (!data?._id) return;
-    setGeneratingAICover(true);
-    try {
-      const res = await generateAICoverImage(data._id);
-      if (res.coverUrl) {
-        setCoverUrl(getFullImageUrl(res.coverUrl));
-        toast.success(t('result.actions.aiCoverGenerated'));
-        onCoverUpdate?.(data._id, res.coverImageId);
-      }
-    } catch (err) {
-      const msg = err.response?.data?.error || t('common.error');
-      toast.error(msg);
-    } finally {
-      setGeneratingAICover(false);
-    }
-  };
-
   const handleCoverUpload = async (e) => {
     const file = e.target.files?.[0];
     if (!file || !data?._id) return;
@@ -294,7 +273,7 @@ export default function ResultDisplay({ data, onCoverUpdate }) {
                   <span className="hidden sm:inline">WordPress</span>
                 </button>
 
-                {/* Cover image — upload or AI generate */}
+                {/* Cover image — manual upload */}
                 {data?._id && (
                   <>
                     <input
@@ -306,7 +285,7 @@ export default function ResultDisplay({ data, onCoverUpdate }) {
                     />
                     <button
                       onClick={() => fileInputRef.current?.click()}
-                      disabled={uploadingCover || generatingAICover}
+                      disabled={uploadingCover}
                       className="btn-ghost text-xs py-1.5 px-2.5 sm:py-2 sm:px-3"
                       title="Upload cover image"
                       aria-label={coverUrl ? t('result.actions.replaceCover') : t('result.actions.addCover')}
@@ -316,34 +295,8 @@ export default function ResultDisplay({ data, onCoverUpdate }) {
                         : <ImageIcon className="w-4 h-4" />}
                       <span className="hidden sm:inline">{coverUrl ? t('result.actions.replaceCover') : t('result.actions.addCover')}</span>
                     </button>
-
-                    <button
-                      onClick={() => setShowUnsplash(true)}
-                      disabled={generatingAICover || uploadingCover}
-                      className="btn-ghost text-xs py-1.5 px-2.5 sm:py-2 sm:px-3"
-                      title="Pick a photo from Unsplash"
-                      aria-label="Pick a photo from Unsplash"
-                    >
-                      <Camera className="w-4 h-4" />
-                      <span className="hidden sm:inline">Unsplash</span>
-                    </button>
-
-                    <button
-                      onClick={handleGenerateAICover}
-                      disabled={generatingAICover || uploadingCover}
-                      className="btn-ghost text-xs py-1.5 px-2.5 sm:py-2 sm:px-3"
-                      title={t('result.actions.aiCover')}
-                      aria-label={t('result.actions.aiCover')}
-                    >
-                      {generatingAICover
-                        ? <Loader2 className="w-4 h-4 animate-spin" />
-                        : <WandSparkles className="w-4 h-4" />}
-                      <span className="hidden sm:inline">{t('result.actions.aiCover')}</span>
-                    </button>
                   </>
                 )}
-
-
               </div>
             </div>
           </div>
@@ -427,18 +380,6 @@ export default function ResultDisplay({ data, onCoverUpdate }) {
         </div>
       </div>
     </motion.div>
-
-    {showUnsplash && (
-      <UnsplashPickerModal
-        articleId={data._id}
-        onClose={() => setShowUnsplash(false)}
-        onCoverSet={(url, credit) => {
-          setCoverUrl(url);
-          onCoverUpdate?.(data._id);
-          toast.success(`Cover set — photo by ${credit?.photographerName || 'Unsplash'}`);
-        }}
-      />
-    )}
     </>
   );
 }

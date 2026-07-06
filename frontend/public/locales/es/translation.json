@@ -96,10 +96,6 @@
           "desc": "Publica borradores con imágenes destacadas directamente en cualquier sitio WordPress vía la API REST."
         },
         {
-          "title": "Imágenes IA & Unsplash",
-          "desc": "Genera portadas con DALL-E 3 o busca entre millones de fotos gratuitas de Unsplash — sin salir de la app."
-        },
-        {
           "title": "Asistente de enlaces internos",
           "desc": "Importa tu sitemap y obtén sugerencias inteligentes de enlaces internos inyectadas en tu artículo."
         },
@@ -440,7 +436,6 @@
       "pdf": "PDF",
       "replaceCover": "Cambiar portada",
       "addCover": "Añadir portada",
-      "aiCover": "Portada IA",
       "wordpress": "WordPress",
       "copyMarkdown": "Copiar Markdown",
       "copyHtml": "Copiar HTML",
@@ -448,9 +443,7 @@
       "publishWordpress": "Publicar en WordPress",
       "publishing": "Publicando...",
       "published": "¡Publicado!",
-      "addImage": "Añadir imagen",
-      "generateAiImage": "Generar imagen IA",
-      "aiCoverGenerated": "¡Portada IA generada!"
+      "addImage": "Añadir imagen"
     },
     "wordpress": {
       "success": "¡Artículo publicado en WordPress como borrador!",
@@ -609,8 +602,8 @@
     },
     "step2": {
       "title": "Hermosas imágenes de portada",
-      "body": "Añade una imagen de portada profesional con un clic. Sube la tuya, genera una con DALL-E 3 IA o elige una foto gratuita de Unsplash.",
-      "tip": "La generación de portada con DALL-E 3 usa 1 crédito extra."
+      "body": "Añade una imagen de portada profesional con un clic subiendo tu propia imagen.",
+      "tip": "Compatible con JPEG, PNG, WebP y GIF — redimensionada y optimizada automáticamente."
     },
     "step3": {
       "title": "Publica directamente en WordPress",
@@ -724,18 +717,6 @@
     "emptyContentError": "Introduce el contenido del artículo",
     "generateSuccess": "¡Enlaces internos generados!",
     "generateError": "Error en el análisis de enlaces"
-  },
-  "unsplashPicker": {
-    "title": "Selector de fotos de Unsplash",
-    "searchPlaceholder": "Busca una foto (ej. SEO, marketing, tecnología)…",
-    "search": "Buscar",
-    "emptyState": "Busca una foto para empezar",
-    "usePhoto": "Usar esta foto",
-    "loadMore": "Cargar más",
-    "providedBy": "Fotos proporcionadas por",
-    "searchError": "Error al buscar en Unsplash.",
-    "loadMoreError": "Error al cargar más fotos.",
-    "selectError": "Error al establecer la imagen de portada."
   },
   "cookieBanner": {
     "ariaLabel": "Consentimiento de cookies",

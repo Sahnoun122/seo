@@ -96,10 +96,6 @@
           "desc": "Push generated drafts with featured images directly to any WordPress site via the REST API."
         },
         {
-          "title": "AI & Unsplash Images",
-          "desc": "Generate cover art with DALL-E 3 or search millions of free Unsplash photos — all without leaving the app."
-        },
-        {
           "title": "Internal Linking Assistant",
           "desc": "Upload your sitemap and get smart internal link suggestions injected directly into your article."
         },
@@ -440,7 +436,6 @@
       "pdf": "PDF",
       "replaceCover": "Replace Cover",
       "addCover": "Add Cover",
-      "aiCover": "AI Cover",
       "wordpress": "WordPress",
       "copyMarkdown": "Copy Markdown",
       "copyHtml": "Copy HTML",
@@ -448,9 +443,7 @@
       "publishWordpress": "Publish to WordPress",
       "publishing": "Publishing...",
       "published": "Published!",
-      "addImage": "Add Cover Image",
-      "generateAiImage": "Generate AI Image",
-      "aiCoverGenerated": "AI cover generated!"
+      "addImage": "Add Cover Image"
     },
     "wordpress": {
       "success": "Article published to WordPress as a draft!",
@@ -666,8 +659,8 @@
     },
     "step2": {
       "title": "Beautiful cover images",
-      "body": "Add a professional cover image to your articles with one click. You can upload your own, generate one with DALL-E 3 AI, or pick a free photo from Unsplash.",
-      "tip": "DALL-E 3 cover generation uses 1 extra credit per image."
+      "body": "Add a professional cover image to your articles with one click by uploading your own image.",
+      "tip": "Supports JPEG, PNG, WebP, and GIF — resized and optimized automatically."
     },
     "step3": {
       "title": "Publish directly to WordPress",
@@ -724,18 +717,6 @@
     "emptyContentError": "Please enter article content",
     "generateSuccess": "Internal links generated!",
     "generateError": "Linking analysis failed"
-  },
-  "unsplashPicker": {
-    "title": "Unsplash Photo Picker",
-    "searchPlaceholder": "Search for a photo (e.g. SEO, marketing, technology)…",
-    "search": "Search",
-    "emptyState": "Search for a photo to get started",
-    "usePhoto": "Use this photo",
-    "loadMore": "Load more",
-    "providedBy": "Photos provided by",
-    "searchError": "Failed to search Unsplash.",
-    "loadMoreError": "Failed to load more photos.",
-    "selectError": "Failed to set cover image."
   },
   "cookieBanner": {
     "ariaLabel": "Cookie consent",

@@ -516,8 +516,8 @@
     </div>
     <div class="feature-card">
       <div class="feature-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg></div>
-      <div class="feature-title">DALL-E 3 AI Covers</div>
-      <p>One click generates a professional cover image via DALL-E 3, uploaded directly to AWS S3.</p>
+      <div class="feature-title">Cover Image Upload</div>
+      <p>Upload any JPEG/PNG/WebP image as a cover — resized, converted to WebP, and stored in your configured backend.</p>
     </div>
     <div class="feature-card">
       <div class="feature-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9"/></svg></div>
@@ -558,7 +558,7 @@
       <tr><td><strong>Frontend</strong></td><td>React, Vite, TailwindCSS, Framer Motion, i18next</td><td>React 19 / Vite 8 / Tailwind 4</td></tr>
       <tr><td><strong>Backend</strong></td><td>Node.js, Express, Mongoose</td><td>Node 20 / Express 5 / Mongoose 9</td></tr>
       <tr><td><strong>Database</strong></td><td>MongoDB (local or Atlas)</td><td>MongoDB 6+</td></tr>
-      <tr><td><strong>AI</strong></td><td>OpenAI SDK — GPT-4o, DALL-E 3, OpenRouter, DeepSeek, Groq</td><td>openai 6.35</td></tr>
+      <tr><td><strong>AI</strong></td><td>OpenAI SDK — GPT-4o, OpenRouter, DeepSeek, Groq</td><td>openai 6.35</td></tr>
       <tr><td><strong>Payments</strong></td><td>Stripe — subscriptions + one-time packs + webhooks</td><td>stripe 17+</td></tr>
       <tr><td><strong>Storage</strong></td><td>AWS S3 + Sharp (WebP conversion, 4 thumbnail sizes)</td><td>aws-sdk v3</td></tr>
       <tr><td><strong>Auth</strong></td><td>JWT (30-day), bcryptjs, AES-256 key encryption</td><td>jsonwebtoken 9</td></tr>
@@ -823,16 +823,7 @@ npm run dev     # Vite starts on port 5173</code></pre>
   </table>
 
   <h2>Cover Images</h2>
-  <p>Two ways to add a cover image to an article:</p>
-  <ul>
-    <li><strong>Manual upload</strong> — click the <em>Add Cover</em> button, pick a JPEG/PNG/WebP/GIF. The backend converts to WebP, generates 4 thumbnail sizes via Sharp, and stores on S3. A signed URL (1-hour expiry) is returned.</li>
-    <li><strong>AI Cover (DALL-E 3)</strong> — click the <em>AI Cover</em> button (Sparkles icon). The backend sends the article title and keywords to DALL-E 3 (1792×1024, standard quality), downloads the generated image, and uploads it to S3. Result appears instantly in the article card.</li>
-  </ul>
-
-  <div class="alert alert-info">
-    <div class="alert-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
-    <div class="alert-content"><h4>AI Cover requires AWS S3</h4><p>DALL-E returns a temporary URL (1-hour expiry). The app downloads the image and re-uploads it to your S3 bucket for permanent storage. Requires <code>AWS_*</code> variables to be configured.</p></div>
-  </div>
+  <p>Add a cover image to an article via manual upload: click the <em>Add Cover</em> button, pick a JPEG/PNG/WebP/GIF. The backend converts to WebP, generates 4 thumbnail sizes via Sharp, and stores on S3. A signed URL (1-hour expiry) is returned.</p>
 
   <h2>Article History &amp; Management</h2>
   <ul>
@@ -947,7 +938,6 @@ npm run dev     # Vite starts on port 5173</code></pre>
       <tr><td><span class="badge badge-green">POST</span></td><td><code>/api/history/:id/restore/:versionIndex</code></td><td>✓</td><td>Restore a previous version</td></tr>
       <tr><td><span class="badge badge-purple">DELETE</span></td><td><code>/api/articles/:id</code></td><td>✓</td><td>Delete article + S3 images</td></tr>
       <tr><td><span class="badge badge-green">POST</span></td><td><code>/api/articles/:id/cover</code></td><td>✓</td><td>Upload cover image (multipart)</td></tr>
-      <tr><td><span class="badge badge-green">POST</span></td><td><code>/api/articles/:id/generate-cover-ai</code></td><td>✓</td><td>Generate DALL-E 3 cover</td></tr>
       <tr><td><span class="badge badge-green">POST</span></td><td><code>/api/articles/:id/publish-wordpress</code></td><td>✓</td><td>Publish to WordPress as draft</td></tr>
       <tr><td><span class="badge badge-blue">GET</span></td><td><code>/api/auth/settings</code></td><td>✓</td><td>Get user + system settings</td></tr>
       <tr><td><span class="badge badge-yellow">PUT</span></td><td><code>/api/auth/settings</code></td><td>✓</td><td>Update settings</td></tr>

@@ -26,7 +26,6 @@
 - **1-Click WordPress Publishing** — Directly publishes drafted articles to any WordPress site via the REST API with featured image attached
 - **Export Options** — Copy as Markdown, export as PDF, or download as HTML
 - **Manual Cover Upload** — Upload any JPEG/PNG/WebP image; backend converts to WebP, generates 4 thumbnail sizes via Sharp, then stores on your chosen object storage
-- **DALL-E 3 AI Cover Generation** — One click generates a professional cover image via DALL-E 3 (1792×1024), downloaded and stored in your configured storage backend
 - **Multi-Provider Object Storage** — Supports **MinIO** (self-hosted, free, Docker-ready), **Cloudflare R2** (free 10 GB CDN), and **AWS S3** — switchable via environment variables with zero code changes. Includes `docker-compose.yml` to launch a full MinIO stack with a single command
 
 ### Platform & Monetization

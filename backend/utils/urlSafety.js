@@ -71,16 +71,3 @@ export const assertPublicHttpUrl = async (rawUrl) => {
 
   return parsed;
 };
-
-/**
- * @param {string} rawUrl
- * @returns {boolean} true if the hostname is unsplash.com or a subdomain of it
- */
-export const isUnsplashHost = (rawUrl) => {
-  try {
-    const { hostname } = new URL(rawUrl);
-    return hostname === 'unsplash.com' || hostname.endsWith('.unsplash.com');
-  } catch {
-    return false;
-  }
-};

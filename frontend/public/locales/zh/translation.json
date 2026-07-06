@@ -96,10 +96,6 @@
           "desc": "通过 REST API 将带有精选图片的草稿直接发布到任何 WordPress 网站。"
         },
         {
-          "title": "AI 图片与 Unsplash",
-          "desc": "使用 DALL-E 3 生成封面，或从 Unsplash 搜索数百万张免费图片——无需离开应用。"
-        },
-        {
           "title": "内部链接助手",
           "desc": "上传您的网站地图，获取直接嵌入文章的智能内部链接建议。"
         },
@@ -440,7 +436,6 @@
       "pdf": "PDF",
       "replaceCover": "更换封面",
       "addCover": "添加封面",
-      "aiCover": "AI 封面",
       "wordpress": "WordPress",
       "copyMarkdown": "复制 Markdown",
       "copyHtml": "复制 HTML",
@@ -448,9 +443,7 @@
       "publishWordpress": "发布到 WordPress",
       "publishing": "发布中...",
       "published": "已发布！",
-      "addImage": "添加封面图片",
-      "generateAiImage": "生成 AI 图片",
-      "aiCoverGenerated": "AI 封面已生成！"
+      "addImage": "添加封面图片"
     },
     "wordpress": {
       "success": "文章已作为草稿发布到 WordPress！",
@@ -666,8 +659,8 @@
     },
     "step2": {
       "title": "精美的封面图片",
-      "body": "一键为文章添加专业封面图片。您可以上传自己的图片、使用 DALL-E 3 AI 生成，或从 Unsplash 选择免费照片。",
-      "tip": "DALL-E 3 封面生成每张额外消耗 1 个积分。"
+      "body": "一键为文章添加专业封面图片，只需上传您自己的图片。",
+      "tip": "支持 JPEG、PNG、WebP 和 GIF 格式——自动调整大小并优化。"
     },
     "step3": {
       "title": "直接发布到 WordPress",
@@ -724,18 +717,6 @@
     "emptyContentError": "请输入文章内容",
     "generateSuccess": "内部链接生成成功！",
     "generateError": "链接分析失败"
-  },
-  "unsplashPicker": {
-    "title": "Unsplash 图片选择器",
-    "searchPlaceholder": "搜索图片（例如：SEO、营销、科技）…",
-    "search": "搜索",
-    "emptyState": "搜索图片以开始",
-    "usePhoto": "使用这张图片",
-    "loadMore": "加载更多",
-    "providedBy": "图片提供方：",
-    "searchError": "搜索 Unsplash 失败。",
-    "loadMoreError": "加载更多图片失败。",
-    "selectError": "设置封面图片失败。"
   },
   "cookieBanner": {
     "ariaLabel": "Cookie 同意",

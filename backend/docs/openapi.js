@@ -449,34 +449,6 @@ Authorization: Bearer <your_token>
       },
     },
 
-    '/articles/{id}/generate-cover-ai': {
-      post: {
-        tags: ['Images'],
-        summary: 'Generate an AI cover image using DALL-E 3',
-        description: 'Generates a cover image based on the article title and keyword. Requires a valid OpenAI API key (DALL-E 3). The image is processed, uploaded to S3, and linked to the article.',
-        parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'string' } }],
-        requestBody: {
-          content: {
-            'application/json': {
-              schema: {
-                type: 'object',
-                properties: {
-                  customPrompt: { type: 'string', maxLength: 1000, description: 'Optional custom DALL-E prompt override', example: 'A minimalist flat illustration of fashion garments on a white background' },
-                },
-              },
-            },
-          },
-        },
-        responses: {
-          200: { description: 'AI cover generated', content: { 'application/json': { schema: { type: 'object', properties: { success: { type: 'boolean' }, coverImageId: { type: 'string' }, coverUrl: { type: 'string' } } } } } },
-          400: { description: 'Prompt rejected by safety filter or bad API config' },
-          401: { description: 'Invalid OpenAI API key' },
-          404: { $ref: '#/components/responses/NotFound' },
-          429: { description: 'OpenAI rate limit reached' },
-        },
-      },
-    },
-
     '/internal-links': {
       post: {
         tags: ['Articles'],
